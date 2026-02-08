@@ -85,9 +85,9 @@ document.addEventListener('DOMContentLoaded', () => {
             incidentList.innerHTML = ''; // Clear previous content
             const p = document.createElement('p');
             if (error.message.includes('検索結果が存在しません')) {
-                p.textContent = '検索結果が存在しません。メーカー名、規格、剤形などを削除、絞り込みのワードを変更して再検索してください。';
+                p.innerHTML = '<strong>検索結果が見つかりませんでした。</strong><br><br>以下をお試しください：<ul style="margin-top: 8px; padding-left: 20px;"><li>メーカー名を削除する</li><li>規格（mg等）を削除する</li><li>剤形（錠、カプセル等）を削除する</li><li>成分名のみで検索する</li></ul>';
             } else {
-                p.textContent = `事例の読み込みに失敗しました. ${error.message}`;
+                p.textContent = `事例の読み込みに失敗しました。 ${error.message}`;
             }
             incidentList.appendChild(p);
             allIncidents = [];
@@ -230,9 +230,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 if (selector === 'DATSUMMARY') mappedValue = DATSUMMARY_MAP[code] || `不明な事例区分`;
                 else if (selector === 'DATMONTH') {
-                    const monthMap = {'01':'1月','02':'2月','03':'3月','04':'4月','05':'5月','06':'6月','07':'7月','08':'8月','09':'9月','10':'10月','11':'11月','12':'12月'};
+                    const monthMap = { '01': '1月', '02': '2月', '03': '3月', '04': '4月', '05': '5月', '06': '6月', '07': '7月', '08': '8月', '09': '9月', '10': '10月', '11': '11月', '12': '12月' };
                     mappedValue = monthMap[code] || `不明な月 (${code})`;
-                } 
+                }
                 else if (selector === 'DATCONTENTTEXT') mappedValue = DATCONTENTTEXT_MAP[code] || '';
                 else if (selector === 'DATFACTORTEXT') mappedValue = DATFACTORTEXT_MAP[code] || '';
                 else if (selector === 'DATFACTOR') mappedValue = DATFACTOR_MAP[code] || '';
