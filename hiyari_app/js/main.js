@@ -256,7 +256,12 @@ async function fetchIncidents(start = 0) {
 
     } catch (err) {
         console.error('Fetching incidents failed:', err);
-        showError(`データ取得に失敗しました: ${err.message}`);
+        if (err.message.includes('検索結果が存在しません')) {
+            elements.errorMsg.innerHTML = '<strong>検索結果が見つかりませんでした。</strong><br><br>以下をお試しください：<ul style="margin-top: 8px; padding-left: 20px; text-align: left;"><li>メーカー名を削除する</li><li>規格（mg等）を削除する</li><li>剤形（錠、カプセル等）を削除する</li><li>成分名のみで検索する</li></ul>';
+            elements.errorMsg.classList.remove('hidden');
+        } else {
+            showError(`データ取得に失敗しました: ${err.message}`);
+        }
     } finally {
         showLoading(false);
     }
