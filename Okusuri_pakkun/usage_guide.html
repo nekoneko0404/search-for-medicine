@@ -607,7 +607,10 @@
             <h3 style="margin-bottom: 5px; font-size: 1.2rem;">📱 アプリへのアクセスはこちら</h3>
             <p style="margin: 0; font-size: 0.9rem;">このQRコードをスマホで読み取ると、すぐにアプリを使えます。</p>
             <div class="qr-flex">
-                <div id="qrcode"></div>
+                <div id="qrcode">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?data=https://search-for-medicine.pages.dev/Okusuri_pakkun/index.html&size=120x120&ecc=H&color=5D4037"
+                        alt="QR Code" width="120" height="120" loading="eager" style="display: block;">
+                </div>
                 <img src="images/party_cat.png" alt="お祝いねこ" class="qr-char">
             </div>
             <p style="font-size: 0.8rem; color: #666; font-weight: bold; margin-top: 8px;">※このページを印刷して配布用にお使いください</p>
@@ -619,18 +622,6 @@
             <p style="margin: 0;">お子様の健やかな成長と、スムーズな服薬を心から応援しています！</p>
         </div>
     </div>
-
-    <script>
-        const appUrl = "https://search-for-medicine.pages.dev/Okusuri_pakkun/index.html";
-        new QRCode(document.getElementById("qrcode"), {
-            text: appUrl,
-            width: 120,
-            height: 120,
-            colorDark: "#5D4037",
-            colorLight: "#ffffff",
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    </script>
 </body>
 
 </html>
