@@ -51,13 +51,13 @@
 }
 
 /* Base Styles */
-body {
-    background-color: #fff7ed;
+body.recipe-app {
+    background-color: #fff7ed !important;
     /* bg-orange-50 */
-    background-image: radial-gradient(#fed7aa 1px, transparent 1px);
-    background-size: 20px 20px;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
-    color: #1f2937;
+    background-image: radial-gradient(#fed7aa 1px, transparent 1px) !important;
+    background-size: 20px 20px !important;
+    font-family: 'M PLUS Rounded 1c', sans-serif !important;
+    color: #1f2937 !important;
     /* text-gray-800 */
 }
 
