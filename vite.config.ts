@@ -18,28 +18,12 @@ export default defineConfig({
                     dest: 'pollen-app'
                 },
                 {
-                    src: 'recipe-app/*.{json,png}',
-                    dest: 'recipe-app'
-                },
-                {
-                    src: 'anonymous-bbs/*.{json,png}',
-                    dest: 'anonymous-bbs'
-                },
-                {
-                    src: 'infection-surveillance-app/*.{json,png}',
-                    dest: 'infection-surveillance-app'
-                },
-                {
-                    src: 'supply-status/*.{json,png}',
-                    dest: 'supply-status'
-                },
-                {
                     src: 'Okusuri_pakkun/images/*',
                     dest: 'Okusuri_pakkun/images'
                 },
                 {
-                    src: 'drug-classification/*.{json,png}',
-                    dest: 'drug-classification'
+                    src: 'supply-status/data/*',
+                    dest: 'supply-status/data'
                 }
             ]
         })
