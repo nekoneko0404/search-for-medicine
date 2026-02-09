@@ -10,8 +10,9 @@
 }
 
 body {
-    font-family: 'Inter', 'Noto Sans JP', sans-serif;
-    background: var(--bg-color);
+    font-family: 'Inter', 'Noto Sans JP', sans-serif !important;
+    background: var(--bg-color) !important;
+    background-image: none !important;
     color: var(--text-color);
     margin: 0;
     padding: 20px;
