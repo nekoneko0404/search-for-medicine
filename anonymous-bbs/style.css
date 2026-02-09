@@ -15,35 +15,38 @@ body {
     background-image: none !important;
     color: var(--text-color);
     margin: 0;
-    padding: 20px;
-    line-height: 1.6;
+    padding: 0;
+    line-height: 1.7;
+    /* 読みやすさ向上のため行間を拡大 */
+    -webkit-font-smoothing: antialiased;
+    /* 文字を滑らかに */
 }
 
 .container {
-    max-width: 1000px;
-    /* Increased width for 2 columns */
+    max-width: 960px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 header {
     text-align: center;
-    margin-bottom: 2.5rem;
+    margin: 3rem 0;
 }
 
 header h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.8rem;
+    font-size: 2rem;
+    margin-bottom: 1rem;
     color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    /* 文字間を少し空けて上品に */
 }
 
 .header-desc {
     color: var(--text-muted);
     font-size: 0.95rem;
-}
-
-.header-desc p {
-    margin: 0.4rem 0;
-    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .privacy-note {
@@ -186,12 +189,22 @@ button:disabled {
 
 .post {
     background: var(--card-bg);
-    padding: 16px;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 24px;
+    /* 余白を増やしてゆとりを持たせる */
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    /* シャドウを柔らかく */
     position: relative;
-    border-left: 4px solid var(--primary-color);
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    /* 微妙な枠線を追加 */
+    border-left: 5px solid var(--primary-color);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+    transform: translateY(-2px);
 }
 
 .post-meta {
