@@ -358,7 +358,7 @@ async function handleFormSubmit(e) {
     }
 
     // Get Data from helper
-    const { symptoms, ingredients, excludedIngredients, cuisine, time } = getFormData();
+    const { symptoms, ingredients, excludedIngredients, cuisine, time, preferredRegion } = getFormData();
 
     const requestData = {
         symptoms,
@@ -366,6 +366,7 @@ async function handleFormSubmit(e) {
         excludedIngredients,
         cuisine,
         time,
+        preferredRegion,
         provider: apiOption === 'openai' ? 'openai' : 'gemini'
     };
 
@@ -435,9 +436,9 @@ function saveFormState() {
         other_symptom: formData.get('other_symptom'),
         ingredients: formData.getAll('ingredient'),
         excluded_ingredients: formData.getAll('excluded_ingredient'),
-        excluded_ingredients: formData.getAll('excluded_ingredient'),
         cuisine: formData.get('cuisine'),
-        time: formData.get('time')
+        time: formData.get('time'),
+        preferredRegion: formData.get('preferredRegion')
     };
 
     localStorage.setItem('recipe_app_form_state', JSON.stringify(state));
@@ -501,11 +502,21 @@ function restoreFormState() {
             if (radio) radio.checked = true;
         }
 
-
+        // Restore Preferred Region
+        if (state.preferredRegion) {
+            const input = document.getElementById('preferredRegion');
+            if (input) input.value = state.preferredRegion;
+        }
 
     } catch (e) {
         console.error("Failed to restore form state:", e);
     }
+}
+
+
+    } catch (e) {
+    console.error("Failed to restore form state:", e);
+}
 }
 
 /**
