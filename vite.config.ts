@@ -1,11 +1,44 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
 import tailwindcss from '@tailwindcss/vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
-    base: './',
+    base: './', // Use relative base for all assets
     plugins: [
         tailwindcss(),
+        viteStaticCopy({
+            targets: [
+                {
+                    src: 'pollen-app/*.{js,css,json,png,mp3,csv}',
+                    dest: 'pollen-app'
+                },
+                {
+                    src: 'recipe-app/*.{js,css,json,png}',
+                    dest: 'recipe-app'
+                },
+                {
+                    src: 'anonymous-bbs/*.{js,css,json,png}',
+                    dest: 'anonymous-bbs'
+                },
+                {
+                    src: 'infection-surveillance-app/*.{js,css,json,png}',
+                    dest: 'infection-surveillance-app'
+                },
+                {
+                    src: 'supply-status/*.{js,css,json,png}',
+                    dest: 'supply-status'
+                },
+                {
+                    src: 'Okusuri_pakkun/*.{js,css,json,png}',
+                    dest: 'Okusuri_pakkun'
+                },
+                {
+                    src: 'drug-classification/*.{js,css,json,png}',
+                    dest: 'drug-classification'
+                }
+            ]
+        })
     ],
     build: {
         rollupOptions: {
