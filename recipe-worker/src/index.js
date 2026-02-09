@@ -88,24 +88,44 @@ export default {
             const body = await request.json();
 
             // INPUT VALIDATION (Security Fix)
-            // Limit total characters to prevent huge token usage/injection
-            const MAX_INPUT_LENGTH = 1000;
+            const MAX_INPUT_LENGTH = 2000;
             const fullContent = JSON.stringify(body);
             if (fullContent.length > MAX_INPUT_LENGTH) {
-                return new Response(JSON.stringify({ error: "Request too large (Limit: 1000 chars)" }), {
+                return new Response(JSON.stringify({ error: "Request too large (Limit: 2000 chars)" }), {
                     status: 400,
                     headers: { "Content-Type": "application/json", ...corsHeaders },
                 });
+            }
+
+            // Strict Type Checking
+            if (typeof body.cuisine !== 'string' || body.cuisine.length > 50) {
+                return new Response(JSON.stringify({ error: "Invalid cuisine parameter" }), { status: 400, headers: corsHeaders });
+            }
+            if (typeof body.time !== 'string' || body.time.length > 20) {
+                return new Response(JSON.stringify({ error: "Invalid time parameter" }), { status: 400, headers: corsHeaders });
+            }
+            if (body.symptoms && (!Array.isArray(body.symptoms) || body.symptoms.some(s => typeof s !== 'string' || s.length > 50))) {
+                return new Response(JSON.stringify({ error: "Invalid symptoms parameter" }), { status: 400, headers: corsHeaders });
+            }
+            if (body.ingredients && (!Array.isArray(body.ingredients) || body.ingredients.some(i => typeof i !== 'string' || i.length > 50))) {
+                return new Response(JSON.stringify({ error: "Invalid ingredients parameter" }), { status: 400, headers: corsHeaders });
+            }
+            if (body.excludedIngredients && (!Array.isArray(body.excludedIngredients) || body.excludedIngredients.some(i => typeof i !== 'string' || i.length > 50))) {
+                return new Response(JSON.stringify({ error: "Invalid excludedIngredients parameter" }), { status: 400, headers: corsHeaders });
             }
 
             const userKey = request.headers.get("X-User-Key");
             const provider = body.provider || 'openai'; // 'openai' or 'gemini'
 
             let apiKey;
+            let usingSystemKey = false;
+
             if (provider === 'gemini') {
                 apiKey = userKey || env.GEMINI_API_KEY;
+                if (!userKey && env.GEMINI_API_KEY) usingSystemKey = true;
             } else {
                 apiKey = userKey || env.OPENAI_API_KEY;
+                if (!userKey && env.OPENAI_API_KEY) usingSystemKey = true;
             }
 
             if (!apiKey) {
@@ -113,6 +133,12 @@ export default {
                     status: 500,
                     headers: { "Content-Type": "application/json", ...corsHeaders },
                 });
+            }
+
+            // Rate Limiting / Scrape Protection for System Key
+            if (usingSystemKey) {
+                // Add artificial delay (e.g., 2 seconds) to discourage rapid scraping
+                await new Promise(resolve => setTimeout(resolve, 2000));
             }
 
             // Construct user prompt details
@@ -130,16 +156,10 @@ export default {
 3. 変化球: 意外な組み合わせや新しい味付けのレシピ。
 ※出力内には「定番」等のカテゴリ名は表示しないでください。
 ※料理ジャンルが「アジア料理」の場合、日本・中華・韓国料理は含めず、東南アジアや中央アジア等の料理を中心に提案してください。
-
-# 地域の多様性（重要）
-- 同じジャンル内でも、できるだけ異なる地域・国の料理を提案してください。
-- **西欧・北中欧料理**の場合: フランス、ドイツ、イギリス、オランダ、ベルギー、スイス、オーストリア、スウェーデン、ノルウェー、デンマーク、フィンランド、ロシア、ポーランド、チェコ、ハンガリーなど、多様な地域から選択してください。
-- **地中海・南欧料理**の場合: イタリア、スペイン、ギリシャ、ポルトガル、南フランス、クロアチア、トルコなど、多様な地域から選択してください。
-- マイナーな地域の料理も積極的に提案してください。
 `;
 
             const courseInstruction = `
-# 重要: コース形式の提案指示
+# 重要: フルコース提案の指示
 - 調理時間に『コース』が選択されているため、その国の料理でコース形式のレシピを提案してください。
 - **必ず全てのレシピの国を統一してください。**
 - **可能であれば、同じ国の中の同じ地域のレシピで構成してください。**
@@ -154,49 +174,15 @@ export default {
 - recipes配列には、提供順序に従って格納してください。
 `;
 
-            const preferredRegion = body.preferredRegion?.trim() || '';
-
-            const regionSpecificModeInstruction = `
-# レシピ構成の指示
-ユーザーが指定した地域「${preferredRegion}」に基づき、以下の3つのバリエーションを必ず含めて合計3つのレシピを提案してください。
-1. 定番の味: その地域の家庭的な王道レシピ。
-2. おしゃれ: その地域のカフェやレストラン風の華やかなレシピ。
-3. 変化球: その地域の食材や味付けを使った、意外な組み合わせのレシピ。
-※出力内には「定番」等のカテゴリ名は表示しないでください。
-※**重要**: 他の地域の料理は**絶対に**混ぜないでください。「${preferredRegion}」の料理**のみ**で構成してください。
-`;
-
-            let modeSelectedInstruction;
-            if (isCourse) {
-                modeSelectedInstruction = courseInstruction;
-            } else if (preferredRegion) {
-                modeSelectedInstruction = regionSpecificModeInstruction;
-            } else {
-                modeSelectedInstruction = defaultModeInstruction;
-            }
-
-
-
-            // ジャンル決定ロジック（地域指定があればそれをジャンルとして扱う）
-            let cuisine = body.cuisine;
-            if (preferredRegion) {
-                cuisine = preferredRegion; // 地域名でジャンルを強制上書き
-            } else if (!cuisine || cuisine === 'null' || cuisine === 'undefined') {
-                cuisine = "家庭料理"; // デフォルト
-            }
-
-            const regionInstruction = preferredRegion ? `
-【希望地域】${preferredRegion}
-重要: ${preferredRegion}料理のみを提案してください。他の地域の料理は不要です。
-` : '';
+            const modeSelectedInstruction = isCourse ? courseInstruction : defaultModeInstruction;
 
             const userContent = `
 【体調・気になること】${symptomText}
 【使いたい食材】${ingredientText}
 【除外したい食材】${excludedText}
-【ジャンル】${cuisine}
+【ジャンル】${body.cuisine}
 【希望調理時間】${body.time}
-${regionInstruction}${limitSupermarket}
+${limitSupermarket}
 
 ${modeSelectedInstruction}
 
@@ -245,7 +231,8 @@ ${modeSelectedInstruction}
                 });
             }
 
-            return new Response(JSON.stringify({ error: e.message }), {
+            // SANITIZED ERROR MESSAGE
+            return new Response(JSON.stringify({ error: "Internal Server Error" }), {
                 status: 500,
                 headers: { "Content-Type": "application/json", ...corsHeaders },
             });
