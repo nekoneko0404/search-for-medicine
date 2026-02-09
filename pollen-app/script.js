@@ -1,5 +1,3 @@
-import '../css/input.css';
-import './style.css';
 document.addEventListener('DOMContentLoaded', function () {
     // Notification Banner Logic
     const noticeBanner = document.getElementById('update-notice');
@@ -1324,7 +1322,11 @@ const NotificationManager = {
         this.startMonitoring();
 
         // Check immediately
-        this.checkPollenLevels();
+        try {
+            this.checkPollenLevels();
+        } catch (error) {
+            console.error('Error during initial pollen check:', error);
+        }
     },
 
     async clearSettings() {
@@ -1409,43 +1411,6 @@ const NotificationManager = {
         }
     },
 
-    playNotificationSound(silent = false) {
-        // Check if custom audio file exists, if so use it instead of beep
-        const customAudioPath = 'notification.mp3';
-
-        // Try to play custom audio first
-        const audio = new Audio(customAudioPath);
-        audio.volume = silent ? 0 : 1.0;
-
-        audio.play().catch(() => {
-            // If custom audio fails, fall back to beep sound
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                // Configure sound (pleasant notification tone)
-                oscillator.frequency.value = 800; // Hz
-                oscillator.type = 'sine';
-
-                // Fade in and out
-                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
-                gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.1);
-                gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 0.4);
-
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.4);
-
-                console.log('Notification beep played');
-            } catch (error) {
-                console.error('Error playing sound:', error);
-            }
-        });
-    },
-
     speakMessage(message) {
         try {
             if ('speechSynthesis' in window) {
@@ -1511,9 +1476,18 @@ const NotificationManager = {
             this.playAlertSound();
         }
 
-        // Play voice notification (notification.mp3) after 0.8 second delay
+        // Play voice notification (speech synthesis + notification.mp3) after 0.8 second delay
         if (enableVoice) {
             setTimeout(() => {
+                // If we have messages to speak, speak them
+                const settings = this.getSettings();
+                const cityName = settings ? settings.cityName : '登録地点';
+                const message = `${cityName}で花粉の飛散が確認されました。対策をしてください。`;
+
+                // Speak the message
+                this.speakMessage(message);
+
+                // Also play the subtle chime
                 this.playVoiceNotification();
             }, 800);
         }
@@ -1698,27 +1672,27 @@ const NotificationManager = {
         const scheduleNextCheck = () => {
             const now = new Date();
             const nextCheck = new Date(now);
-
+    
             // Set to next hour at 10 minutes
             nextCheck.setHours(now.getHours() + 1);
             nextCheck.setMinutes(10);
             nextCheck.setSeconds(0);
             nextCheck.setMilliseconds(0);
-
+    
             // If current time is before 10 minutes past current hour, check this hour instead
             if (now.getMinutes() < 10) {
                 nextCheck.setHours(now.getHours());
             }
-
+    
             const timeUntilCheck = nextCheck - now;
             console.log(`Next check scheduled at ${nextCheck.toLocaleTimeString('ja-JP')} (in ${Math.round(timeUntilCheck / 1000 / 60)} minutes)`);
-
+    
             this.timerId = setTimeout(() => {
                 this.checkPollenLevels();
                 scheduleNextCheck(); // Schedule the next check
             }, timeUntilCheck);
         };
-
+    
         scheduleNextCheck();
         */
     },

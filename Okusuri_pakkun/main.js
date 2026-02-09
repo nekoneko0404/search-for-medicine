@@ -490,7 +490,7 @@ function updateProgressInfo() {
 
 function updateCharacter() {
     const img = document.createElement('img');
-    img.src = 'images/doctor_bear.png';
+    img.src = '/images/doctor_bear.png';
     img.className = 'character-img';
     elements.characterArea.innerHTML = '';
     elements.characterArea.appendChild(img);
@@ -695,7 +695,7 @@ function triggerSurprise() {
     playHappySound();
 
     // Always show the nurse rabbit first
-    elements.characterArea.innerHTML = '<img src="images/nurse_rabbit.png" class="character-img" />';
+    elements.characterArea.innerHTML = '<img src="/images/nurse_rabbit.png" class="character-img" />';
 
     // Pick a random praise message
     const praise = praiseMessages[Math.floor(Math.random() * praiseMessages.length)];
@@ -950,15 +950,15 @@ function triggerCompletion() {
                     
                     <div class="certificate-characters">
                         <div class="character-signature">
-                            <img src="images/doctor_bear.png" alt="くま先生">
+                            <img src="/images/doctor_bear.png" alt="くま先生">
                             <span>くま先生</span>
                         </div>
                         <div class="character-signature">
-                            <img src="images/nurse_rabbit.png" alt="うさぎ看護師">
+                            <img src="/images/nurse_rabbit.png" alt="うさぎ看護師">
                             <span>うさぎ看護師</span>
                         </div>
                         <div class="character-signature">
-                            <img src="images/pharmacist_cat.png" alt="ねこ薬剤師">
+                            <img src="/images/pharmacist_cat.png" alt="ねこ薬剤師">
                             <span>ねこ薬剤師</span>
                         </div>
                     </div>

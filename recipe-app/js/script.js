@@ -1,4 +1,3 @@
-import '../../css/input.css';
 // DOM Elements (Initialized in init)
 let form, symptomsContainer, apiKeyInputContainer, apiKeyInput, advancedSettingsToggle, advancedSettings, resultSection, loadingDiv, recipeCardsDiv, saveApiKeyCheckbox, saveKeyWarning, saveFormStateCheckbox;
 
