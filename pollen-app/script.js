@@ -1260,6 +1260,7 @@ const NotificationManager = {
     },
 
     async saveSettings() {
+        alert('保存処理を開始します...');
         const targetCitySpan = document.getElementById('notification-target-city');
         const hourlyInput = document.getElementById('threshold-hourly');
         const dailyInput = document.getElementById('threshold-daily');
@@ -1274,6 +1275,7 @@ const NotificationManager = {
         const enableVoice = voiceCheckbox.checked;
 
         if (!cityCode) {
+            alert('エラー: 都市コードが見つかりません。');
             console.error('City code missing');
             return;
         }
@@ -1321,12 +1323,14 @@ const NotificationManager = {
             const subscribed = await this.subscribeUser(settings);
             if (subscribed) {
                 this.showToast(`通知設定を保存しました\n(アプリを閉じても通知が届きます)`);
+                alert('通知設定を保存しました。');
             } else {
                 this.showToast(`設定は保存されましたが、\nバックグラウンド通知の登録に失敗しました`, 'warning', 10000);
                 alert('【注意】\n設定は保存されましたが、プッシュ通知の登録に失敗しました。\n・アプリを開いている間のみ通知されます。\n・ブラウザの通知設定やプライベートモードでないか確認してください。');
             }
         } catch (e) {
             console.error('Error during push subscription:', e);
+            alert('エラー: プッシュ通知の登録中に問題が発生しました。' + e.message);
             this.showToast('プッシュ通知の登録中に技術的なエラーが発生しました', 'danger', 10000);
         }
 
@@ -1357,13 +1361,14 @@ const NotificationManager = {
                 this.stopMonitoring();
             } catch (e) {
                 console.error('Error clearing settings:', e);
-                alert('設定の解除中にエラーが発生しました。');
+                alert('設定の解除中にエラーが発生しました。' + e.message);
             }
         }
     },
 
     async testNotification() {
         console.log('Testing notification...');
+        alert('テスト通知を実行します。音声が流れるか確認してください。');
 
         let permission = 'granted';
         if (typeof Notification !== 'undefined') {
@@ -1428,7 +1433,7 @@ const NotificationManager = {
             }
         } else {
             console.log('Permission denied');
-            alert('通知の許可が得られませんでした。');
+            alert('通知の許可が得られませんでした（システム通知のみ無効）。音声テストは続行します。');
         }
     },
 
@@ -1455,10 +1460,12 @@ const NotificationManager = {
                 console.log('Speaking:', message);
                 window.speechSynthesis.speak(utterance);
             } else {
-                console.log('Speech synthesis not supported');
+                console.warn('Speech synthesis not supported in this browser');
+                alert('このブラウザは音声合成に対応していません。');
             }
         } catch (error) {
             console.error('Error speaking message:', error);
+            alert('音声合成中にエラーが発生しました: ' + error.message);
         }
     },
 
@@ -1474,10 +1481,7 @@ const NotificationManager = {
     },
 
     playNotificationSound(silent = false, enableSound = null, enableVoice = null) {
-        if (silent) {
-            // Silent mode for audio unlocking
-            return;
-        }
+        if (silent) return;
 
         // If not provided, get from settings
         if (enableSound === null || enableVoice === null) {
@@ -1485,10 +1489,10 @@ const NotificationManager = {
             if (!settings) return;
 
             if (enableSound === null) {
-                enableSound = settings.enableSound !== false; // Default true
+                enableSound = settings.enableSound !== false;
             }
             if (enableVoice === null) {
-                enableVoice = settings.enableVoice !== false; // Default true
+                enableVoice = settings.enableVoice !== false;
             }
         }
 
