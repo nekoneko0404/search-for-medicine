@@ -180,7 +180,7 @@ export default {
                 modeSelectedInstruction = defaultModeInstruction;
             }
 
-            const preferredRegion = body.preferredRegion?.trim() || '';
+
 
             // ジャンルが未選択の場合の処理
             let cuisine = body.cuisine;
