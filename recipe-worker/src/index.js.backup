@@ -214,14 +214,13 @@ ${modeSelectedInstruction}
                 status: 500,
                 headers: { "Content-Type": "application/json", ...corsHeaders },
             });
-        }
-    }
-};
+        },
+    };
 
-/**
+    /**
      * 複数のGemini APIキーを取得するヘルパー関数
      */
-function getGeminiApiKeys(env, primaryKey) {
+    function getGeminiApiKeys(env, primaryKey) {
     const keys = [];
     if (primaryKey) keys.push(primaryKey);
 
