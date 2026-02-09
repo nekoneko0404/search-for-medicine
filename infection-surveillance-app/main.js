@@ -30,8 +30,7 @@ function hideChartLoading(containerElement) {
     }
 }
 
-import '../css/input.css';
-import './style.css';
+// Imports removed for browser environment
 console.log("infection app main.js loaded");
 const API_URL = 'https://script.google.com/macros/s/AKfycby8wh0NMuPtEOgLVHXfc0jzNqlOENuOgCwQmYYzMSZCKTvhSDiJpZkAyJxntGISTGOmbQ/exec';
 let cachedData = {
