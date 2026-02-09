@@ -17,6 +17,9 @@ function getWeatherIcon(code) {
     return '<i class="fas fa-question"></i>';
 }
 
+// Expose to window
+window.getWeatherIcon = getWeatherIcon;
+
 // Helper: Sanitize HTML to prevent XSS
 function sanitizeHTML(str) {
     const temp = document.createElement('div');
@@ -245,7 +248,7 @@ function getWeatherCacheKey(cityCode, date) {
     return `${cityCode}-${date}`;
 }
 
-async function updateWeatherMarkers() {
+async function updateWeatherMarkers(date = null) {
     if (!isWeatherVisible) return;
     if (typeof map === 'undefined' || !map) return;
 
@@ -375,8 +378,8 @@ async function updateWeatherMarkers() {
     const now = Date.now();
     const fetchQueue = [];
     const today = new Date().toISOString().split('T')[0];
-    const isToday = typeof state !== 'undefined' && state.currentDate === today;
-    const currentDate = typeof state !== 'undefined' ? state.currentDate : today;
+    const isToday = (date || (typeof state !== 'undefined' ? state.currentDate : today)) === today;
+    const currentDate = date || (typeof state !== 'undefined' ? state.currentDate : today);
 
     const createOrUpdateMarker = (city, weather) => {
         if (!isWeatherVisible) return;

@@ -1409,3 +1409,6 @@ async function init() {
 
 document.addEventListener('DOMContentLoaded', init);
 
+// Expose functions for map.js
+window.showPrefectureChart = showPrefectureChart;
+

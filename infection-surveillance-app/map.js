@@ -261,3 +261,7 @@ window.getRegionIdByPrefecture = function (prefectureName) {
     }
     return null;
 };
+
+// Expose functions to global scope for main.js access
+window.renderJapanMap = renderJapanMap;
+window.getColorForValue = getColorForValue;
