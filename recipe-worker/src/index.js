@@ -182,14 +182,12 @@ export default {
 
 
 
-            // ジャンルが未選択の場合の処理
+            // ジャンル決定ロジック（地域指定があればそれをジャンルとして扱う）
             let cuisine = body.cuisine;
-            if (!cuisine || cuisine === 'null' || cuisine === 'undefined') {
-                if (preferredRegion) {
-                    cuisine = "指定なし（地域指定を優先）";
-                } else {
-                    cuisine = "家庭料理"; // デフォルト
-                }
+            if (preferredRegion) {
+                cuisine = preferredRegion; // 地域名でジャンルを強制上書き
+            } else if (!cuisine || cuisine === 'null' || cuisine === 'undefined') {
+                cuisine = "家庭料理"; // デフォルト
             }
 
             const regionInstruction = preferredRegion ? `
