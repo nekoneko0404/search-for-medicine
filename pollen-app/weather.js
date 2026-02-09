@@ -458,9 +458,8 @@ async function updateWeatherMarkers() {
             try {
                 let url;
                 // Use forecast API for today and future dates, archive API only for past dates
-                const currentDateObj = new Date(currentDate);
-                const todayObj = new Date(today);
-                const isPastDate = currentDateObj < todayObj;
+                // Use string comparison for date to avoid timezone issues
+                const isPastDate = currentDate < today;
 
                 if (isPastDate) {
                     url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lats}&longitude=${lngs}&daily=temperature_2m_max,weathercode,wind_speed_10m_max,wind_direction_10m_dominant&timezone=Asia%2FTokyo&start_date=${currentDate}&end_date=${currentDate}&windspeed_unit=ms`;
@@ -476,18 +475,29 @@ async function updateWeatherMarkers() {
 
                     results.forEach((result, index) => {
                         const city = batch[index];
-                        const weather = isPastDate ? {
-                            temperature_2m_max: result.daily.temperature_2m_max[0],
-                            weathercode: result.daily.weathercode[0],
-                            wind_speed_10m: result.daily.wind_speed_10m_max[0],
-                            wind_direction_10m: result.daily.wind_direction_10m_dominant[0]
-                        } : result.current;
-                        weather.lat = city.lat;
-                        weather.lng = city.lng;
-                        const cacheKey = getWeatherCacheKey(city.code, currentDate);
-                        weatherCache[cacheKey] = { data: weather, timestamp: Date.now() };
-                        if (visibleCityCodes.has(city.code)) {
-                            createOrUpdateMarker(city, weather);
+                        let weather = null;
+
+                        if (isPastDate) {
+                            if (result.daily && result.daily.temperature_2m_max) {
+                                weather = {
+                                    temperature_2m_max: result.daily.temperature_2m_max[0],
+                                    weathercode: result.daily.weathercode[0],
+                                    wind_speed_10m: result.daily.wind_speed_10m_max[0],
+                                    wind_direction_10m: result.daily.wind_direction_10m_dominant[0]
+                                };
+                            }
+                        } else {
+                            weather = result.current;
+                        }
+
+                        if (weather) {
+                            weather.lat = city.lat;
+                            weather.lng = city.lng;
+                            const cacheKey = getWeatherCacheKey(city.code, currentDate);
+                            weatherCache[cacheKey] = { data: weather, timestamp: Date.now() };
+                            if (visibleCityCodes.has(city.code)) {
+                                createOrUpdateMarker(city, weather);
+                            }
                         }
                     });
 
