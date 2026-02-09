@@ -194,8 +194,7 @@ export default {
 
             const regionInstruction = preferredRegion ? `
 【希望地域】${preferredRegion}
-重要: ユーザーは特定の地域・国「${preferredRegion}」の料理を強く希望しています。
-料理ジャンルよりも、この【希望地域】の指定を最優先してレシピを提案してください。
+重要: ${preferredRegion}料理のみを提案してください。他の地域の料理は不要です。
 ` : '';
 
             const userContent = `
