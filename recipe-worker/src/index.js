@@ -135,6 +135,12 @@ export default {
 3. 変化球: 意外な組み合わせや新しい味付けのレシピ。
 ※出力内には「定番」等のカテゴリ名は表示しないでください。
 ※料理ジャンルが「アジア料理」の場合、日本・中華・韓国料理は含めず、東南アジアや中央アジア等の料理を中心に提案してください。
+
+# 地域の多様性（重要）
+- 同じジャンル内でも、できるだけ異なる地域・国の料理を提案してください。
+- **西欧・北中欧料理**の場合: フランス、ドイツ、イギリス、オランダ、ベルギー、スイス、オーストリア、スウェーデン、ノルウェー、デンマーク、フィンランド、ロシア、ポーランド、チェコ、ハンガリーなど、多様な地域から選択してください。
+- **地中海・南欧料理**の場合: イタリア、スペイン、ギリシャ、ポルトガル、南フランス、クロアチア、トルコなど、多様な地域から選択してください。
+- マイナーな地域の料理も積極的に提案してください。
 `;
 
             const courseInstruction = `
@@ -155,13 +161,19 @@ export default {
 
             const modeSelectedInstruction = isCourse ? courseInstruction : defaultModeInstruction;
 
+            const preferredRegion = body.preferredRegion?.trim() || '';
+            const regionInstruction = preferredRegion ? `
+【希望地域】${preferredRegion}
+重要: 可能な限り「${preferredRegion}」の料理を提案してください。
+` : '';
+
             const userContent = `
 【体調・気になること】${symptomText}
 【使いたい食材】${ingredientText}
 【除外したい食材】${excludedText}
 【ジャンル】${body.cuisine}
 【希望調理時間】${body.time}
-${limitSupermarket}
+${regionInstruction}${limitSupermarket}
 
 ${modeSelectedInstruction}
 

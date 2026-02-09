@@ -207,9 +207,9 @@ function getFormData() {
     const excludedIngredients = Array.from(formData.getAll('excluded_ingredient')).filter(i => i.trim() !== '');
     const cuisine = formData.get('cuisine');
     const time = formData.get('time');
+    const preferredRegion = formData.get('preferredRegion')?.trim() || '';
 
-
-    return { symptoms, ingredients, excludedIngredients, cuisine, time };
+    return { symptoms, ingredients, excludedIngredients, cuisine, time, preferredRegion };
 }
 
 /**
@@ -237,7 +237,9 @@ ${promptCuisineInstruction ? promptCuisineInstruction + "\n" : "通常は3つの
 【除外したい食材】${excludedText}
 【ジャンル】${data.cuisine}
 【希望調理時間】${data.time}
- 
+${data.preferredRegion ? `【希望地域】${data.preferredRegion}
+重要: 可能な限り「${data.preferredRegion}」の料理を提案してください。
+` : ''} 
 # 制約事項
 - 治療や治癒などの医学的表現は避け、健康をサポートするという表現にとどめてください。
 - 具体的な材料と分量、手順を提示してください。
