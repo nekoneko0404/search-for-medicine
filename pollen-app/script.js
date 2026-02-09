@@ -35,6 +35,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function getJSTDateString(date = new Date()) {
     // Convert to JST (UTC+9)
     const jstDate = new Date(date.getTime() + (9 * 60 * 60 * 1000));
+    // SIMULATION FIX: If system time is 2026 or later, clamp to 2025
+    if (jstDate.getUTCFullYear() >= 2026) {
+        jstDate.setUTCFullYear(2025);
+    }
     return jstDate.toISOString().split('T')[0];
 }
 
@@ -821,17 +825,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    const today = new Date();
-    // SIMULATION FIX: If system time is 2026 or later (future), clamp to 2025 for API compatibility
-    if (today.getFullYear() >= 2026) {
-        today.setFullYear(2025);
-    }
-    const todayStr = today.toISOString().split('T')[0];
-    state.currentDate = todayStr;
+    state.currentDate = getJSTDateString();
 
     const datePicker = document.getElementById('date-picker');
-    datePicker.value = todayStr;
-    datePicker.max = todayStr; // Restrict future dates
+    datePicker.value = state.currentDate;
+    datePicker.max = state.currentDate; // Restrict future dates
 
     function updateModeUI() {
         const todayStr = getJSTDateString();
