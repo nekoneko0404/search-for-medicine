@@ -35,10 +35,6 @@ document.addEventListener('DOMContentLoaded', function () {
 function getJSTDateString(date = new Date()) {
     // Convert to JST (UTC+9)
     const jstDate = new Date(date.getTime() + (9 * 60 * 60 * 1000));
-    // SIMULATION FIX: If system time is 2026 or later, clamp to 2025
-    if (jstDate.getUTCFullYear() >= 2026) {
-        jstDate.setUTCFullYear(2025);
-    }
     return jstDate.toISOString().split('T')[0];
 }
 
