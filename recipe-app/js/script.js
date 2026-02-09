@@ -244,23 +244,40 @@ async function handleCopyPrompt() {
     const excludedText = data.excludedIngredients.length > 0 ? data.excludedIngredients.join("、") : "なし";
     const limitSupermarketText = "- 現地の本格的な食材を積極的に使用してください。ただし、日本で入手困難な食材には、必ず日本で購入可能な代替食材を提案してください（ingredientsにsubstituteを含める）。";
 
-    const promptCuisineInstruction = data.time === "コース"
-        ? `【コース提案】その国の料理でコースを提案してください。国を統一し、可能であれば同じ地域のレシピで構成してください。レシピ名の先頭には【前菜】等の構成名を付けてください。品数や構成はその国の慣習に合わせ、特定の味を繰り返さないようにしてください。【使いたい食材】はコース全体のどこか1品にあればよく、無理に全てに含めないでください。食前酒・食後は除外。`
-        : (data.cuisine === "アジア料理" ? "「アジア料理」には日本・中国・韓国料理を含めず、その他のアジア地域の料理を提案してください。" : "");
+    const regionSpecificInstruction = `
+# レシピ構成の指示
+ユーザーが指定した地域「${data.preferredRegion}」に基づき、以下の3つのバリエーションを必ず含めて合計3つのレシピを提案してください。
+1. 定番の味: その地域の家庭的な王道レシピ。
+2. おしゃれ: その地域のカフェやレストラン風の華やかなレシピ。
+3. 変化球: その地域の食材や味付けを使った、意外な組み合わせのレシピ。
+※出力内には「定番」等のカテゴリ名は表示しないでください。
+※**重要**: 他の地域の料理は**絶対に**混ぜないでください。「${data.preferredRegion}」の料理**のみ**で構成してください。
+`;
+
+    const defaultInstruction = (data.cuisine === "アジア料理" ? "「アジア料理」には日本・中国・韓国料理を含めず、その他のアジア地域の料理を提案してください。" : "通常は3つのレシピを提案してください（定番、おしゃれ、変化球）。");
+
+    let promptCuisineInstruction;
+    if (data.time === "コース") {
+        promptCuisineInstruction = `【コース提案】その国の料理でコースを提案してください。国を統一し、可能であれば同じ地域のレシピで構成してください。レシピ名の先頭には【前菜】等の構成名を付けてください。品数や構成はその国の慣習に合わせ、特定の味を繰り返さないようにしてください。【使いたい食材】はコース全体のどこか1品にあればよく、無理に全てに含めないでください。食前酒・食後は除外。`;
+    } else if (data.preferredRegion) {
+        promptCuisineInstruction = regionSpecificInstruction;
+    } else {
+        promptCuisineInstruction = defaultInstruction;
+    }
+
+    const displayCuisine = (data.cuisine && data.cuisine !== 'null') ? data.cuisine : (data.preferredRegion ? "指定なし（地域指定を優先）" : "指定なし");
 
     const prompt = `あなたは料理と健康の専門家です。
 ユーザーの体調や症状、手持ちの食材、希望する料理ジャンル、調理時間に合わせて、最適なレシピを提案してください。
-${promptCuisineInstruction ? promptCuisineInstruction + "\n" : "通常は3つのレシピを提案してください（定番、おしゃれ、変化球）。"}
+${promptCuisineInstruction}
 
 # ユーザー情報
 【体調・気になること】${symptomText}
 【使いたい食材】${ingredientText}
 【除外したい食材】${excludedText}
-【ジャンル】${data.cuisine}
+【ジャンル】${displayCuisine}
 【希望調理時間】${data.time}
-${data.preferredRegion ? `【希望地域】${data.preferredRegion}
-重要: 可能な限り「${data.preferredRegion}」の料理を提案してください。
-` : ''} 
+ 
 # 制約事項
 - 治療や治癒などの医学的表現は避け、健康をサポートするという表現にとどめてください。
 - 具体的な材料と分量、手順を提示してください。
