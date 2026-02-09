@@ -10,31 +10,35 @@ export default defineConfig({
         viteStaticCopy({
             targets: [
                 {
-                    src: 'pollen-app/*.{html,js,css,json,png,mp3,csv}',
+                    src: 'images/*',
+                    dest: 'images'
+                },
+                {
+                    src: 'pollen-app/*.{json,mp3,csv,png}',
                     dest: 'pollen-app'
                 },
                 {
-                    src: 'recipe-app/*.{html,js,css,json,png}',
+                    src: 'recipe-app/*.{json,png}',
                     dest: 'recipe-app'
                 },
                 {
-                    src: 'anonymous-bbs/*.{html,js,css,json,png}',
+                    src: 'anonymous-bbs/*.{json,png}',
                     dest: 'anonymous-bbs'
                 },
                 {
-                    src: 'infection-surveillance-app/*.{html,js,css,json,png}',
+                    src: 'infection-surveillance-app/*.{json,png}',
                     dest: 'infection-surveillance-app'
                 },
                 {
-                    src: 'supply-status/*.{html,js,css,json,png}',
+                    src: 'supply-status/*.{json,png}',
                     dest: 'supply-status'
                 },
                 {
-                    src: 'Okusuri_pakkun/*.{html,js,css,json,png}',
-                    dest: 'Okusuri_pakkun'
+                    src: 'Okusuri_pakkun/images/*',
+                    dest: 'Okusuri_pakkun/images'
                 },
                 {
-                    src: 'drug-classification/*.{html,js,css,json,png}',
+                    src: 'drug-classification/*.{json,png}',
                     dest: 'drug-classification'
                 }
             ]
@@ -49,6 +53,13 @@ export default defineConfig({
                 update: resolve(__dirname, 'update/index.html'),
                 debug: resolve(__dirname, 'update/debug.html'),
                 pakkun_guide: resolve(__dirname, 'Okusuri_pakkun/usage_guide.html'),
+                pakkun_app: resolve(__dirname, 'Okusuri_pakkun/index.html'),
+                supply_status: resolve(__dirname, 'supply-status/index.html'),
+                anonymous_bbs: resolve(__dirname, 'anonymous-bbs/index.html'),
+                pollen_app: resolve(__dirname, 'pollen-app/index.html'),
+                recipe_app: resolve(__dirname, 'recipe-app/index.html'),
+                infection_surveillance: resolve(__dirname, 'infection-surveillance-app/index.html'),
+                drug_classification: resolve(__dirname, 'drug-classification/index.html'),
             },
         },
     },
