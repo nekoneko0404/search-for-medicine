@@ -223,8 +223,8 @@ async function handleCopyPrompt() {
     const excludedText = data.excludedIngredients.length > 0 ? data.excludedIngredients.join("、") : "なし";
     const limitSupermarketText = "- 現地の本格的な食材を積極的に使用してください。ただし、日本で入手困難な食材には、必ず日本で購入可能な代替食材を提案してください（ingredientsにsubstituteを含める）。";
 
-    const promptCuisineInstruction = data.time === "コース" 
-        ? `【コース提案】その国の料理でフルコースのレシピを1つ提案してください。レシピの数は問いませんが、食前酒や食後の飲みものは含めないでください。`
+    const promptCuisineInstruction = data.time === "コース"
+        ? `【コース提案】その国の料理でフルコースのレシピを1つ提案してください。必ず全てのレシピの国を統一し、可能であれば国内の同じ地域のレシピで構成してください。指定された【使いたい食材】はコース内の少なくとも1つのレシピに含まれていればよく、分散して使用しても構いません。【除外したい食材】は全レシピで絶対に使用しないでください。コース全体のバランス、味の構成、彩りを考慮して最適化してください。食前酒や食後の飲みものは含めないでください。`
         : "";
 
     const prompt = `あなたは管理栄養士かつ一流のシェフです。
