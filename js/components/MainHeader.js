@@ -8,11 +8,15 @@ export class MainHeader extends HTMLElement {
 
     connectedCallback() {
         const baseDir = this.getAttribute('base-dir') || './';
+        this.style.display = 'block'; // Ensure the custom element itself behaves like a block
         const activePage = this.getAttribute('active-page') || '';
         const extraContent = this.innerHTML; // Capture any existing HTML inside the tag
 
         this.innerHTML = `
-        <header id="mainHeader" class="bg-white border-b border-gray-200 sticky top-0 z-40">
+        <header id="mainHeader" class="bg-white border-b border-gray-200 sticky top-0 z-40 block">
+            <style>
+                main-header { display: block; }
+            </style>
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <a href="${baseDir}index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">

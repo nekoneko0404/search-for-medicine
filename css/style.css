@@ -114,10 +114,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 30;
-    height: 4rem;
-    /* Explicit height for h-16 */
-    overflow: hidden;
-    /* Ensure content doesn't overflow during transition */
+    /* Remove fixed height and overflow that cut off content */
     transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
         opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
         visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -126,39 +123,24 @@ body {
 /* Footer behavior */
 #mainFooter {
     transition: height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    height: auto;
-    /* Default height */
-    overflow: hidden;
 }
 
 /* Header and Footer Hiding */
 body.search-mode #mainHeader,
 body.search-mode #mainFooter {
     height: 0 !important;
+    max-height: 0 !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
-    margin-top: 0 !important;
-    /* Ensure no residual margin */
-    margin-bottom: 0 !important;
-    /* Ensure no residual margin */
-    padding-top: 0 !important;
-    padding-bottom: 0 !important;
+    overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* Main content offset */
+/* Main content offset is handled by sticky position in flow */
 main {
     transition: margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-body:not(.search-mode) main {
-    margin-top: 1.75rem;
-    /* Default offset for header height when visible */
-}
-
-body.search-mode main {
-    margin-top: 0;
-    /* No offset when header is hidden */
 }
 
 
