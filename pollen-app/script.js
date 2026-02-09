@@ -821,7 +821,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    state.currentDate = getJSTDateString();
+    const todayStr = getJSTDateString();
+    state.currentDate = todayStr;
 
     const datePicker = document.getElementById('date-picker');
     datePicker.value = state.currentDate;
