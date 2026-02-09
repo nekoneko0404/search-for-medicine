@@ -1273,7 +1273,12 @@ const NotificationManager = {
         const enableSound = soundCheckbox.checked;
         const enableVoice = voiceCheckbox.checked;
 
-        if (!cityCode) return;
+        if (!cityCode) {
+            console.error('City code missing');
+            return;
+        }
+
+        console.log('Saving settings for city:', cityName, 'code:', cityCode);
 
         // Request permission only if supported and not already granted
         if (typeof Notification !== 'undefined') {
@@ -1302,15 +1307,27 @@ const NotificationManager = {
             lastNotified: 0
         };
 
-        localStorage.setItem(this.settingsKey, JSON.stringify(settings));
+        try {
+            localStorage.setItem(this.settingsKey, JSON.stringify(settings));
+            console.log('Settings saved to localStorage');
+        } catch (e) {
+            console.error('Error saving settings to localStorage:', e);
+            alert('設定の保存中にエラーが発生しました。ブラウザのストレージ容量を確認してください。');
+            return;
+        }
 
         // Subscribe to Web Push
-        const subscribed = await this.subscribeUser(settings);
-        if (subscribed) {
-            this.showToast(`通知設定を保存しました\n(アプリを閉じても通知が届きます)`);
-        } else {
-            this.showToast(`設定は保存されましたが、\nバックグラウンド通知の登録に失敗しました`, 'warning', 10000);
-            alert('【注意】\n設定は保存されましたが、プッシュ通知の登録に失敗しました。\n・アプリを開いている間のみ通知されます。\n・ブラウザの通知設定やプライベートモードでないか確認してください。');
+        try {
+            const subscribed = await this.subscribeUser(settings);
+            if (subscribed) {
+                this.showToast(`通知設定を保存しました\n(アプリを閉じても通知が届きます)`);
+            } else {
+                this.showToast(`設定は保存されましたが、\nバックグラウンド通知の登録に失敗しました`, 'warning', 10000);
+                alert('【注意】\n設定は保存されましたが、プッシュ通知の登録に失敗しました。\n・アプリを開いている間のみ通知されます。\n・ブラウザの通知設定やプライベートモードでないか確認してください。');
+            }
+        } catch (e) {
+            console.error('Error during push subscription:', e);
+            this.showToast('プッシュ通知の登録中に技術的なエラーが発生しました', 'danger', 10000);
         }
 
         document.getElementById('notification-modal').classList.remove('show');
@@ -1331,13 +1348,17 @@ const NotificationManager = {
 
     async clearSettings() {
         if (confirm('通知設定を解除しますか？')) {
-            await this.unsubscribeUser(); // Unsubscribe first
-
-            localStorage.removeItem(this.settingsKey);
-            document.getElementById('notification-modal').classList.remove('show');
-            this.showToast('通知設定を解除しました');
-            this.updateRegisteredLocationUI();
-            this.stopMonitoring();
+            try {
+                await this.unsubscribeUser(); // Unsubscribe first
+                localStorage.removeItem(this.settingsKey);
+                document.getElementById('notification-modal').classList.remove('show');
+                this.showToast('通知設定を解除しました');
+                this.updateRegisteredLocationUI();
+                this.stopMonitoring();
+            } catch (e) {
+                console.error('Error clearing settings:', e);
+                alert('設定の解除中にエラーが発生しました。');
+            }
         }
     },
 
@@ -1487,7 +1508,7 @@ const NotificationManager = {
                 // Speak the message
                 this.speakMessage(message);
 
-                // Also play the subtle chime
+                // Also play the subtle chime (notification.mp3)
                 this.playVoiceNotification();
             }, 800);
         }
