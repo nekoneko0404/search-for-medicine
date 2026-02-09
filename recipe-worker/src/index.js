@@ -162,16 +162,28 @@ export default {
             const modeSelectedInstruction = isCourse ? courseInstruction : defaultModeInstruction;
 
             const preferredRegion = body.preferredRegion?.trim() || '';
+
+            // ジャンルが未選択の場合の処理
+            let cuisine = body.cuisine;
+            if (!cuisine || cuisine === 'null' || cuisine === 'undefined') {
+                if (preferredRegion) {
+                    cuisine = "指定なし（地域指定を優先）";
+                } else {
+                    cuisine = "家庭料理"; // デフォルト
+                }
+            }
+
             const regionInstruction = preferredRegion ? `
 【希望地域】${preferredRegion}
-重要: 可能な限り「${preferredRegion}」の料理を提案してください。
+重要: ユーザーは特定の地域・国「${preferredRegion}」の料理を強く希望しています。
+料理ジャンルよりも、この【希望地域】の指定を最優先してレシピを提案してください。
 ` : '';
 
             const userContent = `
 【体調・気になること】${symptomText}
 【使いたい食材】${ingredientText}
 【除外したい食材】${excludedText}
-【ジャンル】${body.cuisine}
+【ジャンル】${cuisine}
 【希望調理時間】${body.time}
 ${regionInstruction}${limitSupermarket}
 

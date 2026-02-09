@@ -186,6 +186,27 @@ function setupEventListeners() {
     if (copyPromptBtn) {
         copyPromptBtn.addEventListener('click', handleCopyPrompt);
     }
+
+    // Region Input: Clear cuisine selection when typing
+    const preferredRegionInput = document.getElementById('preferredRegion');
+    const cuisineRadios = document.getElementsByName('cuisine');
+
+    if (preferredRegionInput) {
+        preferredRegionInput.addEventListener('input', (e) => {
+            if (e.target.value.trim() !== '') {
+                // Clear all cuisine radios
+                Array.from(cuisineRadios).forEach(radio => {
+                    radio.checked = false;
+                });
+            }
+        });
+    }
+
+    // Cuisine Radio: Clear region input when selecting a cuisine?
+    // User didn't ask for this, but it makes sense UI-wise.
+    // However, user said "Region input prioritized", so maybe mixed use is okay?
+    // "Genre selection orange color erase" was the specific request upon typing.
+    // Let's stick to just clearing radios on input for now.
 }
 
 
