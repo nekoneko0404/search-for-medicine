@@ -41,14 +41,22 @@ CSSは必ず HTML の `<head>` 内で `<link>` タグを使用して読み込ん
 その場合は、サブアプリ側の CSS で `!important` を使用して強制的に上書きしてください。
 
 ```css
-/* anonymous-bbs/style.css の例 */
-body {
     background: var(--bg-color) !important;
     background-image: none !important;
 }
 ```
 
+### 5. Content Security Policy (CSP) の設定
+Tailwind Play CDN や外部フォントを使用する場合、`index.html` の `meta` タグで CSP を適切に設定する必要があります。
+特に Tailwind Play CDN は実行時にスタイルを生成するため、`'unsafe-eval'` が必要になることがあります（開発環境やデバッグ時）。
+
+```html
+<meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self' 'unsafe-eval' https://cdn.tailwindcss.com ...;">
+```
+
 ## 修正後のチェックリスト
 - [ ] `script.js` 等から CSS の `import` 文が削除されているか。
-- [ ] `index.html` に必要な Tailwind CDN または `<link>` タグが含まれているか。
+- [ ] `index.html` に確実に `<link rel="stylesheet" href="...">` が存在するか（削除漏れ・誤削除がないか）。
+- [ ] `index.html` に必要な Tailwind CDN が含まれているか。
 - [ ] Google Fonts が正しく読み込まれているか（`display=swap` 推奨）。
