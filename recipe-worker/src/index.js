@@ -159,7 +159,26 @@ export default {
 - recipes配列には、提供順序に従って格納してください。
 `;
 
-            const modeSelectedInstruction = isCourse ? courseInstruction : defaultModeInstruction;
+            const preferredRegion = body.preferredRegion?.trim() || '';
+
+            const regionSpecificModeInstruction = `
+# レシピ構成の指示
+ユーザーが指定した地域「${preferredRegion}」に基づき、以下の3つのバリエーションを必ず含めて合計3つのレシピを提案してください。
+1. 定番の味: その地域の家庭的な王道レシピ。
+2. おしゃれ: その地域のカフェやレストラン風の華やかなレシピ。
+3. 変化球: その地域の食材や味付けを使った、意外な組み合わせのレシピ。
+※出力内には「定番」等のカテゴリ名は表示しないでください。
+※**重要**: 他の地域の料理は混ぜないでください。可能な限り「${preferredRegion}」の料理のみで構成してください。
+`;
+
+            let modeSelectedInstruction;
+            if (isCourse) {
+                modeSelectedInstruction = courseInstruction;
+            } else if (preferredRegion) {
+                modeSelectedInstruction = regionSpecificModeInstruction;
+            } else {
+                modeSelectedInstruction = defaultModeInstruction;
+            }
 
             const preferredRegion = body.preferredRegion?.trim() || '';
 
