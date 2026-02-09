@@ -51,7 +51,7 @@ const WORKER_URL = 'https://pollen-worker.neko-neko-0404.workers.dev';
 const state = {
     cache: {}, // { key: { data: [...], timestamp: Date } }
     currentDate: '', // YYYY-MM-DD
-    currentMode: 'hourly' // 'hourly' or 'daily'
+    currentMode: 'hourly' // Default mode: 'hourly' or 'daily'
 };
 
 let currentOpenCity = null; // Track the city whose popup is currently open
@@ -971,6 +971,19 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {
             console.error('Failed to load map state:', e);
         }
+
+        // Display Mode Toggle Logic
+        const modeRadios = document.querySelectorAll('input[name="display-mode"]');
+        modeRadios.forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    state.currentMode = e.target.value;
+                    // Clear fetched set to force re-render/re-calc of markers
+                    fetchedCities.clear();
+                    updateVisibleMarkers().catch(console.error);
+                }
+            });
+        });
 
         map = L.map('map', {
             zoomControl: false,
