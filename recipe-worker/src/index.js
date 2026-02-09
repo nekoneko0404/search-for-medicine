@@ -172,7 +172,26 @@ ${modeSelectedInstruction}
             let resultJson;
 
             if (provider === 'gemini') {
-                resultJson = await callGemini(apiKey, userContent);
+                const geminiKeys = getGeminiApiKeys(env, apiKey); // Use user apiKey or system keys
+                let lastError;
+
+                for (let i = 0; i < geminiKeys.length; i++) {
+                    try {
+                        console.log(`Attempting with Gemini Key ${i + 1}/${geminiKeys.length}`);
+                        resultJson = await callGemini(geminiKeys[i], userContent);
+                        lastError = null;
+                        break; // Success!
+                    } catch (e) {
+                        lastError = e;
+                        if (e.message.includes('429') && i < geminiKeys.length - 1) {
+                            console.warn(`Key ${i + 1} hit rate limit. Switching to next key...`);
+                            continue; // Try next key
+                        }
+                        throw e; // Rethrow if not 429 or no more keys
+                    }
+                }
+                if (lastError) throw lastError;
+
             } else {
                 resultJson = await callOpenAI(apiKey, userContent);
             }
@@ -195,9 +214,31 @@ ${modeSelectedInstruction}
                 status: 500,
                 headers: { "Content-Type": "application/json", ...corsHeaders },
             });
+        },
+    };
+
+    /**
+     * 複数のGemini APIキーを取得するヘルパー関数
+     */
+    function getGeminiApiKeys(env, primaryKey) {
+    const keys = [];
+    if (primaryKey) keys.push(primaryKey);
+
+    // GEMINI_API_KEY, GEMINI_API_KEY_1, GEMINI_API_KEY_2... と連番で探し出す
+    if (env.GEMINI_API_KEY && !keys.includes(env.GEMINI_API_KEY)) {
+        keys.push(env.GEMINI_API_KEY);
+    }
+
+    for (let i = 1; i <= 10; i++) {
+        const keyName = `GEMINI_API_KEY_${i}`;
+        if (env[keyName]) {
+            keys.push(env[keyName]);
+        } else {
+            break; // 見つからなくなったら終了
         }
-    },
-};
+    }
+    return keys;
+}
 
 async function callOpenAI(apiKey, userContent) {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
