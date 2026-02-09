@@ -12215,3 +12215,4 @@ const CITIES = [
         "level": 3
     }
 ];
+window.CITIES = CITIES;
