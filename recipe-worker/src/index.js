@@ -131,7 +131,10 @@ export default {
             const symptomText = body.symptoms && body.symptoms.length > 0 ? body.symptoms.join("、") : "特になし";
             const ingredientText = body.ingredients && body.ingredients.filter(i => i).length > 0 ? body.ingredients.filter(i => i).join("、") : "おまかせ";
             const excludedText = body.excludedIngredients && body.excludedIngredients.filter(i => i).length > 0 ? body.excludedIngredients.filter(i => i).join("、") : "なし";
-            const limitSupermarket = "【食材の制約】現地の本格的な食材を積極的に使用してください。ただし、日本で入手困難な食材には、必ず日本で購入可能な代替食材を提案してください（ingredientsにsubstituteを含める）。";
+            const isCourse = body.time === 'コース';
+            const courseInstruction = isCourse
+                ? "\n# 重要: コース提案の指示\n- 調理時間に『コース』が選択されているため、その国の料理でフルコース（前菜、スープ、メイン、デザート等）のレシピを提案してください。\n- レシピの数は問いませんが、1つのまとまったコースとして構成してください。\n- **食前酒や食後の飲みものは含めないでください。**\n- 前述の『定番・おしゃれ・変化球』のバリエーション制約は無視し、コース全体のバランスを優先してください。"
+                : "";
 
             const userContent = `
 【体調・気になること】${symptomText}
@@ -140,9 +143,11 @@ export default {
 【ジャンル】${body.cuisine}
 【希望調理時間】${body.time}
 ${limitSupermarket}
+${courseInstruction}
 
 # 追加指示
 - 「estimated_cost」には、調味料（塩、砂糖、醤油、油、スパイス類など家に常備されているもの）を除いた、このレシピ（2人分）の材料費の概算（日本円）を算出・記載してください（例: "約800円"）。
+- **コース選択時は、recipes配列にコースの構成順（前菜、メイン等）にレシピを格納してください。**
 `;
 
             let resultJson;

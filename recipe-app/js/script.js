@@ -223,8 +223,13 @@ async function handleCopyPrompt() {
     const excludedText = data.excludedIngredients.length > 0 ? data.excludedIngredients.join("、") : "なし";
     const limitSupermarketText = "- 現地の本格的な食材を積極的に使用してください。ただし、日本で入手困難な食材には、必ず日本で購入可能な代替食材を提案してください（ingredientsにsubstituteを含める）。";
 
+    const promptCuisineInstruction = data.time === "コース" 
+        ? `【コース提案】その国の料理でフルコースのレシピを1つ提案してください。レシピの数は問いませんが、食前酒や食後の飲みものは含めないでください。`
+        : "";
+
     const prompt = `あなたは管理栄養士かつ一流のシェフです。
-ユーザーの体調や症状、手持ちの食材、希望する料理ジャンル、調理時間に合わせて、最適なレシピを3つ提案してください。
+ユーザーの体調や症状、手持ちの食材、希望する料理ジャンル、調理時間に合わせて、最適なレシピを提案してください。
+${promptCuisineInstruction ? promptCuisineInstruction + "\n" : "通常は3つのレシピを提案してください（定番、おしゃれ、変化球）。"}
 
 # ユーザー情報
 【体調・気になること】${symptomText}
@@ -232,7 +237,7 @@ async function handleCopyPrompt() {
 【除外したい食材】${excludedText}
 【ジャンル】${data.cuisine}
 【希望調理時間】${data.time}
-
+ 
 # 制約事項
 - 治療や治癒などの医学的表現は避け、健康をサポートするという表現にとどめてください。
 - 具体的な材料と分量、手順を提示してください。
@@ -240,6 +245,8 @@ async function handleCopyPrompt() {
 - 材料費の概算（調味料除く）を「estimated_cost」として記載してください。
 - 明るく励ますようなトーンで回答してください。
 ${limitSupermarketText}
+- **コース選択時は、必ずフルコース（前菜、メイン、デザート等）を構成する一連のレシピを出力してください。**
+- **食前酒や食後の飲みものは含めないでください。**
 
 # データ形式の定義
 - **cuisine_region**: 料理のルーツとなる地域や国を記載してください。
