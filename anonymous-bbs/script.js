@@ -123,7 +123,11 @@ document.addEventListener('DOMContentLoaded', () => {
             allPosts = await res.json();
             renderPosts();
         } catch (err) {
-            postsContainer.innerHTML = `<p class="error">読み込みエラー: ${err.message}</p>`;
+            const errorP = document.createElement('p');
+            errorP.className = 'error';
+            errorP.textContent = `読み込みエラー: ${err.message}`;
+            postsContainer.innerHTML = '';
+            postsContainer.appendChild(errorP);
         }
     }
 

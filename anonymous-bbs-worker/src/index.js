@@ -66,6 +66,12 @@ async function handleCreatePost(request, env, ctx, corsHeaders) {
         });
     }
 
+    if (content.length > 1000) {
+        return new Response(JSON.stringify({ error: "Content too long (Max 1000 chars)" }), {
+            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+        });
+    }
+
     const isAdmin = env.ADMIN_KEY && adminKeyInput && (adminKeyInput.trim() === env.ADMIN_KEY.trim());
 
     if (!isAdmin) {
