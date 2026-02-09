@@ -514,10 +514,7 @@ function restoreFormState() {
 }
 
 
-    } catch (e) {
-    console.error("Failed to restore form state:", e);
-}
-}
+
 
 /**
  * Setup Form Persistence Event Listeners
