@@ -35,50 +35,23 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+    <script type="module" src="../js/components/MainHeader.js"></script>
 </head>
 
-<body>
-    <header class="main-header">
-        <div class="container header-container">
-            <div class="header-left" style="display: flex; align-items: center; gap: 12px;">
-                <a href="../index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity"
-                    style="text-decoration: none; display: flex; align-items: center; gap: 8px;">
-                    <img src="../images/KusuriCompass.png" alt="Kusuri Compass Icon"
-                        style="height: 36px; width: 36px; object-fit: contain;">
-                    <div style="display: flex; flex-direction: column;">
-                        <span style="font-size: 16px; font-weight: 700; color: #312e81; line-height: 1.1;">Kusuri
-                            Compass</span>
-                        <span
-                            style="font-size: 9px; font-weight: 600; color: #4f46e5; line-height: 1.1;">薬剤師業務支援ツール</span>
-                    </div>
-                </a>
-                <div style="width: 1px; height: 24px; background-color: #e2e8f0; margin: 0 4px;"></div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div class="logo-dot"></div>
-                    <h1>Infection Surveillance</h1>
-                </div>
-            </div>
-            <div class="header-center">
-                <span id="update-date" class="last-updated">読み込み中...</span>
-            </div>
-            <nav class="header-right">
-                <a href="../index.html" class="nav-button" style="text-decoration: none; display: inline-block;">
-                    メニュー
-                </a>
-                <button id="other-diseases-btn" class="nav-button">
-                    その他の感染症
-                </button>
-                <button id="reload-btn" class="reload-icon-btn" title="データを更新">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15">
-                        </path>
-                    </svg>
-                </button>
-            </nav>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Common Header -->
+    <main-header base-dir="../" active-page="infection">
+        <div class="flex items-center gap-4 ml-4">
+            <span id="update-date" class="text-xs text-gray-500 font-medium">読み込み中...</span>
+            <button id="other-diseases-btn"
+                class="text-xs font-bold px-3 py-1.5 border border-gray-300 rounded hover:bg-gray-50 transition-colors">
+                その他の感染症
+            </button>
+            <button id="reload-btn" class="text-gray-400 hover:text-indigo-600 transition-colors" title="データを更新">
+                <i class="fas fa-sync-alt"></i>
+            </button>
         </div>
-    </header>
+    </main-header>
 
     <main class="container">
         <!-- 感染症選択カードコンテナを追加 -->
