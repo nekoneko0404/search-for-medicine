@@ -52,9 +52,9 @@ export class MainHeader extends HTMLElement {
 
         return links.map(link => {
             const isActive = activePage === link.id;
-            const isExternal = link.path.startsWith('http');
-            const target = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
-            const path = isExternal || link.path.startsWith('#') ? link.path : baseDir + link.path;
+            // Force all top menu links to open in new tab as per user request
+            const target = 'target="_blank" rel="noopener noreferrer"';
+            const path = link.path.startsWith('http') || link.path.startsWith('#') ? link.path : baseDir + link.path;
 
             // simple active style inline or rely on CSS
             const style = isActive ? 'style="border-bottom: 2px solid black;"' : '';
