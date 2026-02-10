@@ -51,15 +51,20 @@
 <body class="recipe-app bg-orange-50 font-['M_PLUS_Rounded_1c'] text-gray-800">
 
     <!-- Header -->
-    <!-- Common Header -->
-    <main-header base-dir="../" active-page="recipe"></main-header>
+    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+            <a href="../index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <img src="../images/KusuriCompass.png" alt="Kusuri Compass" class="h-8 w-8 object-contain">
+                <span class="font-bold text-gray-600">Kusuri Compassに戻る</span>
+            </a>
+            <h1 class="text-xl font-bold text-orange-600 flex items-center gap-2">
+                <i class="fas fa-utensils"></i>
+                健康レシピ提案
+            </h1>
+        </div>
+    </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
-        <!-- Page Title -->
-        <div class="mb-6 flex items-center gap-3">
-            <i class="fas fa-utensils text-3xl text-orange-600"></i>
-            <h1 class="text-2xl font-bold text-gray-800">健康レシピ提案</h1>
-        </div>
 
         <!-- Hero Section -->
         <div class="text-center mb-10 fade-in">
@@ -481,9 +486,11 @@
 
     </main>
 
-    <main-footer base-dir="../"></main-footer>
-    <script type="module" src="../js/components/MainHeader.js"></script>
-    <script type="module" src="../js/components/MainFooter.js"></script>
+    <footer class="text-center py-6 text-gray-500 text-sm">
+        <p>&copy; 2025 Kusuri Compass - Recipe Suggestion App</p>
+        <p class="text-xs mt-1">※提案されたレシピは参考情報です。アレルギーや医師の指示に従ってください。</p>
+    </footer>
+
     <script src="js/script.js" type="module"></script>
 </body>
 

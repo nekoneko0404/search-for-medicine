@@ -1,0 +1,160 @@
+/* V1: Modern Dashboard Style */
+:root {
+    --primary: #2563eb;
+    --secondary: #64748b;
+    --accent-med: #0d9488;
+    --accent-clinical: #7c3aed;
+    --accent-public: #0284c7;
+    --accent-community: #ea580c;
+    --bg-slate: #f8fafc;
+}
+
+body {
+    background-color: var(--bg-slate);
+    color: #1e293b;
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    margin-top: 3rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+.section-header i {
+    font-size: 1.5rem;
+}
+
+.section-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* Category Specific Colors */
+.cat-med {
+    color: var(--accent-med);
+    border-color: var(--accent-med);
+}
+
+.cat-clinical {
+    color: var(--accent-clinical);
+    border-color: var(--accent-clinical);
+}
+
+.cat-public {
+    color: var(--accent-public);
+    border-color: var(--accent-public);
+}
+
+.cat-community {
+    color: var(--accent-community);
+    border-color: var(--accent-community);
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.v1-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #e2e8f0;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    overflow: hidden;
+}
+
+.v1-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+    border-color: currentColor;
+}
+
+.v1-card i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    transition: transform 0.3s ease;
+}
+
+.v1-card:hover i {
+    transform: scale(1.1);
+}
+
+.v1-card h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.v1-card p {
+    font-size: 0.875rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+.badge-new {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #fee2e2;
+    color: #ef4444;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    border: 1px solid #fecaca;
+}
+
+.update-time {
+    margin-top: auto;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    text-align: right;
+}
+
+/* Category Hero Banner for V1 */
+.category-hero {
+    height: 200px;
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 2rem;
+    background-size: cover;
+    background-position: center;
+}
+
+.category-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.category-hero h3 {
+    position: relative;
+    z-index: 10;
+    color: white;
+    font-size: 2rem;
+    font-weight: 800;
+}

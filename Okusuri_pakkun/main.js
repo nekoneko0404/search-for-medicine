@@ -1,4 +1,4 @@
-import '../css/input.css';
+// import '../css/input.css';
 const APP_KEY = 'medicine_reward_app_v2';
 
 const state = {
@@ -490,7 +490,7 @@ function updateProgressInfo() {
 
 function updateCharacter() {
     const img = document.createElement('img');
-    img.src = '/images/doctor_bear.png';
+    img.src = 'images/doctor_bear.png';
     img.className = 'character-img';
     elements.characterArea.innerHTML = '';
     elements.characterArea.appendChild(img);

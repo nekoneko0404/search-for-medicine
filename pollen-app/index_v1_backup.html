@@ -35,24 +35,30 @@
 </head>
 
 <body>
-    <!-- Common Header -->
-    <main-header base-dir="../" active-page="pollen"></main-header>
-
-    <!-- Page Title Area -->
-    <div class="page-title-area"
-        style="background: white; padding: 20px 5%; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 15px;">
-        <div class="title-group" style="display: flex; align-items: center; gap: 15px;">
-            <i class="fas fa-wind icon-main" style="font-size: 2rem; color: #4f46e5;"></i>
-            <div>
-                <h1 style="font-size: 1.5rem; font-weight: 700; margin: 0; color: #111;">花粉飛散リアルタイム監視</h1>
-                <p class="subtitle" style="margin: 0; color: #666; font-size: 0.875rem;">全国の観測データをリアルタイムに可視化</p>
+    <!-- Header/Title -->
+    <div class="app-header">
+        <div
+            style="display: flex; justify-content: flex-start; align-items: center; width: 100%; flex-wrap: wrap; gap: 4px;">
+            <div class="flex items-center gap-3">
+                <a href="../index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity"
+                    style="text-decoration: none;">
+                    <img src="../images/KusuriCompass.png" alt="Kusuri Compass Icon"
+                        style="height: 50px; width: 50px; object-fit: contain;">
+                </a>
             </div>
-        </div>
-        <div class="header-qr-code" style="cursor: pointer;"
-            onclick="document.getElementById('qr-modal').classList.add('show')">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://is.gd/BuKzFs&ecc=L&margin=0"
-                alt="QR Code" style="height: 50px; width: 50px; border-radius: 4px; border: 1px solid #ddd;"
-                title="クリックして拡大">
+            <div class="title-group">
+                <i class="fas fa-wind icon-main"></i>
+                <div>
+                    <h1>花粉飛散リアルタイム監視</h1>
+                    <p class="subtitle">全国の観測データをリアルタイムに可視化</p>
+                </div>
+            </div>
+            <div class="header-qr-code" style="margin-left: auto; display: flex; align-items: center; cursor: pointer;"
+                onclick="document.getElementById('qr-modal').classList.add('show')">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://is.gd/BuKzFs&ecc=L&margin=0"
+                    alt="QR Code" style="height: 50px; width: 50px; border-radius: 4px; border: 1px solid #ddd;"
+                    title="クリックして拡大">
+            </div>
         </div>
     </div>
 
@@ -460,9 +466,6 @@
     <script type="module" src="cities.js"></script>
     <script type="module" src="weather.js"></script>
     <script type="module" src="analytics.js"></script>
-    <script type="module" src="../js/components/MainHeader.js"></script>
-    <script type="module" src="../js/components/MainFooter.js"></script>
-    <main-footer base-dir="../"></main-footer>
     <script type="module" src="script.js"></script>
 </body>
 

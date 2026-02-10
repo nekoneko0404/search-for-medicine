@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kusuri Compass - Minimal Glass (V3)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/v3.css">
+</head>
+
+<body>
+    <nav class="glass-nav py-4 px-8 flex justify-between items-center">
+        <div class="text-xl font-black text-slate-800">Kusuri Compass</div>
+        <div class="flex gap-6 text-sm font-semibold">
+            <a href="index.html" class="text-slate-500 hover:text-slate-800">Original</a>
+            <a href="index_v1_dashboard.html" class="text-slate-500 hover:text-slate-800">V1</a>
+            <a href="index_v2_visual.html" class="text-slate-500 hover:text-slate-800">V2</a>
+            <span class="text-indigo-600">V3: Minimal</span>
+        </div>
+    </nav>
+
+    <main class="glass-container">
+        <h1 class="glass-title">Wellness Portal</h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- 医薬品管理 -->
+            <a href="search.html" class="glass-card">
+                <span class="category-label">Logistics</span>
+                <i class="fas fa-pills"></i>
+                <h3>医薬品出荷検索</h3>
+                <p>正確な出荷情報にいつでもアクセス。業務のダウンタイムを最小限に抑えます。</p>
+            </a>
+
+            <a href="update/index.html" class="glass-card">
+                <span class="category-label">Logistics</span>
+                <i class="fas fa-edit"></i>
+                <h3>出荷状況更新</h3>
+                <p>リアルタイムな在庫変動を反映し、チーム全体で最新情報を共有します。</p>
+            </a>
+
+            <!-- 臨床支援 -->
+            <a href="https://drug-navigator.pages.dev/" class="glass-card">
+                <span class="category-label">AI Assist</span>
+                <i class="fas fa-microchip"></i>
+                <h3>代替薬ナビ</h3>
+                <p>Gemini AIが最適な代替薬を提案。欠品時の患者ケアを力強くサポートします。</p>
+            </a>
+
+            <a href="hiyari_app/index.html" class="glass-card">
+                <span class="category-label">AI Assist</span>
+                <i class="fas fa-shield-halved"></i>
+                <h3>ヒヤリハット検索</h3>
+                <p>膨大な事例からリスクを予見。安全な調剤環境の構築に貢献します。</p>
+            </a>
+
+            <!-- 公共・健康 -->
+            <a href="pollen-app/index.html" class="glass-card">
+                <span class="category-label">Public Health</span>
+                <i class="fas fa-leaf"></i>
+                <h3>花粉・感染症情報</h3>
+                <p>環境リスクを可視化し、患者様への的確なアドバイスを可能にします。</p>
+            </a>
+
+            <!-- コミュニティ -->
+            <a href="anonymous-bbs/index.html" class="glass-card">
+                <span class="category-label">Community</span>
+                <i class="fas fa-handshake-angle"></i>
+                <h3>助け合い掲示板</h3>
+                <p>専門家同士の知識共有。互いに支え合う新しい形のネットワークです。</p>
+            </a>
+        </div>
+
+        <div class="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <a href="https://okusuri-pakkun-app.pages.dev/" class="glass-card flex-row gap-6 text-left">
+                <i class="fas fa-face-smile text-4xl mb-0"></i>
+                <div class="flex-grow">
+                    <span class="category-label">Pediatric</span>
+                    <h3>おくすりぱっくん</h3>
+                    <p>お子様の服薬を楽しく、安全に。</p>
+                </div>
+            </a>
+            <a href="recipe-app/index.html" class="glass-card flex-row gap-6 text-left">
+                <i class="fas fa-utensils text-4xl mb-0"></i>
+                <div class="flex-grow">
+                    <span class="category-label">Nutrition</span>
+                    <h3>健康レシピ提案</h3>
+                    <p>食事からのアプローチで、より豊かな健康を。</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="text-center py-12 text-slate-400 text-sm">
+        &copy; 2025 Kusuri Compass. Clarity in Healthcare.
+    </footer>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

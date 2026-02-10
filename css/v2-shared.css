@@ -1,0 +1,248 @@
+/* Kusuri Compass V2 Shared Styles (Header, Footer, Typography) */
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #111111;
+    --accent-color: #000000;
+    --border-color: #e5e5e5;
+    --header-height: 80px;
+}
+
+body {
+    font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Header Styles */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5%;
+    height: var(--header-height);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #000;
+    color: #fff;
+    padding: 6rem 5% 2rem;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+    margin-bottom: 6rem;
+}
+
+.footer-brand {
+    grid-column: span 12;
+    margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+    .footer-brand {
+        grid-column: span 6;
+        margin-bottom: 0;
+    }
+}
+
+.footer-brand h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    margin-bottom: 1rem;
+}
+
+.footer-brand p {
+    color: #888;
+    max-width: 300px;
+    font-size: 0.875rem;
+}
+
+.footer-links {
+    grid-column: span 6;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .footer-links {
+        grid-column: span 6;
+    }
+}
+
+.footer-col h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.footer-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-col li {
+    margin-bottom: 0.75rem;
+}
+
+.footer-col a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.3s ease;
+}
+
+.footer-col a:hover {
+    color: #888;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    padding-top: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+/* Typography Utilities */
+.text-xs {
+    font-size: 0.75rem;
+}
+
+.text-sm {
+    font-size: 0.875rem;
+}
+
+.font-bold {
+    font-weight: 700;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.tracking-widest {
+    letter-spacing: 0.1em;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    :root {
+        --header-height: auto;
+    }
+
+    header {
+        flex-wrap: wrap;
+        padding: 1rem 5%;
+        height: auto;
+        position: relative;
+        /* Sticky might cover too much on mobile if tall */
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .nav-links {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 1rem;
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        overflow-x: auto;
+        /* Allow horizontal scroll if too many items, better than page scroll */
+        padding-bottom: 0.5rem;
+    }
+
+    .nav-links a {
+        font-size: 0.75rem;
+        white-space: nowrap;
+    }
+
+    footer {
+        padding: 3rem 5% 1rem;
+    }
+
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .footer-brand,
+    .footer-links {
+        grid-column: span 1;
+        text-align: center;
+    }
+
+    .footer-links {
+        text-align: left;
+    }
+
+    .footer-brand p {
+        margin: 0 auto;
+    }
+}

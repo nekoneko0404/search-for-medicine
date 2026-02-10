@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kusuri Compass - Playful Hub (V4)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/v4.css">
+</head>
+
+<body>
+    <header class="py-10 px-8 flex justify-between items-center bg-white/50 border-b border-gray-100">
+        <div class="text-3xl font-black text-indigo-500">Kusuri Compass</div>
+        <div class="flex gap-4">
+            <a href="index_v3_minimal.html"
+                class="bg-indigo-50 text-indigo-600 px-4 py-2 rounded-full font-bold hover:bg-indigo-600 hover:text-white transition">Prev:
+                V3</a>
+            <span class="bg-indigo-600 text-white px-4 py-2 rounded-full font-bold">V4: Playful</span>
+            <a href="#" class="bg-gray-50 text-gray-300 px-4 py-2 rounded-full font-bold cursor-not-allowed">Next:
+                V5</a>
+        </div>
+    </header>
+
+    <main class="playful-container">
+        <div class="floating-icons"></div>
+        <h1 class="title-bounce">Kusuri Hub</h1>
+
+        <div class="grid-playful">
+            <!-- Medicine -->
+            <a href="search.html" class="card-playful med">
+                <div class="icon-circle med-bg"><i class="fas fa-pills"></i></div>
+                <h3>医薬品検索</h3>
+                <p>どこに何があるか、すぐに見つかる！在庫管理をもっとスマートに。</p>
+            </a>
+
+            <a href="update/index.html" class="card-playful med">
+                <div class="icon-circle med-bg"><i class="fas fa-sync-alt"></i></div>
+                <h3>出荷更新</h3>
+                <p>みんなでお知らせ、みんなで共有。情報の鮮度をキープしよう。</p>
+            </a>
+
+            <!-- Clinical -->
+            <a href="https://drug-navigator.pages.dev/" class="card-playful ai">
+                <div class="icon-circle ai-bg"><i class="fas fa-robot"></i></div>
+                <h3>代替薬AI</h3>
+                <p>困った時の救世主。AIがベストな選択肢を教えてくれるよ。</p>
+            </a>
+
+            <a href="recipe-app/index.html" class="card-playful ai">
+                <div class="icon-circle ai-bg"><i class="fas fa-carrot"></i></div>
+                <h3>元気レシピ</h3>
+                <p>ごはんで体の中から元気に。おすすめレシピをチェック！</p>
+            </a>
+
+            <!-- Public -->
+            <a href="pollen-app/index.html" class="card-playful map">
+                <div class="icon-circle map-bg"><i class="fas fa-sun"></i></div>
+                <h3>お天気・健康</h3>
+                <p>花粉や流行りの風邪を知って、しっかり対策を立てよう。</p>
+            </a>
+
+            <!-- Community -->
+            <a href="anonymous-bbs/index.html" class="card-playful face">
+                <div class="icon-circle face-bg"><i class="fas fa-comments"></i></div>
+                <h3>みんなの広場</h3>
+                <p>ちょっとした相談、大きな発見。みんなで話せばきっと解決！</p>
+            </a>
+        </div>
+
+        <div class="mt-20 flex flex-col items-center gap-6">
+            <a href="https://okusuri-pakkun-app.pages.dev/"
+                class="w-full max-w-2xl bg-white p-8 rounded-[50px] flex items-center gap-8 shadow-xl hover:-translate-y-2 transition duration-500">
+                <div class="w-24 h-24 flex-shrink-0">
+                    <img src="images/menu/playful_icons.png" class="w-full h-full object-contain" alt="Pakkun">
+                </div>
+                <div>
+                    <h3 class="text-2xl font-black">おくすりぱっくん</h3>
+                    <p class="text-gray-500">お子様との服薬タイムをもっと楽しく、もっと笑顔に。</p>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <footer class="py-20 text-center text-gray-400 font-bold uppercase tracking-widest">
+        Good Medicine, Happy Life.
+    </footer>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

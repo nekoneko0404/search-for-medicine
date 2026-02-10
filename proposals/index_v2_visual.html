@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="css/v2.css">
+    <link rel="stylesheet" href="../css/v2.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 </head>
@@ -19,20 +19,21 @@
     <header>
         <div class="max-w-7xl mx-auto px-[5%] h-20 flex items-center justify-between">
             <div class="logo-container flex items-center gap-3">
-                <img src="images/KusuriCompass.png" alt="Kusuri Compass Icon">
-                <div class="flex flex-col">
-                    <h1 class="text-xl font-bold leading-tight">KUSURI COMPASS</h1>
-                    <span class="text-[10px] uppercase tracking-widest opacity-70">Precision Care Navigator</span>
+                <img src="../images/KusuriCompass.png" alt="Kusuri Compass Icon"
+                    class="h-10 w-10 object-contain rounded-lg">
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold text-indigo-900 tracking-tight">Kusuri Compass</h1>
+                    <p class="text-xs font-medium text-indigo-600">薬剤師業務支援ツール</p>
                 </div>
             </div>
             <nav class="hidden lg:flex items-center gap-6">
-                <a href="search.html"
+                <a href="../search.html"
                     class="text-[10px] font-bold uppercase tracking-widest hover:opacity-70 transition border-l border-gray-200 pl-6">出荷状況検索</a>
-                <a href="update/index.html"
+                <a href="../update/index.html"
                     class="text-[10px] font-bold uppercase tracking-widest hover:opacity-70 transition">出荷状況更新</a>
                 <a href="https://okusuri-pakkun-app.pages.dev/"
                     class="text-[10px] font-bold uppercase tracking-widest hover:opacity-70 transition">小児服薬支援</a>
-                <a href="pollen-app/index.html"
+                <a href="../pollen-app/index.html"
                     class="text-[10px] font-bold uppercase tracking-widest hover:opacity-70 transition">花粉監視</a>
             </nav>
         </div>
@@ -40,7 +41,7 @@
 
     <div class="magazine-container">
         <!-- Hero Section -->
-        <section class="hero-section" style="background-image: url('images/menu/top_hero.png');">
+        <section class="hero-section" style="background-image: url('../images/menu/top_hero.png');">
             <div class="hero-content">
                 <h1><span>Precision</span><span>Care</span><span>Navigator</span></h1>
                 <p>薬剤師の知性とテクノロジーの融合。<br>薬局業務を次のステージへ導く「Kusuri Compass」</p>
@@ -57,22 +58,22 @@
             <div class="grid-magazine">
                 <!-- Section 01: Medicine & Inventory -->
                 <div class="mag-card">
-                    <img src="images/menu/v2_logistics.png" alt="Medicine Management">
+                    <img src="../images/menu/v2_logistics.png" alt="Medicine Management">
                     <div class="mag-card-content flex flex-col h-full">
                         <h2>Section 01 / Logistics & Supply</h2>
                         <h3>医薬品・在庫管理の最適化</h3>
                         <p class="text-gray-600 mb-6 flex-grow">出荷状況のリアルタイム検索、在庫更新からAIによる代替薬の提案まで支援します。</p>
                         <div class="mag-card-links">
-                            <a href="search.html"><span class="flex items-center"><i
+                            <a href="../search.html"><span class="flex items-center"><i
                                         class="fas fa-search mr-2"></i>出荷状況検索</span></a>
-                            <a href="update/index.html">
+                            <a href="../update/index.html">
                                 <span class="flex items-center"><i class="fas fa-edit mr-2"></i>出荷状況更新</span>
                                 <span id="shipping-update-time"
                                     class="text-[9px] opacity-60 font-normal">Loading...</span>
                             </a>
                             <a href="https://drug-navigator.pages.dev/"><span class="flex items-center"><i
                                         class="fas fa-exchange-alt mr-2"></i>代替薬ナビ</span></a>
-                            <a href="supply-status/index.html"><span class="flex items-center"><i
+                            <a href="../supply-status/index.html"><span class="flex items-center"><i
                                         class="fas fa-truck-loading mr-2"></i>供給確保医薬品</span></a>
                         </div>
                     </div>
@@ -80,18 +81,18 @@
 
                 <!-- Section 02: Clinical Support -->
                 <div class="mag-card">
-                    <img src="images/menu/v2_professional.png" alt="Professional Excellence">
+                    <img src="../images/menu/v2_professional.png" alt="Professional Excellence">
                     <div class="mag-card-content flex flex-col h-full">
                         <h2>Section 02 / Professional Excellence</h2>
                         <h3>現場の課題を解決する知恵</h3>
                         <p class="flex-grow">困った時のナレッジ検索、リスクを防ぐヒヤリハット共有、仲間に頼れるBBS。現場で直面する課題解決への、確かな「ヒント」と「手がかり」を提示します。
                         </p>
                         <div class="mag-card-links mt-auto">
-                            <a href="https://okusuri-pakkun-app.pages.dev/"><span class="flex items-center"><i
+                            <a href="../okusuri-pakkun-app.pages.dev/"><span class="flex items-center"><i
                                         class="fas fa-capsules mr-2"></i>おくすりパックン</span></a>
-                            <a href="hiyari_app/index.html"><span class="flex items-center"><i
+                            <a href="../hiyari_hatto/index.html"><span class="flex items-center"><i
                                         class="fas fa-exclamation-triangle mr-2"></i>ヒヤリハット事例</span></a>
-                            <a href="anonymous-bbs/index.html"><span class="flex items-center"><i
+                            <a href="../bbs/index.html"><span class="flex items-center"><i
                                         class="fas fa-comments mr-2"></i>薬剤師BBS</span></a>
                         </div>
                     </div>
@@ -99,17 +100,15 @@
 
                 <!-- Section 03: Public Health -->
                 <div class="mag-card">
-                    <div class="mag-card-image">
-                        <img src="images/menu/public_health_header.png" alt="Pharmacist Knowledge">
-                    </div>
+                    <img src="../images/menu/public_health_header.png" alt="Public Health">
                     <div class="mag-card-content flex flex-col h-full">
                         <h2>Section 03 / Health Insights</h2>
                         <h3>公共・健康情報の可視化</h3>
                         <p class="text-gray-600 mb-6 flex-grow">花粉飛散予測や全国の感染症流行状況など、地域の健康を守るためのデータを提供します。</p>
                         <div class="mag-card-links">
-                            <a href="pollen-app/index.html"><span class="flex items-center"><i
+                            <a href="../pollen-app/index.html"><span class="flex items-center"><i
                                         class="fas fa-wind mr-2"></i>花粉リアルタイム監視</span></a>
-                            <a href="infection-surveillance-app/index.html">
+                            <a href="../infection-surveillance-app/index.html">
                                 <span class="flex items-center"><i
                                         class="fas fa-map-marked-alt mr-2"></i>感染症トレンド解析</span>
                                 <span id="infection-update-time"
@@ -122,16 +121,16 @@
                 <!-- Section 04: Patient Engagement -->
                 <div class="mag-card">
                     <div class="mag-card-image">
-                        <img src="images/menu/v2_patient.png" alt="Patient Engagement">
+                        <img src="../images/menu/v2_patient.png" alt="Patient Engagement">
                     </div>
                     <div class="mag-card-content flex flex-col h-full">
                         <h2>Section 04 / Patient Engagement</h2>
                         <h3>生活に寄り添う服薬・健康支援</h3>
                         <p class="flex-grow">毎日の食事（レシピ）から、お薬を飲む習慣（スタンプ）まで。患者さんの暮らしの中に、「楽しさ」と「安心」を届けます。</p>
                         <div class="mag-card-links mt-auto">
-                            <a href="Okusuri_pakkun/usage_guide.html"><span class="flex items-center"><i
+                            <a href="../Okusuri_pakkun/usage_guide.html"><span class="flex items-center"><i
                                         class="fas fa-stamp mr-2"></i>ぱっくんスタンプ</span></a>
-                            <a href="recipe-app/index.html"><span class="flex items-center"><i
+                            <a href="../recipe-app/index.html"><span class="flex items-center"><i
                                         class="fas fa-utensils mr-2"></i>健康レシピ提案</span></a>
                         </div>
                     </div>
@@ -219,7 +218,30 @@
         });
     </script>
 
-    <script type="module" src="js/index.js"></script>
+    <!-- NOTE: ES Modules are blocked by CORS when opening via file:// protocol. 
+         Use a local server (e.g. npx serve) for full functionality. -->
+    <script type="module" src="../js/index.js"></script>
+    <script>
+        // Custom loading for notification.md in proposals directory
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.getElementById('notification-body');
+
+            if (body) {
+                fetch('../notification.md')
+                    .then(r => r.text())
+                    .then(md => {
+                        if (window.marked && window.DOMPurify) {
+                            body.innerHTML = DOMPurify.sanitize(marked.parse(md));
+                        } else {
+                            body.innerText = md;
+                        }
+                    }).catch(e => {
+                        console.error('Failed to load notification.md', e);
+                        body.innerHTML = '<p class="text-xs text-red-500 text-center">読み込みに失敗しました。</p>';
+                    });
+            }
+        });
+    </script>
 </body>
 
 </html>

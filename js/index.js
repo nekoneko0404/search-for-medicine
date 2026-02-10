@@ -9,13 +9,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const notificationContent = document.getElementById('notification-content');
     const notificationBody = document.getElementById('notification-body');
 
-    if (notificationToggle && notificationContent && notificationBody) {
-        notificationToggle.addEventListener('click', () => {
-            const isExpanded = notificationToggle.getAttribute('aria-expanded') === 'true';
-            notificationToggle.setAttribute('aria-expanded', !isExpanded);
-            notificationContent.classList.toggle('open');
-            notificationToggle.querySelector('.icon').textContent = isExpanded ? '▼' : '▲';
-        });
+    if (notificationBody) {
+        if (notificationToggle && notificationContent) {
+            notificationToggle.addEventListener('click', () => {
+                const isOpen = notificationContent.classList.toggle('open');
+                notificationToggle.classList.toggle('open', isOpen);
+                notificationToggle.setAttribute('aria-expanded', isOpen);
+            });
+        }
 
         fetch('notification.md')
             .then(response => {
