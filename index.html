@@ -10,6 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800;900&family=Noto+Sans+JP:wght@400;700;900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="css/v2-shared.css">
     <link rel="stylesheet" href="css/v2.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
@@ -17,25 +18,19 @@
 
 <body>
     <header>
-        <div class="max-w-7xl mx-auto px-[5%] h-20 flex items-center justify-between">
-            <a href="index.html" class="logo">
-                <img src="images/KusuriCompass.png" alt="Kusuri Compass">
-                <div class="logo-text">
-                    <span class="logo-title">Kusuri Compass</span>
-                    <span class="logo-subtitle">薬剤師業務支援ツール</span>
-                </div>
-            </a>
-            <nav class="hidden lg:flex items-center gap-8">
-                <a href="search.html" target="_blank" rel="noopener noreferrer"
-                    class="text-[11px] font-bold tracking-wider hover:opacity-70 transition">検索</a>
-                <a href="update/index.html" target="_blank" rel="noopener noreferrer"
-                    class="text-[11px] font-bold tracking-wider hover:opacity-70 transition">更新</a>
-                <a href="https://okusuri-pakkun-app.pages.dev/" target="_blank" rel="noopener noreferrer"
-                    class="text-[11px] font-bold tracking-wider hover:opacity-70 transition">小児服薬支援</a>
-                <a href="pollen-app/index.html" target="_blank" rel="noopener noreferrer"
-                    class="text-[11px] font-bold tracking-wider hover:opacity-70 transition">花粉監視</a>
-            </nav>
-        </div>
+        <a href="index.html" class="logo">
+            <img src="images/KusuriCompass.png" alt="Kusuri Compass">
+            <div class="logo-text">
+                <span class="logo-title">Kusuri Compass</span>
+                <span class="logo-subtitle">薬剤師業務支援ツール</span>
+            </div>
+        </a>
+        <nav class="nav-links">
+            <a href="search.html" target="_blank" rel="noopener noreferrer">検索</a>
+            <a href="update/index.html" target="_blank" rel="noopener noreferrer">更新</a>
+            <a href="https://okusuri-pakkun-app.pages.dev/" target="_blank" rel="noopener noreferrer">小児服薬支援</a>
+            <a href="pollen-app/index.html" target="_blank" rel="noopener noreferrer">花粉監視</a>
+        </nav>
     </header>
 
     <div class="magazine-container">

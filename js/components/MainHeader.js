@@ -27,17 +27,21 @@ export class MainHeader extends HTMLElement {
             document.head.appendChild(fontAwesome);
         }
 
+        const children = this.innerHTML;
         this.innerHTML = `
         <header>
-            <a href="${baseDir}index.html" class="logo">
-                <img src="${baseDir}images/KusuriCompass.png" alt="Kusuri Compass">
-                <div class="logo-text">
-                    <span class="logo-title">Kusuri Compass</span>
-                    <span class="logo-subtitle">薬剤師業務支援ツール</span>
-                </div>
-            </a>
+            <div class="logo-wrapper">
+                <a href="${baseDir}index.html" class="logo">
+                    <img src="${baseDir}images/KusuriCompass.png" alt="Kusuri Compass">
+                    <div class="logo-text">
+                        <span class="logo-title">Kusuri Compass</span>
+                        <span class="logo-subtitle">薬剤師業務支援ツール</span>
+                    </div>
+                </a>
+            </div>
             <nav class="nav-links">
                 ${this.renderNavLinks(baseDir, activePage)}
+                <div class="custom-nav-content">${children}</div>
             </nav>
             <div class="mobile-menu-toggle" style="display: none;">
                 <i class="fas fa-bars"></i>

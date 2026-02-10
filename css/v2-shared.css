@@ -246,11 +246,17 @@ footer {
         gap: 0.8rem;
         margin-top: 0.5rem;
         flex-wrap: nowrap;
-        /* Prevent wrapping to new lines, enforce scroll */
         overflow-x: auto;
-        /* Allow horizontal scroll if too many items, better than page scroll */
         padding-bottom: 0.5rem;
         -webkit-overflow-scrolling: touch;
+        display: flex;
+        align-items: center;
+    }
+
+    .custom-nav-content {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
     }
 
     .nav-links a {
