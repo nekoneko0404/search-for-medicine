@@ -40,29 +40,26 @@
 
 <body>
     <!-- Floating App Header -->
-    <div class="app-header" style="max-height: 60px; overflow: hidden;">
-        <div style="display: flex; align-items: center; width: 100%; gap: 10px; white-space: nowrap;">
+    <div class="app-header" style="overflow: hidden;">
+        <div style="display: flex; align-items: center; width: 100%; gap: 15px; white-space: nowrap;">
             <a href="../index.html" class="flex-shrink-0"
                 style="text-decoration: none; display: flex; align-items: center;">
-                <img src="../images/KusuriCompass.png" alt="Kusuri Compass" style="height: 32px; width: auto;">
+                <img src="../images/KusuriCompass.png" alt="Kusuri Compass" style="height: 48px; width: auto;">
             </a>
 
             <i class="fas fa-wind icon-main"
-                style="color: #4CAF50; font-size: 24px; flex-shrink: 0; margin-right: 2px;"></i>
+                style="color: #4CAF50; font-size: 36px; flex-shrink: 0; margin-right: 5px;"></i>
 
             <div class="title-group" style="flex: 1; min-width: 0;">
                 <h1
-                    style="font-size: 0.95rem; font-weight: 700; margin: 0; color: #111; overflow: hidden; text-overflow: ellipsis;">
+                    style="font-size: 1.4rem; font-weight: 800; margin: 0; color: #111; overflow: hidden; text-overflow: ellipsis;">
                     花粉飛散リアルタイム監視</h1>
-                <p class="subtitle"
-                    style="font-size: 0.65rem; margin: 0; color: #666; overflow: hidden; text-overflow: ellipsis;">
-                    全国の観測データをリアルタイムに可視化</p>
             </div>
 
             <div class="header-qr-code hidden sm:flex" style="margin-left: auto; align-items: center; cursor: pointer;"
                 onclick="document.getElementById('qr-modal').classList.add('show')">
                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://is.gd/BuKzFs&ecc=L&margin=0"
-                    alt="QR Code" style="height: 32px; width: 32px; border-radius: 4px; border: 1px solid #ddd;"
+                    alt="QR Code" style="height: 48px; width: 48px; border-radius: 4px; border: 1px solid #ddd;"
                     title="クリックして拡大">
             </div>
         </div>
