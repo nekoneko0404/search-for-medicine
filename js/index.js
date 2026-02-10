@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        fetch('notification.md')
+        fetch('notification.md?v=' + new Date().getTime())
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -45,9 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
             .catch(error => {
                 // Silent fail or show default message
                 console.warn('Notification load failed:', error);
-                // notificationBody.innerHTML = '<p class="text-center text-sm text-gray-500">お知らせはありません。</p>';
-                // Hide the toggle if no notification
-                if (notificationToggle) notificationToggle.style.display = 'none';
+
+                // Show a friendly message instead of just hiding (user says it says "Loading...")
+                if (notificationBody) {
+                    notificationBody.innerHTML = '<p class="text-sm text-gray-500 py-2">お知らせの読み込みに失敗しました。</p>';
+                }
             });
     }
 

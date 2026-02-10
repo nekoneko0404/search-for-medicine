@@ -203,10 +203,19 @@ header .logo-container img {
     .hero-section {
         height: 60vh;
         min-height: 400px;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .hero-content {
+        width: 100%;
+        padding: 0 1rem;
     }
 
     .hero-content h1 {
         font-size: 2.5rem;
+        word-wrap: break-word;
+        /* Prevent long words from overflowing */
     }
 
     .hero-content p {
@@ -222,14 +231,20 @@ header .logo-container img {
     .grid-magazine {
         grid-template-columns: 1fr;
         gap: 3rem;
+        width: 100%;
+        overflow: hidden;
     }
 
     .grid-section {
-        padding: 3rem 5%;
+        padding: 3rem 1rem;
+        /* Reduce padding side */
+        width: 100%;
+        overflow: hidden;
     }
 
     .magazine-container {
         width: 100%;
+        max-width: 100vw;
         overflow-x: hidden;
     }
 
