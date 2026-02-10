@@ -18,39 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        fetch('notification.md?v=' + new Date().getTime())
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('text/html')) {
-                    throw new Error('Notification file not found (HTML returned)');
-                }
-                return response.text();
-            })
-            .then(markdown => {
-                // Double check if content looks like HTML
-                if (markdown.trim().startsWith('<!DOCTYPE') || markdown.trim().startsWith('<html')) {
-                    throw new Error('Content is HTML, not Markdown');
-                }
-
-                if (window.DOMPurify && window.marked) {
-                    const sanitizedHtml = DOMPurify.sanitize(marked.parse(markdown));
-                    notificationBody.innerHTML = sanitizedHtml;
-                } else {
-                    notificationBody.innerText = markdown; // Fallback to plain text
-                }
-            })
-            .catch(error => {
-                // Silent fail or show default message
-                console.warn('Notification load failed:', error);
-
-                // Show a friendly message instead of just hiding (user says it says "Loading...")
-                if (notificationBody) {
-                    notificationBody.innerHTML = '<p class="text-sm text-gray-500 py-2">お知らせの読み込みに失敗しました。</p>';
-                }
-            });
+        // notificationBody fetch removed to rely on hardcoded HTML in index.html
     }
 
     // --- Update time script ---
