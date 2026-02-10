@@ -28,7 +28,7 @@
     <!-- Local styles removed. Using base Tailwind classes. -->
 </head>
 
-<body class="bg-gray-50 min-h-screen flex flex-col font-sans text-gray-900 antialiased">
+<body class="bg-[#f0f9ff] min-h-screen flex flex-col font-sans text-gray-900 antialiased">
     <!-- Header Component -->
     <main-header base-dir="../" active-page="search">
         <a href="../help/index.html" target="_blank" rel="noopener noreferrer"
@@ -38,7 +38,7 @@
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 max-w-7xl transition-all duration-500">
         <!-- Title Section -->
         <div class="text-center mb-8">
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">供給確保医薬品一覧（候補）</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">供給確保医薬品一覧</h2>
             <p class="text-gray-500 text-sm">最新の供給状況、制限理由、解消見込みなどを確認できます</p>
         </div>
 
@@ -47,24 +47,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Drug Name Search -->
                 <div class="space-y-2">
-                    <label for="drugName" class="block text-sm font-semibold text-gray-700">医薬品名</label>
+                    <label for="drugName" class="block text-sm font-bold text-indigo-900">医薬品名</label>
                     <div class="relative">
                         <input type="text" id="drugName" placeholder="医薬品名を入力"
-                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pl-10 py-2.5">
+                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pl-10 py-2.5 bg-gray-50/50">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-gray-400"></i>
+                            <i class="fas fa-search text-indigo-400"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Ingredient Name Search -->
                 <div class="space-y-2">
-                    <label for="ingredientName" class="block text-sm font-semibold text-gray-700">成分名</label>
+                    <label for="ingredientName" class="block text-sm font-bold text-indigo-900">成分名</label>
                     <div class="relative">
                         <input type="text" id="ingredientName" placeholder="成分名を入力"
-                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pl-10 py-2.5">
+                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pl-10 py-2.5 bg-gray-50/50">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-flask text-gray-400"></i>
+                            <i class="fas fa-flask text-indigo-400"></i>
                         </div>
                     </div>
                 </div>
@@ -75,19 +75,22 @@
                 class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 pt-6 border-t border-gray-100 items-end">
                 <!-- Category Filter -->
                 <div id="categoryFilterContainer">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">カテゴリ</label>
+                    <label class="block text-sm font-bold text-indigo-900 mb-2">カテゴリ</label>
                     <div class="flex flex-wrap gap-4">
-                        <label class="inline-flex items-center cursor-pointer">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
                             <input type="checkbox" id="catA" checked
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700">A</span>
                         </label>
-                        <label class="inline-flex items-center cursor-pointer">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
                             <input type="checkbox" id="catB" checked
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700">B</span>
                         </label>
-                        <label class="inline-flex items-center cursor-pointer">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
                             <input type="checkbox" id="catC" checked
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700">C</span>
@@ -97,19 +100,22 @@
 
                 <!-- Route Filter (Moved Here) -->
                 <div id="routeFilterContainer">
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">区分</label>
+                    <label class="block text-sm font-bold text-indigo-900 mb-2">区分</label>
                     <div class="flex flex-wrap gap-4">
-                        <label class="inline-flex items-center cursor-pointer">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
                             <input type="checkbox" id="routeInternal" checked
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700">内服</span>
                         </label>
-                        <label class="inline-flex items-center cursor-pointer">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
                             <input type="checkbox" id="routeInjectable" checked
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700">注射</span>
                         </label>
-                        <label class="inline-flex items-center cursor-pointer">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
                             <input type="checkbox" id="routeExternal" checked
                                 class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                             <span class="ml-2 text-sm text-gray-700">外用</span>
@@ -120,19 +126,22 @@
                 <!-- Status Filter (Wrapper) (Moved Here) -->
                 <div class="flex flex-row items-center gap-2 w-full">
                     <div id="statusFilterContainer" class="hidden">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2 sr-only">出荷状況</label>
+                        <label class="block text-sm font-bold text-indigo-900 mb-2 sr-only">出荷状況</label>
                         <div class="flex flex-nowrap gap-4 overflow-x-auto pb-2">
-                            <label class="inline-flex items-center cursor-pointer whitespace-nowrap">
+                            <label
+                                class="inline-flex items-center cursor-pointer whitespace-nowrap hover:bg-gray-50 rounded px-1 transition-colors">
                                 <input type="checkbox" id="statusNormal" checked
                                     class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <span class="ml-2 text-sm text-gray-700">通常出荷</span>
                             </label>
-                            <label class="inline-flex items-center cursor-pointer whitespace-nowrap">
+                            <label
+                                class="inline-flex items-center cursor-pointer whitespace-nowrap hover:bg-gray-50 rounded px-1 transition-colors">
                                 <input type="checkbox" id="statusLimited" checked
                                     class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <span class="ml-2 text-sm text-gray-700">限定出荷</span>
                             </label>
-                            <label class="inline-flex items-center cursor-pointer whitespace-nowrap">
+                            <label
+                                class="inline-flex items-center cursor-pointer whitespace-nowrap hover:bg-gray-50 rounded px-1 transition-colors">
                                 <input type="checkbox" id="statusStopped" checked
                                     class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
                                 <span class="ml-2 text-sm text-gray-700">供給停止</span>
@@ -141,7 +150,7 @@
                     </div>
                     <!-- Share Button -->
                     <button id="share-btn"
-                        class="flex items-center gap-2 px-6 py-2 bg-white border border-indigo-200 text-indigo-600 rounded-lg font-semibold hover:bg-indigo-50 transition-all shadow-sm w-fit ml-auto">
+                        class="flex items-center gap-2 px-6 py-2 bg-white border-2 border-indigo-600 text-indigo-600 rounded-lg font-bold hover:bg-indigo-50 transition-all shadow-sm w-fit ml-auto">
                         <i class="fas fa-share-alt"></i>
                         共有
                     </button>
@@ -176,28 +185,28 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                     カテゴリ</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                     区分</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                     薬効分類</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider min-w-[150px]">
+                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[150px]">
                                     薬効分類名</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[200px]">
                                     成分名</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-center text-gray-500 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
+                                    class="px-4 py-3 text-left text-xs font-bold text-center text-indigo-900 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
                                     通常出荷</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-center text-gray-500 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
+                                    class="px-4 py-3 text-left text-xs font-bold text-center text-indigo-900 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
                                     限定出荷</th>
                                 <th scope="col"
-                                    class="px-4 py-2 text-left text-xs font-bold text-center text-gray-500 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
+                                    class="px-4 py-3 text-left text-xs font-bold text-center text-indigo-900 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
                                     供給停止</th>
                             </tr>
                         </thead>
@@ -220,31 +229,31 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                 カテゴリ</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                 区分</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider min-w-[200px]">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[200px]">
                                 医薬品名</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider min-w-[150px]">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[150px]">
                                 成分名</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                 出荷状況</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider min-w-[150px]">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[150px]">
                                 制限理由</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                 解消見込み</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                 見込み時期</th>
                             <th scope="col"
-                                class="px-4 py-2 text-left text-xs font-bold text-gray-500 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
                                 更新日</th>
                         </tr>
                     </thead>
