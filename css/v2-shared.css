@@ -197,25 +197,29 @@ footer {
 
     header {
         flex-wrap: wrap;
-        padding: 1rem 5%;
+        padding: 0.5rem 3%;
+        /* Reduced padding */
         height: auto;
         position: relative;
         /* Sticky might cover too much on mobile if tall */
     }
 
     .logo {
-        font-size: 1.2rem;
+        font-size: 1rem;
+        /* Smaller logo */
     }
 
     .nav-links {
         width: 100%;
         justify-content: flex-start;
-        gap: 1rem;
-        margin-top: 1rem;
-        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+        flex-wrap: nowrap;
+        /* Prevent wrapping to new lines, enforce scroll */
         overflow-x: auto;
         /* Allow horizontal scroll if too many items, better than page scroll */
         padding-bottom: 0.5rem;
+        -webkit-overflow-scrolling: touch;
     }
 
     .nav-links a {

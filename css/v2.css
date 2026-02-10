@@ -213,6 +213,12 @@ header .logo-container img {
         font-size: 1rem;
     }
 
+    .hero-content a {
+        padding: 0.75rem 1.5rem;
+        /* Reduced padding for button */
+        font-size: 0.875rem;
+    }
+
     .grid-magazine {
         grid-template-columns: 1fr;
         gap: 3rem;
