@@ -30,7 +30,11 @@ export class MainHeader extends HTMLElement {
         this.innerHTML = `
         <header>
             <a href="${baseDir}index.html" class="logo">
-                <i class="fas fa-compass"></i> KUSURI COMPASS
+                <img src="${baseDir}images/KusuriCompass.png" alt="Kusuri Compass">
+                <div class="logo-text">
+                    <span class="logo-title">Kusuri Compass</span>
+                    <span class="logo-subtitle">薬剤師業務支援ツール</span>
+                </div>
             </a>
             <nav class="nav-links">
                 ${this.renderNavLinks(baseDir, activePage)}
@@ -44,10 +48,10 @@ export class MainHeader extends HTMLElement {
 
     renderNavLinks(baseDir, activePage) {
         const links = [
-            { id: 'search', label: 'Search', path: 'search.html' },
-            { id: 'update', label: 'Update', path: 'update/index.html' },
-            { id: 'pakkun', label: 'Pakkun', path: 'https://okusuri-pakkun-app.pages.dev/' },
-            { id: 'topics', label: 'Topics', path: '#topics' } // Placeholder for future topics
+            { id: 'search', label: '検索', path: 'search.html' },
+            { id: 'update', label: '更新', path: 'update/index.html' },
+            { id: 'pakkun', label: 'おくすりパックン', path: 'https://okusuri-pakkun-app.pages.dev/' },
+            { id: 'topics', label: '最新情報', path: '#topics' }
         ];
 
         return links.map(link => {
