@@ -1,6 +1,10 @@
-const { execSync } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+import { execSync } from 'child_process';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 function exec(command, cwd) {
     console.log(`\x1b[36m> ${command}\x1b[0m`); // Cyan color
@@ -29,11 +33,11 @@ function copyDir(src, dest) {
 }
 
 try {
-    console.log('\x1b[36mStarting Unified Build (Node.js)...\x1b[0m');
+    console.log('\x1b[36mStarting Unified Build (Node.js ESM)...\x1b[0m');
 
     // 1. Build Root (Vite)
     console.log('\n\x1b[36m[1/4] Building Root (Vite)...\x1b[0m');
-    exec('npm run build:vite'); // We will rename the original build command to build:vite
+    exec('npm run build:vite');
 
     // 2. Build Drug Navigator (Next.js)
     console.log('\n\x1b[36m[2/4] Building Drug Navigator...\x1b[0m');
