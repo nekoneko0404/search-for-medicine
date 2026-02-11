@@ -57,7 +57,7 @@ export default function RootLayout({
         <Script src="/okuri_pakkun/js/components/MainFooter.js" strategy="lazyOnload" />
 
         <div className="flex flex-col min-h-screen">
-          <main-header base-dir="./" active-page="pakkun"></main-header>
+          <main-header base-dir=".." active-page="pakkun"></main-header>
 
           <main className="flex-grow">
             <Suspense fallback={<div>Loading...</div>}>

@@ -57,9 +57,8 @@ export class MainHeader extends HTMLElement {
         const links = [
             { id: 'search', label: '出荷状況検索', path: 'search.html' },
             { id: 'update', label: '出荷状況更新', path: 'update/index.html' },
-            { id: 'pakkun', label: '小児服薬支援', path: 'https://okusuri-pakkun-app.pages.dev/' },
-            { id: 'pollen', label: '花粉飛散状況', path: 'pollen-app/index.html' },
-            { id: 'guide', label: '使い方', path: 'help/index.html' }
+            { id: 'pakkun', label: '小児服薬支援', path: 'okuri_pakkun/' },
+            { id: 'pollen', label: '花粉飛散状況', path: 'pollen-app/index.html' }
         ];
 
         return links.map(link => {
