@@ -29,31 +29,14 @@
         gtag('js', new Date());
         gtag('config', 'G-VXSZGE4HP7');
     </script>
+
+    <script type="module" src="./js/components/MainHeader.js"></script>
+    <script type="module" src="./js/components/MainFooter.js"></script>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col font-[Inter]">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <a href="./index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                    <img src="images/KusuriCompass.png" alt="Kusuri Compass Icon" class="h-10 w-10 object-contain">
-                    <div class="flex flex-col">
-                        <h1 class="text-xl font-bold text-indigo-900 leading-tight">Kusuri Compass</h1>
-                        <span
-                            class="text-[10px] sm:text-xs font-semibold text-indigo-600 leading-tight">薬剤師業務支援ツール</span>
-                    </div>
-                </a>
-            </div>
-            <nav class="flex items-center gap-4">
-                <a href="./index.html"
-                    class="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors flex items-center gap-1">
-                    <i class="fas fa-home"></i>
-                    <span>ホーム</span>
-                </a>
-            </nav>
-        </div>
-    </header>
+    <main-header base-dir="./" active-page="privacy"></main-header>
 
     <!-- Main Content -->
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 max-w-4xl pb-32">
@@ -150,20 +133,7 @@
     </main>
 
     <!-- Footer -->
-    <footer id="mainFooter" class="bg-white border-t border-gray-200 flex-shrink-0 sticky bottom-0 z-30">
-        <div class="w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
-            <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="text-sm text-gray-500">
-                    &copy; 2025 Kusuri Compass. All rights reserved.
-                </div>
-                <div class="flex gap-6">
-                    <a href="./terms.html"
-                        class="text-sm text-gray-600 hover:text-indigo-600 transition-colors font-medium">利用規約</a>
-                    <a href="./privacy.html" class="text-sm text-indigo-600 font-bold transition-colors">プライバシーポリシー</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <main-footer base-dir="./"></main-footer>
 </body>
 
 </html>
