@@ -17,23 +17,11 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/style.css">
-    <!-- Removed conflicting style tag -->
-    <style>
-        .search-results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            padding: 1rem;
-        }
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/v2-shared.css">
 
-        @media (min-width: 768px) {
-            .search-results-grid {
-                display: none;
-            }
-        }
-    </style>
     <!-- Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
     <script type="module" src="../js/components/MainHeader.js"></script>
@@ -47,8 +35,7 @@
             class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
     </main-header>
 
-    <main
-        class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 max-w-7xl md:h-full md:flex md:flex-col pb-32 transition-all duration-500">
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 max-w-7xl">
         <div class="text-center mb-8 flex-shrink-0">
             <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">薬効分類検索</h2>
             <p class="text-gray-500 text-sm">薬効分類から医薬品情報を検索します</p>
