@@ -25,7 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
+      <head>
+        <link rel="stylesheet" href="/css/v2-shared.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
@@ -43,9 +47,21 @@ export default function RootLayout({
             gtag('config', 'G-VXSZGE4HP7');
           `}
         </Script>
-        <Suspense fallback={<div>Loading...</div>}> {/* 追加 */}
-          {children}
-        </Suspense> {/* 追加 */}
+
+        <Script src="/js/components/MainHeader.js" strategy="lazyOnload" />
+        <Script src="/js/components/MainFooter.js" strategy="lazyOnload" />
+
+        <div className="flex flex-col min-h-screen">
+          <main-header base-dir=".." active-page="drug-navigator"></main-header>
+
+          <main className="flex-grow">
+            <Suspense fallback={<div>Loading...</div>}>
+              {children}
+            </Suspense>
+          </main>
+
+          <main-footer base-dir=".."></main-footer>
+        </div>
       </body>
     </html>
   );
