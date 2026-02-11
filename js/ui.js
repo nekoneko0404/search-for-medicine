@@ -276,7 +276,7 @@ export function createDropdown(item, index) {
 
     dropdownContent.appendChild(createLink(pmdaLinkUrl, '医薬品情報 (PMDA)'));
     dropdownContent.appendChild(createLink(`${basePath}drug-classification/index.html?yjcode=${item.yjCode}`, '薬効分類検索'));
-    dropdownContent.appendChild(createLink(`https://drug-navigator.pages.dev/?medicineName=${encodeURIComponent(drugName)}`, '代替薬ナビゲーター'));
+    dropdownContent.appendChild(createLink(`${basePath}drug-navigator/?medicineName=${encodeURIComponent(drugName)}`, '代替薬ナビゲーター'));
     dropdownContent.appendChild(createLink(`${basePath}update/index.html?productName=${encodeURIComponent(drugName)}&shippingStatus=all&updateDate=all`, '情報更新日'));
     dropdownContent.appendChild(createLink(`${basePath}hiyari_app/index.html?drugName=${drugNameForHiyari}`, 'ヒヤリハット検索'));
 
