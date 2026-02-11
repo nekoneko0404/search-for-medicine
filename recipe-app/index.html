@@ -11,8 +11,8 @@
     <meta http-equiv="Content-Security-Policy"
         content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com https://recipe-worker.neko-neko-0404.workers.dev; base-uri 'self'; form-action 'self';">
 
-    <!-- Shared CSS -->
-    <link rel="stylesheet" href="../css/v2-shared.css">
+    <!-- Shared CSS (Replaced with main.css import) -->
+    <!-- <link rel="stylesheet" href="../css/v2-shared.css"> -->
 
     <!-- OGP -->
     <meta property="og:title" content="健康レシピ提案 - Kusuri Compass">
@@ -35,8 +35,10 @@
         gtag('config', 'G-H44R8N7W32');
     </script>
 
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (CDN Removed) -->
+    <script type="module">
+        import '../css/main.css';
+    </script>
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
