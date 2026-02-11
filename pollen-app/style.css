@@ -74,9 +74,6 @@ html {
     color: var(--text-sub);
 }
 
-color: var(--text-sub);
-}
-
 /* Header QR Code Visibility */
 .header-qr-code {
     display: none;
