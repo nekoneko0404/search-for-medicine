@@ -62,18 +62,20 @@ header {
 
 .logo-title {
     font-size: 1.25rem;
-    font-weight: 800;
+    font-weight: 800 !important;
     letter-spacing: -0.02em;
-    color: #1a365d;
+    color: #1a365d !important;
+    font-family: 'Inter', sans-serif !important;
     /* Professional dark blue */
 }
 
 .logo-subtitle {
     font-size: 0.65rem;
-    font-weight: 600;
-    color: #667eea;
+    font-weight: 600 !important;
+    color: #667eea !important;
     /* Professional accent blue */
     letter-spacing: 0.05em;
+    font-family: 'Inter', sans-serif !important;
 }
 
 .nav-links {
