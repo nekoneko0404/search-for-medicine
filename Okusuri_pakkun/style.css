@@ -1598,4 +1598,36 @@ header h1 {
     margin: 0;
     font-weight: bold;
     color: var(--primary-color);
+}/* =========================================
+   Fix for CSS Variable Conflicts with v2-shared.css
+   ========================================= */
+/* 
+   v2-shared.css (imported via main.css) overrides :root variables.
+   We explicitly re-define them under 'body' and '#app' to ensure
+   Okusuri Pakkun's pastel color scheme is preserved.
+*/
+body,
+#app {
+    --primary-color: #FF9AA2 !important;
+    /* Pastel Red */
+    --secondary-color: #FFB7B2 !important;
+    /* Pastel Salmon */
+    --accent-color: #FFDAC1 !important;
+    /* Pastel Orange */
+    --text-color: #5d4037 !important;
+    /* Dark Brown */
+    --bg-color: #fff5f5 !important;
+    /* Light Pink Bg */
+    --white: #ffffff;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Ensure tab text color is correct even if overwritten */
+.tab-btn {
+    color: var(--text-color) !important;
+}
+
+.tab-btn.active {
+    color: var(--primary-color) !important;
+    background-color: var(--white) !important;
 }
