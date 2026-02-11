@@ -6,8 +6,27 @@ description: モノレポ構成（Vite + Next.js複数）のプロジェクト�
 # モノレポ・デプロイメント・ワークフロー
 
 ## 概要
-本プロジェクト（`search-for-medicine`）は、ルートの静的サイト（Vite）と、サブディレクトリに配置された複数のNext.jsアプリケーション（`drug-navigator`, `okuri_pakkun`）で構成されるモノレポです。
-これらを統合して正しくデプロイするために、統一ビルドスクリプト `build.js` を使用します。
+本プロジェクト（`search-for-medicine`）は、ルートの静的サイト（Vite）と、サブディレクトリに配置された複数のNext.jsアプリケーションで構成されるモノレポです。
+npm workspaces と統一ビルドスクリプト `build.js` を使用してデプロイします。
+
+### プロジェクト構成
+
+| アプリ | 種別 | ディレクトリ | basePath | 出力先 |
+| :--- | :--- | :--- | :--- | :--- |
+| ルートサイト | Vite (静的HTML) | `/` | なし | `dist/` |
+| Drug Navigator | Next.js (Static Export) | `drug-navigator/` | `/drug-navigator` | `dist/drug-navigator/` |
+| Okusuri Pakkun | Next.js (Static Export) | `okuri_pakkun/okusuri-pakkun-app/` | `/okuri_pakkun` | `dist/okuri_pakkun/` |
+| Recipe Worker | Cloudflare Worker | `recipe-worker/` | — | 別途Workers にデプロイ |
+
+### npm workspaces 構成
+ルートの `package.json` で以下の workspaces を定義:
+```json
+"workspaces": [
+  "drug-navigator",
+  "okuri_pakkun/okusuri-pakkun-app",
+  "recipe-worker"
+]
+```
 
 ## ビルドプロセス
 
@@ -20,15 +39,20 @@ npm run build
 
 このコマンドは内部で `node build.js` を呼び出し、以下の処理を順次実行します。
 
-1.  **ルート（Vite）のビルド**: `vite build` を実行し、静的アセットを生成します。
-2.  **Drug Navigator（Next.js）のビルド**: `drug-navigator` ディレクトリで `npm run build` （Static Export）を実行します。
-3.  **Okuri Pakkun（Next.js）のビルド**: `okuri_pakkun/okusuri-pakkun-app` ディレクトリで `npm run build` （Static Export）を実行します。
-4.  **アーティファクトの統合**: 各ビルド成果物を `dist` ディレクトリに集約します。
-    - Next.jsアプリの出力（`out`）は、それぞれ `dist/drug-navigator`, `dist/okuri_pakkun` に正しく配置されます。
+1.  **[1/3] ルート（Vite）のビルド**: `npm run build:vite` を実行し、静的アセットを `dist/` に生成。
+2.  **[2/3] サブアプリ（Next.js）のビルド**: `npm run build --workspaces --if-present` でワークスペース内の全アプリを一括ビルド。
+3.  **[3/3] アーティファクトの統合**: 各Next.jsアプリの `out/` ディレクトリを `dist/` 配下にコピー。
+    - `drug-navigator/out/` → `dist/drug-navigator/`
+    - `okuri_pakkun/okusuri-pakkun-app/out/` → `dist/okuri_pakkun/`
 
-### 2. 出力ディレクトリ構造 (`dist/`)
-ビルド成功後、`dist` ディレクトリは以下の構造になります。これがデプロイ用ディレクトリです。
+### 2. 開発サーバー起動
+全アプリの開発サーバーを一括起動:
+```bash
+npm run dev
+```
+内部で `concurrently` を使い、Vite + 各Next.jsの開発サーバーを同時起動します。
 
+### 3. 出力ディレクトリ構造 (`dist/`)
 ```text
 dist/
 ├── index.html              # ルートのトップページ
@@ -42,15 +66,78 @@ dist/
     └── ...
 ```
 
+## Next.js アプリ固有の設定
+
+### Static Export 設定
+両方の Next.js アプリは `output: 'export'` を使用して静的HTMLを出力します。
+
+**drug-navigator/next.config.ts:**
+```typescript
+const nextConfig: NextConfig = {
+  output: 'export',
+  basePath: '/drug-navigator',
+  images: { unoptimized: true },
+};
+```
+
+**okuri_pakkun/okusuri-pakkun-app/next.config.ts:**
+```typescript
+const nextConfig: NextConfig = {
+  output: 'export',
+  basePath: '/okuri_pakkun',
+};
+```
+
+> [!IMPORTANT]
+> `basePath` はデプロイ先のURLパスと一致させる必要があります。変更すると全てのリンクやアセット参照が壊れます。
+
+### TypeScript カスタム要素の型定義（重要）
+
+両アプリは共通のWeb Components（`<main-header>`, `<main-footer>`）を使用しています。
+Next.js 16 + `jsx: "react-jsx"` 環境では、**`React.JSX.IntrinsicElements` をモジュール拡張で定義する**必要があります。
+
+**正しい方法** (`src/types/declarations.d.ts`):
+```typescript
+import 'react';
+
+declare module 'react' {
+  namespace JSX {
+    interface IntrinsicElements {
+      'main-header': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>, HTMLElement
+      > & {
+        'base-dir'?: string;
+        'active-page'?: string;
+      };
+      'main-footer': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement>, HTMLElement
+      > & {
+        'base-dir'?: string;
+      };
+    }
+  }
+}
+```
+
+> [!CAUTION]
+> **以下の方法では動作しません（Next.js 16）:**
+> - `declare namespace JSX` — グローバルJSX名前空間を拡張するが、Next.js は `React.JSX` を参照するため無効。
+> - `declare global { namespace JSX }` — `.d.ts` ファイルでは `export {}` なしだとスクリプト扱いとなり、`declare global` が不正。
+> - 型を `any` にするだけ — ローカルでは通ることがあるが、CI環境（Cloudflare Pages等）では失敗する場合がある。
+
+### 共通アセットの配置
+共通ヘッダー/フッター用の CSS と画像は、各アプリの `public/` に配置:
+- `public/css/v2-shared.css` — 共通スタイル
+- `public/images/KusuriCompass.png` — ロゴ画像
+- `public/js/components/MainHeader.js`, `MainFooter.js` — Web Components
+
 ## デプロイ手順 (Cloudflare Pages)
 
-Cloudflare Pages 等の静的ホスティングサービスにデプロイする際は、以下の設定を使用してください。
-
+Cloudflare Pages の設定:
 - **ビルドコマンド**: `npm run build`
 - **出力ディレクトリ**: `dist`
 
 ### 環境分け戦略 (Branching Strategy)
-テスト環境と本番環境を明確に区別するため、以下のブランチ戦略を適用します。
 
 | 環境 | 対応ブランチ | デプロイタイプ | 用途 |
 | :--- | :--- | :--- | :--- |
@@ -71,10 +158,24 @@ Cloudflare Pages 等の静的ホスティングサービスにデプロイする
 
 ## トラブルシューティング
 
+### TypeScript ビルドエラー: `Property 'main-header' does not exist on type 'JSX.IntrinsicElements'`
+- **原因**: カスタム要素の型が `React.JSX.IntrinsicElements` に正しく登録されていない。
+- **対処**: 上記「[TypeScript カスタム要素の型定義](#typescript-カスタム要素の型定義重要)」セクションの正しい方法に従い、`declare module 'react'` を使用する。
+- **確認**: ローカルで `npx next build` を実行し、TypeScriptエラーが出ないことを確認してからプッシュする。
+
 ### ビルドスクリプトが失敗する場合
-- 各サブディレクトリの `package.json` に `build` スクリプトが正しく定義されているか確認してください。
-- `npm install` がルートおよび各サブディレクトリで実行されているか確認してください（`build.js` は自動で `npm install` を行いますが、依存関係のエラーがないか確認が必要です）。
+- 各サブディレクトリの `package.json` に `build` スクリプトが正しく定義されているか確認。
+- `npm install` がルートで実行されているか確認（workspaces により子も自動インストールされる）。
+- CI環境で `npm ci` が使われている場合、`package-lock.json` が最新か確認。
 
 ### リンクが機能しない場合
-- デプロイ後のサイトで `drug-navigator/` などにアクセスし、ソースコードのファイル一覧ではなく、アプリケーション画面が表示されるか確認してください。
-- 表示されない場合は、`build.js` によるファイル移動（`copyDir`）が正しく行われていない可能性があります。`dist` ディレクトリの中身を確認してください。
+- デプロイ後のサイトで `drug-navigator/` などにアクセスし、アプリケーション画面が表示されるか確認。
+- 表示されない場合は、`build.js` によるファイルコピー（`copyDir`）が正しく行われていない可能性がある。`dist` ディレクトリの中身を確認。
+- `basePath` が `next.config.ts` とデプロイ先URLで一致しているか確認。
+
+### npm workspaces 関連のエラー
+- `npm run build --workspaces --if-present` が失敗する場合、特定のワークスペースだけビルドして問題を切り分ける:
+  ```bash
+  npm run build --workspace=drug-navigator
+  npm run build --workspace=okuri_pakkun/okusuri-pakkun-app
+  ```
