@@ -1,0 +1,52 @@
+[
+  {
+    "yj_code": "6149002R1020",
+    "brand_name": "クラリスロマイシンDS10%「タカタ」",
+    "manufacturer": "高田製薬",
+    "taste_smell": "チョコレート風味で甘い。",
+    "good_compatibility": ["チョコアイス", "チョコレートクリーム", "ココア", "練乳", "アイスクリーム（バニラ）"],
+    "bad_compatibility": ["オレンジジュース", "スポーツドリンク", "アップルジュース", "乳酸菌飲料", "ヨーグルト"],
+    "special_notes": "酸性飲料と混ぜると、苦味コーティングが溶けて非常に苦くなります。抗生物質です。",
+    "source": "高田製薬 インタビューフォーム / 北新病院薬剤部"
+  },
+  {
+    "yj_code": "6132016R1026",
+    "brand_name": "メイアクトMS小児用細粒10%",
+    "manufacturer": "Meiji Seika ファルマ",
+    "taste_smell": "バナナ風味で甘い。",
+    "good_compatibility": ["ヨーグルト", "アイスクリーム", "ジュース", "牛乳"],
+    "bad_compatibility": [],
+    "special_notes": "比較的飲みやすい抗生物質です。鉄剤と同時に飲むと吸収が悪くなることがあります。",
+    "source": "Meiji Seika ファルマ インタビューフォーム"
+  },
+  {
+    "yj_code": "6132013R1036",
+    "brand_name": "フロモックス小児用細粒100mg",
+    "manufacturer": "塩野義製薬",
+    "taste_smell": "イチゴ風味で甘い。",
+    "good_compatibility": ["水", "牛乳", "アイスクリーム", "ヨーグルト"],
+    "bad_compatibility": [],
+    "special_notes": "セフェム系抗生物質です。室温保存で問題ありません。",
+    "source": "塩野義製薬 添付文書"
+  },
+  {
+    "yj_code": "1141007C1077",
+    "brand_name": "カロナール細粒20%",
+    "manufacturer": "あゆみ製薬",
+    "taste_smell": "オレンジ風味でわずかに苦味がある。",
+    "good_compatibility": ["水", "温かい牛乳", "すりおろしリンゴ", "アイスクリーム"],
+    "bad_compatibility": ["苦味のある食品"],
+    "special_notes": "解熱鎮痛剤です。熱や痛みが強い時のみ使用してください。空腹時でも比較的胃に優しいです。",
+    "source": "あゆみ製薬 インタビューフォーム / 国立成育医療研究センター"
+  },
+  {
+    "yj_code": "2249009F1022",
+    "brand_name": "ムコダインDS50%",
+    "manufacturer": "杏林製薬",
+    "taste_smell": "特有の甘味とわずかな酸味がある。",
+    "good_compatibility": ["ジュース", "ヨーグルト", "アイスクリーム"],
+    "bad_compatibility": [],
+    "special_notes": "去痰剤です。痰の切れを良くします。",
+    "source": "杏林製薬 インタビューフォーム"
+  }
+]

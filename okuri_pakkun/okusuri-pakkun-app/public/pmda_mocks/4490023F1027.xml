@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drug_product>
+    <product_id>4490023F1027</product_id>
+    <product_name_japanese>アレグラドライシロップ5%</product_name_japanese>
+    <description>
+        本剤は白色〜淡黄色の粉末である。
+        用時懸濁して用いる。懸濁液は甘く、桃の香りがある。
+    </description>
+    <precautions>
+        <important_warning>
+            効果が不十分な場合には、漫然と長期にわたり投与しないよう注意すること。
+        </important_warning>
+        <interaction>
+            エリスロマイシン、水酸化アルミニウム・水酸化マグネシウム含有製剤との併用に注意すること。
+            グレープフルーツジュース等の果汁飲料との同時服用により、本剤のAUC及びCmaxが低下するとの報告がある。
+        </interaction>
+    </precautions>
+</drug_product>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drug_product>
+    <product_id>4490022R1027</product_id>
+    <product_name_japanese>ジルテックドライシロップ1.25%</product_name_japanese>
+    <description>
+        本剤は、白色〜帯黄白色の粉末で、芳香があり、味は甘い。
+    </description>
+    <precautions>
+        <important_warning>
+            眠気を催すことがあるので、本剤投与中の患者には自動車の運転等危険を伴う機械の操作には従事させないよう十分注意すること。
+        </important_warning>
+        <interaction>
+            テオフィリン、リトナビルとの併用により本剤の血中濃度が上昇することがある。
+        </interaction>
+    </precautions>
+</drug_product>
