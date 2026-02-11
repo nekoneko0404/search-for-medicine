@@ -55,18 +55,17 @@ class MainHeader extends HTMLElement {
 
     renderNavLinks(baseDir, activePage) {
         const links = [
-            { id: 'search', label: '出荷状況検索', path: 'search.html' },
-            { id: 'update', label: '出荷状況更新', path: 'update/index.html' },
-            { id: 'pakkun', label: '小児服薬支援', path: 'https://okusuri-pakkun-app.pages.dev/' },
-            { id: 'pollen', label: '花粉飛散状況', path: 'pollen-app/index.html' },
-            { id: 'guide', label: '使い方', path: 'help/index.html' }
+            { id: 'search', label: '出荷状況検索', path: '/drug-navigator/' },
+            { id: 'update', label: '出荷状況更新', path: '/update/index.html' },
+            { id: 'pakkun', label: '小児服薬支援', path: '/okuri_pakkun/' },
+            { id: 'pollen', label: '花粉飛散状況', path: '/pollen-app/index.html' }
         ];
 
         return links.map(link => {
             const isActive = activePage === link.id;
             // Force all top menu links to open in new tab as per user request
             const target = 'target="_blank" rel="noopener noreferrer"';
-            const path = link.path.startsWith('http') || link.path.startsWith('#') ? link.path : baseDir + link.path;
+            const path = link.path.startsWith('http') || link.path.startsWith('#') || link.path.startsWith('/') ? link.path : baseDir + link.path;
 
             // simple active style inline or rely on CSS
             const style = isActive ? 'style="border-bottom: 2px solid black;"' : '';

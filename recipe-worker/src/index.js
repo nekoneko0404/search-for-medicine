@@ -4,6 +4,7 @@ const ALLOWED_ORIGINS = [
     "http://localhost:3000", // Localhost (React/Next.js)
     "https://search-for-medicine.pages.dev", // Production
     "https://search-for-medicine-test03.pages.dev", // Test environment
+    "https://debug-deploy.search-for-medicine.pages.dev", // Debug Deploy environment
     "https://kusuri-compass.pages.dev" // Custom domain (potential)
 ];
 
