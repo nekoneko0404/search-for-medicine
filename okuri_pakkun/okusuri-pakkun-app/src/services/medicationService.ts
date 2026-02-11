@@ -33,7 +33,7 @@ const getCategoryRank = (yjCode: string): number => {
 
 export const fetchMedications = async (): Promise<Medication[]> => {
   try {
-    const response = await fetch('/meds_master.json');
+    const response = await fetch('/okuri_pakkun/meds_master.json');
     if (!response.ok) {
       throw new Error('Failed to fetch medication data');
     }

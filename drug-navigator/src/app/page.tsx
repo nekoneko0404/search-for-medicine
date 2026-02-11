@@ -90,7 +90,7 @@ export default function Home() {
     setHoverMenuIndex(null);
 
     try {
-      const res = await fetch("/api/suggest", {
+      const res = await fetch("https://recipe-worker.neko-neko-0404.workers.dev", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
