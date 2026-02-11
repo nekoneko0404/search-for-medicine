@@ -32,7 +32,7 @@ export default function RootLayout({
   return (
     <html lang="ja" suppressHydrationWarning>
       <head>
-        <link rel="stylesheet" href="/css/v2-shared.css" />
+        <link rel="stylesheet" href="/okuri_pakkun/css/v2-shared.css" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css" />
       </head>
       <body
@@ -53,8 +53,8 @@ export default function RootLayout({
           `}
         </Script>
 
-        <Script src="/js/components/MainHeader.js" strategy="lazyOnload" />
-        <Script src="/js/components/MainFooter.js" strategy="lazyOnload" />
+        <Script src="/okuri_pakkun/js/components/MainHeader.js" strategy="lazyOnload" />
+        <Script src="/okuri_pakkun/js/components/MainFooter.js" strategy="lazyOnload" />
 
         <div className="flex flex-col min-h-screen">
           <main-header base-dir="./" active-page="pakkun"></main-header>
