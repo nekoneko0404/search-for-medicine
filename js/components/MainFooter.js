@@ -7,7 +7,10 @@ export class MainFooter extends HTMLElement {
     }
 
     connectedCallback() {
-        const baseDir = this.getAttribute('base-dir') || './';
+        let baseDir = this.getAttribute('base-dir') || './';
+        if (baseDir !== './' && !baseDir.endsWith('/')) {
+            baseDir += '/';
+        }
 
         this.innerHTML = `
     <footer class="bg-black text-white py-20 px-[5%] w-full">
