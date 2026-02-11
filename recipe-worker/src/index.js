@@ -129,45 +129,7 @@ export default {
 
 // --- HANDLERS ---
 
-async function handleRecipeAppRequest(body, env, corsHeaders, userApiKeyFromHeader) {
-    // INPUT VALIDATION (Security Fix)
-    const MAX_INPUT_LENGTH = 2000;
-    const fullContent = JSON.stringify(body);
-    if (fullContent.length > MAX_INPUT_LENGTH) {
-        throw new Error("Request too large (Limit: 2000 chars)");
-    }
 
-    // Strict Type Checking
-    if (typeof body.cuisine !== 'string' || body.cuisine.length > 50) {
-        throw new Error("Invalid cuisine parameter");
-    }
-    if (typeof body.time !== 'string' || body.time.length > 20) {
-        throw new Error("Invalid time parameter");
-    }
-    // ... (Other validations preserved if needed, or simplified)
-
-    const userKey = userApiKeyFromHeader; // Use passed header value
-    // Note: detailed header access is in main handler, let's keep it simple and reuse logic.
-    // However, since we refactored, we need to pass the key.
-    // The original code extracted key from headers in the main handler.
-    // Let's grab it again or rely on body.provider logic.
-    // Actually, let's rely on the extraction below.
-
-    // NOTE: The original code extracted userKey from headers BEFORE parsing body fully in the try block.
-    // In this refactor, we are inside the try block.
-    // We need to access headers. We can pass 'request' to this function or extract earlier.
-    // For now, let's assume we logic is self-contained. 
-    // Wait, the new structure makes accessing request headers hard inside this function without passing request.
-    // Let's assume we handle key logic inside here or pass the key.
-
-    // Correction: I should have parsed the key in the main handler.
-    // But since I can't easily change the function signature of 'handleRecipeAppRequest' call above without editing the call site...
-    // I entered a replace block that closes the main handler.
-    // Let's assume we fix the key extraction logic inside these handlers or pass it.
-    // To minimize change, I will duplicate the key extraction logic or rely on passed env/body.
-    // But 'request' object is not passed.
-    // I will modify the call site in the replacement to logic above.
-}
 
 // --- SHIPMENT DATA LOGIC (Ported from drug-navigator) ---
 const SPREADSHEET_ID = '1ZyjtfiRjGoV9xHSA5Go4rJZr281gqfMFW883Y7s9mQU';
@@ -431,10 +393,7 @@ async function callOpenAIGeneric(apiKey, systemPrompt, userPrompt) {
 
 
 // --- REST OF RECIPE APP HANDLER ---
-async function handleRecipeAppRequest(body, env, corsHeaders, headers) {
-    // This function body replaces the original logic from line 90 onwards.
-    // I need to be careful to include the original logic here.
-
+async function handleRecipeAppRequest(body, env, corsHeaders, userApiKeyFromHeader) {
     // INPUT VALIDATION (Security Fix)
     const MAX_INPUT_LENGTH = 2000;
     const fullContent = JSON.stringify(body);
@@ -442,11 +401,11 @@ async function handleRecipeAppRequest(body, env, corsHeaders, headers) {
         return new Response(JSON.stringify({ error: "Request too large" }), { status: 400, headers: { "Content-Type": "application/json", ...corsHeaders } });
     }
 
-    if (body.symptoms && (!Array.isArray(body.symptoms))) { // simplified check
+    if (body.symptoms && (!Array.isArray(body.symptoms))) {
         return new Response(JSON.stringify({ error: "Invalid parameters" }), { status: 400, headers: corsHeaders });
     }
 
-    const userKey = headers.get("X-User-Key"); // Access headers passed
+    const userKey = userApiKeyFromHeader;
     const provider = body.provider || 'openai';
 
     let apiKey;
