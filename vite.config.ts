@@ -18,10 +18,6 @@ export default defineConfig({
                     dest: 'pollen-app'
                 },
                 {
-                    src: 'Okusuri_pakkun/images/*',
-                    dest: 'Okusuri_pakkun/images'
-                },
-                {
                     src: 'supply-status/data/*',
                     dest: 'supply-status/data'
                 }
@@ -36,8 +32,6 @@ export default defineConfig({
                 hiyari: resolve(__dirname, 'hiyari_app/index.html'),
                 update: resolve(__dirname, 'update/index.html'),
                 debug: resolve(__dirname, 'update/debug.html'),
-                pakkun_guide: resolve(__dirname, 'Okusuri_pakkun/usage_guide.html'),
-                pakkun_app: resolve(__dirname, 'Okusuri_pakkun/index.html'),
                 supply_status: resolve(__dirname, 'supply-status/index.html'),
                 anonymous_bbs: resolve(__dirname, 'anonymous-bbs/index.html'),
                 pollen_app: resolve(__dirname, 'pollen-app/index.html'),

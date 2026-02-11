@@ -1,0 +1,22 @@
+﻿drug-navigator@0.1.0 C:\Users\kiyoshi\Github_repository\drug-navigator
++-- @emnapi/core@1.7.1 extraneous
++-- @emnapi/runtime@1.7.1 extraneous
++-- @emnapi/wasi-threads@1.1.0 extraneous
++-- @google/generative-ai@0.24.1
++-- @napi-rs/wasm-runtime@0.2.12 extraneous
++-- @tailwindcss/postcss@4.1.18
++-- @tybys/wasm-util@0.10.1 extraneous
++-- @types/node@20.19.27
++-- @types/react-dom@19.2.3
++-- @types/react@19.2.7
++-- clsx@2.1.1
++-- eslint-config-next@16.1.1
++-- eslint@9.39.2
++-- lucide-react@0.562.0
++-- next@16.1.1
++-- react-dom@19.2.3
++-- react@19.2.3
++-- tailwind-merge@3.4.0
++-- tailwindcss@4.1.18
+`-- typescript@5.9.3
+
