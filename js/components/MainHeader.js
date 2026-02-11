@@ -11,13 +11,13 @@ export class MainHeader extends HTMLElement {
         this.style.display = 'block';
         const activePage = this.getAttribute('active-page') || '';
 
-        // Inject V2 Shared CSS
-        if (!document.querySelector('link[href*="v2-shared.css"]')) {
-            const link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = `${baseDir}css/v2-shared.css`;
-            document.head.appendChild(link);
-        }
+        // Inject V2 Shared CSS - REMOVED: Managed via static imports in apps
+        // if (!document.querySelector('link[href*="v2-shared.css"]')) {
+        //     const link = document.createElement('link');
+        //     link.rel = 'stylesheet';
+        //     link.href = `${baseDir}css/v2-shared.css`;
+        //     document.head.appendChild(link);
+        // }
 
         // Add Font Awesome if missing
         if (!document.querySelector('link[href*="font-awesome"]')) {
