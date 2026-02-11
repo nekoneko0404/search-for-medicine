@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:all": "powershell -ExecutionPolicy Bypass -File ./build_all.ps1",
     "test": "vitest",
     "preview": "vite preview"
   },

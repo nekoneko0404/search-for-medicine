@@ -55,6 +55,14 @@ export default defineConfig({
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/hiyari-proxy/, ''),
             },
+            '/drug-navigator': {
+                target: 'http://localhost:3001',
+                changeOrigin: true,
+            },
+            '/okuri_pakkun': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
+            },
         },
     },
 });
