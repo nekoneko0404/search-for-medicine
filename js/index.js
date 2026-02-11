@@ -18,7 +18,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        // notificationBody fetch removed to rely on hardcoded HTML in index.html
+        // notification.md の読み込みと表示
+        const loadNotifications = async () => {
+            try {
+                const response = await fetch('notification.md');
+                if (!response.ok) throw new Error('Failed to load notification.md');
+                const markdown = await response.text();
+
+                // marked.js が読み込まれていることを確認
+                if (typeof marked !== 'undefined') {
+                    const rawHtml = marked.parse(markdown);
+                    const cleanHtml = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(rawHtml) : rawHtml;
+                    notificationBody.innerHTML = cleanHtml;
+                } else {
+                    console.error('marked.js is not loaded');
+                    notificationBody.textContent = '更新情報の読み込みに失敗しました（ライブラリエラー）。';
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                notificationBody.innerHTML = '<p class="text-xs text-red-400">更新情報の取得に失敗しました。</p>';
+            }
+        };
+
+        loadNotifications();
     }
 
     // --- Update time script ---

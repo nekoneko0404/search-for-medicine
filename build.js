@@ -36,23 +36,18 @@ try {
     console.log('\x1b[36mStarting Unified Build (Node.js ESM)...\x1b[0m');
 
     // 1. Build Root (Vite)
-    console.log('\n\x1b[36m[1/4] Building Root (Vite)...\x1b[0m');
+    console.log('\n\x1b[36m[1/3] Building Root (Vite)...\x1b[0m');
     exec('npm run build:vite');
 
-    // 2. Build Drug Navigator (Next.js)
-    console.log('\n\x1b[36m[2/4] Building Drug Navigator...\x1b[0m');
+    // 2. Build Sub-apps (Next.js) using workspaces
+    console.log('\n\x1b[36m[2/3] Building Sub-apps (Next.js) via Workspaces...\x1b[0m');
+    exec('npm run build --workspaces --if-present');
+
+    // 3. Copy Artifacts
+    console.log('\n\x1b[36m[3/3] Copying Artifacts...\x1b[0m');
+
     const drugNavDir = path.join(__dirname, 'drug-navigator');
-    exec('npm install', drugNavDir);
-    exec('npm run build', drugNavDir);
-
-    // 3. Build Okuri Pakkun (Next.js)
-    console.log('\n\x1b[36m[3/4] Building Okuri Pakkun...\x1b[0m');
     const okuriDir = path.join(__dirname, 'okuri_pakkun', 'okusuri-pakkun-app');
-    exec('npm install', okuriDir);
-    exec('npm run build', okuriDir);
-
-    // 4. Copy Artifacts
-    console.log('\n\x1b[36m[4/4] Copying Artifacts...\x1b[0m');
 
     // Create dist/drug-navigator and dist/okuri_pakkun
     const distDrugNav = path.join(__dirname, 'dist', 'drug-navigator');
