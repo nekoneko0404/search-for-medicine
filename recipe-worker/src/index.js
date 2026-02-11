@@ -58,15 +58,8 @@ export default {
         if (ALLOWED_ORIGINS.includes(origin)) {
             allowOrigin = origin;
         } else if (!origin) {
-            // Allow non-browser requests (e.g. curl, postman) or same-origin if null?
-            // Usually APIs block null origin unless specified.
-            // For safety, we default to null, but developers might need access.
-            // However, browser requests always send Origin.
             allowOrigin = null;
         }
-
-        // If origin is not allowed, we can either return 403 or just not send ACAO header.
-        // Not sending ACAO header will causing browser to block the response.
 
         const corsHeaders = {
             "Access-Control-Allow-Origin": allowOrigin || "",
@@ -81,12 +74,19 @@ export default {
         }
 
         if (request.method !== "POST") {
-            return new Response("Method Not Allowed", { status: 405 });
+            return new Response(JSON.stringify({ error: "Method Not Allowed" }), { status: 405, headers: { "Content-Type": "application/json", ...corsHeaders } });
         }
 
         try {
             const body = await request.json();
             const userKey = request.headers.get("X-User-Key");
+
+            // --- DEBUG LOGGING ---
+            console.log("Request received for provider:", body.provider);
+            console.log("Has User Key:", !!userKey);
+            console.log("Has GEMINI_API_KEY in env:", !!env.GEMINI_API_KEY);
+            console.log("Has OPENAI_API_KEY in env:", !!env.OPENAI_API_KEY);
+            // ---------------------
 
             // Determine Request Type
             if (body.drugName) {
@@ -98,27 +98,33 @@ export default {
             }
 
         } catch (e) {
-            console.error(e);
+            console.error("Worker Error:", e);
+
             // Handle Rate Limit specifically
             if (e.message.includes('429') || e.message.includes('Quota')) {
-                return new Response(JSON.stringify({ error: "429: Rate Limit Exceeded" }), {
+                return new Response(JSON.stringify({
+                    error: "AIサービスの利用制限(429)です。しばらく待ってから再試行してください。",
+                    details: e.message
+                }), {
                     status: 429,
                     headers: { "Content-Type": "application/json", ...corsHeaders },
                 });
             }
 
-            return new Response(JSON.stringify({ error: e.message || "Internal Server Error" }), {
+            // Return detailed error for debugging
+            return new Response(JSON.stringify({
+                error: e.message || "Internal Server Error",
+                stack: e.stack,
+                debug: {
+                    hasGeminiEnv: !!env.GEMINI_API_KEY,
+                    hasOpenAIEnv: !!env.OPENAI_API_KEY
+                }
+            }), {
                 status: 500,
                 headers: { "Content-Type": "application/json", ...corsHeaders },
             });
         }
-    } catch(e) {
-        return new Response(JSON.stringify({ error: "Invalid JSON or Request" }), {
-            status: 400,
-            headers: { "Content-Type": "application/json", ...corsHeaders },
-        });
     }
-}
 };
 
 // --- HANDLERS ---
