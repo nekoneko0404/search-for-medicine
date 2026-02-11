@@ -40,19 +40,7 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-800 pb-20 font-sans">
       {/* Header */}
-      <header className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-4 shadow-md sticky top-0 z-20">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold flex items-center gap-2" onClick={() => window.location.reload()} style={{ cursor: 'pointer' }}>
-            <Pill className="w-7 h-7" />
-            <span>Okusuri Pakkun</span>
-            <span className="text-xs font-normal bg-white/20 px-2 py-0.5 rounded text-white border border-white/30">Beta</span>
-          </h1>
-          <a href="https://search-for-medicine.pages.dev/" className="flex items-center gap-1 text-sm bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-full transition border border-white/30">
-            <HomeIcon className="w-4 h-4" />
-            メニュー
-          </a>
-        </div>
-      </header>
+
 
       <div className="max-w-4xl mx-auto p-4 space-y-8 mt-6">
 

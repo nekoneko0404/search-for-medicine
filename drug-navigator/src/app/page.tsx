@@ -211,13 +211,7 @@ ${contextDesc}
   return (
     <main className="min-h-screen bg-slate-50 text-slate-800 pb-20">
       {/* Header */}
-      <header className="bg-emerald-600 text-white p-4 shadow-md sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <Pill className="w-6 h-6" /> 代替薬ナビゲーター <span className="text-xs font-normal bg-emerald-800 px-2 py-1 rounded">Beta</span>
-          </h1>
-        </div>
-      </header>
+
 
       <div className="max-w-4xl mx-auto p-4 space-y-6">
 
