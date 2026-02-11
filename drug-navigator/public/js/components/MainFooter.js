@@ -33,9 +33,9 @@ class MainFooter extends HTMLElement {
                 <div class="md:col-span-3 flex flex-col gap-6">
                     <span class="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em]">Legal</span>
                     <nav class="flex flex-col gap-4 text-xs font-bold text-gray-400">
-                        <a href="${baseDir}privacy.html" target="_blank" rel="noopener noreferrer"
+                        <a href="/privacy.html" target="_blank" rel="noopener noreferrer"
                             class="hover:text-white transition-colors">プライバシーポリシー</a>
-                        <a href="${baseDir}terms.html" target="_blank" rel="noopener noreferrer"
+                        <a href="/terms.html" target="_blank" rel="noopener noreferrer"
                             class="hover:text-white transition-colors">利用規約</a>
                     </nav>
                 </div>
