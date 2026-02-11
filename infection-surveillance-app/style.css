@@ -20,18 +20,11 @@
 }
 
 /* Reset */
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+/* Reset removed to avoid conflict with Tailwind Preflight */
 
-body {
-    font-family: var(--font-main);
-    /* background: var(--bg-color) !important; Removed to use Tailwind bg */
-    color: var(--text-main);
-    line-height: 1.6;
-}
+
+/* Body style removed to use Tailwind utility classes in index.html */
+
 
 .is-container {
     max-width: 1200px;
