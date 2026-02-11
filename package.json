@@ -8,8 +8,8 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
-    "build:all": "powershell -ExecutionPolicy Bypass -File ./build_all.ps1",
+    "build:vite": "vite build",
+    "build": "node build.js",
     "test": "vitest",
     "preview": "vite preview"
   },
