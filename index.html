@@ -21,21 +21,9 @@
 </head>
 
 <body>
-    <header>
-        <a href="index.html" class="logo">
-            <img src="images/KusuriCompass.png" alt="Kusuri Compass">
-            <div class="logo-text">
-                <span class="logo-title">Kusuri Compass</span>
-                <span class="logo-subtitle">薬剤師業務支援ツール</span>
-            </div>
-        </a>
-        <nav class="nav-links">
-            <a href="search.html" target="_blank" rel="noopener noreferrer">出荷状況検索</a>
-            <a href="update/index.html" target="_blank" rel="noopener noreferrer">出荷状況更新</a>
-            <a href="https://okusuri-pakkun-app.pages.dev/" target="_blank" rel="noopener noreferrer">小児服薬支援</a>
-            <a href="pollen-app/index.html" target="_blank" rel="noopener noreferrer">花粉飛散状況</a>
-        </nav>
-    </header>
+    <!-- Header Component -->
+    <script type="module" src="./js/components/MainHeader.js"></script>
+    <main-header base-dir="./" active-page="home"></main-header>
 
     <div class="magazine-container">
         <!-- Hero Section -->
