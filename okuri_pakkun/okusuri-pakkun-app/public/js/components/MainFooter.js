@@ -1,7 +1,7 @@
 /**
  * Common Footer Component for Kusuri Compass
  */
-export class MainFooter extends HTMLElement {
+class MainFooter extends HTMLElement {
     constructor() {
         super();
     }

@@ -1,7 +1,7 @@
 /**
  * Common Header Component for Kusuri Compass
  */
-export class MainHeader extends HTMLElement {
+class MainHeader extends HTMLElement {
     constructor() {
         super();
     }
