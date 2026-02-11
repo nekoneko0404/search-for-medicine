@@ -36,7 +36,7 @@ export default function RootLayout({
       >
         {/* Google tag (gtag.js) */}
         <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"
+          src="https://www.googletagmanager.com/gtag/js?id=G-VXSZGE4HP7"
           strategy="afterInteractive"
         />
         <Script id="google-analytics" strategy="afterInteractive">
@@ -45,7 +45,7 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
 
-            gtag('config', 'G-H44R8N7W32');
+            gtag('config', 'G-VXSZGE4HP7');
           `}
         </Script>
         <Suspense fallback={<div>Loading...</div>}> {/* 追加 */}
