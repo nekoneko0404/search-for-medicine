@@ -7,39 +7,47 @@ export class MainHeader extends HTMLElement {
     }
 
     connectedCallback() {
-        const baseDir = this.getAttribute('base-dir') || './';
-        this.style.display = 'block'; // Ensure the custom element itself behaves like a block
+        let baseDir = this.getAttribute('base-dir') || './';
+        if (baseDir !== './' && !baseDir.endsWith('/')) {
+            baseDir += '/';
+        }
+        this.style.display = 'block';
         const activePage = this.getAttribute('active-page') || '';
-        const extraContent = this.innerHTML; // Capture any existing HTML inside the tag
 
+        // Inject V2 Shared CSS - REMOVED: Managed via static imports in apps
+        // if (!document.querySelector('link[href*="v2-shared.css"]')) {
+        //     const link = document.createElement('link');
+        //     link.rel = 'stylesheet';
+        //     link.href = `${baseDir}css/v2-shared.css`;
+        //     document.head.appendChild(link);
+        // }
+
+        // Add Font Awesome if missing
+        if (!document.querySelector('link[href*="font-awesome"]')) {
+            const fontAwesome = document.createElement('link');
+            fontAwesome.rel = 'stylesheet';
+            fontAwesome.href = 'https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css';
+            document.head.appendChild(fontAwesome);
+        }
+
+        const children = this.innerHTML;
         this.innerHTML = `
-        <header id="mainHeader" class="bg-white border-b border-gray-200 sticky top-0 z-40 block">
-            <style>
-                main-header { display: block; }
-            </style>
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <a href="${baseDir}index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                        <img src="${baseDir}images/KusuriCompass.png" alt="Kusuri Compass Icon" class="h-10 w-10 object-contain">
-                        <div class="flex flex-col">
-                            <h1 class="text-lg sm:text-xl font-bold text-indigo-900 leading-tight">Kusuri Compass</h1>
-                            <span class="text-[10px] sm:text-xs font-semibold text-indigo-600 leading-tight">薬剤師業務支援ツール</span>
-                        </div>
-                    </a>
-                </div>
-                
-                <nav class="flex items-center gap-2 sm:gap-4">
-                    ${this.renderNavLinks(baseDir, activePage)}
-                    
-                    ${extraContent} <!-- Insert extra links from the original HTML -->
-
-                    <!-- X link -->
-                    <a href="https://x.com/oshigoto_twitte" target="_blank" rel="noopener noreferrer"
-                        class="hidden sm:flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors ml-2"
-                        aria-label="連絡先 (X/Twitter)">
-                        <i class="fa-brands fa-x-twitter text-xl"></i>
-                    </a>
-                </nav>
+        <header>
+            <div class="logo-wrapper">
+                <a href="${baseDir}index.html" class="logo">
+                    <img src="${baseDir}images/KusuriCompass.png" alt="Kusuri Compass">
+                    <div class="logo-text">
+                        <span class="logo-title">Kusuri Compass</span>
+                        <span class="logo-subtitle">薬剤師業務支援ツール</span>
+                    </div>
+                </a>
+            </div>
+            <nav class="nav-links">
+                ${this.renderNavLinks(baseDir, activePage)}
+                <div class="custom-nav-content">${children}</div>
+            </nav>
+            <div class="mobile-menu-toggle" style="display: none;">
+                <i class="fas fa-bars"></i>
             </div>
         </header>
         `;
@@ -47,22 +55,22 @@ export class MainHeader extends HTMLElement {
 
     renderNavLinks(baseDir, activePage) {
         const links = [
-            { id: 'search', label: '出荷状況', fullLabel: '出荷状況検索', path: 'search.html' },
-            { id: 'hiyari', label: 'ヒヤリ調査', fullLabel: 'ヒヤリ・ハット検索', path: 'hiyari_app/index.html' },
-            { id: 'pollen', label: '花粉監視', fullLabel: '花粉リアルタイム監視', path: 'pollen-app/index.html' }
+            { id: 'search', label: '出荷状況検索', path: '/search.html' },
+            { id: 'update', label: '出荷状況更新', path: '/update/index.html' },
+            { id: 'pakkun', label: '小児服薬支援', path: '/okuri_pakkun/' },
+            { id: 'pollen', label: '花粉飛散状況', path: '/pollen-app/index.html' }
         ];
 
         return links.map(link => {
             const isActive = activePage === link.id;
-            const activeClass = isActive ? 'text-indigo-700 bg-indigo-50 border border-indigo-200' : 'text-gray-600 hover:text-indigo-600 hover:bg-gray-50';
+            // Force all top menu links to open in new tab as per user request
+            const target = 'target="_blank" rel="noopener noreferrer"';
+            const path = link.path.startsWith('http') || link.path.startsWith('#') || link.path.startsWith('/') ? link.path : baseDir + link.path;
 
-            return `
-                <a href="${baseDir}${link.path}"
-                    class="text-xs sm:text-sm font-medium px-2 sm:px-3 py-2 rounded-md transition-all duration-200 ${activeClass}">
-                    <span class="hidden md:inline">${link.fullLabel}</span>
-                    <span class="md:hidden">${link.label}</span>
-                </a>
-            `;
+            // simple active style inline or rely on CSS
+            const style = isActive ? 'style="border-bottom: 2px solid black;"' : '';
+
+            return `<a href="${path}" ${target} ${style}>${link.label}</a>`;
         }).join('');
     }
 }

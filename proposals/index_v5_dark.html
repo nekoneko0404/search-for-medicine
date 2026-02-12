@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kusuri Compass - Dark Premium (V5)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/v5.css">
+</head>
+
+<body>
+    <header class="py-10 px-[10%] flex justify-between items-center border-b border-white/10">
+        <div class="text-2xl font-black text-white tracking-widest uppercase">Kusuri Compass</div>
+        <div class="flex gap-4">
+            <a href="index_v4_interactive.html"
+                class="text-gray-400 hover:text-white transition uppercase text-xs font-bold py-2 border-b border-transparent hover:border-white">V4:
+                Playful</a>
+            <span class="text-cyan-400 uppercase text-xs font-bold py-2 border-b border-cyan-400">V5: Premium</span>
+        </div>
+    </header>
+
+    <main class="dark-container">
+        <!-- Hero Section -->
+        <section class="hero-dark">
+            <div class="hero-text">
+                <h2>Precision Healthcare</h2>
+                <p class="text-cyan-400 font-bold tracking-[0.3em] uppercase mt-2">Intelligence & Data Integration</p>
+            </div>
+        </section>
+
+        <h1 class="premium-title">Features</h1>
+
+        <div class="grid-dark">
+            <!-- Medicine -->
+            <a href="search.html" class="card-dark">
+                <i class="fas fa-barcode"></i>
+                <h3>医薬品検索</h3>
+                <p>正確な出荷情報。情報の不確実性を排除し、効率的な調剤フローを確保します。</p>
+            </a>
+
+            <a href="update/index.html" class="card-dark">
+                <i class="fas fa-cloud-upload"></i>
+                <h3>データ同期</h3>
+                <p>リアルタイムな情報の更新と共有。ネットワーク全体の可用性を最大化します。</p>
+            </a>
+
+            <!-- Clinical -->
+            <a href="https://drug-navigator.pages.dev/" class="card-dark purple">
+                <i class="fas fa-brain"></i>
+                <h3>AIナビゲート</h3>
+                <p>Gemini AIによる代替薬提案。高度なアルゴリズムに基づく臨床判断を支援します。</p>
+            </a>
+
+            <a href="hiyari_app/index.html" class="card-dark purple">
+                <i class="fas fa-fingerprint"></i>
+                <h3>安全管理解析</h3>
+                <p>ヒヤリハット事例の追跡と分析。リスクの兆候を早期に検知し予防します。</p>
+            </a>
+
+            <!-- Public -->
+            <a href="pollen-app/index.html" class="card-dark gold">
+                <i class="fas fa-microscope"></i>
+                <h3>環境モニタリング</h3>
+                <p>花粉・感染症の多角的データ可視化。地域全体の健康状態を予測監視します。</p>
+            </a>
+
+            <!-- Community -->
+            <a href="anonymous-bbs/index.html" class="card-dark">
+                <i class="fas fa-network-wired"></i>
+                <h3>専門家コミュニティ</h3>
+                <p>セキュアな情報交換ネットワーク。知識の共有が医療の質を向上させます。</p>
+            </a>
+        </div>
+    </main>
+
+    <footer class="py-20 text-center border-t border-white/5 mt-20">
+        <p class="text-gray-600 text-xs font-bold uppercase tracking-[0.5em]">&copy; 2025 Kusuri Compass. Systems for
+            Excellence.</p>
+    </footer>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+C:\Users\kiyoshi\Github_repository\search-for-medicine\privacy.html|35|<a href="help/index.html" target="_blank" rel="noopener noreferrer" class="manual-link">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\search_v1_backup.html|56|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\terms.html|35|<a href="help/index.html" target="_blank" rel="noopener noreferrer" class="manual-link">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\dist\search.html|66|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\dist\drug-classification\index.html|45|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\dist\hiyari_app\index.html|50|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\dist\supply-status\index.html|42|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\dist\update\index.html|46|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\drug-classification\index.html|40|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\help\index.html|35|<a href="index.html" target="_blank" rel="noopener noreferrer" class="manual-link">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\hiyari_app\index.html|42|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\supply-status\index_v1_backup.html|43|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\supply-status\index.html|33|<a href="../help/index.html" target="_blank" rel="noopener noreferrer" class="manual-link">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\update\index_v1_backup.html|35|class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
+C:\Users\kiyoshi\Github_repository\search-for-medicine\update\index.html|36|<a href="../help/index.html" target="_blank" rel="noopener noreferrer" class="manual-link">使い方</a>

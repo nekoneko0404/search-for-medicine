@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drug_product>
+    <product_id>6149004R1029</product_id>
+    <product_name_japanese>ジスロマック細粒小児用10%</product_name_japanese>
+    <description>
+        本剤は、白色の細粒で、用時懸濁して用いる。
+        懸濁後は、特異な芳香があり、味は甘い。
+    </description>
+    <precautions>
+        <important_warning>
+            本剤の使用にあたっては、耐性菌の発現等を防ぐため、原則として感受性を確認し、疾病の治療上必要な最小限の期間の投与にとどめること。
+            ショック、アナフィラキシーがあらわれることがある。
+        </important_warning>
+        <interaction>
+            制酸剤（水酸化マグネシウム、水酸化アルミニウム）との同時服用により、最高血中濃度が低下することがあるため、同時服用は避けることが望ましい。
+        </interaction>
+    </precautions>
+</drug_product>

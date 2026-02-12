@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drug_product>
+    <product_id>6149002R1020</product_id>
+    <product_name_japanese>クラリスロマイシンDS10%「タカタ」</product_name_japanese>
+    <description>
+        本剤は、白色〜淡黄白色の結晶性の粉末、又は粒及び粉末の混合物である。
+        特有の芳香があり、味は甘く、後に苦い。
+    </description>
+    <precautions>
+        <important_warning>
+            本剤の使用にあたっては、耐性菌の発現等を防ぐため、原則として感受性を確認し、疾病の治療上必要な最小限の期間の投与にとどめること。
+        </important_warning>
+        <interaction>
+            ピモジド、エルゴタミン含有製剤、スボレキサント、ロミタピドメシル酸塩、タダラフィル（アドシルカ）、チカグレロル、イブルチニブ、ベネトクラクス（再発又は難治性の慢性リンパ性白血病（小リンパ球性リンパ腫を含む）の用量漸増期）、ルラシドン塩酸塩、アナモレリン塩酸塩とは併用禁忌である。
+        </interaction>
+    </precautions>
+</drug_product>

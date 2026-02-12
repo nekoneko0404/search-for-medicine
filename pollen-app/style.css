@@ -74,6 +74,20 @@ html {
     color: var(--text-sub);
 }
 
+/* Header QR Code Visibility */
+.header-qr-code {
+    display: none;
+    margin-left: auto;
+    align-items: center;
+    cursor: pointer;
+}
+
+@media (min-width: 640px) {
+    .header-qr-code {
+        display: flex;
+    }
+}
+
 /* Side Panel */
 .side-panel {
     position: absolute;

@@ -109,6 +109,8 @@ body.recipe-app {
     /* Hide non-print elements */
     body>header,
     body>footer,
+    main-header,
+    main-footer,
     main>div:not(#result-section) {
         display: none !important;
     }

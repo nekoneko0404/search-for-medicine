@@ -590,7 +590,9 @@ function handleIngredientClick(ingredientName) {
     }
 }
 
-window.onload = async function () {
+const initApp = async function () {
+    if (document.body.classList.contains('loaded')) return;
+
     document.body.classList.add('loaded');
     document.getElementById('sort-status-icon').textContent = '↕';
     document.getElementById('sort-productName-icon').textContent = '↕';
@@ -628,3 +630,14 @@ window.onload = async function () {
         showMessage('データの読み込みに失敗しました。リロードボタンで再試行してください。', "error");
     }
 };
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
+
+// Fallback: Ensure opacity is reset if something hangs
+setTimeout(() => {
+    document.body.classList.add('loaded');
+}, 3000);

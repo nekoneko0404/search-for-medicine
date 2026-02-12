@@ -6,9 +6,18 @@
   "directories": {
     "doc": "docs"
   },
+  "workspaces": [
+    "drug-navigator",
+    "okuri_pakkun/okusuri-pakkun-app",
+    "recipe-worker"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
+    "dev": "concurrently \"npm:dev:*\"",
+    "dev:vite": "vite",
+    "dev:drug-navigator": "npm run dev --workspace=drug-navigator",
+    "dev:okuri-pakkun": "npm run dev --workspace=okuri_pakkun/okusuri-pakkun-app",
+    "build:vite": "vite build",
+    "build": "node build.js",
     "test": "vitest",
     "preview": "vite preview"
   },
@@ -27,7 +36,8 @@
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@types/localforage": "^0.0.33",
-    "@types/node": "^25.2.1",
+    "@types/node": "^20.11.24",
+    "concurrently": "^9.1.2",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.18",
     "typescript": "^5.9.3",

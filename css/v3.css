@@ -1,0 +1,92 @@
+/* V3: Minimal Glassmorphism Style */
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: url('../images/menu/glass_bg.png') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Inter', 'Noto Sans JP', sans-serif;
+    color: #334155;
+}
+
+.glass-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1rem;
+    backdrop-filter: blur(10px);
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+}
+
+.glass-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 12px 48px 0 rgba(31, 38, 135, 0.15);
+}
+
+.glass-card i {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.glass-card h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.glass-card p {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    opacity: 0.8;
+}
+
+.glass-nav {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.glass-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 3rem;
+    background: linear-gradient(to right, #1e293b, #475569);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.category-label {
+    display: inline-block;
+    padding: 0.25rem 1rem;
+    border-radius: 999px;
+    background: rgba(99, 102, 241, 0.1);
+    color: #6366f1;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}

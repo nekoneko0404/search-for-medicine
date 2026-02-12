@@ -9,31 +9,11 @@
 
     <!-- CSP: Strict Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://cdn.tailwindcss.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com https://recipe-worker.neko-neko-0404.workers.dev; base-uri 'self'; form-action 'self';">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com https://recipe-worker.neko-neko-0404.workers.dev; base-uri 'self'; form-action 'self';">
 
-    <!-- OGP -->
-    <meta property="og:title" content="健康レシピ提案 - Kusuri Compass">
-    <meta property="og:description" content="気になる症状や食材から、あなたにぴったりの健康レシピをAIが提案します。">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://kiyoshi.github.io/search-for-medicine/recipe-app/">
-    <meta property="og:image" content="https://kiyoshi.github.io/search-for-medicine/recipe-app/ogp.jpg">
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="健康レシピ提案 - Kusuri Compass">
-    <meta name="twitter:image" content="https://kiyoshi.github.io/search-for-medicine/recipe-app/ogp.jpg">
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-H44R8N7W32');
-    </script>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/v2-shared.css">
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
@@ -51,20 +31,15 @@
 <body class="recipe-app bg-orange-50 font-['M_PLUS_Rounded_1c'] text-gray-800">
 
     <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="../index.html" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <img src="../images/KusuriCompass.png" alt="Kusuri Compass" class="h-8 w-8 object-contain">
-                <span class="font-bold text-gray-600">Kusuri Compassに戻る</span>
-            </a>
-            <h1 class="text-xl font-bold text-orange-600 flex items-center gap-2">
-                <i class="fas fa-utensils"></i>
-                健康レシピ提案
-            </h1>
-        </div>
-    </header>
+    <!-- Common Header -->
+    <main-header base-dir="../" active-page="recipe"></main-header>
 
-    <main class="max-w-7xl mx-auto px-4 py-8">
+    <main class="max-w-7xl mx-auto px-4 py-8 pt-24">
+        <!-- Page Title -->
+        <div class="mb-6 flex items-center gap-3">
+            <i class="fas fa-utensils text-3xl text-orange-600"></i>
+            <h1 class="text-2xl font-bold text-gray-800">健康レシピ提案</h1>
+        </div>
 
         <!-- Hero Section -->
         <div class="text-center mb-10 fade-in">
@@ -88,7 +63,7 @@
                 <div class="form-group">
                     <label class="block text-lg font-bold text-gray-700 mb-3">
                         <span class="bg-orange-100 text-orange-600 rounded-full px-3 py-1 text-sm mr-2">Step 1</span>
-                        気になること・体調（複数選択可）
+                        気になる食生活・健康の悩み（複数選択可）
                     </label>
 
                     <!-- Medical Disclaimer -->
@@ -100,8 +75,10 @@
                             <p class="text-blue-700/80 leading-relaxed">
                                 このサービスは、毎日の食事選びをサポートするものであり、医療行為や治療を目的としたものではありません。
                                 <br>現在治療中の病気や、深刻な体調不良がある場合は、必ず医師や専門機関にご相談ください。
+                                <br>AI生成のため、不適切な食材や組み合わせが含まれることがあります。アレルギーや安全性は必ずご自身でご確認ください。
                             </p>
                         </div>
+
                     </div>
 
                     <div class="flex flex-wrap gap-2 mb-3" id="symptoms-container">
@@ -110,7 +87,8 @@
                     <!-- 'Others' Input -->
                     <div class="mt-2">
                         <label class="block text-sm font-bold text-gray-600 mb-1">その他（自由記述）</label>
-                        <input type="text" name="other_symptom" placeholder="例：食欲がない、二日酔い..."
+                        <p class="text-xs text-gray-500 mb-1">※病名や具体的な治療目的の症状は入力せず、日々の健康管理・食生活の悩みとしてご入力ください。</p>
+                        <input type="text" name="other_symptom" placeholder="例：食欲がない、飲み過ぎた翌日..."
                             class="form-input text-sm">
                     </div>
                 </div>
@@ -486,11 +464,9 @@
 
     </main>
 
-    <footer class="text-center py-6 text-gray-500 text-sm">
-        <p>&copy; 2025 Kusuri Compass - Recipe Suggestion App</p>
-        <p class="text-xs mt-1">※提案されたレシピは参考情報です。アレルギーや医師の指示に従ってください。</p>
-    </footer>
-
+    <main-footer base-dir="../"></main-footer>
+    <script type="module" src="../js/components/MainHeader.js"></script>
+    <script type="module" src="../js/components/MainFooter.js"></script>
     <script src="js/script.js" type="module"></script>
 </body>
 

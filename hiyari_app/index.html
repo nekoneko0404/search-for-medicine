@@ -8,57 +8,60 @@
 
     <!-- CSP: Strict Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com https://hiyari-proxy-708146219355.asia-east1.run.app; base-uri 'self'; form-action 'self';">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net https://hiyari-proxy-708146219355.asia-east1.run.app; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com https://hiyari-proxy-708146219355.asia-east1.run.app; base-uri 'self'; form-action 'self';">
 
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXSZGE4HP7"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
-        gtag('config', 'G-H44R8N7W32');
+        gtag('config', 'G-VXSZGE4HP7');
     </script>
 
-    <!-- Built Tailwind CSS -->
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/v2-shared.css">
 
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
     <!-- The following line was changed from style.css to input.css to consolidate CSS. -->
 
     <!-- Inline styles removed. Using global css/input.css and Tailwind. -->
 
     <!-- Dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+    <!-- <link rel="stylesheet" href="../css/v2-shared.css"> -->
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="bg-[#f0f9ff] min-h-screen flex flex-col font-sans text-gray-900 antialiased">
     <!-- Header Component -->
     <main-header base-dir="../" active-page="hiyari">
-        <a href="../help/index.html" target="_blank" rel="noopener noreferrer"
+        <a href="/help/index.html" target="_blank" rel="noopener noreferrer"
             class="text-xs sm:text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-100 px-2 sm:px-3 py-2 rounded-md transition-colors">使い方</a>
     </main-header>
 
-    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
+    <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 max-w-7xl">
         <div class="text-center mb-8 flex-shrink-0">
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">ヒヤリ・ハット事例検索</h2>
+            <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">ヒヤリ・ハット事例検索</h2>
             <p class="text-gray-500 text-sm">薬局でのインシデント事例を検索して安全管理に役立てましょう</p>
         </div>
 
-        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
             <div class="flex flex-col sm:flex-row items-center gap-4">
-                <label for="search-input"
-                    class="font-semibold text-gray-700 whitespace-nowrap text-sm">医薬品名・成分名:</label>
+                <label for="search-input" class="font-bold text-indigo-900 whitespace-nowrap text-sm">医薬品名・成分名:</label>
                 <input type="text" id="search-input"
-                    class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors py-2 pl-3 pr-3 text-sm">
-                <label for="filter-input" class="font-semibold text-gray-700 whitespace-nowrap text-sm">絞り込み:</label>
+                    class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors py-2 pl-3 pr-3 text-sm bg-gray-50/50">
+                <label for="filter-input" class="font-bold text-indigo-900 whitespace-nowrap text-sm">絞り込み:</label>
                 <input type="text" id="filter-input"
-                    class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors py-2 pl-3 pr-3 text-sm">
+                    class="flex-1 rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors py-2 pl-3 pr-3 text-sm bg-gray-50/50">
                 <button id="search-btn"
-                    class="bg-indigo-600 text-white font-semibold rounded-lg px-4 py-2 hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm">
+                    class="bg-indigo-600 text-white font-bold rounded-lg px-6 py-2 hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 text-sm shadow-sm">
                     検索
                 </button>
                 <button id="share-btn"
-                    class="border-2 border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg font-semibold hover:bg-indigo-50 transition-colors shadow-sm flex items-center justify-center gap-2 text-sm">
+                    class="border-2 border-indigo-600 text-indigo-600 px-4 py-2 rounded-lg font-bold hover:bg-indigo-50 transition-colors shadow-sm flex items-center justify-center gap-2 text-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z">
@@ -67,7 +70,7 @@
                     共有
                 </button>
                 <button id="reload-button"
-                    class="bg-gray-200 text-gray-700 font-semibold rounded-lg px-4 py-2 hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 text-sm">
+                    class="bg-white border border-gray-300 text-gray-700 font-semibold rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 text-sm shadow-sm">
                     クリア
                 </button>
             </div>
@@ -123,7 +126,7 @@
             <!-- Cards will be inserted here -->
         </div>
 
-        <a href="../index.html"
+        <a href="/index.html"
             class="fixed top-20 right-6 text-indigo-600 hover:text-indigo-800 transition-colors duration-300 focus:outline-none group z-40"
             aria-label="ホームに戻る">
             <svg class="w-10 h-10 transition-transform duration-300 group-hover:scale-110" fill="none"

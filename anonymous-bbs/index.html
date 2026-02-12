@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.tailwindcss.com; font-src https://fonts.gstatic.com; img-src 'self' https://www.googletagmanager.com; connect-src 'self' https://anonymous-bbs-worker.neko-neko-0404.workers.dev https://www.google-analytics.com https://analytics.google.com ws://127.0.0.1:* wss://127.0.0.1:*;">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://anonymous-bbs-worker.neko-neko-0404.workers.dev https://www.google-analytics.com https://analytics.google.com https://cdn.jsdelivr.net ws: http:; base-uri 'self'; form-action 'self';">
     <title>助け合い掲示板 (Beta)</title>
     <meta name="description" content="ユーザー同士で質問・相談・情報交換ができる助け合い掲示板です。Kusuri Compass ユーザーコミュニティ。">
     <meta name="keywords" content="薬剤師, 薬局, 掲示板, コミュニティ, Kusuri Compass">
@@ -22,7 +22,11 @@
     </script>
 
     <!-- CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS (CDN Removed) -->
+    <script type="module">
+        import '../css/main.css';
+    </script>
+    <!-- <link rel="stylesheet" href="../css/v2-shared.css"> -->
     <link rel="stylesheet" href="../css/input.css">
     <link rel="stylesheet" href="style.css">
 
@@ -35,27 +39,10 @@
 </head>
 
 <body>
-    <header class="main-site-header"
-        style="background: white; border-bottom: 1px solid #e2e8f0; padding: 10px 0; margin-bottom: 20px;">
-        <div class="container"
-            style="max-width: 1000px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center;">
-            <a href="../index.html" style="text-decoration: none; display: flex; align-items: center; gap: 10px;">
-                <img src="../images/KusuriCompass.png" alt="Kusuri Compass Icon"
-                    style="height: 32px; width: 32px; object-fit: contain;">
-                <div style="display: flex; flex-direction: column;">
-                    <span style="font-size: 16px; font-weight: 700; color: #312e81; line-height: 1.1;">Kusuri
-                        Compass</span>
-                    <span style="font-size: 9px; font-weight: 600; color: #4f46e5; line-height: 1.1;">薬剤師業務支援ツール</span>
-                </div>
-            </a>
-            <a href="../index.html"
-                style="text-decoration: none; font-size: 14px; font-weight: 600; color: #64748b; display: flex; align-items: center; gap: 5px;">
-                <i class="fas fa-home"></i> ホーム
-            </a>
-        </div>
-    </header>
+    <!-- Common Header -->
+    <main-header base-dir="../" active-page="bbs"></main-header>
 
-    <div class="container">
+    <div class="container pt-24">
         <header>
             <h1>助け合い掲示板</h1>
             <div class="header-desc">
@@ -94,6 +81,9 @@
             </section>
         </div>
     </div>
+    <main-footer base-dir="../"></main-footer>
+    <script type="module" src="../js/components/MainHeader.js"></script>
+    <script type="module" src="../js/components/MainFooter.js"></script>
     <script type="module" src="script.js"></script>
 </body>
 

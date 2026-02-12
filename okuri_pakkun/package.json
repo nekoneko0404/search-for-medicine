@@ -1,0 +1,20 @@
+{
+  "name": "okusuri-pakkun-scripts",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Scripts for Okusuri Pakkun web application",
+  "main": "index.js",
+  "scripts": {
+    "parse-pmda": "ts-node scripts/pmdaXmlParser.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/xml2js": "^0.4.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "xml2js": "^0.6.2"
+  }
+}

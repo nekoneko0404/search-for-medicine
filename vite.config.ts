@@ -18,8 +18,8 @@ export default defineConfig({
                     dest: 'pollen-app'
                 },
                 {
-                    src: 'Okusuri_pakkun/images/*',
-                    dest: 'Okusuri_pakkun/images'
+                    src: 'pakkun-stamp/images/*',
+                    dest: 'pakkun-stamp/images'
                 },
                 {
                     src: 'supply-status/data/*',
@@ -36,14 +36,17 @@ export default defineConfig({
                 hiyari: resolve(__dirname, 'hiyari_app/index.html'),
                 update: resolve(__dirname, 'update/index.html'),
                 debug: resolve(__dirname, 'update/debug.html'),
-                pakkun_guide: resolve(__dirname, 'Okusuri_pakkun/usage_guide.html'),
-                pakkun_app: resolve(__dirname, 'Okusuri_pakkun/index.html'),
+                pakkun_guide: resolve(__dirname, 'pakkun-stamp/usage_guide.html'),
+                pakkun_app: resolve(__dirname, 'pakkun-stamp/index.html'),
                 supply_status: resolve(__dirname, 'supply-status/index.html'),
                 anonymous_bbs: resolve(__dirname, 'anonymous-bbs/index.html'),
                 pollen_app: resolve(__dirname, 'pollen-app/index.html'),
                 recipe_app: resolve(__dirname, 'recipe-app/index.html'),
                 infection_surveillance: resolve(__dirname, 'infection-surveillance-app/index.html'),
                 drug_classification: resolve(__dirname, 'drug-classification/index.html'),
+                privacy: resolve(__dirname, 'privacy.html'),
+                terms: resolve(__dirname, 'terms.html'),
+                help: resolve(__dirname, 'help/index.html'),
             },
         },
     },
@@ -54,6 +57,14 @@ export default defineConfig({
                 target: 'https://hiyari-proxy-708146219355.asia-east1.run.app',
                 changeOrigin: true,
                 rewrite: (path) => path.replace(/^\/hiyari-proxy/, ''),
+            },
+            '/drug-navigator': {
+                target: 'http://localhost:3001',
+                changeOrigin: true,
+            },
+            '/okuri_pakkun': {
+                target: 'http://localhost:3000',
+                changeOrigin: true,
             },
         },
     },

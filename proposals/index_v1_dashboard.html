@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kusuri Compass - Dashboard Style (V1)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Noto+Sans+JP:wght@400;700;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/v1.css">
+</head>
+
+<body class="bg-gray-50">
+    <header class="bg-white border-b sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-600 flex items-center gap-2">
+                <i class="fas fa-compass"></i> Kusuri Compass
+            </h1>
+            <nav class="hidden md:flex gap-6 text-sm font-medium text-gray-600">
+                <a href="index.html" class="hover:text-indigo-600">Original</a>
+                <span class="text-indigo-600 border-b-2 border-indigo-600">Dashboard (V1)</span>
+                <a href="#" class="text-gray-300 cursor-not-allowed">Visual (V2)</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard-container">
+        <div class="mb-12 text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl mb-4">機能選択メニュー</h2>
+            <p class="text-lg text-gray-500">薬局業務を支援する各種ツールをカテゴリから選択してください</p>
+        </div>
+
+        <!-- Medicine & Inventory Section -->
+        <section>
+            <div class="category-hero" style="background-image: url('images/menu/med_mgmt.png');">
+                <h3 class="cat-med">医薬品・在庫管理</h3>
+            </div>
+            <div class="menu-grid">
+                <a href="search.html" class="v1-card">
+                    <i class="fas fa-pills text-teal-600"></i>
+                    <h3>医薬品出荷検索</h3>
+                    <p>医薬品の出荷状況をすばやく検索します。</p>
+                </a>
+                <a href="update/index.html" class="v1-card">
+                    <i class="fas fa-edit text-teal-600"></i>
+                    <h3>出荷状況更新</h3>
+                    <p>最新の在庫状況や出荷情報を更新・確認します。</p>
+                    <span class="update-time" id="shipping-update-time">Loading...</span>
+                </a>
+                <a href="supply-status/index.html" class="v1-card">
+                    <i class="fas fa-truck-loading text-teal-600"></i>
+                    <h3>供給確保医薬品 <span class="text-xs text-gray-400 font-normal">(Beta)</span></h3>
+                    <p>成分ごとの出荷状況・解消見込みを確認できます。</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- Clinical & Safety Section -->
+        <section>
+            <div class="category-hero" style="background-image: url('images/menu/clinical_support.png');">
+                <h3 class="cat-clinical">臨床・安全支援</h3>
+            </div>
+            <div class="menu-grid">
+                <a href="https://drug-navigator.pages.dev/" class="v1-card">
+                    <i class="fas fa-exchange-alt text-purple-600"></i>
+                    <h3>代替薬ナビ</h3>
+                    <p>AIが欠品時の最適な代替薬を提案します。</p>
+                </a>
+                <a href="hiyari_app/index.html" class="v1-card">
+                    <i class="fas fa-search text-purple-600"></i>
+                    <h3>ヒヤリハット検索</h3>
+                    <p>過去のヒヤリハット事例を確認し、事故を未然に防ぎます。</p>
+                </a>
+                <a href="recipe-app/index.html" class="v1-card">
+                    <i class="fas fa-utensils text-orange-500"></i>
+                    <h3>健康レシピ提案</h3>
+                    <p>AIが症状に合わせた健康的なレシピを提案します。</p>
+                    <span class="badge-new">New！</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Public Health Section -->
+        <section>
+            <div class="category-hero" style="background-image: url('images/menu/public_health.png');">
+                <h3 class="cat-public">公共・健康情報</h3>
+            </div>
+            <div class="menu-grid">
+                <a href="pollen-app/index.html" class="v1-card">
+                    <i class="fas fa-wind text-sky-600"></i>
+                    <h3>花粉飛散状況</h3>
+                    <p>リアルタイムな花粉情報を地図上に可視化します。</p>
+                    <span class="badge-new">New！</span>
+                </a>
+                <a href="infection-surveillance-app/index.html" class="v1-card">
+                    <i class="fas fa-map-marked-alt text-sky-600"></i>
+                    <h3>全国感染状況</h3>
+                    <p>感染症の発生状況を全国レベルで追跡・可視化します。</p>
+                    <span class="update-time" id="infection-update-time">Loading...</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Patient & Community Section -->
+        <section class="mb-20">
+            <div class="category-hero" style="background-image: url('images/menu/patient_care.png');">
+                <h3 class="cat-community">患者・コミュニティ</h3>
+            </div>
+            <div class="menu-grid">
+                <a href="https://okusuri-pakkun-app.pages.dev/" class="v1-card">
+                    <i class="fas fa-capsules text-orange-600"></i>
+                    <h3>おくすりぱっくん</h3>
+                    <p>小児用医薬品の飲み合わせや服薬支援ツールです。</p>
+                </a>
+                <a href="Okusuri_pakkun/usage_guide.html" class="v1-card">
+                    <i class="fas fa-stamp text-orange-600"></i>
+                    <h3>ぱっくんスタンプ</h3>
+                    <p>スタンプを使い、お子様が楽しく服薬できる仕組みを提供します。</p>
+                </a>
+                <a href="anonymous-bbs/index.html" class="v1-card">
+                    <i class="fas fa-comments text-orange-600"></i>
+                    <h3>助け合い掲示板 <span class="text-xs text-gray-400 font-normal">(Beta)</span></h3>
+                    <p>ユーザー同士で知識や情報を交換できるコミュニティです。</p>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-900 text-slate-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p>&copy; 2025 Kusuri Compass. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,144 @@
+/* V5: Dark Premium Style */
+:root {
+    --dark-bg: #0f172a;
+    --dark-card: #1e293b;
+    --neon-cyan: #22d3ee;
+    --neon-gold: #fbbf24;
+    --neon-purple: #a855f7;
+}
+
+body {
+    background-color: var(--dark-bg);
+    color: #f1f5f9;
+    font-family: 'Inter', sans-serif;
+}
+
+.dark-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+}
+
+.premium-title {
+    font-size: 3rem;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 4rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.grid-dark {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+.card-dark {
+    background: var(--dark-card);
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 2.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-dark:hover {
+    border-color: var(--neon-cyan);
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px rgba(34, 211, 238, 0.1);
+}
+
+.card-dark::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--neon-cyan);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-dark:hover::after {
+    opacity: 1;
+}
+
+.card-dark.gold:hover {
+    border-color: var(--neon-gold);
+}
+
+.card-dark.gold:hover::after {
+    background: var(--neon-gold);
+}
+
+.card-dark.purple:hover {
+    border-color: var(--neon-purple);
+}
+
+.card-dark.purple:hover::after {
+    background: var(--neon-purple);
+}
+
+.card-dark i {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--neon-cyan);
+}
+
+.card-dark.gold i {
+    color: var(--neon-gold);
+}
+
+.card-dark.purple i {
+    color: var(--neon-purple);
+}
+
+.card-dark h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.card-dark p {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    line-height: 1.6;
+}
+
+.hero-dark {
+    height: 400px;
+    background: url('../images/menu/dark_hero.png') no-repeat center;
+    background-size: cover;
+    border-radius: 20px;
+    margin-bottom: 4rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero-dark::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    border-radius: 20px;
+}
+
+.hero-text {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+}
+
+.hero-text h2 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    color: white;
+    text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+}

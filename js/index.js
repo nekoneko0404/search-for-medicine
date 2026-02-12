@@ -9,33 +9,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const notificationContent = document.getElementById('notification-content');
     const notificationBody = document.getElementById('notification-body');
 
-    if (notificationToggle && notificationContent && notificationBody) {
-        notificationToggle.addEventListener('click', () => {
-            const isExpanded = notificationToggle.getAttribute('aria-expanded') === 'true';
-            notificationToggle.setAttribute('aria-expanded', !isExpanded);
-            notificationContent.classList.toggle('open');
-            notificationToggle.querySelector('.icon').textContent = isExpanded ? '▼' : '▲';
-        });
-
-        fetch('notification.md')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(markdown => {
-                if (window.DOMPurify && window.marked) {
-                    const sanitizedHtml = DOMPurify.sanitize(marked.parse(markdown));
-                    notificationBody.innerHTML = sanitizedHtml;
-                } else {
-                    notificationBody.innerText = markdown; // Fallback to plain text
-                }
-            })
-            .catch(error => {
-                notificationBody.innerHTML = '<p class="text-center text-red-500">お知らせの読み込みに失敗しました。</p>';
-                console.error('Error fetching notification:', error);
+    if (notificationBody) {
+        if (notificationToggle && notificationContent) {
+            notificationToggle.addEventListener('click', () => {
+                const isOpen = notificationContent.classList.toggle('open');
+                notificationToggle.classList.toggle('open', isOpen);
+                notificationToggle.setAttribute('aria-expanded', isOpen);
             });
+        }
+
+        // notification.md の読み込みと表示
+        const loadNotifications = async () => {
+            try {
+                const response = await fetch('notification.md');
+                if (!response.ok) throw new Error('Failed to load notification.md');
+                const markdown = await response.text();
+
+                // marked.js が読み込まれていることを確認
+                if (typeof marked !== 'undefined') {
+                    const rawHtml = marked.parse(markdown);
+                    const cleanHtml = typeof DOMPurify !== 'undefined' ? DOMPurify.sanitize(rawHtml) : rawHtml;
+                    notificationBody.innerHTML = cleanHtml;
+                } else {
+                    console.error('marked.js is not loaded');
+                    notificationBody.textContent = '更新情報の読み込みに失敗しました（ライブラリエラー）。';
+                }
+            } catch (error) {
+                console.error('Error loading notifications:', error);
+                notificationBody.innerHTML = '<p class="text-xs text-red-400">更新情報の取得に失敗しました。</p>';
+            }
+        };
+
+        loadNotifications();
     }
 
     // --- Update time script ---
@@ -83,4 +88,36 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    // --- Top Notice Banner Logic ---
+    const topNotice = document.getElementById('top-notice');
+    if (topNotice) {
+        const noticeId = topNotice.getAttribute('data-notice-id');
+        const hiddenNotices = JSON.parse(localStorage.getItem('kusuri_compass_hidden_notices') || '[]');
+
+        if (!hiddenNotices.includes(noticeId)) {
+            // Show the banner
+            topNotice.style.display = 'block';
+
+            const closeBtn = document.getElementById('notice-close-btn');
+            const hideCheckbox = document.getElementById('notice-hide-checkbox');
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    if (hideCheckbox && hideCheckbox.checked) {
+                        hiddenNotices.push(noticeId);
+                        localStorage.setItem('kusuri_compass_hidden_notices', JSON.stringify(hiddenNotices));
+                    }
+
+                    // Animate and remove
+                    topNotice.style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                    topNotice.style.opacity = '0';
+                    topNotice.style.transform = window.innerWidth <= 640 ? 'translateY(100%)' : 'translateX(120%)';
+
+                    setTimeout(() => {
+                        topNotice.remove();
+                    }, 400);
+                });
+            }
+        }
+    }
 });
