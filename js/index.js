@@ -88,4 +88,36 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     }
 
+    // --- Top Notice Banner Logic ---
+    const topNotice = document.getElementById('top-notice');
+    if (topNotice) {
+        const noticeId = topNotice.getAttribute('data-notice-id');
+        const hiddenNotices = JSON.parse(localStorage.getItem('kusuri_compass_hidden_notices') || '[]');
+
+        if (!hiddenNotices.includes(noticeId)) {
+            // Show the banner
+            topNotice.style.display = 'block';
+
+            const closeBtn = document.getElementById('notice-close-btn');
+            const hideCheckbox = document.getElementById('notice-hide-checkbox');
+
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    if (hideCheckbox && hideCheckbox.checked) {
+                        hiddenNotices.push(noticeId);
+                        localStorage.setItem('kusuri_compass_hidden_notices', JSON.stringify(hiddenNotices));
+                    }
+
+                    // Animate and remove
+                    topNotice.style.transition = 'opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+                    topNotice.style.opacity = '0';
+                    topNotice.style.transform = window.innerWidth <= 640 ? 'translateY(100%)' : 'translateX(120%)';
+
+                    setTimeout(() => {
+                        topNotice.remove();
+                    }, 400);
+                });
+            }
+        }
+    }
 });

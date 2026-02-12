@@ -32,6 +32,29 @@
     <main-header base-dir="./" active-page="home">
     </main-header>
 
+    <!-- Top Notice Banner -->
+    <div id="top-notice" class="update-notice" data-notice-id="design-renewal-20260212" style="display: none;">
+        <div class="notice-content">
+            <i class="fas fa-bullhorn notice-icon"></i>
+            <div class="notice-text">
+                <p class="notice-title">🔔 サイトリニューアルのお知らせ</p>
+                <p class="notice-message">
+                    サイトのデザインをリニューアルしました！<br>
+                    「ぱっくんスタンプ」のURLが変更されています。印刷してご利用の場合は、<span class="highlight">「ぱっくんスタンプ」のページから再印刷</span>をお願いします。
+                </p>
+                <div class="notice-actions">
+                    <label class="notice-hide-check">
+                        <input type="checkbox" id="notice-hide-checkbox">
+                        <span>今後表示しない</span>
+                    </label>
+                </div>
+            </div>
+            <button id="notice-close-btn" class="notice-close" aria-label="閉じる">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
     <div class="magazine-container">
         <!-- Hero Section -->
         <section class="hero-section" style="background-image: url('images/menu/top_hero.png');">
