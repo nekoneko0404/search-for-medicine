@@ -788,7 +788,7 @@ header h1 {
 /* Praise Bubble */
 .praise-bubble {
     position: fixed;
-    top: 20%;
+    top: 10%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.5);
     background: white;
@@ -1598,7 +1598,9 @@ header h1 {
     margin: 0;
     font-weight: bold;
     color: var(--primary-color);
-}/* =========================================
+}
+
+/* =========================================
    Fix for CSS Variable Conflicts with v2-shared.css
    ========================================= */
 /* 
