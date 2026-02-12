@@ -983,10 +983,13 @@ function triggerCompletion() {
     // Delay showing the certificate overlay to allow effects to be seen
     // and to stabilize performance on mobile devices.
     setTimeout(() => {
+        // Erase falling and floating effects when certificate is shown
+        document.querySelectorAll('.confetti, .floating-emoji, .rare-stamp-effect, .big-stamp-effect').forEach(el => el.remove());
+
         overlay.classList.remove('hidden');
         overlay.classList.add('active');
         overlay.classList.add('show');
-    }, 3500); // 3.5 seconds delay
+    }, 9500); // 9.5 seconds delay (further delayed by 3s as requested)
 }
 
 function playFanfare() {

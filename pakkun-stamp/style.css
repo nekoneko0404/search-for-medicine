@@ -801,7 +801,7 @@ header h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 2000;
+    z-index: 100000 !important;
     text-align: center;
     width: 80%;
     max-width: 400px;
@@ -1598,7 +1598,9 @@ header h1 {
     margin: 0;
     font-weight: bold;
     color: var(--primary-color);
-}/* =========================================
+}
+
+/* =========================================
    Fix for CSS Variable Conflicts with v2-shared.css
    ========================================= */
 /* 
