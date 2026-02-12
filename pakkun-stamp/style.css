@@ -788,7 +788,7 @@ header h1 {
 /* Praise Bubble */
 .praise-bubble {
     position: fixed;
-    top: 10%;
+    top: 20%;
     left: 50%;
     transform: translate(-50%, -50%) scale(0.5);
     background: white;
@@ -801,7 +801,7 @@ header h1 {
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
     opacity: 0;
     transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    z-index: 2000;
+    z-index: 100000 !important;
     text-align: center;
     width: 80%;
     max-width: 400px;
