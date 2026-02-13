@@ -170,10 +170,10 @@ export function openHiyariPage(type: 'ingredientName' | 'drugName', name: string
 /**
  * Create dropdown menu for drug name
  * @param {MedicineData} item - Data item
- * @param {number} index - Row index
+ * @param {string | number} index - Row index or unique identifier
  * @returns {HTMLElement} Dropdown container
  */
-export function createDropdown(item: MedicineData, index: number): HTMLElement {
+export function createDropdown(item: MedicineData, index: string | number): HTMLElement {
     const drugName = item.productName || "";
     const drugNameForHiyari = encodeURIComponent(drugName);
     const pmdaLinkUrl = `https://www.pmda.go.jp/PmdaSearch/rdSearch/02/${item.yjCode}?user=1`;

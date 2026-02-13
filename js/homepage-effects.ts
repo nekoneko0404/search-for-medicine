@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const magCards = document.querySelectorAll('.mag-card');
     magCards.forEach((el, index) => {
         // Add staggered delay for visual effect
-        el.style.transitionDelay = `${index * 0.1}s`;
+        (el as HTMLElement).style.transitionDelay = `${index * 0.1}s`;
         observer.observe(el);
     });
 

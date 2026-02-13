@@ -2,23 +2,57 @@
  * Update Search App Main Logic
  */
 
-import { loadAndCacheData, clearCacheAndReload } from '../../js/data.js';
-import { normalizeString, debounce, formatDate } from '../../js/utils.js';
-import { showMessage, renderStatusButton, updateProgress, createDropdown } from '../../js/ui.js';
-import '../../js/components/MainHeader.js';
-import '../../js/components/MainFooter.js';
+import { loadAndCacheData, clearCacheAndReload } from '../../js/data.ts';
+import { normalizeString, debounce, formatDate } from '../../js/utils.ts';
+import { showMessage, renderStatusButton, updateProgress, createDropdown } from '../../js/ui.ts';
+import '../../js/components/MainHeader.ts';
+import '../../js/components/MainFooter.ts';
+// @ts-ignore
 import '../../css/input.css';
 
-let excelData = [];
-let filteredResults = [];
-let sortStates = {
+let excelData: any[] = [];
+let filteredResults: any[] = [];
+let sortStates: Record<string, 'asc' | 'desc'> = {
     status: 'asc',
     productName: 'asc',
     ingredientName: 'asc'
 };
 
 // DOM Elements
-const elements = {
+interface Elements {
+    searchInput: HTMLInputElement | null;
+    updatePeriod: HTMLSelectElement | null;
+    searchBtn: HTMLElement | null;
+    recoveryBtn: HTMLElement | null;
+    clearBtn: HTMLElement | null;
+    shareBtn: HTMLElement | null;
+    resultTableBody: HTMLTableSectionElement | null;
+    tableContainer: HTMLElement | null;
+    cardContainer: HTMLElement | null;
+    loadingIndicator: HTMLElement | null;
+    reloadDataBtn: HTMLButtonElement | null;
+    statusCheckboxes: {
+        normal: HTMLInputElement | null;
+        limited: HTMLInputElement | null;
+        stopped: HTMLInputElement | null;
+    };
+    trendCheckboxes: {
+        up: HTMLInputElement | null;
+        down: HTMLInputElement | null;
+    };
+    sortButtons: {
+        status: HTMLElement | null;
+        productName: HTMLElement | null;
+        ingredientName: HTMLElement | null;
+    };
+    sortIcons: {
+        status: HTMLElement | null;
+        productName: HTMLElement | null;
+        ingredientName: HTMLElement | null;
+    };
+}
+
+const elements: Elements = {
     searchInput: null,
     updatePeriod: null,
     searchBtn: null,
@@ -27,6 +61,7 @@ const elements = {
     shareBtn: null,
     resultTableBody: null,
     tableContainer: null,
+    cardContainer: null,
     loadingIndicator: null,
     reloadDataBtn: null,
     statusCheckboxes: {
@@ -47,30 +82,28 @@ const elements = {
         status: null,
         productName: null,
         ingredientName: null
-    },
-    mainHeader: null,
-    mainFooter: null
+    }
 };
 
 function initElements() {
-    elements.searchInput = document.getElementById('searchInput');
-    elements.updatePeriod = document.getElementById('updatePeriod');
+    elements.searchInput = document.getElementById('searchInput') as HTMLInputElement;
+    elements.updatePeriod = document.getElementById('updatePeriod') as HTMLSelectElement;
     elements.searchBtn = document.getElementById('search-btn');
     elements.recoveryBtn = document.getElementById('recovery-btn');
     elements.clearBtn = document.getElementById('clear-btn');
     elements.shareBtn = document.getElementById('share-btn');
-    elements.resultTableBody = document.getElementById('resultTableBody');
+    elements.resultTableBody = document.getElementById('resultTableBody') as HTMLTableSectionElement;
     elements.tableContainer = document.getElementById('tableContainer');
     elements.cardContainer = document.getElementById('cardContainer');
     elements.loadingIndicator = document.getElementById('loadingIndicator');
-    elements.reloadDataBtn = document.getElementById('reload-data');
+    elements.reloadDataBtn = document.getElementById('reload-data') as HTMLButtonElement;
 
-    elements.statusCheckboxes.normal = document.getElementById('statusNormal');
-    elements.statusCheckboxes.limited = document.getElementById('statusLimited');
-    elements.statusCheckboxes.stopped = document.getElementById('statusStop');
+    elements.statusCheckboxes.normal = document.getElementById('statusNormal') as HTMLInputElement;
+    elements.statusCheckboxes.limited = document.getElementById('statusLimited') as HTMLInputElement;
+    elements.statusCheckboxes.stopped = document.getElementById('statusStop') as HTMLInputElement;
 
-    elements.trendCheckboxes.up = document.getElementById('trendUp');
-    elements.trendCheckboxes.down = document.getElementById('trendDown');
+    elements.trendCheckboxes.up = document.getElementById('trendUp') as HTMLInputElement;
+    elements.trendCheckboxes.down = document.getElementById('trendDown') as HTMLInputElement;
 
     elements.sortButtons.status = document.getElementById('sort-status-button');
     elements.sortButtons.productName = document.getElementById('sort-productName-button');
@@ -79,8 +112,6 @@ function initElements() {
     elements.sortIcons.status = document.getElementById('sort-status-icon');
     elements.sortIcons.productName = document.getElementById('sort-productName-icon');
     elements.sortIcons.ingredientName = document.getElementById('sort-ingredientName-icon');
-    elements.mainHeader = document.getElementById('mainHeader');
-    elements.mainFooter = document.getElementById('mainFooter');
 }
 
 async function initApp() {
@@ -99,8 +130,6 @@ async function initApp() {
             const updateDate = urlParams.get('updateDate');
 
             // New params for share feature
-            const q = urlParams.get('q');
-            const period = urlParams.get('period');
             const hasShareParams = urlParams.has('q') || urlParams.has('period') || urlParams.has('normal');
 
             if (hasShareParams) {
@@ -108,17 +137,17 @@ async function initApp() {
                 searchData();
             } else if (productName || shippingStatus || updateDate) {
                 // Legacy/Simple params support
-                if (productName) elements.searchInput.value = productName;
-                if (updateDate) elements.updatePeriod.value = updateDate;
+                if (productName && elements.searchInput) elements.searchInput.value = productName;
+                if (updateDate && elements.updatePeriod) elements.updatePeriod.value = updateDate;
                 if (shippingStatus) {
                     if (shippingStatus === 'all') {
-                        elements.statusCheckboxes.normal.checked = true;
-                        elements.statusCheckboxes.limited.checked = true;
-                        elements.statusCheckboxes.stopped.checked = true;
+                        if (elements.statusCheckboxes.normal) elements.statusCheckboxes.normal.checked = true;
+                        if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = true;
+                        if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = true;
                     } else {
-                        elements.statusCheckboxes.normal.checked = shippingStatus === 'normal';
-                        elements.statusCheckboxes.limited.checked = shippingStatus === 'limited';
-                        elements.statusCheckboxes.stopped.checked = shippingStatus === 'stopped';
+                        if (elements.statusCheckboxes.normal) elements.statusCheckboxes.normal.checked = shippingStatus === 'normal';
+                        if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = shippingStatus === 'limited';
+                        if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = shippingStatus === 'stopped';
                     }
                 }
                 searchData();
@@ -132,19 +161,19 @@ async function initApp() {
     }
 
     // Event Listeners
-    elements.searchBtn.addEventListener('click', () => {
-        if (elements.searchInput.value.trim() !== '') {
-            elements.updatePeriod.value = 'all';
+    elements.searchBtn?.addEventListener('click', () => {
+        if (elements.searchInput && elements.searchInput.value.trim() !== '') {
+            if (elements.updatePeriod) elements.updatePeriod.value = 'all';
         }
         searchData();
     });
 
     if (elements.reloadDataBtn) {
         elements.reloadDataBtn.addEventListener('click', async () => {
-            if (elements.reloadDataBtn.disabled) return;
+            if (elements.reloadDataBtn?.disabled) return;
 
-            elements.reloadDataBtn.disabled = true;
-            elements.reloadDataBtn.classList.add('opacity-50', 'cursor-not-allowed');
+            elements.reloadDataBtn!.disabled = true;
+            elements.reloadDataBtn!.classList.add('opacity-50', 'cursor-not-allowed');
 
             showMessage('最新データを取得しています...', 'info');
             try {
@@ -154,69 +183,69 @@ async function initApp() {
                     showMessage(`データを更新しました: ${excelData.length}件`, 'success');
                     searchData();
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error('Reload failed:', err);
                 showMessage(`データの更新に失敗しました: ${err.message || '不明なエラー'}`, 'error');
             } finally {
-                elements.reloadDataBtn.disabled = false;
-                elements.reloadDataBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                elements.reloadDataBtn!.disabled = false;
+                elements.reloadDataBtn!.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         });
     }
 
 
-    elements.clearBtn.addEventListener('click', clearAndResetSearch);
+    elements.clearBtn?.addEventListener('click', clearAndResetSearch);
 
     // 共有ボタンのイベントリスナー
     if (elements.shareBtn) {
         elements.shareBtn.addEventListener('click', () => shareSearchConditions());
     }
 
-    elements.recoveryBtn.addEventListener('click', () => {
+    elements.recoveryBtn?.addEventListener('click', () => {
         // Clear inputs
-        elements.searchInput.value = '';
-        elements.updatePeriod.value = '30days';
+        if (elements.searchInput) elements.searchInput.value = '';
+        if (elements.updatePeriod) elements.updatePeriod.value = '30days';
 
         // Set Trend Up
         if (elements.trendCheckboxes.up) elements.trendCheckboxes.up.checked = true;
         if (elements.trendCheckboxes.down) elements.trendCheckboxes.down.checked = false;
 
         // Set Status Normal/Limited
-        elements.statusCheckboxes.normal.checked = true;
-        elements.statusCheckboxes.limited.checked = true;
-        elements.statusCheckboxes.stopped.checked = false;
+        if (elements.statusCheckboxes.normal) elements.statusCheckboxes.normal.checked = true;
+        if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = true;
+        if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = false;
 
         searchData();
     });
 
     let isComposing = false;
-    elements.searchInput.addEventListener('compositionstart', () => isComposing = true);
-    elements.searchInput.addEventListener('compositionend', () => {
+    elements.searchInput?.addEventListener('compositionstart', () => isComposing = true);
+    elements.searchInput?.addEventListener('compositionend', () => {
         isComposing = false;
         debouncedSearch();
     });
 
     const debouncedSearch = debounce(() => {
-        if (elements.searchInput.value.trim() !== '') {
-            elements.updatePeriod.value = 'all';
+        if (elements.searchInput && elements.searchInput.value.trim() !== '') {
+            if (elements.updatePeriod) elements.updatePeriod.value = 'all';
         }
         searchData();
     }, 300);
 
-    elements.searchInput.addEventListener('input', () => {
+    elements.searchInput?.addEventListener('input', () => {
         if (!isComposing) debouncedSearch();
     });
 
-    elements.searchInput.addEventListener('keydown', (e) => {
+    elements.searchInput?.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' && !isComposing) {
             e.preventDefault();
-            if (elements.searchInput.value.trim() !== '') {
-                elements.updatePeriod.value = 'all';
+            if (elements.searchInput && elements.searchInput.value.trim() !== '') {
+                if (elements.updatePeriod) elements.updatePeriod.value = 'all';
             }
             searchData();
         }
     });
-    elements.updatePeriod.addEventListener('change', searchData);
+    elements.updatePeriod?.addEventListener('change', searchData);
 
     Object.values(elements.statusCheckboxes).forEach(cb => {
         if (cb) cb.addEventListener('change', searchData);
@@ -232,12 +261,12 @@ async function initApp() {
 }
 
 function clearAndResetSearch() {
-    elements.searchInput.value = '';
-    elements.updatePeriod.value = '7days'; // Default
+    if (elements.searchInput) elements.searchInput.value = '';
+    if (elements.updatePeriod) elements.updatePeriod.value = '7days'; // Default
 
-    elements.statusCheckboxes.normal.checked = true;
-    elements.statusCheckboxes.limited.checked = true;
-    elements.statusCheckboxes.stopped.checked = true;
+    if (elements.statusCheckboxes.normal) elements.statusCheckboxes.normal.checked = true;
+    if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = true;
+    if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = true;
 
     if (elements.trendCheckboxes.up) elements.trendCheckboxes.up.checked = false;
     if (elements.trendCheckboxes.down) elements.trendCheckboxes.down.checked = false;
@@ -249,7 +278,7 @@ function clearAndResetSearch() {
  * URLクエリパラメータから検索条件を復元
  * @param {URLSearchParams} urlParams - URLパラメータ
  */
-function restoreFromUrlParams(urlParams) {
+function restoreFromUrlParams(urlParams: URLSearchParams) {
     // 検索ワード
     const q = urlParams.get('q');
     if (q !== null && elements.searchInput) elements.searchInput.value = q;
@@ -308,7 +337,7 @@ async function shareSearchConditions() {
  * Sort results
  * @param {string} key - Sort key
  */
-function sortResults(key) {
+function sortResults(key: 'status' | 'productName' | 'ingredientName') {
     if (filteredResults.length === 0) {
         showMessage("ソートするデータがありません。", "info");
         return;
@@ -320,7 +349,7 @@ function sortResults(key) {
     for (const otherKey in sortStates) {
         if (otherKey !== key) {
             sortStates[otherKey] = 'asc';
-            const icon = elements.sortIcons[otherKey];
+            const icon = elements.sortIcons[otherKey as keyof Elements['sortIcons']];
             if (icon) icon.textContent = '↕';
         }
     }
@@ -329,14 +358,14 @@ function sortResults(key) {
     if (icon) icon.textContent = newDirection === 'asc' ? '↑' : '↓';
 
     filteredResults.sort((a, b) => {
-        let aValue, bValue;
+        let aValue: string, bValue: string;
         if (key === 'status') {
             aValue = (a.shipmentStatus || '').trim();
             bValue = (b.shipmentStatus || '').trim();
         } else if (key === 'productName') {
             aValue = (a.productName || '').trim();
             bValue = (b.productName || '').trim();
-        } else if (key === 'ingredientName') {
+        } else {
             aValue = (a.ingredientName || '').trim();
             bValue = (b.ingredientName || '').trim();
         }
@@ -364,11 +393,11 @@ function searchData(reset = false) {
 
     if (excelData.length === 0) return;
 
-    const processQuery = (query) => {
+    const processQuery = (query: string) => {
         if (!query) return { include: [], exclude: [] };
         const terms = query.split(/[\s　]+/).filter(t => t.length > 0);
-        const include = [];
-        const exclude = [];
+        const include: string[] = [];
+        const exclude: string[] = [];
         terms.forEach(term => {
             if ((term.startsWith('ー') || term.startsWith('-')) && term.length > 1) {
                 exclude.push(normalizeString(term.substring(1)));
@@ -379,8 +408,8 @@ function searchData(reset = false) {
         return { include, exclude };
     };
 
-    const searchFilter = processQuery(elements.searchInput.value);
-    const period = elements.updatePeriod.value;
+    const searchFilter = processQuery(elements.searchInput?.value || '');
+    const period = elements.updatePeriod?.value;
 
     const statusChecks = {
         normal: elements.statusCheckboxes.normal?.checked || false,
@@ -397,7 +426,7 @@ function searchData(reset = false) {
     today.setHours(0, 0, 0, 0);
 
     filteredResults = excelData.filter(item => {
-        const matchQuery = (item, filter) => {
+        const matchQuery = (item: any, filter: { include: string[], exclude: string[] }) => {
             if (filter.include.length === 0 && filter.exclude.length === 0) return true;
 
             // Search across productName, manufacturer, and ingredientName using pre-normalized fields
@@ -439,7 +468,7 @@ function searchData(reset = false) {
         // Date Filter
         if (period !== 'all') {
             if (!item.updateDateObj) return false;
-            const diffTime = Math.abs(today - item.updateDateObj);
+            const diffTime = Math.abs(today.getTime() - item.updateDateObj.getTime());
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
             if (period === '3days' && diffDays > 3) return false;
@@ -481,21 +510,20 @@ function searchData(reset = false) {
     }, 100);
 }
 
-function renderResults(data) { // Renamed from renderTable
+function renderResults(data: any[]) {
     const isMobile = window.innerWidth < 768;
-    elements.resultTableBody.innerHTML = '';
-    elements.cardContainer.innerHTML = ''; // Clear card container
+    if (elements.resultTableBody) elements.resultTableBody.innerHTML = '';
+    if (elements.cardContainer) elements.cardContainer.innerHTML = ''; // Clear card container
 
     if (data.length === 0) {
-        elements.tableContainer.classList.add('hidden');
-        elements.cardContainer.classList.add('hidden');
-        elements.tableContainer.classList.remove('fade-in');
+        elements.tableContainer?.classList.add('hidden');
+        elements.cardContainer?.classList.add('hidden');
+        elements.tableContainer?.classList.remove('fade-in');
         return;
     }
 
     // Set search mode before displaying results
     document.body.classList.add('search-mode');
-
 
     const displayData = data.slice(0, 200); // Limit display
 
@@ -513,13 +541,14 @@ function renderResults(data) { // Renamed from renderTable
 
     if (!isMobile) {
         // Desktop Table View
-        elements.tableContainer.classList.remove('hidden');
-        elements.cardContainer.classList.add('hidden');
+        elements.tableContainer?.classList.remove('hidden');
+        elements.cardContainer?.classList.add('hidden');
         requestAnimationFrame(() => {
-            elements.tableContainer.classList.add('fade-in');
+            elements.tableContainer?.classList.add('fade-in');
         });
 
         displayData.forEach((item, index) => {
+            if (!elements.resultTableBody) return;
             const row = elements.resultTableBody.insertRow();
             const rowBgClass = index % 2 === 1 ? 'bg-gray-50' : 'bg-white';
             row.className = `${rowBgClass} hover:bg-indigo-50 transition-colors group fade-in-up`;
@@ -576,12 +605,12 @@ function renderResults(data) { // Renamed from renderTable
                 span.className = "text-indigo-600 font-semibold hover:underline cursor-pointer";
                 span.textContent = item.ingredientName;
                 span.addEventListener('click', () => {
-                    elements.searchInput.value = item.ingredientName;
-                    elements.updatePeriod.value = 'all';
+                    if (elements.searchInput) elements.searchInput.value = item.ingredientName;
+                    if (elements.updatePeriod) elements.updatePeriod.value = 'all';
 
-                    elements.statusCheckboxes.normal.checked = true;
-                    elements.statusCheckboxes.limited.checked = true;
-                    elements.statusCheckboxes.stopped.checked = true;
+                    if (elements.statusCheckboxes.normal) elements.statusCheckboxes.normal.checked = true;
+                    if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = true;
+                    if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = true;
 
                     if (elements.trendCheckboxes.up) elements.trendCheckboxes.up.checked = false;
                     if (elements.trendCheckboxes.down) elements.trendCheckboxes.down.checked = false;
@@ -590,9 +619,6 @@ function renderResults(data) { // Renamed from renderTable
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
                 cellIngredient.appendChild(span);
-            } else {
-                cellIngredient.className += " text-gray-600";
-                cellIngredient.textContent = '';
             }
 
             // 2. Shipment Status
@@ -653,11 +679,11 @@ function renderResults(data) { // Renamed from renderTable
         });
     } else {
         // Mobile Card View
-        elements.tableContainer.classList.add('hidden');
-        elements.cardContainer.classList.remove('hidden');
+        elements.tableContainer?.classList.add('hidden');
+        elements.cardContainer?.classList.remove('hidden');
 
         // Apply grid class for mobile card container
-        elements.cardContainer.classList.add('search-results-grid');
+        elements.cardContainer?.classList.add('search-results-grid');
 
 
         displayData.forEach((item, index) => {
@@ -808,9 +834,11 @@ function renderResults(data) { // Renamed from renderTable
             updateDateDiv.appendChild(updateDateSpan);
             card.appendChild(updateDateDiv);
 
-            elements.cardContainer.appendChild(card);
+            elements.cardContainer?.appendChild(card);
         });
     }
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+});

@@ -1,5 +1,16 @@
 // DOM Elements (Initialized in init)
-let form, symptomsContainer, apiKeyInputContainer, apiKeyInput, advancedSettingsToggle, advancedSettings, resultSection, loadingDiv, recipeCardsDiv, saveApiKeyCheckbox, saveKeyWarning, saveFormStateCheckbox;
+let form: HTMLFormElement | null,
+    symptomsContainer: HTMLElement | null,
+    apiKeyInputContainer: HTMLElement | null,
+    apiKeyInput: HTMLInputElement | null,
+    advancedSettingsToggle: HTMLElement | null,
+    advancedSettings: HTMLElement | null,
+    resultSection: HTMLElement | null,
+    loadingDiv: HTMLElement | null,
+    recipeCardsDiv: HTMLElement | null,
+    saveApiKeyCheckbox: HTMLInputElement | null,
+    saveKeyWarning: HTMLElement | null,
+    saveFormStateCheckbox: HTMLInputElement | null;
 
 // API Configuration URLs
 const API_URL = 'https://recipe-worker.neko-neko-0404.workers.dev';
@@ -14,7 +25,7 @@ const SYMPTOMS = [
     { label: 'プリン体が気になる', value: 'プリン体控えめ' },
     { label: 'カルシウム不足', value: 'カルシウム・ビタミンD' },
     { label: '体づくりをしたい', value: '高タンパク・筋肉' },
-    { label: 'うっかりが気になる', value: '脳の健康（DHA・EPA）' },
+    { label: 'うっかりが気になる', value: '脳의 健康（DHA・EPA）' },
     { label: 'お腹周りが気になる', value: '良質な脂質・低脂質' },
     { label: '肉や揚げ物が多い', value: '食物繊維・バランス' },
     { label: '季節の変わり目', value: '免疫ケア（ビタミンC・亜鉛）' },
@@ -31,18 +42,18 @@ const SYMPTOMS = [
  */
 function init() {
     // Initialize DOM Elements
-    form = document.getElementById('recipe-form');
+    form = document.getElementById('recipe-form') as HTMLFormElement;
     symptomsContainer = document.getElementById('symptoms-container');
     apiKeyInputContainer = document.getElementById('api-key-input-container');
-    apiKeyInput = document.getElementById('api-key');
+    apiKeyInput = document.getElementById('api-key') as HTMLInputElement;
     advancedSettingsToggle = document.getElementById('advanced-settings-toggle');
     advancedSettings = document.getElementById('advanced-settings');
     resultSection = document.getElementById('result-section');
     loadingDiv = document.getElementById('loading');
     recipeCardsDiv = document.getElementById('recipe-cards');
-    saveApiKeyCheckbox = document.getElementById('save-api-key');
+    saveApiKeyCheckbox = document.getElementById('save-api-key') as HTMLInputElement;
     saveKeyWarning = document.getElementById('save-key-warning');
-    saveFormStateCheckbox = document.getElementById('save-form-state');
+    saveFormStateCheckbox = document.getElementById('save-form-state') as HTMLInputElement;
 
     if (symptomsContainer) {
         renderSymptoms();
@@ -58,14 +69,14 @@ function init() {
     }
     console.log("Recipe App Init Completed");
 }
-window.debugInit = init; // Expose for manual trigger if needed
+(window as any).debugInit = init; // Expose for manual trigger if needed
 
 
 /**
  * Render symptom checkboxes
  */
 function renderSymptoms() {
-    // Simplified template string to avoid whitespace issues
+    if (!symptomsContainer) return;
     symptomsContainer.innerHTML = SYMPTOMS.map(s =>
         `<label class="cursor-pointer group">
             <input type="checkbox" name="symptoms" value="${s.value}" class="peer hidden">
@@ -83,29 +94,29 @@ function setupEventListeners() {
     // Advanced Settings Toggle
     if (advancedSettingsToggle && advancedSettings) {
         advancedSettingsToggle.addEventListener('click', () => {
-            advancedSettings.classList.toggle('hidden');
-            const icon = advancedSettingsToggle.querySelector('i');
-            if (advancedSettings.classList.contains('hidden')) {
-                icon.classList.remove('rotate-180');
-            } else {
-                icon.classList.add('rotate-180');
+            advancedSettings!.classList.toggle('hidden');
+            const icon = advancedSettingsToggle!.querySelector('i');
+            if (icon) {
+                if (advancedSettings!.classList.contains('hidden')) {
+                    icon.classList.remove('rotate-180');
+                } else {
+                    icon.classList.add('rotate-180');
+                }
             }
         });
     }
 
-
-
     // Save API Key Checkbox
     if (saveApiKeyCheckbox) {
-        saveApiKeyCheckbox.addEventListener('change', (e) => {
-            const isChecked = e.target.checked;
+        saveApiKeyCheckbox.addEventListener('change', (e: Event) => {
+            const isChecked = (e.target as HTMLInputElement).checked;
             if (isChecked) {
-                saveKeyWarning.classList.remove('hidden');
-                if (apiKeyInput.value) {
+                saveKeyWarning?.classList.remove('hidden');
+                if (apiKeyInput?.value) {
                     localStorage.setItem('recipe_app_user_key', apiKeyInput.value);
                 }
             } else {
-                saveKeyWarning.classList.add('hidden');
+                saveKeyWarning?.classList.add('hidden');
                 localStorage.removeItem('recipe_app_user_key');
             }
         });
@@ -113,9 +124,9 @@ function setupEventListeners() {
 
     // API Key Input
     if (apiKeyInput) {
-        apiKeyInput.addEventListener('input', (e) => {
-            if (saveApiKeyCheckbox.checked) {
-                localStorage.setItem('recipe_app_user_key', e.target.value);
+        apiKeyInput.addEventListener('input', (e: Event) => {
+            if (saveApiKeyCheckbox?.checked) {
+                localStorage.setItem('recipe_app_user_key', (e.target as HTMLInputElement).value);
             }
         });
     }
@@ -123,20 +134,20 @@ function setupEventListeners() {
     // API Option Radio Change
     const apiOptions = document.getElementsByName('api_option');
     Array.from(apiOptions).forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            const value = e.target.value;
+        radio.addEventListener('change', (e: Event) => {
+            const value = (e.target as HTMLInputElement).value;
             localStorage.setItem('recipe_app_provider', value);
 
             if (value === 'system') {
-                apiKeyInputContainer.classList.add('hidden');
+                apiKeyInputContainer?.classList.add('hidden');
             } else {
-                apiKeyInputContainer.classList.remove('hidden');
+                apiKeyInputContainer?.classList.remove('hidden');
             }
         });
     });
 
     // Form Submit
-    form.addEventListener('submit', handleFormSubmit);
+    form?.addEventListener('submit', handleFormSubmit);
 
     // Print Button
     const printBtn = document.getElementById('print-btn');
@@ -156,7 +167,7 @@ function setupEventListeners() {
             if (printHeader && recipeCards.length > 0) {
                 // Skip first card (it already has the original header above it)
                 for (let i = 1; i < recipeCards.length; i++) {
-                    const headerClone = printHeader.cloneNode(true);
+                    const headerClone = printHeader.cloneNode(true) as HTMLElement;
                     headerClone.classList.add('cloned-header');
                     headerClone.id = ''; // Remove ID to avoid duplicates
 
@@ -166,17 +177,12 @@ function setupEventListeners() {
                         img.setAttribute('loading', 'eager');
                     });
 
-                    recipeCards[i].parentNode.insertBefore(headerClone, recipeCards[i]);
+                    recipeCards[i].parentNode?.insertBefore(headerClone, recipeCards[i]);
                 }
             }
 
             // Print
             window.print();
-
-            // Clean up cloned headers after print dialog closes
-            setTimeout(() => {
-                clonedHeaders.forEach(clone => clone.remove());
-            }, 100);
         });
     }
 
@@ -187,15 +193,15 @@ function setupEventListeners() {
     }
 
     // Region Input: Clear cuisine selection when typing
-    const preferredRegionInput = document.getElementById('preferredRegion');
+    const preferredRegionInput = document.getElementById('preferredRegion') as HTMLInputElement;
     const cuisineRadios = document.getElementsByName('cuisine');
 
     if (preferredRegionInput) {
-        preferredRegionInput.addEventListener('input', (e) => {
-            if (e.target.value.trim() !== '') {
+        preferredRegionInput.addEventListener('input', (e: Event) => {
+            if ((e.target as HTMLInputElement).value.trim() !== '') {
                 // Clear all cuisine radios
                 Array.from(cuisineRadios).forEach(radio => {
-                    radio.checked = false;
+                    (radio as HTMLInputElement).checked = false;
                 });
             }
         });
@@ -213,26 +219,25 @@ function setupEventListeners() {
     }
 }
 
-
-
 /**
  * Get form data helper
  */
 function getFormData() {
+    if (!form) return { symptoms: [], ingredients: [], excludedIngredients: [], cuisine: '', time: '', preferredRegion: '' };
     const formData = new FormData(form);
 
     // Symptoms
-    const symptoms = Array.from(formData.getAll('symptoms'));
-    const otherSymptom = formData.get('other_symptom');
+    const symptoms = Array.from(formData.getAll('symptoms')) as string[];
+    const otherSymptom = formData.get('other_symptom') as string;
     if (otherSymptom && otherSymptom.trim() !== '') {
         symptoms.push(otherSymptom.trim());
     }
 
-    const ingredients = Array.from(formData.getAll('ingredient')).filter(i => i.trim() !== '');
-    const excludedIngredients = Array.from(formData.getAll('excluded_ingredient')).filter(i => i.trim() !== '');
-    const cuisine = formData.get('cuisine');
-    const time = formData.get('time');
-    const preferredRegion = formData.get('preferredRegion')?.trim() || '';
+    const ingredients = (Array.from(formData.getAll('ingredient')) as string[]).filter(i => i.trim() !== '');
+    const excludedIngredients = (Array.from(formData.getAll('excluded_ingredient')) as string[]).filter(i => i.trim() !== '');
+    const cuisine = formData.get('cuisine') as string;
+    const time = formData.get('time') as string;
+    const preferredRegion = (formData.get('preferredRegion') as string)?.trim() || '';
 
     return { symptoms, ingredients, excludedIngredients, cuisine, time, preferredRegion };
 }
@@ -307,25 +312,24 @@ ${limitSupermarketText}
 
         // Show success feedback
         const btn = document.getElementById('copy-prompt-btn');
-        const originalHTML = btn.innerHTML;
+        if (btn) {
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> コピーしました！';
+            btn.classList.remove('bg-blue-50', 'text-blue-700', 'border-blue-200');
+            btn.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
 
-        // Change button style temporarily
-        btn.innerHTML = '<i class="fas fa-check"></i> コピーしました！';
-        btn.classList.remove('bg-blue-50', 'text-blue-700', 'border-blue-200');
-        btn.classList.add('bg-green-50', 'text-green-700', 'border-green-200');
-
-        setTimeout(() => {
-            btn.innerHTML = originalHTML;
-            btn.classList.add('bg-blue-50', 'text-blue-700', 'border-blue-200');
-            btn.classList.remove('bg-green-50', 'text-green-700', 'border-green-200');
-        }, 3000);
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.classList.add('bg-blue-50', 'text-blue-700', 'border-blue-200');
+                btn.classList.remove('bg-green-50', 'text-green-700', 'border-green-200');
+            }, 3000);
+        }
 
     } catch (err) {
         console.error('Failed to copy keys: ', err);
         alert('クリップボードへのコピーに失敗しました。');
     }
 }
-// ... (HandleFormSubmit and others remain same, focusing on Init)
 
 // Start with DOMContentLoaded
 document.addEventListener('DOMContentLoaded', init);
@@ -333,8 +337,9 @@ document.addEventListener('DOMContentLoaded', init);
 /**
  * Handle form submission
  */
-async function handleFormSubmit(e) {
+async function handleFormSubmit(e: Event) {
     e.preventDefault();
+    if (!form || !resultSection || !recipeCardsDiv || !loadingDiv) return;
     console.log("Form submitted!");
 
     // Reset UI
@@ -347,16 +352,16 @@ async function handleFormSubmit(e) {
 
     // Gather API Key
     const formData = new FormData(form);
-    const apiOption = formData.get('api_option');
-    let userKey = null;
+    const apiOption = formData.get('api_option') as string;
+    let userKey: string | null = null;
 
     if (apiOption === 'openai' || apiOption === 'gemini') {
-        userKey = apiKeyInput.value.trim();
+        userKey = apiKeyInput?.value.trim() || null;
     }
 
     // Validation
     if ((apiOption === 'openai' || apiOption === 'gemini') && !userKey) {
-        renderError('APIキーが入力されていません。設定を確認するか、「おまかせ」を選択してください。');
+        renderError('APIキーが入力されていません。設定を確認するか、「おまかせ」を選択してください。', 0, apiOption);
         loadingDiv.classList.add('hidden');
         return;
     }
@@ -377,7 +382,7 @@ async function handleFormSubmit(e) {
     try {
         const data = await fetchRecipes(requestData, userKey);
         renderRecipes(data);
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error:', error);
         renderError(error.message, error.status, apiOption); // Pass apiOption
     } finally {
@@ -396,22 +401,22 @@ function loadSavedSettings() {
 
     // Restore Provider
     if (savedProvider) {
-        const radio = document.querySelector(`input[name="api_option"][value="${savedProvider}"]`);
+        const radio = document.querySelector(`input[name="api_option"][value="${savedProvider}"]`) as HTMLInputElement;
         if (radio) {
             radio.checked = true;
             // Trigger UI update manually since setting checked doesn't fire change event
             if (savedProvider !== 'system') {
-                apiKeyInputContainer.classList.remove('hidden');
+                apiKeyInputContainer?.classList.remove('hidden');
             }
         }
     }
 
     // Restore Key
-    if (savedKey) {
+    if (savedKey && apiKeyInput) {
         apiKeyInput.value = savedKey;
         if (saveApiKeyCheckbox) {
             saveApiKeyCheckbox.checked = true;
-            saveKeyWarning.classList.remove('hidden');
+            saveKeyWarning?.classList.remove('hidden');
         }
     }
 }
@@ -424,14 +429,7 @@ function saveFormState() {
     if (saveFormStateCheckbox && !saveFormStateCheckbox.checked) {
         return;
     }
-
-    const data = getFormData();
-    /*
-      getFormData returns:
-      { symptoms, ingredients, excludedIngredients, cuisine, time, limitSupermarket }
-      Note: 'symptoms' in getFormData mixes checkboxes and text. We should separate them for restoration if possible, 
-      OR just rely on the form elements directly for saving raw state which is easier for restoration.
-    */
+    if (!form) return;
 
     // Let's gather raw state for easier restoration
     const formData = new FormData(form);
@@ -452,9 +450,6 @@ function saveFormState() {
  * Restore Form State from localStorage
  */
 function restoreFormState() {
-    // Check saved preference for history (default true is handled by checkbox checking logic below if we load it first)
-    // But actually, we need to load the checkbox state first, OR just trust localStorage 'recipe_app_enable_history'
-
     const enableHistory = localStorage.getItem('recipe_app_enable_history') !== 'false'; // Default true
     if (!enableHistory) return;
 
@@ -466,7 +461,7 @@ function restoreFormState() {
 
         // Restore Symptoms (Checkboxes)
         if (state.symptoms) {
-            const checkboxes = document.querySelectorAll('input[name="symptoms"]');
+            const checkboxes = document.querySelectorAll('input[name="symptoms"]') as NodeListOf<HTMLInputElement>;
             checkboxes.forEach(cb => {
                 cb.checked = state.symptoms.includes(cb.value);
             });
@@ -474,41 +469,41 @@ function restoreFormState() {
 
         // Restore Other Symptom
         if (state.other_symptom) {
-            const input = document.querySelector('input[name="other_symptom"]');
+            const input = document.querySelector('input[name="other_symptom"]') as HTMLInputElement;
             if (input) input.value = state.other_symptom;
         }
 
         // Restore Ingredients
         if (state.ingredients) {
-            const inputs = document.querySelectorAll('input[name="ingredient"]');
-            state.ingredients.forEach((val, i) => {
+            const inputs = document.querySelectorAll('input[name="ingredient"]') as NodeListOf<HTMLInputElement>;
+            state.ingredients.forEach((val: string, i: number) => {
                 if (inputs[i]) inputs[i].value = val;
             });
         }
 
         // Restore Excluded Ingredients
         if (state.excluded_ingredients) {
-            const inputs = document.querySelectorAll('input[name="excluded_ingredient"]');
-            state.excluded_ingredients.forEach((val, i) => {
+            const inputs = document.querySelectorAll('input[name="excluded_ingredient"]') as NodeListOf<HTMLInputElement>;
+            state.excluded_ingredients.forEach((val: string, i: number) => {
                 if (inputs[i]) inputs[i].value = val;
             });
         }
 
         // Restore Cuisine
         if (state.cuisine) {
-            const radio = document.querySelector(`input[name="cuisine"][value="${state.cuisine}"]`);
+            const radio = document.querySelector(`input[name="cuisine"][value="${state.cuisine}"]`) as HTMLInputElement;
             if (radio) radio.checked = true;
         }
 
         // Restore Time
         if (state.time) {
-            const radio = document.querySelector(`input[name="time"][value="${state.time}"]`);
+            const radio = document.querySelector(`input[name="time"][value="${state.time}"]`) as HTMLInputElement;
             if (radio) radio.checked = true;
         }
 
         // Restore Preferred Region
         if (state.preferredRegion) {
-            const input = document.getElementById('preferredRegion');
+            const input = document.getElementById('preferredRegion') as HTMLInputElement;
             if (input) input.value = state.preferredRegion;
         }
 
@@ -530,9 +525,9 @@ function setupFormPersistence() {
         saveFormStateCheckbox.checked = enableHistory;
 
         // 2. Add Toggle Listener
-        saveFormStateCheckbox.addEventListener('change', (e) => {
-            const isChecked = e.target.checked;
-            localStorage.setItem('recipe_app_enable_history', isChecked);
+        saveFormStateCheckbox.addEventListener('change', (e: Event) => {
+            const isChecked = (e.target as HTMLInputElement).checked;
+            localStorage.setItem('recipe_app_enable_history', isChecked.toString());
 
             if (isChecked) {
                 // Enabled: Trigger a save immediately
@@ -545,21 +540,21 @@ function setupFormPersistence() {
     }
 
     // Debounce helper
-    let timeout;
+    let timeout: any;
     const debouncedSave = () => {
         clearTimeout(timeout);
         timeout = setTimeout(saveFormState, 500);
     };
 
-    form.addEventListener('change', debouncedSave);
-    form.addEventListener('input', debouncedSave);
+    form?.addEventListener('change', debouncedSave);
+    form?.addEventListener('input', debouncedSave);
 }
 
 /**
  * Fetch recipes from Backend (Worker)
  */
-async function fetchRecipes(requestData, userKey) {
-    const headers = {
+async function fetchRecipes(requestData: any, userKey: string | null) {
+    const headers: Record<string, string> = {
         'Content-Type': 'application/json'
     };
     if (userKey) {
@@ -588,12 +583,7 @@ async function fetchRecipes(requestData, userKey) {
             const errorMessage = data.error || `Server Error: ${response.status} ${response.statusText}`;
             console.error("Fetch Error Details:", response.status, errorMessage, data);
 
-            // For now, alert in dev/beta to help debugging
-            if (location.hostname === 'localhost' || location.hostname.includes('pages.dev')) {
-                // Not blocking, just log
-            }
-
-            const error = new Error(errorMessage);
+            const error: any = new Error(errorMessage);
             error.status = response.status; // Attach status code
             throw error;
         }
@@ -609,17 +599,16 @@ async function fetchRecipes(requestData, userKey) {
 /**
  * Render recipes to DOM
  */
-/**
- * Render recipes to DOM
- */
-function renderRecipes(data) {
+function renderRecipes(data: any) {
+    const recipeCardsDiv = document.getElementById('recipe-cards');
+    if (!recipeCardsDiv) return;
     if (!data.recipes || data.recipes.length === 0) {
         recipeCardsDiv.innerHTML = '<p class="text-center text-gray-500">レシピが見つかりませんでした。</p>';
         return;
     }
 
     // Escape HTML Helper
-    const escapeHtml = (unsafe) => {
+    const escapeHtml = (unsafe: any) => {
         return String(unsafe)
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
@@ -637,7 +626,7 @@ function renderRecipes(data) {
     }
 
     // Recipes
-    data.recipes.forEach((recipe, index) => {
+    data.recipes.forEach((recipe: any, index: number) => {
         const div = document.createElement('div');
         div.className = 'recipe-card fade-in-up w-full';
         div.style.animationDelay = `${index * 0.2}s`;
@@ -678,17 +667,16 @@ function renderRecipes(data) {
                             ${recipe.estimated_cost ? `<span class="text-xs font-normal text-gray-400 ml-2">※費用目安: ${escapeHtml(recipe.estimated_cost)} (調味料除く)</span>` : ''}
                         </h4>
                         <ul class="list-none text-sm text-gray-600 bg-gray-50 p-3 rounded-lg space-y-2">
-                            ${recipe.ingredients.map(i => {
-            // Checking if it is an object (new format) or string (old format/fallback)
+                            ${(recipe.ingredients as any[]).map(i => {
             if (typeof i === 'object' && i !== null) {
                 return `<li class="flex justify-between items-center border-b border-gray-200 pb-1 last:border-0 last:pb-0">
-                                        <div>
-                                            <span class="font-bold text-gray-700">${escapeHtml(i.name)}</span>
-                                            <span class="text-gray-500 ml-2 text-xs">${escapeHtml(i.amount)}</span>
-                                            ${i.substitute ? `<div class="text-xs text-orange-600 mt-0.5"><i class="fas fa-exchange-alt mr-1"></i>代用: ${escapeHtml(i.substitute)}</div>` : ''}
-                                        </div>
-                                        <span class="text-xs font-mono text-gray-500 bg-white px-1 rounded border border-gray-200">${escapeHtml(i.estimated_price)}</span>
-                                    </li>`;
+                                            <div>
+                                                <span class="font-bold text-gray-700">${escapeHtml(i.name)}</span>
+                                                <span class="text-gray-500 ml-2 text-xs">${escapeHtml(i.amount)}</span>
+                                                ${i.substitute ? `<div class="text-xs text-orange-600 mt-0.5"><i class="fas fa-exchange-alt mr-1"></i>代用: ${escapeHtml(i.substitute)}</div>` : ''}
+                                            </div>
+                                            <span class="text-xs font-mono text-gray-500 bg-white px-1 rounded border border-gray-200">${escapeHtml(i.estimated_price)}</span>
+                                        </li>`;
             } else {
                 return `<li>${escapeHtml(i)}</li>`;
             }
@@ -699,12 +687,8 @@ function renderRecipes(data) {
                     <div>
                         <h4 class="font-bold text-gray-700 mb-2 border-l-4 border-blue-500 pl-2">作り方</h4>
                         <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
-                            ${recipe.steps.map(s => `<li>${escapeHtml(s)}</li>`).join('')}
+                            ${(recipe.steps as string[]).map(s => `<li>${escapeHtml(s)}</li>`).join('')}
                         </ol>
-                    </div>
-                    
-                    <div class="mt-4 text-center">
-                         <button type="button" class="text-sm text-orange-500 hover:text-orange-700 underline" onclick="this.closest('details').removeAttribute('open')">閉じる</button>
                     </div>
                 </div>
             </details>
@@ -716,13 +700,13 @@ function renderRecipes(data) {
 /**
  * Render Error
  */
-function renderError(message, status, provider) {
+function renderError(message: string, status: number, provider: string) {
+    if (!recipeCardsDiv) return;
     let title = "エラーが発生しました";
     let helpText = "時間をおいて再度お試しいただくか、APIキーの設定を確認してください。";
 
     // Detect Rate Limit (429) or Service Unavailable (503) or generic "Too Many Requests"
-    // OpenAI/Gemini often returns 429 for rate limits.
-    if (status === 429 || message.includes('429') || message.includes('Quota exceeded') || message.includes('exceeded your current quota') || message.includes('Too Many Requests') || message.includes('Resource has been exhausted')) {
+    if (status === 429 || message.includes('429') || message.includes('Quota exceeded') || message.includes('Too Many Requests')) {
 
         if (provider === 'system') {
             title = "本日の利用上限に達しました";
@@ -745,7 +729,6 @@ function renderError(message, status, provider) {
                     <p class="font-bold text-red-800 mb-2">解決策:</p>
                     <ul class="list-disc list-inside text-red-700 text-sm space-y-1">
                         <li>OpenAI (またはGoogle) の管理画面で、Billing設定やCredit残高をご確認ください。</li>
-                        <li>GPT-5 Nanoなどの新しいモデルは、一部のアカウントでまだ利用できない場合や、高いクレジット残高が必要な場合があります。</li>
                         <li>解決しない場合は、モデルを「おまかせ (無料)」に切り替えてお試しください。</li>
                     </ul>
                 </div>
@@ -762,6 +745,3 @@ function renderError(message, status, provider) {
         </div>
     `;
 }
-
-// Start
-// init() is called via DOMContentLoaded event listener added at the top.
