@@ -987,7 +987,7 @@ let trendChart: any = null;
     try {
         // Parallel Fetch: Pollen and Weather
         const pollenPromise = fetchData(cityCode, startStrCompact, endStrCompact);
-        let weatherPromise = Promise.resolve(null);
+        let weatherPromise: Promise<any> = Promise.resolve(null);
 
         if (lat && lng) {
             const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${startStr}&end_date=${endStr}&daily=temperature_2m_max,precipitation_sum&timezone=Asia%2FTokyo`;
