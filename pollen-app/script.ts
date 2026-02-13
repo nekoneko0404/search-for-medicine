@@ -1006,8 +1006,8 @@ let trendChart: any = null;
                     label: '花粉飛散量 (個)',
                     data: values,
                     backgroundColor: values.map(v => getPollenColorDaily(v)),
-                    borderColor: '#666',
-                    borderWidth: values.map(v => v === 0 ? 1 : 0)
+                    borderColor: '#999',
+                    borderWidth: 1
                 }]
             },
             options: {
@@ -1238,6 +1238,22 @@ function setupUIListeners() {
         state.currentDate = newDateStr;
         const datePicker = document.getElementById('date-picker') as HTMLInputElement;
         if (datePicker) datePicker.value = newDateStr;
+
+        // Mode Restriction for Past Dates
+        const isToday = newDateStr === todayStr;
+        const modeHourly = document.getElementById('mode-hourly') as HTMLInputElement;
+        const modeDaily = document.getElementById('mode-daily') as HTMLInputElement;
+        const toggleGroup = document.querySelector('.mode-controls .toggle-group');
+
+        if (!isToday) {
+            // Force Daily Mode for past dates
+            state.currentMode = 'daily';
+            if (modeDaily) modeDaily.checked = true;
+            if (toggleGroup) toggleGroup.classList.add('disabled');
+        } else {
+            // Re-enable for today
+            if (toggleGroup) toggleGroup.classList.remove('disabled');
+        }
 
         document.querySelectorAll('.btn-quick-date').forEach(btn => {
             const days = (btn as HTMLElement).dataset.days;
