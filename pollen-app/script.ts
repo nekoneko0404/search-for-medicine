@@ -968,9 +968,9 @@ let trendChart: any = null;
     if (cityNameEl) cityNameEl.textContent = `${cityName} の花粉飛散傾向 (4週間)`;
     if (loading) loading.classList.remove('hidden');
 
-    // Get 4 weeks data (28 days)
-    const end = new Date();
-    const start = new Date();
+    // Get 4 weeks data (28 days) based on selected date
+    const end = new Date(state.currentDate);
+    const start = new Date(state.currentDate);
     start.setDate(end.getDate() - 27);
 
     const startStr = getJSTDateString(start).replace(/-/g, '');
