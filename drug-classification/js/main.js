@@ -564,9 +564,10 @@ function renderResults(data) {
             cellMaker.setAttribute('data-label', 'メーカー');
 
             const makerName = item.manufacturer || '';
-            if (manufacturerLinks[makerName]) {
+            const normalizedMaker = item.normalizedManufacturer || normalizeString(makerName);
+            if (manufacturerLinks[normalizedMaker]) {
                 const link = document.createElement('a');
-                link.href = manufacturerLinks[makerName];
+                link.href = manufacturerLinks[normalizedMaker];
                 link.target = '_blank';
                 link.rel = 'noopener noreferrer';
                 link.className = "text-indigo-600 hover:underline";
@@ -694,9 +695,10 @@ function renderResults(data) {
             manufacturerDiv.appendChild(manufacturerLabel);
             const manufacturerSpan = document.createElement('span');
             const makerName = item.manufacturer || '';
-            if (manufacturerLinks[makerName]) {
+            const normalizedMaker = item.normalizedManufacturer || normalizeString(makerName);
+            if (manufacturerLinks[normalizedMaker]) {
                 const link = document.createElement('a');
-                link.href = manufacturerLinks[makerName];
+                link.href = manufacturerLinks[normalizedMaker];
                 link.target = '_blank';
                 link.rel = 'noopener noreferrer';
                 link.className = "text-indigo-600 hover:underline";

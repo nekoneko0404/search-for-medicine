@@ -243,7 +243,7 @@ export async function fetchManufacturerData() {
             const manufacturerName = cellA ? window.XLSX.utils.format_cell(cellA) : null;
             const url = cellB ? cellB.l ? cellB.l.Target : window.XLSX.utils.format_cell(cellB) : null;
             if (manufacturerName && url) {
-                links[manufacturerName.trim()] = url.trim();
+                links[normalizeString(manufacturerName).trim()] = url.trim();
             }
         };
         console.log('Manufacturer data loaded successfully.');
