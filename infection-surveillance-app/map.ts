@@ -1,17 +1,23 @@
+import { InfectionApiResponse, PrefectureData } from './types';
+
 // Japan Map SVG Data and Rendering Logic
-const JAPAN_PREFECTURES = [
-    { code: 1, name: "北海道", region: "Hokkaido-Tohoku", path: "M..." }, // Simplified for brevity, will use real paths
-    // ... (Full list of 47 prefectures with paths would be here)
-    // For this implementation, we will generate a simplified grid/tile map or use a library if paths are too complex for inline.
-    // Given the constraints, I will implement a "Tile Map" style which is modern and easier to maintain inline, 
-    // or fetch a standard SVG. Let's use a structured SVG generation approach.
+interface PrefectureDef {
+    code: number;
+    name: string;
+    region: string;
+    path: string;
+}
+
+const JAPAN_PREFECTURES: PrefectureDef[] = [
+    { code: 1, name: "北海道", region: "Hokkaido-Tohoku", path: "M..." },
+    // Simplified for brevity
 ];
 
-// Simplified SVG Paths for a recognizable Japan Map (Low Poly style for aesthetics)
-// This is a placeholder. In a real scenario, we'd load a detailed topojson/geojson or a high-quality SVG.
-// For this demo, I will construct a functional SVG map programmatically.
+interface RegionMap {
+    [key: string]: string[];
+}
 
-const REGIONS = {
+const REGIONS: RegionMap = {
     "Hokkaido": ["北海道"],
     "Tohoku": ["青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県"],
     "Kanto": ["茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県"],
@@ -22,7 +28,16 @@ const REGIONS = {
     "Kyushu": ["福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]
 };
 
-function renderJapanMap(containerId, data, disease) {
+interface LayoutItem {
+    id: string;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    label: string;
+}
+
+function renderJapanMap(containerId: string, data: InfectionApiResponse, disease: string) {
     const container = document.getElementById(containerId);
     if (!container) {
         console.error(`Map container '${containerId}' not found.`);
@@ -38,12 +53,8 @@ function renderJapanMap(containerId, data, disease) {
     svg.setAttribute("height", "100%");
     svg.style.filter = "drop-shadow(0 4px 6px rgba(0,0,0,0.1))";
 
-    // Draw regions (simplified geometric representation for demo purposes)
-    // In a production app, we would use actual geo-coordinates. 
-    // Here we simulate with a stylized layout.
-
     // Layout configuration (x, y coordinates for regions)
-    const layout = [
+    const layout: LayoutItem[] = [
         { id: "Hokkaido", x: 600, y: 50, w: 120, h: 100, label: "北海道" },
         { id: "Tohoku", x: 600, y: 160, w: 100, h: 180, label: "東北" },
         { id: "Kanto", x: 580, y: 350, w: 100, h: 100, label: "関東" },
@@ -81,14 +92,14 @@ function renderJapanMap(containerId, data, disease) {
 
         // Draw region shape (Hexagon or rounded rect for modern look)
         const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-        rect.setAttribute("x", region.x);
-        rect.setAttribute("y", region.y);
-        rect.setAttribute("width", region.w);
-        rect.setAttribute("height", region.h);
-        rect.setAttribute("rx", 10); // Rounded corners
+        rect.setAttribute("x", region.x.toString());
+        rect.setAttribute("y", region.y.toString());
+        rect.setAttribute("width", region.w.toString());
+        rect.setAttribute("height", region.h.toString());
+        rect.setAttribute("rx", "10"); // Rounded corners
         rect.setAttribute("fill", color);
         rect.setAttribute("stroke", "white");
-        rect.setAttribute("stroke-width", 2);
+        rect.setAttribute("stroke-width", "2");
 
         // Add hover effect via CSS class, but we can also add events here
         rect.addEventListener('mouseover', () => {
@@ -111,8 +122,8 @@ function renderJapanMap(containerId, data, disease) {
 
         // Label
         const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-        text.setAttribute("x", region.x + region.w / 2);
-        text.setAttribute("y", region.y + region.h / 2);
+        text.setAttribute("x", (region.x + region.w / 2).toString());
+        text.setAttribute("y", (region.y + region.h / 2).toString());
         text.setAttribute("text-anchor", "middle");
         text.setAttribute("dominant-baseline", "middle");
         text.setAttribute("fill", "white");
@@ -131,8 +142,14 @@ function renderJapanMap(containerId, data, disease) {
     container.appendChild(svg);
 }
 
-function getColorForValue(value, disease) {
-    const thresholds = {
+interface Thresholds {
+    alert?: number;
+    warning?: number;
+    epidemic?: number;
+}
+
+function getColorForValue(value: number, disease: string): string {
+    const thresholds: { [key: string]: Thresholds } = {
         'Influenza': { alert: 30.0, warning: 10.0, epidemic: 1.0 },
         'COVID-19': { alert: 15.0, warning: 10.0 }, // 山梨県基準など
         'ARI': { alert: 120.0, warning: 80.0 },
@@ -163,13 +180,17 @@ function getColorForValue(value, disease) {
     return "#2ecc71"; // Normal Green
 }
 
-function showRegionDetails(regionId, regionLabel, prefectures, data, disease, highlightPrefecture = null) {
+function showRegionDetails(regionId: string, regionLabel: string, prefectures: string[], data: InfectionApiResponse, disease: string, highlightPrefecture: string | null = null) {
     const panel = document.getElementById('detail-panel');
     const title = document.getElementById('region-title');
     const content = document.getElementById('region-content');
 
-    title.textContent = `${regionLabel} 詳細 (${getDiseaseName(disease)})`;
-    content.replaceChildren(); // Clear content safely
+    if (!panel || !title || !content) return;
+
+    // Use a safe way to get disease name, effectively mimicking getDiseaseName from main.ts or window
+    const diseaseName = window.getDiseaseName ? window.getDiseaseName(disease) : disease;
+    title.textContent = `${regionLabel} 詳細 (${diseaseName})`;
+    content.innerHTML = ''; // Clear content safely
 
     const list = document.createElement('div');
     list.className = 'prefecture-list';
@@ -234,26 +255,28 @@ function showRegionDetails(regionId, regionLabel, prefectures, data, disease, hi
 }
 
 // 外部から詳細パネルを更新するための関数
-window.updateDetailPanel = function (regionId, data, disease, highlightPrefecture = null) {
+window.updateDetailPanel = function (regionId: string, data: InfectionApiResponse, disease: string, highlightPrefecture: string | null = null) {
     // layoutデータなどが必要だが、ここでは簡易的にREGIONSから復元
     const prefectures = REGIONS[regionId];
     if (!prefectures) return;
 
     // ラベルの復元（簡易実装：IDをそのまま使うか、マッピングを持つか）
-    // layout変数にアクセスできないため、REGIONSのキーで代用、またはマッピングを再定義
-    const regionLabels = {
+    const regionLabels: { [key: string]: string } = {
         "Hokkaido": "北海道", "Tohoku": "東北", "Kanto": "関東", "Chubu": "中部",
         "Kansai": "関西", "Chugoku": "中国", "Shikoku": "四国", "Kyushu": "九州・沖縄"
     };
     const label = regionLabels[regionId] || regionId;
 
     // data構造の正規化: main.jsからの呼び出しでは cachedData 全体が渡されるため、currentを取り出す
-    const currentData = data.current ? data.current : data;
+    // Note: In TypeScript, we assume proper types.
+    // However, since main.ts calls this, we need to handle the structure.
+    // If 'data' has 'current' property, it's CachedData, otherwise InfectionApiResponse
+    const currentData = (data as any).current ? (data as any).current : data;
 
     showRegionDetails(regionId, label, prefectures, currentData, disease, highlightPrefecture);
 };
 
-window.getRegionIdByPrefecture = function (prefectureName) {
+window.getRegionIdByPrefecture = function (prefectureName: string): string | null {
     for (const [regionId, prefectures] of Object.entries(REGIONS)) {
         if (prefectures.includes(prefectureName)) {
             return regionId;

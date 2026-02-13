@@ -8,7 +8,7 @@
  * @param {string} str - String to normalize
  * @returns {string} Normalized string
  */
-export function normalizeString(str) {
+export function normalizeString(str: string): string {
     if (!str) return '';
     // Convert Hiragana to Katakana
     const hiraToKata = str.replace(/[ぁ-ゖ]/g, function (match) {
@@ -26,11 +26,11 @@ export function normalizeString(str) {
  * @param {number} delay - Delay in milliseconds
  * @returns {Function} Debounced function
  */
-export function debounce(func, delay) {
-    let timeout;
-    return function (...args) {
+export function debounce<T extends (...args: any[]) => void>(func: T, delay: number): (...args: Parameters<T>) => void {
+    let timeout: ReturnType<typeof setTimeout>;
+    return function (...args: Parameters<T>) {
         clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), delay);
+        timeout = setTimeout(() => func(...args), delay);
     };
 }
 
@@ -39,7 +39,7 @@ export function debounce(func, delay) {
  * @param {Date} date - Date object
  * @returns {string} Formatted date string
  */
-export function formatDate(date) {
+export function formatDate(date: Date): string {
     if (!date) return '';
     const year = date.getFullYear().toString();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -52,7 +52,7 @@ export function formatDate(date) {
  * @param {string} text - Text to extract from
  * @returns {string} Extracted search term
  */
-export function extractSearchTerm(text) {
+export function extractSearchTerm(text: string): string {
     if (!text) return '';
     // Skip leading tags in brackets like 【限定】, [重要], etc.
     let cleanText = text.replace(/^[【\[［][^】\]］]+[】\]］]/g, '').trim();

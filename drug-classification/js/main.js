@@ -3,9 +3,9 @@
  */
 
 import '../../css/input.css';
-import { loadAndCacheData, fetchManufacturerData, clearCacheAndReload } from '../../js/data.js';
-import { normalizeString, debounce } from '../../js/utils.js';
-import { showMessage, renderStatusButton, updateProgress, createDropdown } from '../../js/ui.js';
+import { loadAndCacheData, fetchManufacturerData, clearCacheAndReload } from '../../js/data';
+import { normalizeString, debounce } from '../../js/utils';
+import { showMessage, renderStatusButton, updateProgress, createDropdown } from '../../js/ui';
 
 let excelData = [];
 let manufacturerLinks = {};

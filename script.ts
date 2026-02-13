@@ -1,28 +1,33 @@
 
 import './css/input.css';
-import { normalizeString, debounce, formatDate, extractSearchTerm } from './js/utils.js';
-import { loadAndCacheData } from './js/data.js';
-import { updateProgress, showMessage, hideMessage, renderStatusButton, createDropdown } from './js/ui.js';
-import './js/components/MainFooter.js';
-import './js/components/MainHeader.js';
+import { normalizeString, debounce, formatDate, extractSearchTerm } from './js/utils';
+import { loadAndCacheData, MedicineData } from './js/data';
+import { updateProgress, showMessage, hideMessage, renderStatusButton, createDropdown } from './js/ui';
+import './js/components/MainFooter';
+import './js/components/MainHeader';
 
-let excelData = [];
-let filteredResults = [];
-let sortStates = {
+let excelData: MedicineData[] = [];
+let filteredResults: MedicineData[] = [];
+let sortStates: { [key: string]: 'asc' | 'desc' } = {
     status: 'asc',
     productName: 'asc',
     ingredientName: 'asc'
 };
-const messageBox = document.getElementById('messageBox');
-const tableContainer = document.getElementById('tableContainer');
-const cardContainer = document.getElementById('cardContainer');
-const resultsWrapper = document.getElementById('resultsWrapper');
+
+// DOM Elements (Lazy loaded or used in function scope)
+const getEl = (id: string) => document.getElementById(id);
+
 let isComposing = false;
 
-function getSearchKeywords(input) {
+interface SearchKeywords {
+    include: string[];
+    exclude: string[];
+}
+
+function getSearchKeywords(input: string): SearchKeywords {
     const terms = input.split(/\s+|　+/).filter(keyword => keyword !== '');
-    const include = [];
-    const exclude = [];
+    const include: string[] = [];
+    const exclude: string[] = [];
     terms.forEach(term => {
         if ((term.startsWith('ー') || term.startsWith('-')) && term.length > 1) {
             exclude.push(normalizeString(term.substring(1)));
@@ -34,19 +39,26 @@ function getSearchKeywords(input) {
 }
 
 function searchData() {
-    document.getElementById('infoContainer').classList.add('hidden');
+    const infoContainer = getEl('infoContainer');
+    if (infoContainer) infoContainer.classList.add('hidden');
 
     if (excelData.length === 0) {
         return;
     }
 
+    const drugNameInput = getEl('drugName') as HTMLInputElement;
+    const ingredientNameInput = getEl('ingredientName') as HTMLInputElement;
+    const makerNameInput = getEl('makerName') as HTMLInputElement;
+    const statusNormalInput = getEl('statusNormal') as HTMLInputElement;
+    const statusLimitedInput = getEl('statusLimited') as HTMLInputElement;
+    const statusStoppedInput = getEl('statusStopped') as HTMLInputElement;
+    const resultsWrapper = getEl('resultsWrapper');
 
+    const drugKeywords = getSearchKeywords(drugNameInput?.value || '');
+    const ingredientKeywords = getSearchKeywords(ingredientNameInput?.value || '');
+    const makerKeywords = getSearchKeywords(makerNameInput?.value || '');
 
-    const drugKeywords = getSearchKeywords(document.getElementById('drugName').value);
-    const ingredientKeywords = getSearchKeywords(document.getElementById('ingredientName').value);
-    const makerKeywords = getSearchKeywords(document.getElementById('makerName').value);
-
-    const allCheckboxesChecked = document.getElementById('statusNormal').checked && document.getElementById('statusLimited').checked && document.getElementById('statusStopped').checked;
+    const allCheckboxesChecked = statusNormalInput?.checked && statusLimitedInput?.checked && statusStoppedInput?.checked;
 
     const allSearchFieldsEmpty = drugKeywords.include.length === 0 && drugKeywords.exclude.length === 0 &&
         ingredientKeywords.include.length === 0 && ingredientKeywords.exclude.length === 0 &&
@@ -54,26 +66,26 @@ function searchData() {
 
     if (allSearchFieldsEmpty && allCheckboxesChecked) {
         renderTable([]);
-        resultsWrapper.classList.add('hidden');
+        if (resultsWrapper) resultsWrapper.classList.add('hidden');
         document.body.classList.remove('search-mode');
-        document.getElementById('infoContainer').classList.remove('hidden');
+        if (infoContainer) infoContainer.classList.remove('hidden');
         return;
     } else {
-        resultsWrapper.classList.remove('hidden');
-        document.getElementById('infoContainer').classList.add('hidden');
+        if (resultsWrapper) resultsWrapper.classList.remove('hidden');
+        if (infoContainer) infoContainer.classList.add('hidden');
     }
 
-    const statusFilters = [];
-    if (document.getElementById('statusNormal').checked) statusFilters.push("通常出荷");
-    if (document.getElementById('statusLimited').checked) statusFilters.push("限定出荷");
-    if (document.getElementById('statusStopped').checked) statusFilters.push("供給停止");
+    const statusFilters: string[] = [];
+    if (statusNormalInput?.checked) statusFilters.push("通常出荷");
+    if (statusLimitedInput?.checked) statusFilters.push("限定出荷");
+    if (statusStoppedInput?.checked) statusFilters.push("供給停止");
 
     filteredResults = excelData.filter(item => {
         if (!item) return false;
 
         const drugName = item.normalizedProductName || "";
         const ingredientName = item.normalizedIngredientName || "";
-        const makerName = item.normalizedMakerName || "";
+        const makerName = item.normalizedManufacturer || "";
 
         const matchDrug = drugKeywords.include.every(keyword => drugName.includes(keyword)) &&
             (drugKeywords.exclude.length === 0 || !drugKeywords.exclude.some(keyword => drugName.includes(keyword)));
@@ -81,6 +93,7 @@ function searchData() {
         const matchIngredient = ingredientKeywords.include.every(keyword => ingredientName.includes(keyword)) &&
             (ingredientKeywords.exclude.length === 0 || !ingredientKeywords.exclude.some(keyword => ingredientName.includes(keyword)));
 
+        // Maker search actually checks drugName, makerName AND ingredientName as per original logic
         const matchMaker = makerKeywords.include.every(keyword => drugName.includes(keyword) || makerName.includes(keyword) || ingredientName.includes(keyword)) &&
             (makerKeywords.exclude.length === 0 || !makerKeywords.exclude.some(keyword => drugName.includes(keyword) || makerName.includes(keyword) || ingredientName.includes(keyword)));
 
@@ -100,10 +113,7 @@ function searchData() {
         }
 
         return matchDrug && matchIngredient && matchMaker && matchStatus;
-
     });
-
-
 
     renderTable(filteredResults);
 
@@ -111,51 +121,36 @@ function searchData() {
     document.body.classList.toggle('search-mode', filteredResults.length > 0);
 
     if (filteredResults.length === 0) {
-
         showMessage("検索結果が見つかりませんでした。", "info");
-
         hideMessage(2000);
-
     } else if (filteredResults.length > 500) {
-
         showMessage(`${filteredResults.length} 件のデータが見つかりました。\n表示は上位 500 件に制限されています。`, "success");
-
         hideMessage(2000);
-
     } else {
-
         showMessage(`${filteredResults.length} 件のデータが見つかりました。`, "success");
-
         hideMessage(2000);
-
     }
 
-
-
     sortStates.status = 'asc';
-
     sortStates.productName = 'asc';
+    sortStates.ingredientName = 'asc'; // Add sortStates logic consistency
 
-    const statusIcon = document.getElementById('sort-status-icon');
-
+    const statusIcon = getEl('sort-status-icon');
     if (statusIcon) statusIcon.textContent = '↕';
 
-    const productNameIcon = document.getElementById('sort-productName-icon');
-
+    const productNameIcon = getEl('sort-productName-icon');
     if (productNameIcon) productNameIcon.textContent = '↕';
 
-    const ingredientNameIcon = document.getElementById('sort-ingredientName-icon');
-
+    const ingredientNameIcon = getEl('sort-ingredientName-icon');
     if (ingredientNameIcon) ingredientNameIcon.textContent = '↕';
-
 }
 
 
-function renderTable(data) {
+function renderTable(data: MedicineData[]) {
     console.log("renderTable called with data length:", data.length);
-    const resultBody = document.getElementById('searchResultTableBody');
-    const cardContainer = document.getElementById('cardContainer');
-    const tableContainer = document.getElementById('tableContainer');
+    const resultBody = getEl('searchResultTableBody') as HTMLTableSectionElement;
+    const cardContainer = getEl('cardContainer');
+    const tableContainer = getEl('tableContainer');
 
     if (!resultBody || !cardContainer || !tableContainer) {
         console.error("Missing DOM elements in renderTable:", { resultBody, cardContainer, tableContainer });
@@ -357,14 +352,6 @@ function renderTable(data) {
             span.textContent = drugName;
             cardDrugNameWrapper.appendChild(span);
         } else {
-            // Use createDropdown for mobile card too (it handles mobile click properly)
-            // We need a unique index for card dropdowns to avoid ID conflict? 
-            // format: dropdown-content-{index} - might conflict if we assume 1:1 mapping. 
-            // createDropdown internal ID is generic. Since the table dropdowns are also in DOM, ID conflict is real.
-            // But ui.js uses `dropdown-content-${index}`. 
-            // We should use a different index or modify ui.js? 
-            // ui.js logic closes "other" dropdowns. 
-            // If we use index + 10000 for cards, it should be fine.
             const cardDropdown = createDropdown(item, index + 10000);
             cardDrugNameWrapper.appendChild(cardDropdown);
         }
@@ -433,10 +420,7 @@ function renderTable(data) {
     });
 }
 
-/**
- * Restore search conditions from URL parameters
- */
-function restoreFromUrlParams() {
+function restoreFromUrlParams(): boolean {
     const urlParams = new URLSearchParams(window.location.search);
     const drug = urlParams.get('drug');
     const ingredient = urlParams.get('ingredient');
@@ -445,32 +429,43 @@ function restoreFromUrlParams() {
     // Only proceed if at least one parameter is present
     if (!drug && !ingredient && !maker && !urlParams.has('normal')) return false;
 
-    if (drug) document.getElementById('drugName').value = drug;
-    if (ingredient) document.getElementById('ingredientName').value = ingredient;
-    if (maker) document.getElementById('makerName').value = maker;
+    const drugInput = getEl('drugName') as HTMLInputElement;
+    const ingredientInput = getEl('ingredientName') as HTMLInputElement;
+    const makerInput = getEl('makerName') as HTMLInputElement;
+    const statusNormalInput = getEl('statusNormal') as HTMLInputElement;
+    const statusLimitedInput = getEl('statusLimited') as HTMLInputElement;
+    const statusStoppedInput = getEl('statusStopped') as HTMLInputElement;
+
+    if (drug && drugInput) drugInput.value = drug;
+    if (ingredient && ingredientInput) ingredientInput.value = ingredient;
+    if (maker && makerInput) makerInput.value = maker;
 
     const normal = urlParams.get('normal');
     const limited = urlParams.get('limited');
     const stopped = urlParams.get('stopped');
 
-    if (normal !== null) document.getElementById('statusNormal').checked = normal === '1';
-    if (limited !== null) document.getElementById('statusLimited').checked = limited === '1';
-    if (stopped !== null) document.getElementById('statusStopped').checked = stopped === '1';
+    if (normal !== null && statusNormalInput) statusNormalInput.checked = normal === '1';
+    if (limited !== null && statusLimitedInput) statusLimitedInput.checked = limited === '1';
+    if (stopped !== null && statusStoppedInput) statusStoppedInput.checked = stopped === '1';
 
     return true;
 }
 
-/**
- * Share current search conditions via URL
- */
 async function shareSearchConditions() {
-    const drug = document.getElementById('drugName').value.trim();
-    const ingredient = document.getElementById('ingredientName').value.trim();
-    const maker = document.getElementById('makerName').value.trim();
+    const drugInput = getEl('drugName') as HTMLInputElement;
+    const ingredientInput = getEl('ingredientName') as HTMLInputElement;
+    const makerInput = getEl('makerName') as HTMLInputElement;
+    const statusNormalInput = getEl('statusNormal') as HTMLInputElement;
+    const statusLimitedInput = getEl('statusLimited') as HTMLInputElement;
+    const statusStoppedInput = getEl('statusStopped') as HTMLInputElement;
 
-    const normal = document.getElementById('statusNormal').checked;
-    const limited = document.getElementById('statusLimited').checked;
-    const stopped = document.getElementById('statusStopped').checked;
+    const drug = drugInput?.value.trim() || '';
+    const ingredient = ingredientInput?.value.trim() || '';
+    const maker = makerInput?.value.trim() || '';
+
+    const normal = statusNormalInput?.checked;
+    const limited = statusLimitedInput?.checked;
+    const stopped = statusStoppedInput?.checked;
 
     const params = new URLSearchParams();
     if (drug) params.set('drug', drug);
@@ -493,7 +488,7 @@ async function shareSearchConditions() {
     }
 }
 
-function sortResults(key) {
+function sortResults(key: string) {
     if (filteredResults.length === 0) {
         showMessage("ソートするデータがありません。", "info");
         return;
@@ -505,12 +500,13 @@ function sortResults(key) {
     for (const otherKey in sortStates) {
         if (otherKey !== key) {
             sortStates[otherKey] = 'asc'; // Or your default
-            const icon = document.getElementById(`sort-${otherKey}-icon`);
+            const icon = getEl(`sort-${otherKey}-icon`);
             if (icon) icon.textContent = '↕';
         }
     }
 
-    document.getElementById(`sort-${key}-icon`).textContent = newDirection === 'asc' ? '↑' : '↓';
+    const icon = getEl(`sort-${key}-icon`);
+    if (icon) icon.textContent = newDirection === 'asc' ? '↑' : '↓';
 
     filteredResults.sort((a, b) => {
         let aValue, bValue;
@@ -523,6 +519,8 @@ function sortResults(key) {
         } else if (key === 'ingredientName') {
             aValue = (a.ingredientName || '').trim();
             bValue = (b.ingredientName || '').trim();
+        } else {
+            return 0;
         }
 
         const compare = aValue.localeCompare(bValue, 'ja', { sensitivity: 'base' });
@@ -535,15 +533,13 @@ function sortResults(key) {
 }
 
 
-
-
-
 function attachSearchListeners() {
     const inputIds = ['drugName', 'ingredientName', 'makerName'];
     const debouncedSearch = debounce(searchData, 300);
 
     inputIds.forEach(id => {
-        const element = document.getElementById(id);
+        const element = getEl(id);
+        if (!element) return;
 
         element.addEventListener('compositionstart', () => {
             isComposing = true;
@@ -561,26 +557,23 @@ function attachSearchListeners() {
         });
     });
 
-    document.getElementById('statusNormal').addEventListener('change', searchData);
-    document.getElementById('statusLimited').addEventListener('change', searchData);
-    document.getElementById('statusStopped').addEventListener('change', searchData);
+    getEl('statusNormal')?.addEventListener('change', searchData);
+    getEl('statusLimited')?.addEventListener('change', searchData);
+    getEl('statusStopped')?.addEventListener('change', searchData);
 
-    document.getElementById('sort-productName-button').addEventListener('click', () => sortResults('productName'));
-    document.getElementById('sort-ingredientName-button').addEventListener('click', () => sortResults('ingredientName'));
-    document.getElementById('sort-status-button').addEventListener('click', () => sortResults('status'));
+    getEl('sort-productName-button')?.addEventListener('click', () => sortResults('productName'));
+    getEl('sort-ingredientName-button')?.addEventListener('click', () => sortResults('ingredientName'));
+    getEl('sort-status-button')?.addEventListener('click', () => sortResults('status'));
 }
 
 
+function handleIngredientClick(ingredientName: string) {
+    const drugInput = getEl('drugName') as HTMLInputElement;
+    const makerInput = getEl('makerName') as HTMLInputElement;
+    if (drugInput) drugInput.value = '';
+    if (makerInput) makerInput.value = '';
 
-function handleIngredientClick(ingredientName) {
-    document.getElementById('drugName').value = '';
-    document.getElementById('makerName').value = '';
-
-    // Optional: Trim or clean up ingredient name if needed. 
-    // The previous implementation had logic to truncate to 5 characters, but the user didn't explicitly ask for it back.
-    // However, clicking a long ingredient name usually means exact match search is desired.
-
-    const ingredientInput = document.getElementById('ingredientName');
+    const ingredientInput = getEl('ingredientName') as HTMLInputElement;
     if (ingredientInput) {
         ingredientInput.value = ingredientName;
         searchData();
@@ -594,22 +587,24 @@ const initApp = async function () {
     if (document.body.classList.contains('loaded')) return;
 
     document.body.classList.add('loaded');
-    document.getElementById('sort-status-icon').textContent = '↕';
-    document.getElementById('sort-productName-icon').textContent = '↕';
-    document.getElementById('sort-ingredientName-icon').textContent = '↕';
+
+    const icon1 = getEl('sort-status-icon'); if (icon1) icon1.textContent = '↕';
+    const icon2 = getEl('sort-productName-icon'); if (icon2) icon2.textContent = '↕';
+    const icon3 = getEl('sort-ingredientName-icon'); if (icon3) icon3.textContent = '↕';
 
     attachSearchListeners();
-    document.getElementById('share-btn').addEventListener('click', shareSearchConditions);
+    getEl('share-btn')?.addEventListener('click', shareSearchConditions);
 
-    document.getElementById('reload-data').addEventListener('click', () => {
-        localforage.removeItem('excelCache').then(async () => {
+    getEl('reload-data')?.addEventListener('click', () => {
+        if (!window.localforage) return;
+        window.localforage.removeItem('excelCache').then(async () => {
             showMessage('キャッシュをクリアしました。データを再読み込みします。', 'info');
             const result = await loadAndCacheData(updateProgress);
             if (result && result.data) {
                 excelData = result.data;
                 showMessage(`データを再読み込みしました: ${excelData.length}件`, 'success');
             }
-        }).catch(err => {
+        }).catch((err: any) => {
             console.error("Failed to clear cache", err);
             showMessage('キャッシュのクリアに失敗しました。', 'error');
         });
@@ -619,7 +614,8 @@ const initApp = async function () {
     if (result && result.data) {
         excelData = result.data;
         renderTable([]);
-        resultsWrapper.classList.add('hidden');
+        const resultsWrapper = getEl('resultsWrapper');
+        if (resultsWrapper) resultsWrapper.classList.add('hidden');
 
         if (restoreFromUrlParams()) {
             searchData();

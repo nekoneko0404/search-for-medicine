@@ -1,14 +1,14 @@
 /**
  * Typewriter effect for input placeholder
- * @param {HTMLInputElement} inputElement - The input element to animate
- * @param {string} fullText - The full placeholder text to display
- * @param {number} speed - Typing speed in milliseconds per character
+ * @param inputElement - The input element to animate
+ * @param fullText - The full placeholder text to display
+ * @param speed - Typing speed in milliseconds per character
  */
-export function typewriterPlaceholder(inputElement, fullText, speed = 100) {
+export function typewriterPlaceholder(inputElement: HTMLInputElement, fullText: string, speed: number = 100): void {
     if (!inputElement || !fullText) return;
 
     let currentIndex = 0;
-    let timeoutId = null;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
     let isAnimating = true;
 
     // Clear the placeholder initially
@@ -50,15 +50,23 @@ export function typewriterPlaceholder(inputElement, fullText, speed = 100) {
     typeNextChar();
 }
 
+interface TypewriterConfig {
+    element: HTMLInputElement | null;
+    text: string;
+    speed?: number;
+}
+
 /**
  * Apply typewriter effect to multiple inputs with staggered start times
- * @param {Array<{element: HTMLInputElement, text: string, speed?: number}>} inputs - Array of input configurations
- * @param {number} staggerDelay - Delay between starting each animation in milliseconds
+ * @param inputs - Array of input configurations
+ * @param staggerDelay - Delay between starting each animation in milliseconds
  */
-export function typewriterMultiple(inputs, staggerDelay = 300) {
+export function typewriterMultiple(inputs: TypewriterConfig[], staggerDelay: number = 300): void {
     inputs.forEach((config, index) => {
-        setTimeout(() => {
-            typewriterPlaceholder(config.element, config.text, config.speed || 100);
-        }, index * staggerDelay);
+        if (config.element) {
+            setTimeout(() => {
+                typewriterPlaceholder(config.element as HTMLInputElement, config.text, config.speed || 100);
+            }, index * staggerDelay);
+        }
     });
 }

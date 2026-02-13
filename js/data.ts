@@ -3,7 +3,7 @@
  * Handles fetching from Google Sheets and caching with LocalForage
  */
 
-import { normalizeString } from './utils.js';
+import { normalizeString } from './utils';
 
 // We assume localforage is loaded globally via CDN in index.html for now, 
 // or we could import it if we were using a bundler. 
@@ -13,12 +13,47 @@ import { normalizeString } from './utils.js';
 const FILE_ID_MAIN = '1ZyjtfiRjGoV9xHSA5Go4rJZr281gqfMFW883Y7s9mQU';
 const FILE_ID_MANUFACTURER = '1lTHHbUj6ySAgtum8zJrHjWAxYnbOO9r8H8Cnu-Y0TnA';
 
+// Type definitions
+declare global {
+    interface Window {
+        localforage: any;
+        XLSX: any;
+    }
+}
+
+export interface MedicineData {
+    productName: string;
+    normalizedProductName: string;
+    ingredientName: string;
+    normalizedIngredientName: string;
+    manufacturer: string;
+    normalizedManufacturer: string;
+    shipmentStatus: string;
+    reasonForLimitation: string;
+    resolutionProspect: string;
+    expectedDate: string;
+    expectedDateObj: Date | null;
+    shipmentVolumeStatus: string;
+    yjCode: string;
+    productCategory: string;
+    isBasicDrug: string;
+    updateDateObj: Date | null;
+    updatedCells: number[];
+    shippingStatusTrend: string;
+    changedPart: string;
+}
+
+export interface LoadDataResult {
+    data: MedicineData[];
+    date: string;
+}
+
 /**
  * Load script dynamically
  * @param {string} src - Script source URL
  * @returns {Promise<void>}
  */
-export function loadScript(src) {
+export function loadScript(src: string): Promise<void> {
     return new Promise((resolve, reject) => {
         if (document.querySelector(`script[src="${src}"]`)) {
             resolve();
@@ -38,7 +73,7 @@ export function loadScript(src) {
  * @param {string} gvizDate - Date string from Google Visualization API
  * @returns {Date|null} Date object or null
  */
-function parseGvizDate(gvizDate) {
+function parseGvizDate(gvizDate: string): Date | null {
     if (typeof gvizDate !== 'string' || gvizDate.trim() === '') return null;
 
     // 1. Try standard Date constructor
@@ -88,8 +123,8 @@ function parseGvizDate(gvizDate) {
  * @param {string} text - CSV line text
  * @returns {Array<string>} Array of fields
  */
-function parseCSVLine(text) {
-    const result = [];
+function parseCSVLine(text: string): string[] {
+    const result: string[] = [];
     let current = '';
     let inQuote = false;
 
@@ -120,12 +155,12 @@ function parseCSVLine(text) {
  * @param {Function} onProgress - Callback for progress updates
  * @returns {Array<Object>} Array of data objects
  */
-function processCsvData(csvText, onProgress) {
+function processCsvData(csvText: string, onProgress?: (msg: string, percent: number) => void): MedicineData[] {
     if (onProgress) onProgress('データを処理中...', 75);
     const rows = csvText.trim().split('\n');
     if (rows.length < 2) return [];
 
-    const dataRows = [];
+    const dataRows: MedicineData[] = [];
     for (let i = 0; i < rows.length; i++) {
         const rowString = rows[i].trim();
         if (!rowString) continue;
@@ -154,7 +189,7 @@ function processCsvData(csvText, onProgress) {
         // Skip if essential data is missing
         if (!colProduct && !row[idx.ingredient]) continue;
 
-        let updatedCells = [];
+        let updatedCells: number[] = [];
         let shippingStatusTrend = '';
         let changedPart = '';
 
@@ -209,7 +244,7 @@ function processCsvData(csvText, onProgress) {
  * Fetch manufacturer data (links)
  * @returns {Promise<Object>} Map of manufacturer name to URL
  */
-export async function fetchManufacturerData() {
+export async function fetchManufacturerData(): Promise<Record<string, string>> {
     console.log('Fetching manufacturer data...');
     try {
         await loadScript('https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js');
@@ -236,7 +271,7 @@ export async function fetchManufacturerData() {
         const worksheet = workbook.Sheets[workbook.SheetNames[0]];
 
         const range = window.XLSX.utils.decode_range(worksheet['!ref']);
-        const links = {};
+        const links: Record<string, string> = {};
         for (let R = range.s.r + 1; R <= range.e.r; ++R) {
             const cellA = worksheet[window.XLSX.utils.encode_cell({ r: R, c: 0 })];
             const cellB = worksheet[window.XLSX.utils.encode_cell({ r: R, c: 1 })];
@@ -260,7 +295,7 @@ export async function fetchManufacturerData() {
  * @param {Function} onProgress - Callback for progress updates
  * @returns {Promise<Object>} { data: Array, date: string }
  */
-async function fetchExcelData(onProgress) {
+async function fetchExcelData(onProgress?: (msg: string, percent: number) => void): Promise<LoadDataResult> {
     console.log('Fetching CSV data from Google Drive...');
     if (onProgress) onProgress('Google Driveからデータを読み込み中...', 0);
 
@@ -299,7 +334,7 @@ async function fetchExcelData(onProgress) {
  * @param {Function} onProgress - Callback for progress updates
  * @returns {Promise<Object>} { data: Array, date: string }
  */
-export async function loadAndCacheData(onProgress) {
+export async function loadAndCacheData(onProgress?: (msg: string, percent: number) => void): Promise<LoadDataResult> {
     console.log('共通データローダーを開始します。');
 
     if (!window.localforage) {
@@ -314,7 +349,7 @@ export async function loadAndCacheData(onProgress) {
             console.log("キャッシュからデータを読み込みました。");
             // Restore Date objects from strings (JSON serialization converts dates to strings)
             if (Array.isArray(cachedData.data)) {
-                cachedData.data.forEach(item => {
+                cachedData.data.forEach((item: any) => {
                     if (item.updateDateObj && typeof item.updateDateObj === 'string') {
                         item.updateDateObj = new Date(item.updateDateObj);
                     }
@@ -345,7 +380,7 @@ export async function loadAndCacheData(onProgress) {
     }
 }
 
-export async function clearCacheAndReload(onProgress) {
+export async function clearCacheAndReload(onProgress?: (msg: string, percent: number) => void): Promise<LoadDataResult> {
     try {
         if (window.localforage) {
             await window.localforage.removeItem('excelCache');
@@ -357,4 +392,3 @@ export async function clearCacheAndReload(onProgress) {
         throw new Error(`キャッシュのクリアに失敗しました: ${err.message}`);
     }
 }
-

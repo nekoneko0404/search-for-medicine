@@ -6,7 +6,7 @@ export class MainFooter extends HTMLElement {
         super();
     }
 
-    connectedCallback() {
+    connectedCallback(): void {
         let baseDir = this.getAttribute('base-dir') || './';
         if (baseDir !== './' && !baseDir.endsWith('/')) {
             baseDir += '/';
