@@ -9,12 +9,25 @@ export async function generateMedicationGuidePDF(medication: Medication) {
   });
 
   // Load Japanese Font
+  // Load Japanese Font
+  // Load Japanese Font
   try {
-    const fontRes = await fetch('/fonts/ipaexg.ttf');
+    const fontRes = await fetch('/okuri_pakkun/fonts/NotoSansJP-Regular.ttf');
+    if (!fontRes.ok) throw new Error('Font fetch failed');
     const fontBuffer = await fontRes.arrayBuffer();
-    doc.addFileToVFS('ipaexg.ttf', Buffer.from(fontBuffer).toString('base64'));
-    doc.addFont('ipaexg.ttf', 'IPAexGothic', 'normal');
-    doc.setFont('IPAexGothic');
+
+    // Convert ArrayBuffer to Base64 (browser compatible)
+    let binary = '';
+    const bytes = new Uint8Array(fontBuffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+      binary += String.fromCharCode(bytes[i]);
+    }
+    const base64String = window.btoa(binary);
+
+    doc.addFileToVFS('NotoSansJP-Regular.ttf', base64String);
+    doc.addFont('NotoSansJP-Regular.ttf', 'NotoSansJP', 'normal');
+    doc.setFont('NotoSansJP');
   } catch (e) {
     console.error('Failed to load font', e);
   }
