@@ -27,10 +27,12 @@ const state: GlobalState = {
 
 let currentOpenCity: City | null = null;
 let map: any;
+let baseLayers: { [key: string]: any } = {};
 const markers: { [key: string]: any } = {};
 const fetchedCities = new Set<string>();
 let currentVisibleCityCodes = new Set<string>();
 const pendingPollenRequests = new Set<string>();
+const fetchPromiseCache = new Map<string, Promise<PollenData[]>>();
 
 // Helper: Debounce
 function debounce(func: Function, wait: number) {
@@ -86,31 +88,39 @@ async function fetchData(cityCode: string, start: string, end: string): Promise<
         return state.cache[cacheKey].data;
     }
 
-    try {
-        const response = await fetch(`${CONFIG.API_ENDPOINT}?citycode=${cityCode}&start=${start}&end=${end}`);
-        if (!response.ok) throw new Error('Network response was not ok');
-        const text = await response.text();
-
-        const rows = text.trim().split('\n').slice(1);
-        const data: PollenData[] = rows.map(row => {
-            const [code, dateStr, pollenStr] = row.split(',');
-            let pollen = parseInt(pollenStr, 10);
-            if (isNaN(pollen) || pollen < 0) pollen = -1;
-
-            const date = new Date(dateStr);
-            const dateKey = dateStr.split('T')[0];
-
-            return { code, date, dateKey, pollen };
-        })
-            .filter(item => item.code === cityCode)
-            .map(item => ({ date: item.date, dateKey: item.dateKey, pollen: item.pollen }));
-
-        state.cache[cacheKey] = { data, timestamp: now };
-        return data;
-    } catch (error) {
-        console.error('Fetch error:', error);
-        return [];
+    if (fetchPromiseCache.has(cacheKey)) {
+        return fetchPromiseCache.get(cacheKey)!;
     }
+
+    const promise = (async () => {
+        try {
+            const response = await fetch(`${CONFIG.API_ENDPOINT}?citycode=${cityCode}&start=${start}&end=${end}`);
+            if (!response.ok) throw new Error('Network response was not ok');
+            const text = await response.text();
+
+            const rows = text.trim().split('\n').slice(1);
+            const data: PollenData[] = rows.map(row => {
+                const [code, dateStr, pollenStr] = row.split(',');
+                let pollen = parseInt(pollenStr, 10);
+                if (isNaN(pollen) || pollen < 0) pollen = -1;
+
+                const date = new Date(dateStr);
+                const dateKey = dateStr.split('T')[0];
+
+                return { code, date, dateKey, pollen };
+            })
+                .filter(item => item.code === cityCode)
+                .map(item => ({ date: item.date, dateKey: item.dateKey, pollen: item.pollen }));
+
+            state.cache[cacheKey] = { data, timestamp: Date.now() };
+            return data;
+        } finally {
+            fetchPromiseCache.delete(cacheKey);
+        }
+    })();
+
+    fetchPromiseCache.set(cacheKey, promise);
+    return promise;
 }
 
 // --- Notification Manager ---
@@ -814,10 +824,13 @@ async function handlePopupOpen(city: City, marker: any) {
     const start = state.currentDate.replace(/-/g, '');
     const end = start;
 
-    // Force refresh cache if viewing today's data to ensure graph matches latest values
+    // Optimized: Only refresh if viewing today's data and it's older than 5 minutes
     if (state.currentDate === getJSTDateString()) {
         const cacheKey = `${city.code}-${start}-${end}`;
-        delete state.cache[cacheKey];
+        const cached = state.cache[cacheKey];
+        if (cached && (Date.now() - cached.timestamp > 5 * 60 * 1000)) {
+            delete state.cache[cacheKey];
+        }
     }
 
     const data = await fetchData(city.code, start, end);
@@ -927,8 +940,8 @@ async function updateVisibleMarkers() {
         if (!selectedCodes.has(code) && map.hasLayer(markers[code])) map.removeLayer(markers[code]);
     });
 
-    // Batch fetch
-    const BATCH_SIZE = 20;
+    // Batch fetch - Increased batch size for performance
+    const BATCH_SIZE = 50;
     for (let i = 0; i < fetchQueue.length; i += BATCH_SIZE) {
         const batch = fetchQueue.slice(i, i + BATCH_SIZE);
         batch.forEach(c => pendingPollenRequests.add(c));
@@ -971,10 +984,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     map = L.map('map', { zoomControl: false }).setView(initialCenter, initialZoom);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-    const baseLayers = {
+    // Map Layers Definition (Global Access)
+    baseLayers = {
         std: L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a>',
-            opacity: 0.6
+            opacity: 0.4
         }),
         relief: L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/hillshademap/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a>',
@@ -1060,17 +1074,21 @@ function setupUIListeners() {
         }
     }
 
-    // Map Type Toggle Logic
     document.querySelectorAll('.btn-map-type').forEach(btn => {
         btn.addEventListener('click', () => {
+            if (!map) return;
             const type = (btn as HTMLElement).dataset.type;
+            if (!type || !baseLayers[type]) return;
+
             document.querySelectorAll('.btn-map-type').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            // Note: In a real implementation we would switch layers here. 
-            // Since we defined layers in init, we might need access to them. 
-            // For simplicity, re-creating layers or managing them globally is needed.
-            // But we'll leave this placeholder logic as is for now or use a global var if preferred.
-            console.log('Switch map type to:', type);
+
+            // Switch layers
+            Object.keys(baseLayers).forEach(key => {
+                if (map.hasLayer(baseLayers[key])) map.removeLayer(baseLayers[key]);
+            });
+            baseLayers[type].addTo(map);
+            console.log('Switched map type to:', type);
         });
     });
 
