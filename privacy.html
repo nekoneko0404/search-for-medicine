@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https://www.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://cdn.jsdelivr.net https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://analytics.google.com ws://127.0.0.1:* http://127.0.0.1:*;">
+        content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https://www.googletagmanager.com; connect-src 'self' https://docs.google.com https://*.googleusercontent.com https://cdn.jsdelivr.net https://script.google.com https://script.googleusercontent.com https://www.google-analytics.com https://analytics.google.com ws://127.0.0.1:* http://127.0.0.1:*;">
     <title>プライバシーポリシー - Kusuri Compass</title>
     <meta name="description" content="Kusuri Compassのプライバシーポリシーです。">
     <meta name="keywords" content="プライバシーポリシー, Kusuri Compass">
@@ -17,16 +17,11 @@
     <link rel="stylesheet" href="css/v2-shared.css">
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXSZGE4HP7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-VXSZGE4HP7');
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
+    <script type="module" src="js/gtag-init.js"></script>
 
-    <script type="module" src="./js/components/MainHeader.js"></script>
-    <script type="module" src="./js/components/MainFooter.js"></script>
+    <script type="module" src="./js/components/MainHeader.ts"></script>
+    <script type="module" src="./js/components/MainFooter.ts"></script>
 </head>
 
 <body class="bg-slate-50 min-h-screen flex flex-col font-[Inter]">

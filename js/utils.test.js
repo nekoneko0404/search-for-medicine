@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { normalizeString, extractSearchTerm, formatDate } from './utils.js';
+import { normalizeString, extractSearchTerm, formatDate } from './utils';
 
 describe('normalizeString', () => {
     it('ひらがなをカタカナに変換すること', () => {

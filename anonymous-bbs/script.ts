@@ -1,25 +1,35 @@
+
 const API_BASE = "https://anonymous-bbs-worker.neko-neko-0404.workers.dev/api/posts";
 const MAX_CHARS = 400;
-let allPosts = []; // データを保持
+
+interface Post {
+    id: string;
+    post_number: number;
+    content: string;
+    created_at: string;
+    is_admin: boolean;
+    deleteKey?: string;
+}
+
+let allPosts: Post[] = []; // データを保持
 let currentPage = 1;
 
 document.addEventListener('DOMContentLoaded', () => {
     // Start loading posts ASAP
-    const postsPromise = loadPosts();
-
-    const mainContent = document.querySelector('.main-content');
-    const postContent = document.getElementById('postContent');
-    const submitBtn = document.getElementById('submitBtn');
-    const charCount = document.querySelector('.char-count');
-    const postsContainer = document.getElementById('postsContainer');
-    const statusMessage = document.getElementById('statusMessage');
-    const paginationContainer = document.getElementById('pagination');
-
-    // Load posts on start
     loadPosts();
 
+    const mainContent = document.querySelector('.main-content') as HTMLElement;
+    const postContent = document.getElementById('postContent') as HTMLTextAreaElement;
+    const submitBtn = document.getElementById('submitBtn') as HTMLButtonElement;
+    const charCount = document.querySelector('.char-count') as HTMLElement;
+    const postsContainer = document.getElementById('postsContainer') as HTMLElement;
+    const statusMessage = document.getElementById('statusMessage') as HTMLElement;
+    const paginationContainer = document.getElementById('pagination') as HTMLElement;
+
     // Admin Mode Visuals
-    const adminKey = new URLSearchParams(window.location.search).get('key');
+    const urlParams = new URLSearchParams(window.location.search);
+    const adminKey = urlParams.get('key');
+
     if (adminKey) {
         // Hide standard rate limit warning
         const warning = document.querySelector('.warning-text-footer');
@@ -43,20 +53,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Character count update
-    postContent.addEventListener('input', () => {
+    postContent?.addEventListener('input', () => {
         const count = postContent.value.length;
-        charCount.textContent = `${count} / ${MAX_CHARS}`;
-        if (count > MAX_CHARS) {
-            charCount.style.color = 'red';
-            submitBtn.disabled = true;
-        } else {
-            charCount.style.color = '#6b7280';
-            submitBtn.disabled = count === 0;
+        if (charCount) {
+            charCount.textContent = `${count} / ${MAX_CHARS}`;
+            if (count > MAX_CHARS) {
+                charCount.style.color = 'red';
+                submitBtn.disabled = true;
+            } else {
+                charCount.style.color = '#6b7280';
+                submitBtn.disabled = count === 0;
+            }
         }
     });
 
     // Handle submit
-    submitBtn.addEventListener('click', async () => {
+    submitBtn?.addEventListener('click', async () => {
         const content = postContent.value.trim();
         if (!content) return;
         if (content.length > MAX_CHARS) return;
@@ -65,16 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.textContent = '送信中...';
         statusMessage.className = 'hidden';
 
-        const adminKey = new URLSearchParams(window.location.search).get('key')?.trim();
+        const currentAdminKey = new URLSearchParams(window.location.search).get('key')?.trim();
 
         try {
             const res = await fetch(API_BASE, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-Admin-Key': adminKey || ''
+                    'X-Admin-Key': currentAdminKey || ''
                 },
-                body: JSON.stringify({ content, adminKey })
+                body: JSON.stringify({ content, adminKey: currentAdminKey })
             });
 
             const data = await res.json();
@@ -87,14 +99,16 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Save delete key locally
-            saveDeleteKey(data.id, data.deleteKey);
+            if (data.id && data.deleteKey) {
+                saveDeleteKey(data.id, data.deleteKey);
+            }
 
             postContent.value = '';
-            charCount.textContent = `0 / ${MAX_CHARS}`;
+            if (charCount) charCount.textContent = `0 / ${MAX_CHARS}`;
             showStatus('送信しました！', 'success');
             loadPosts();
 
-        } catch (err) {
+        } catch (err: any) {
             showStatus(err.message, 'error');
         } finally {
             submitBtn.disabled = false;
@@ -103,7 +117,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Status message helper
-    function showStatus(msg, type) {
+    function showStatus(msg: string, type: 'success' | 'error') {
+        if (!statusMessage) return;
         statusMessage.textContent = msg;
         statusMessage.className = type;
         statusMessage.style.display = 'block';
@@ -119,21 +134,25 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!res.ok) throw new Error('読み込みに失敗しました');
             allPosts = await res.json();
             renderPosts();
-        } catch (err) {
+        } catch (err: any) {
             const errorP = document.createElement('p');
             errorP.className = 'error';
             errorP.textContent = `読み込みエラー: ${err.message}`;
-            postsContainer.innerHTML = '';
-            postsContainer.appendChild(errorP);
+            if (postsContainer) {
+                postsContainer.innerHTML = '';
+                postsContainer.appendChild(errorP);
+            }
         }
     }
 
     // Render posts
     function renderPosts() {
+        if (!postsContainer) return;
         postsContainer.innerHTML = '';
+
         if (allPosts.length === 0) {
             postsContainer.innerHTML = '<p class="loading">投稿はまだありません。</p>';
-            paginationContainer.innerHTML = '';
+            if (paginationContainer) paginationContainer.innerHTML = '';
             return;
         }
 
@@ -144,12 +163,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentPage === 1) {
             start = 0;
             end = 10;
-            mainContent.classList.remove('is-p2-plus');
+            if (mainContent) mainContent.classList.remove('is-p2-plus');
         } else {
             // 2P目以降: 1P(10件) + (page-2)*20件 から開始
             start = 10 + (currentPage - 2) * 20;
             end = start + 20;
-            mainContent.classList.add('is-p2-plus');
+            if (mainContent) mainContent.classList.add('is-p2-plus');
         }
 
         const displayPosts = allPosts.slice(start, end);
@@ -158,12 +177,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const el = document.createElement('div');
             el.className = 'post';
             if (post.is_admin) el.classList.add('is-admin');
-            el.dataset.postNumber = post.post_number;
+            el.dataset.postNumber = (post.post_number ?? 0).toString();
 
             const date = new Date(post.created_at).toLocaleString('ja-JP');
-            const adminKey = new URLSearchParams(window.location.search).get('key');
+            const currentAdminKey = new URLSearchParams(window.location.search).get('key');
             // Show delete button if local key exists OR if admin key is present
-            const canDelete = getDeleteKey(post.id) || adminKey;
+            const canDelete = getDeleteKey(post.id) || currentAdminKey;
 
             // Header part (Meta + Delete Button)
             const metaDiv = document.createElement('div');
@@ -195,10 +214,15 @@ document.addEventListener('DOMContentLoaded', () => {
             replyBtn.textContent = '返信';
             replyBtn.addEventListener('click', () => {
                 const prefix = `>>${post.post_number}\n`;
-                postContent.value = prefix + postContent.value;
-                postContent.focus();
-                // Scroll to top to see textarea
-                window.scrollTo({ top: document.querySelector('.post-form').offsetTop - 20, behavior: 'smooth' });
+                if (postContent) {
+                    postContent.value = prefix + postContent.value;
+                    postContent.focus();
+                    // Scroll to top to see textarea
+                    const form = document.querySelector('.post-form') as HTMLElement;
+                    if (form) {
+                        window.scrollTo({ top: form.offsetTop - 20, behavior: 'smooth' });
+                    }
+                }
             });
             leftMeta.appendChild(replyBtn);
 
@@ -208,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.textContent = '削除';
-                deleteBtn.addEventListener('click', () => deletePost(post.id, adminKey));
+                deleteBtn.addEventListener('click', () => deletePost(post.id, currentAdminKey));
                 metaDiv.appendChild(deleteBtn);
             }
 
@@ -228,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     link.textContent = part;
                     link.addEventListener('click', (e) => {
                         e.preventDefault();
-                        const target = document.querySelector(`.post[data-post-number="${num}"]`);
+                        const target = document.querySelector(`.post[data-postNumber="${num}"]`) as HTMLElement;
                         if (target) {
                             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             target.style.backgroundColor = '#fef08a'; // Flash highlight
@@ -255,10 +279,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Hover Preview Logic
-    let currentPreview = null;
+    let currentPreview: HTMLElement | null = null;
 
-    function showPreview(e, postNumber) {
-        const targetPost = allPosts.find(p => p.post_number == postNumber);
+    function showPreview(e: MouseEvent, postNumber: string) {
+        const targetPost = allPosts.find(p => p.post_number == parseInt(postNumber));
         if (!targetPost) return;
 
         hidePreview();
@@ -280,7 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.appendChild(preview);
         currentPreview = preview;
 
-        const rect = e.target.getBoundingClientRect();
+        const target = e.target as HTMLElement;
+        const rect = target.getBoundingClientRect();
         preview.style.left = `${rect.left + window.scrollX}px`;
         preview.style.top = `${rect.top + window.scrollY - preview.offsetHeight - 10}px`;
     }
@@ -294,13 +319,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Pagination rendering
     function renderPagination() {
+        if (!paginationContainer) return;
         paginationContainer.innerHTML = '';
 
         // 最大100件までの制限（サーバー側もLIMIT 100）
         const totalPosts = Math.min(allPosts.length, 100);
 
         // ページ数の計算
-        // 1ページ目(10件) + 残り(90件) / 20件
         let totalPages = 1;
         if (totalPosts > 10) {
             totalPages = 1 + Math.ceil((totalPosts - 10) / 20);
@@ -311,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
         for (let i = 1; i <= totalPages; i++) {
             const btn = document.createElement('button');
             btn.className = `page-btn ${i === currentPage ? 'active' : ''}`;
-            btn.textContent = i;
+            btn.textContent = i.toString();
             btn.addEventListener('click', () => {
                 currentPage = i;
                 renderPosts();
@@ -322,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Delete handling
-    async function deletePost(id, adminKey) {
+    async function deletePost(id: string, adminKey: string | null) {
         if (!confirm('この投稿を削除しますか？')) return;
 
         const key = adminKey || getDeleteKey(id);
@@ -339,27 +364,27 @@ document.addEventListener('DOMContentLoaded', () => {
             removeDeleteKey(id);
             loadPosts();
             showStatus('削除しました', 'success');
-        } catch (err) {
+        } catch (err: any) {
             showStatus(err.message, 'error');
         }
     }
 
-    // Removed legacy escapeHtml function
-
     // LocalStorage helpers
-    function saveDeleteKey(id, key) {
-        let keys = JSON.parse(localStorage.getItem('bbs_keys') || '{}');
+    interface Keys { [key: string]: string }
+
+    function saveDeleteKey(id: string, key: string) {
+        let keys: Keys = JSON.parse(localStorage.getItem('bbs_keys') || '{}');
         keys[id] = key;
         localStorage.setItem('bbs_keys', JSON.stringify(keys));
     }
 
-    function getDeleteKey(id) {
-        let keys = JSON.parse(localStorage.getItem('bbs_keys') || '{}');
+    function getDeleteKey(id: string): string | undefined {
+        let keys: Keys = JSON.parse(localStorage.getItem('bbs_keys') || '{}');
         return keys[id];
     }
 
-    function removeDeleteKey(id) {
-        let keys = JSON.parse(localStorage.getItem('bbs_keys') || '{}');
+    function removeDeleteKey(id: string) {
+        let keys: Keys = JSON.parse(localStorage.getItem('bbs_keys') || '{}');
         delete keys[id];
         localStorage.setItem('bbs_keys', JSON.stringify(keys));
     }

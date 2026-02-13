@@ -1,10 +1,16 @@
 
+import { CITIES } from './cities';
+import { Weather, WindData, City, GlobalState } from './types';
+
+// Leaflet is loaded via CDN, so we declare it.
+declare const L: any;
+
 // Weather Display Logic
 let isWeatherVisible = false;
-let weatherLayerGroup;
-const weatherMarkers = {}; // Cache for marker objects: { cityCode: marker }
+export let weatherLayerGroup: any;
+export const weatherMarkers: { [key: string]: any } = {}; // Cache for marker objects: { cityCode: marker }
 
-function getWeatherIcon(code) {
+export function getWeatherIcon(code: number): string {
     if (code === 0) return '<i class="fas fa-sun" style="color: #f39c12;"></i>';
     if (code >= 1 && code <= 3) return '<i class="fas fa-cloud-sun" style="color: #f1c40f;"></i>';
     if (code === 45 || code === 48) return '<i class="fas fa-smog" style="color: #95a5a6;"></i>';
@@ -17,19 +23,29 @@ function getWeatherIcon(code) {
     return '<i class="fas fa-question"></i>';
 }
 
-// Expose to window
-window.getWeatherIcon = getWeatherIcon;
-
 // Helper: Sanitize HTML to prevent XSS
-function sanitizeHTML(str) {
+function sanitizeHTML(str: string): string {
     const temp = document.createElement('div');
     temp.textContent = str;
     return temp.innerHTML;
 }
 
 // Wind Animation Logic
-class WindAnimation {
-    constructor(map) {
+export class WindAnimation {
+    map: any;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D | null;
+    particles: any[];
+    windData: WindData[]; // Array of {lat, lng, u, v}
+    isActive: boolean;
+    animationFrameId: number | null;
+    particleCount: number;
+    maxAge: number;
+    velocityScale: number;
+    opacity: number;
+    trailAlpha: number;
+
+    constructor(map: any) {
         this.map = map;
         this.canvas = document.createElement('canvas');
         this.canvas.id = 'wind-canvas';
@@ -62,6 +78,7 @@ class WindAnimation {
     }
 
     resetCanvas() {
+        if (!this.ctx) return;
         const size = this.map.getSize();
         this.canvas.width = size.x;
         this.canvas.height = size.y;
@@ -73,18 +90,21 @@ class WindAnimation {
         if (this.isActive) this.initParticles();
     }
 
-    setWindData(data) {
+    setWindData(data: Weather[]) {
         // Filter wind data to only include points within the current viewport
         const bounds = this.map.getBounds();
-        const visibleData = data.filter(d => bounds.contains(L.latLng(d.lat, d.lng)));
+        const visibleData = data.filter(d => d.lat !== undefined && d.lng !== undefined && bounds.contains(L.latLng(d.lat, d.lng)));
 
         // Convert wind speed/direction to u/v components
         this.windData = visibleData.map(d => {
-            const speed = d.wind_speed_10m;
-            const dir = (d.wind_direction_10m * Math.PI) / 180;
+            const speed = d.wind_speed_10m || d.wind_speed_10m_max || 0;
+            // Use dominant direction if available, else 0 or fallback
+            // d.wind_direction_10m can be number, or undefined. d.wind_direction_10m_dominant as well.
+            const windDir = d.wind_direction_10m ?? d.wind_direction_10m_dominant ?? 0;
+            const dir = (windDir * Math.PI) / 180;
             return {
-                lat: d.lat,
-                lng: d.lng,
+                lat: d.lat!,
+                lng: d.lng!,
                 u: -speed * Math.sin(dir),
                 v: -speed * Math.cos(dir)
             };
@@ -100,7 +120,7 @@ class WindAnimation {
         }
     }
 
-    createParticle(size) {
+    createParticle(size: any) {
         return {
             x: Math.random() * size.x,
             y: Math.random() * size.y,
@@ -108,7 +128,7 @@ class WindAnimation {
         };
     }
 
-    getWindAt(x, y) {
+    getWindAt(x: number, y: number): { u: number, v: number } {
         if (this.windData.length === 0) return { u: 0, v: 0 };
 
         // Simple inverse distance weighting for interpolation
@@ -132,7 +152,7 @@ class WindAnimation {
     }
 
     animate() {
-        if (!this.isActive) return;
+        if (!this.isActive || !this.ctx) return;
 
         this.ctx.fillStyle = `rgba(255, 255, 255, ${this.trailAlpha})`; // Extremely long trails
         this.ctx.globalCompositeOperation = 'destination-in';
@@ -191,23 +211,25 @@ class WindAnimation {
     stop() {
         this.isActive = false;
         if (this.animationFrameId) cancelAnimationFrame(this.animationFrameId);
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        if (this.ctx) {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        }
     }
 }
 
-let windAnim;
+let windAnim: WindAnimation | undefined;
 
 // Helper: Debounce function
-function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
+function debounce(func: Function, wait: number) {
+    let timeout: any;
+    return function (this: any, ...args: any[]) {
         clearTimeout(timeout);
         timeout = setTimeout(() => func.apply(this, args), wait);
     };
 }
 
 // Helper: Show Toast Notification
-function showToast(message, duration = 3000) {
+function showToast(message: string, duration = 3000) {
     const toast = document.createElement('div');
     toast.className = 'toast';
     const sanitizedMessage = sanitizeHTML(message);
@@ -220,14 +242,25 @@ function showToast(message, duration = 3000) {
     }, duration);
 }
 
-async function toggleWeather() {
+export async function toggleWeather(map: any, state?: GlobalState) {
+    // Need access to map and state. In original code, these were global.
+    // We will pass them as references or manage them via module dependency if possible.
+    // For now, let's assume 'map' is needed to be passed or maintained.
+
+    // NOTE: This logic needs slight refactoring as 'map' was global.
+    // We will update 'script.ts' to pass the map instance here, or use a setup function.
+    // Let's refactor to accept map and state where needed.
+
+    // However, the original code had 'isWeatherVisible' as module level state here.
+    if (!map) return;
+
     isWeatherVisible = !isWeatherVisible;
     const btn = document.getElementById('toggle-weather');
 
     if (isWeatherVisible) {
         if (btn) btn.classList.add('active');
         if (windAnim) windAnim.start();
-        await updateWeatherMarkers();
+        await updateWeatherMarkers(map, state);
     } else {
         if (btn) btn.classList.remove('active');
         if (windAnim) windAnim.stop();
@@ -239,16 +272,16 @@ async function toggleWeather() {
     }
 }
 
-const weatherCache = {};
-const pendingRequests = new Set(); // Track cities currently being fetched
+const weatherCache: { [key: string]: { data: Weather, timestamp: number } } = {};
+const pendingRequests = new Set<string>(); // Track cities currently being fetched
 const WEATHER_CACHE_DURATION = 10 * 60 * 1000;
 
 // Helper: Get cache key for a city and date
-function getWeatherCacheKey(cityCode, date) {
+function getWeatherCacheKey(cityCode: string, date: string) {
     return `${cityCode}-${date}`;
 }
 
-async function updateWeatherMarkers(date = null) {
+export async function updateWeatherMarkers(map: any, state?: GlobalState, date: string | null = null) {
     if (!isWeatherVisible) return;
     if (typeof map === 'undefined' || !map) return;
 
@@ -281,8 +314,8 @@ async function updateWeatherMarkers(date = null) {
     // 3. Selection & Overlap Prevention
     const isNationalView = zoom < 7;
     const minDistancePx = 120; // Minimum distance between weather markers in pixels
-    const selectedCodes = new Set();
-    const result = [];
+    const selectedCodes = new Set<string>();
+    const result: City[] = [];
 
     // Key major cities to prioritize when overlaps occur (e.g. Tokyo over Saitama)
     const SUPER_MAJOR_CITY_CODES = new Set([
@@ -295,7 +328,7 @@ async function updateWeatherMarkers(date = null) {
         '34101'  // Hiroshima
     ]);
 
-    const isTooClose = (city, selectedList) => {
+    const isTooClose = (city: City, selectedList: City[]) => {
         const p1 = map.latLngToContainerPoint([city.lat, city.lng]);
         for (const s of selectedList) {
             const p2 = map.latLngToContainerPoint([s.lat, s.lng]);
@@ -338,7 +371,7 @@ async function updateWeatherMarkers(date = null) {
         const latStep = (latMax - latMin) / gridCount;
         const lngStep = (lngMax - lngMin) / gridCount;
 
-        const grid = Array.from({ length: gridCount }, () => Array.from({ length: gridCount }, () => []));
+        const grid: City[][][] = Array.from({ length: gridCount }, () => Array.from({ length: gridCount }, () => []));
 
         others.forEach(c => {
             const latIdx = Math.min(gridCount - 1, Math.floor((c.lat - latMin) / latStep));
@@ -376,17 +409,19 @@ async function updateWeatherMarkers(date = null) {
 
     const visibleCityCodes = new Set(candidates.map(c => c.code));
     const now = Date.now();
-    const fetchQueue = [];
+    const fetchQueue: City[] = [];
     const today = new Date().toISOString().split('T')[0];
-    const isToday = (date || (typeof state !== 'undefined' ? state.currentDate : today)) === today;
-    const currentDate = date || (typeof state !== 'undefined' ? state.currentDate : today);
+    // Use state.currentDate if available, otherwise today
+    const currentDate = date || (state ? state.currentDate : today);
 
-    const createOrUpdateMarker = (city, weather) => {
+    const createOrUpdateMarker = (city: City, weather: Weather) => {
         if (!isWeatherVisible) return;
 
         // Use temperature_2m for current, temperature_2m_max for past
         const temp = weather.temperature_2m !== undefined ? weather.temperature_2m : weather.temperature_2m_max;
         const weathercode = weather.weathercode;
+
+        if (temp === undefined) return;
 
         const iconHtml = `
             <div class="weather-marker">
@@ -441,7 +476,7 @@ async function updateWeatherMarkers(date = null) {
         const allWeatherData = Object.keys(weatherCache)
             .filter(key => key.endsWith(`-${currentDate}`)) // Filter by current date
             .map(key => weatherCache[key].data)
-            .filter(d => d && d.wind_speed_10m !== undefined && bounds.contains(L.latLng(d.lat, d.lng)));
+            .filter(d => d && (d.wind_speed_10m !== undefined || d.wind_speed_10m_max !== undefined) && d.lat !== undefined && d.lng !== undefined && bounds.contains(L.latLng(d.lat, d.lng)));
 
         // Always update wind data, even if empty, to clear old data if necessary
         windAnim.setWindData(allWeatherData);
@@ -478,15 +513,15 @@ async function updateWeatherMarkers(date = null) {
 
                     results.forEach((result, index) => {
                         const city = batch[index];
-                        let weather = null;
+                        let weather: Weather | null = null;
 
                         if (isPastDate) {
                             if (result.daily && result.daily.temperature_2m_max) {
                                 weather = {
                                     temperature_2m_max: result.daily.temperature_2m_max[0],
                                     weathercode: result.daily.weathercode[0],
-                                    wind_speed_10m: result.daily.wind_speed_10m_max[0],
-                                    wind_direction_10m: result.daily.wind_direction_10m_dominant[0]
+                                    wind_speed_10m_max: result.daily.wind_speed_10m_max[0],
+                                    wind_direction_10m_dominant: result.daily.wind_direction_10m_dominant[0]
                                 };
                             }
                         } else {
@@ -509,7 +544,7 @@ async function updateWeatherMarkers(date = null) {
                         const allWeatherData = Object.keys(weatherCache)
                             .filter(key => key.endsWith(`-${currentDate}`)) // Filter by current date
                             .map(key => weatherCache[key].data)
-                            .filter(d => d && d.wind_speed_10m !== undefined && bounds.contains(L.latLng(d.lat, d.lng)));
+                            .filter(d => d && (d.wind_speed_10m !== undefined || d.wind_speed_10m_max !== undefined) && d.lat !== undefined && d.lng !== undefined && bounds.contains(L.latLng(d.lat, d.lng)));
                         windAnim.setWindData(allWeatherData);
                     }
                 } else if (response.status === 429) {
@@ -529,44 +564,32 @@ async function updateWeatherMarkers(date = null) {
     }
 }
 
-// Expose to window
-window.updateWeatherMarkers = updateWeatherMarkers;
+// Initialize weather functionality defined as a class or just export function to setup
+export function initWeatherFeature(mapInstance: any, state: GlobalState) {
+    // Need to bind map and state to variables or pass them
+    // Here we assume toggleWeather and updateWeatherMarkers are called with map and state.
+    // But toggleWeather is an event handler. We need to wrap it.
 
-// Initialize weather button
-function initWeatherFeature() {
+    // Ideally, we instantiate a WeatherManager class. 
+    // But for minimal refactor, let's keep functions and use closures or passes.
+
+    // Actually, 'windAnim' needs 'map' to be initialized.
+    // We can initialize windAnim here.
+
+    windAnim = new WindAnimation(mapInstance);
+
     const weatherBtn = document.getElementById('toggle-weather');
     if (weatherBtn) {
-        weatherBtn.addEventListener('click', toggleWeather);
+        weatherBtn.addEventListener('click', () => toggleWeather(mapInstance, state));
         if (isWeatherVisible) {
             weatherBtn.classList.add('active');
         }
     }
 
     const debouncedUpdate = debounce(() => {
-        if (isWeatherVisible) updateWeatherMarkers();
+        if (isWeatherVisible) updateWeatherMarkers(mapInstance, state);
     }, 500);
 
-    const checkMap = setInterval(() => {
-        if (typeof map !== 'undefined' && map) {
-            clearInterval(checkMap);
-            windAnim = new WindAnimation(map);
-
-            if (isWeatherVisible) {
-                windAnim.start();
-                updateWeatherMarkers();
-            }
-
-            map.on('zoomend', debouncedUpdate);
-            map.on('moveend', debouncedUpdate);
-        }
-    }, 100);
-
-    setTimeout(() => clearInterval(checkMap), 10000);
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initWeatherFeature);
-} else {
-    initWeatherFeature();
+    mapInstance.on('zoomend', debouncedUpdate);
+    mapInstance.on('moveend', debouncedUpdate);
 }

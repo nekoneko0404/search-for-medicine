@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "代替薬ナビゲーター | Drug Navigator",
   description: "医薬品の供給不足時に、薬剤師が迅速かつ安全に代替薬を選定するための支援ツール。Gemini AIを活用し、患者背景を考慮した最適な代替案を提案します。",
+  other: {
+    "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' data: https://cdn.jsdelivr.net https://fonts.gstatic.com; img-src 'self' data: https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://api.openai.com https://generativelanguage.googleapis.com;"
+  }
 };
 
 export default function RootLayout({

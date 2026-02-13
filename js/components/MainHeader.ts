@@ -6,21 +6,13 @@ export class MainHeader extends HTMLElement {
         super();
     }
 
-    connectedCallback() {
+    connectedCallback(): void {
         let baseDir = this.getAttribute('base-dir') || './';
         if (baseDir !== './' && !baseDir.endsWith('/')) {
             baseDir += '/';
         }
         this.style.display = 'block';
         const activePage = this.getAttribute('active-page') || '';
-
-        // Inject V2 Shared CSS - REMOVED: Managed via static imports in apps
-        // if (!document.querySelector('link[href*="v2-shared.css"]')) {
-        //     const link = document.createElement('link');
-        //     link.rel = 'stylesheet';
-        //     link.href = `${baseDir}css/v2-shared.css`;
-        //     document.head.appendChild(link);
-        // }
 
         // Add Font Awesome if missing
         if (!document.querySelector('link[href*="font-awesome"]')) {
@@ -53,7 +45,7 @@ export class MainHeader extends HTMLElement {
         `;
     }
 
-    renderNavLinks(baseDir, activePage) {
+    renderNavLinks(baseDir: string, activePage: string): string {
         const links = [
             { id: 'search', label: '出荷状況検索', path: '/search.html' },
             { id: 'update', label: '出荷状況更新', path: '/update/index.html' },

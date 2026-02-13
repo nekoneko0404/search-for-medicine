@@ -1,4 +1,6 @@
-const CITIES = [
+import { City } from './types';
+
+export const CITIES: City[] = [
     {
         "code": "01101",
         "name": "札幌市中央区",

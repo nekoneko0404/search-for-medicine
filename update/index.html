@@ -8,16 +8,11 @@
 
     <!-- CSP: Strict Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com; base-uri 'self'; form-action 'self';">
+        content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://docs.google.com https://spreadsheets.google.com https://www.google-analytics.com https://analytics.google.com https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self';">
 
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXSZGE4HP7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-VXSZGE4HP7');
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
+    <script type="module" src="../js/gtag-init.ts"></script>
 
     <!-- Styles -->
     <link rel="stylesheet" href="../css/main.css">
@@ -219,8 +214,8 @@
     <!-- Footer Component -->
     <main-footer base-dir="../"></main-footer>
 
-    <script type="module" src="js/main.js"></script>
-    <script type="module" src="js/typing-init.js"></script>
+    <script type="module" src="js/main.ts"></script>
+    <script type="module" src="js/typing-init.ts"></script>
 </body>
 
 </html>

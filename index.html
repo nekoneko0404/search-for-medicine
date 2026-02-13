@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://docs.google.com https://spreadsheets.google.com https://analytics.google.com https://script.google.com https://script.googleusercontent.com; base-uri 'self'; form-action 'self';">
+        content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://docs.google.com https://spreadsheets.google.com https://analytics.google.com https://script.google.com https://script.googleusercontent.com https://cdn.jsdelivr.net; base-uri 'self'; form-action 'self';">
     <title>【Kusuri Compass】薬剤師のための知能型ポータル | 最新の供給状況・安全管理を支援</title>
     <meta name="description" content="薬剤師の知性とテクノロジーの融合。出荷状況検索から代替薬提案、ヒヤリハット管理まで、薬局業務を次のステージへ導くポータルサイト。">
 
@@ -35,19 +35,12 @@
     <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXSZGE4HP7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-
-        gtag('config', 'G-VXSZGE4HP7');
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
+    <script type="module" src="js/gtag-init.ts"></script>
 </head>
 
 <body>
     <!-- Header Component -->
-    <script type="module" src="./js/components/MainHeader.js"></script>
     <main-header base-dir="./" active-page="home">
     </main-header>
 
@@ -203,31 +196,12 @@
 
     <main-footer base-dir="./"></main-footer>
 
-    <script>
-        // Intersection Observer for scroll reveal
-        const observerOptions = {
-            threshold: 0.15
-        };
+    <script type="module" src="./js/components/MainHeader.ts"></script>
+    <script type="module" src="./js/components/MainFooter.ts"></script>
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('reveal');
-                }
-            });
-        }, observerOptions);
+    <script type="module" src="js/homepage-effects.ts"></script>
 
-        document.querySelectorAll('.mag-card').forEach(card => {
-            observer.observe(card);
-        });
-
-        // Stagger hero lines
-        document.querySelectorAll('.hero-content h1 span').forEach((span, index) => {
-            span.style.animationDelay = `${index * 0.2}s`;
-        });
-    </script>
-
-    <script type="module" src="js/index.js"></script>
+    <script type="module" src="js/index.ts"></script>
 </body>
 
 </html>

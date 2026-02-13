@@ -2,17 +2,18 @@
  * UI handling module for Kusuri Compass
  */
 
-import { normalizeString, extractSearchTerm } from './utils.js';
+import { normalizeString, extractSearchTerm } from './utils';
+import { MedicineData } from './data';
 
-let messageTimeout = null;
-let messageHideTimeout = null;
+let messageTimeout: ReturnType<typeof setTimeout> | null = null;
+let messageHideTimeout: ReturnType<typeof setTimeout> | null = null;
 
 /**
  * Show toast message
  * @param {string} text - Message text
  * @param {string} type - 'info', 'success', 'error'
  */
-export function showMessage(text, type = 'info') {
+export function showMessage(text: string, type: 'info' | 'success' | 'error' = 'info'): void {
     const messageBox = document.getElementById('messageBox');
     if (!messageBox) return;
 
@@ -53,7 +54,7 @@ export function showMessage(text, type = 'info') {
  * Hide message after a delay
  * @param {number} delay - Delay in milliseconds before hiding
  */
-export function hideMessage(delay = 2000) {
+export function hideMessage(delay: number = 2000): void {
     const messageBox = document.getElementById('messageBox');
     if (!messageBox) return;
 
@@ -76,7 +77,7 @@ export function hideMessage(delay = 2000) {
  * @param {string} message - Status message
  * @param {number} percentage - Progress percentage (0-100)
  */
-export function updateProgress(message, percentage) {
+export function updateProgress(message: string, percentage: number): void {
     const container = document.getElementById('progressBarContainer');
     const bar = document.getElementById('progressBar');
     const msg = document.getElementById('progressMessage');
@@ -100,7 +101,7 @@ export function updateProgress(message, percentage) {
  * @param {boolean} isUpdated - Whether the status was recently updated
  * @returns {HTMLElement} Span element
  */
-export function renderStatusButton(status, isUpdated = false) {
+export function renderStatusButton(status: string, isUpdated: boolean = false): HTMLElement {
     const trimmedStatus = (status || "").trim();
     const span = document.createElement('span');
     span.className = "px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap inline-block transition-colors duration-150 border";
@@ -130,9 +131,9 @@ export function renderStatusButton(status, isUpdated = false) {
  * @param {string} type - 'ingredientName' or 'drugName'
  * @param {string} name - Name to search
  */
-export function openHiyariPage(type, name) {
+export function openHiyariPage(type: 'ingredientName' | 'drugName', name: string): void {
     const hiyariBaseUrl = './hiyari_app/index.html';
-    let extractedName = extractSearchTerm(name);
+    let extractedName: string | string[] = extractSearchTerm(name);
 
     if (Array.isArray(extractedName)) {
         extractedName = extractedName || '';
@@ -140,7 +141,7 @@ export function openHiyariPage(type, name) {
         extractedName = String(extractedName || '');
     }
 
-    let finalName = extractedName;
+    let finalName = extractedName as string;
 
     if (type === 'ingredientName' && finalName) {
         const parts = finalName.split(/[，,、]/).map(p => p.trim()).filter(p => p !== '');
@@ -168,11 +169,11 @@ export function openHiyariPage(type, name) {
 
 /**
  * Create dropdown menu for drug name
- * @param {Object} item - Data item
- * @param {number} index - Row index
+ * @param {MedicineData} item - Data item
+ * @param {string | number} index - Row index or unique identifier
  * @returns {HTMLElement} Dropdown container
  */
-export function createDropdown(item, index) {
+export function createDropdown(item: MedicineData, index: string | number): HTMLElement {
     const drugName = item.productName || "";
     const drugNameForHiyari = encodeURIComponent(drugName);
     const pmdaLinkUrl = `https://www.pmda.go.jp/PmdaSearch/rdSearch/02/${item.yjCode}?user=1`;
@@ -257,7 +258,7 @@ export function createDropdown(item, index) {
         }
     });
 
-    const createLink = (href, text) => {
+    const createLink = (href: string, text: string) => {
         const link = document.createElement('a');
         link.href = href;
         link.target = '_blank';
@@ -290,7 +291,8 @@ export function createDropdown(item, index) {
 document.addEventListener('click', (e) => {
     if (window.innerWidth <= 640) {
         // If click is not inside a dropdown container
-        if (!e.target.closest('.group\\/dropdown')) {
+        const target = e.target as HTMLElement;
+        if (!target.closest('.group\\/dropdown')) {
             document.querySelectorAll('[id^="dropdown-content-"]').forEach(el => {
                 el.classList.remove('!visible', '!opacity-100');
             });

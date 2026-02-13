@@ -1,7 +1,32 @@
-// import '../css/input.css';
+import '../css/main.css';
+
 const APP_KEY = 'medicine_reward_app_v2';
 
-const state = {
+interface Config {
+    dosesPerDay: number;
+    durationDays: number;
+    totalSlots: number;
+    testMode: boolean;
+    startOffset: number;
+}
+
+interface Progress {
+    stamps: number;
+    timestamps: (string | 'SKIPPED')[];
+    lastStampTime: string | null;
+}
+
+interface TabState {
+    config: Config | null;
+    progress: Progress;
+}
+
+interface AppState {
+    currentTab: number;
+    tabs: TabState[];
+}
+
+const state: AppState = {
     currentTab: 0,
     tabs: [
         { config: null, progress: { stamps: 0, timestamps: [], lastStampTime: null } },
@@ -10,63 +35,63 @@ const state = {
     ]
 };
 
-
-
 // DOM Elements
 const views = {
-    settings: document.getElementById('settings-view'),
-    main: document.getElementById('main-view')
+    settings: document.getElementById('settings-view') as HTMLElement,
+    main: document.getElementById('main-view') as HTMLElement
 };
 
 const forms = {
-    settings: document.getElementById('settings-form')
+    settings: document.getElementById('settings-form') as HTMLFormElement
 };
 
 const elements = {
-    dosesInput: document.getElementById('doses-per-day'),
-    durationInput: document.getElementById('duration-days'),
-    testModeInput: document.getElementById('test-mode'),
-    grid: document.getElementById('stamp-grid'),
-    remainingCount: document.getElementById('remaining-count'),
-    resetBtn: document.getElementById('reset-btn'),
-    surpriseOverlay: document.getElementById('surprise-overlay'),
-    surpriseElement: document.getElementById('surprise-element'),
-    characterArea: document.getElementById('character-area'),
-    statusMessage: document.getElementById('status-message'),
-    tabBtns: document.querySelectorAll('.tab-btn'),
-    manualModal: document.getElementById('manual-modal'),
-    openManualBtn: document.getElementById('open-manual-btn'),
-    closeManualBtn: document.getElementById('close-manual-btn'),
+    dosesInput: document.getElementById('doses-per-day') as HTMLInputElement,
+    durationInput: document.getElementById('duration-days') as HTMLInputElement,
+    testModeInput: document.getElementById('test-mode') as HTMLInputElement,
+    grid: document.getElementById('stamp-grid') as HTMLElement,
+    remainingCount: document.getElementById('remaining-count') as HTMLElement,
+    resetBtn: document.getElementById('reset-btn') as HTMLButtonElement,
+    surpriseOverlay: document.getElementById('surprise-overlay') as HTMLElement,
+    surpriseElement: document.getElementById('surprise-element') as HTMLElement,
+    characterArea: document.getElementById('character-area') as HTMLElement,
+    statusMessage: document.getElementById('status-message') as HTMLElement,
+    tabBtns: document.querySelectorAll('.tab-btn') as NodeListOf<HTMLButtonElement>,
+    manualModal: document.getElementById('manual-modal') as HTMLElement,
+    openManualBtn: document.getElementById('open-manual-btn') as HTMLButtonElement,
+    closeManualBtn: document.getElementById('close-manual-btn') as HTMLButtonElement,
 };
 
 // Initialization
-async function init() {
-
+function init() {
     loadState();
     setupTabs();
     setupManual();
-
     render();
 }
 
 function setupManual() {
-    elements.openManualBtn.addEventListener('click', () => {
-        elements.manualModal.classList.remove('hidden');
-    });
+    if (elements.openManualBtn) {
+        elements.openManualBtn.addEventListener('click', () => {
+            elements.manualModal.classList.remove('hidden');
+        });
+    }
 
-    elements.closeManualBtn.addEventListener('click', () => {
-        elements.manualModal.classList.add('hidden');
-    });
+    if (elements.closeManualBtn) {
+        elements.closeManualBtn.addEventListener('click', () => {
+            elements.manualModal.classList.add('hidden');
+        });
+    }
 
     // Close on outside click
-    elements.manualModal.addEventListener('click', (e) => {
-        if (e.target === elements.manualModal) {
-            elements.manualModal.classList.add('hidden');
-        }
-    });
+    if (elements.manualModal) {
+        elements.manualModal.addEventListener('click', (e) => {
+            if (e.target === elements.manualModal) {
+                elements.manualModal.classList.add('hidden');
+            }
+        });
+    }
 }
-
-
 
 function loadState() {
     const saved = localStorage.getItem(APP_KEY);
@@ -87,30 +112,33 @@ function saveState() {
     localStorage.setItem(APP_KEY, JSON.stringify(state));
 }
 
-function getCurrentTabState() {
+function getCurrentTabState(): TabState {
     return state.tabs[state.currentTab];
 }
 
 function setupTabs() {
     elements.tabBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            const tabIndex = parseInt(btn.dataset.tab);
+            const tabIndex = parseInt(btn.dataset.tab || '0');
             switchTab(tabIndex);
         });
     });
 }
 
-function switchTab(index) {
+function switchTab(index: number) {
     state.currentTab = index;
     currentWeekIndex = 0; // Reset view for the new tab
     saveState();
     render();
 }
 
+let selectedMedicinesBuffer: (string | null)[] = [null, null, null, null, null, null];
+
 function render() {
     // Update Tab UI
     elements.tabBtns.forEach(btn => {
-        btn.classList.toggle('active', parseInt(btn.dataset.tab) === state.currentTab);
+        const tabIndex = parseInt(btn.dataset.tab || '0');
+        btn.classList.toggle('active', tabIndex === state.currentTab);
     });
 
     const currentTabState = getCurrentTabState();
@@ -119,11 +147,9 @@ function render() {
     if (!currentTabState.config) {
         showView('settings');
         // Reset inputs
-        elements.dosesInput.value = 3;
-        elements.durationInput.value = 7;
-        elements.testModeInput.checked = false;
-        elements.medicineInputs.forEach(input => input.value = '');
-        elements.medicineInfoPreview.classList.add('hidden');
+        if (elements.dosesInput) elements.dosesInput.value = '3';
+        if (elements.durationInput) elements.durationInput.value = '7';
+        if (elements.testModeInput) elements.testModeInput.checked = false;
         selectedMedicinesBuffer = [null, null, null, null, null, null];
     } else {
         showView('main');
@@ -131,96 +157,70 @@ function render() {
         updateProgressInfo();
         updateCharacter();
         checkTimeLimit();
-
-
     }
 }
 
-function showView(viewName) {
-    Object.values(views).forEach(el => el.classList.add('hidden'));
-    views[viewName].classList.remove('hidden');
+function showView(viewName: keyof typeof views) {
+    Object.values(views).forEach(el => el && el.classList.add('hidden'));
+    if (views[viewName]) views[viewName].classList.remove('hidden');
 }
 
-// Medicine Search Logic
-
-
-// Hide suggestions when clicking outside
-
-
-
-
-
-
 // Settings Logic
-forms.settings.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const doses = parseInt(elements.dosesInput.value);
-    const days = parseInt(elements.durationInput.value);
-    const testMode = elements.testModeInput.checked;
+if (forms.settings) {
+    forms.settings.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const doses = parseInt(elements.dosesInput.value);
+        const days = parseInt(elements.durationInput.value);
+        const testMode = elements.testModeInput.checked;
 
-    const currentTabState = getCurrentTabState();
+        const currentTabState = getCurrentTabState();
 
-    currentTabState.config = {
-        dosesPerDay: doses,
-        durationDays: days,
-        totalSlots: doses * days,
-        testMode: testMode,
-        startOffset: 0
-    };
+        currentTabState.config = {
+            dosesPerDay: doses,
+            durationDays: days,
+            totalSlots: doses * days,
+            testMode: testMode,
+            startOffset: 0
+        };
 
-    // Reset progress on new config
-    currentTabState.progress = {
-        stamps: 0,
-        timestamps: [],
-        lastStampTime: null
-    };
+        // Reset progress on new config
+        currentTabState.progress = {
+            stamps: 0,
+            timestamps: [],
+            lastStampTime: null
+        };
 
-    // Reset internal view state
-    currentWeekIndex = 0;
+        // Reset internal view state
+        currentWeekIndex = 0;
 
-    saveState();
-    render();
-});
+        saveState();
+        render();
+    });
+}
 
-// Main View Medicine Click Logic
-
-
-// Logic: Time Intervals
-function getMinIntervalHours(doses) {
+function getMinIntervalHours(doses: number): number {
     if (doses === 1) return 12;
     if (doses === 2) return 6;
     if (doses === 3) return 4;
     return 1; // 4 or more times
 }
 
-function getEarliestReleaseTime(targetIndex) {
+function getEarliestReleaseTime(targetIndex: number): number {
     const currentTabState = getCurrentTabState();
+    if (!currentTabState.config) return 0;
+
     const timestamps = currentTabState.progress.timestamps || [];
     const minHours = getMinIntervalHours(currentTabState.config.dosesPerDay);
     const intervalMs = minHours * 60 * 60 * 1000;
 
-    // If no stamps yet, the first one (index 0) is always ready.
-    // If targetIndex is 0, it's ready.
     if (targetIndex === 0) return 0;
-
-    // If we have no stamps but targetIndex > 0 (e.g. skipped?), 
-    // strictly speaking we need a previous stamp to anchor.
-    // But if we skipped, we have "SKIPPED" entries in timestamps.
-    // "SKIPPED" entries don't have a time, so we can't anchor off them easily?
-    // Wait, if we skip, we usually just fill the slot.
-    // Let's assume we anchor off the last *valid* timestamp.
-
-    // However, the requirement is: "If time passes without stamping, next opens".
-    // This implies we can calculate release time based on ANY previous stamp.
-    // ReleaseTime = Time(i) + (targetIndex - i) * Interval
-    // We want the MINIMUM of these times.
 
     let minReleaseTime = Infinity;
     let foundAnchor = false;
 
     for (let i = 0; i < timestamps.length; i++) {
         const ts = timestamps[i];
-        if (ts === 'SKIPPED') continue; // Cannot anchor off a skip (no time)
+        if (ts === 'SKIPPED') continue;
 
         const time = new Date(ts).getTime();
         const releaseTime = time + (targetIndex - i) * intervalMs;
@@ -236,25 +236,8 @@ function getEarliestReleaseTime(targetIndex) {
     }
 
     // Check for "Next Morning 6AM" rule
-    // If targetIndex is the start of a new day (index % doses == 0)
     const dosesPerDay = currentTabState.config.dosesPerDay;
     if (targetIndex > 0 && targetIndex % dosesPerDay === 0) {
-        // Find the last stamp of the previous day
-        // We need the timestamp of index (targetIndex - 1)
-        // But we iterated above. Let's just grab it directly if possible.
-        // timestamps array might have SKIPPED, so we need to find the last *valid* time in the previous day block?
-        // Actually, the rule is "After finishing the last dose".
-        // If the last dose was SKIPPED, does the rule apply?
-        // Probably yes. If I skipped the last dose, I finished the day.
-        // But if I skipped, I don't have a time anchor.
-        // If I skipped the last dose, maybe I can start the next day immediately?
-        // Or should we anchor off the last *actual* stamp?
-
-        // Let's stick to the anchor we found (minReleaseTime).
-        // minReleaseTime is calculated based on *some* previous stamp + intervals.
-        // We just need to enforce that it is ALSO >= Next Morning 6AM of the *previous day's last action*.
-
-        // Let's find the time of the last slot of the previous day (targetIndex - 1).
         const prevIndex = targetIndex - 1;
         if (prevIndex < timestamps.length) {
             const prevVal = timestamps[prevIndex];
@@ -262,8 +245,6 @@ function getEarliestReleaseTime(targetIndex) {
                 const prevDate = new Date(prevVal);
                 let nextMorning = new Date(prevDate);
 
-                // If prevDate is before 6AM, next morning is today 6AM.
-                // If prevDate is after 6AM, next morning is tomorrow 6AM.
                 if (prevDate.getHours() < 6) {
                     nextMorning.setHours(6, 0, 0, 0);
                 } else {
@@ -281,8 +262,9 @@ function getEarliestReleaseTime(targetIndex) {
     return minReleaseTime;
 }
 
-function canStamp() {
+function canStamp(): boolean {
     const currentTabState = getCurrentTabState();
+    if (!currentTabState.config) return false;
     if (currentTabState.config.testMode) return true;
     if (!currentTabState.progress.lastStampTime) return true;
 
@@ -293,12 +275,12 @@ function canStamp() {
     return (now - last) >= (minHours * 60 * 60 * 1000);
 }
 
-let updateTimer = null;
+let updateTimer: any = null;
 function scheduleNextUpdate() {
     if (updateTimer) clearTimeout(updateTimer);
 
     const currentTabState = getCurrentTabState();
-    if (!currentTabState.progress.lastStampTime) return;
+    if (!currentTabState.config || !currentTabState.progress.lastStampTime) return;
 
     const last = new Date(currentTabState.progress.lastStampTime).getTime();
     const minHours = getMinIntervalHours(currentTabState.config.dosesPerDay);
@@ -318,6 +300,7 @@ function scheduleNextUpdate() {
 
 function checkTimeLimit() {
     const currentTabState = getCurrentTabState();
+    if (!currentTabState.config) return;
     const messageEl = elements.statusMessage;
 
     if (currentTabState.progress.stamps >= currentTabState.config.totalSlots) {
@@ -340,6 +323,7 @@ let currentWeekIndex = 0;
 
 function calculateCurrentWeek() {
     const currentTabState = getCurrentTabState();
+    if (!currentTabState.config) return;
     const totalDays = currentTabState.config.durationDays;
     const dosesPerDay = currentTabState.config.dosesPerDay;
     const currentStamps = currentTabState.progress.stamps;
@@ -355,7 +339,7 @@ function renderGrid() {
         currentWeekIndex = 0;
     }
 
-    elements.grid.innerHTML = '';
+    if (elements.grid) elements.grid.innerHTML = '';
 
     const currentTabState = getCurrentTabState();
     if (!currentTabState.config) return;
@@ -380,7 +364,7 @@ function renderGrid() {
 
     controls.appendChild(prevBtn);
     controls.appendChild(nextBtn);
-    elements.grid.appendChild(controls);
+    if (elements.grid) elements.grid.appendChild(controls);
 
     const dosesPerDay = currentTabState.config.dosesPerDay;
     const currentStamps = currentTabState.progress.stamps;
@@ -404,7 +388,7 @@ function renderGrid() {
         const slotsContainer = document.createElement('div');
         slotsContainer.className = 'day-slots';
 
-        let hasVisibleSlots = false;
+        // let hasVisibleSlots = false; // Unused variable removed
 
         for (let dose = 0; dose < dosesPerDay; dose++) {
             const slotIndex = slotCounter;
@@ -419,7 +403,7 @@ function renderGrid() {
             if (slotIndex < startOffset) {
                 slot.style.visibility = 'hidden';
             } else {
-                hasVisibleSlots = true;
+                // hasVisibleSlots = true; // Unused variable removed
                 const effectiveIndex = slotIndex - startOffset;
 
                 if (effectiveIndex < 0) {
@@ -430,15 +414,12 @@ function renderGrid() {
                         if (status === 'SKIPPED') {
                             slot.classList.add('skipped');
                             slot.textContent = 'Skip';
-                            // Allow clicking to edit (retroactive stamp)
                             slot.addEventListener('click', () => handleSlotClick(slotIndex));
                         } else {
                             slot.classList.add('stamped');
                             const mark = document.createElement('div');
                             mark.className = 'stamp-mark';
                             slot.appendChild(mark);
-                            // Stamped slots are generally done, but maybe we want to allow editing too?
-                            // For now, user only asked for "Skip" to be editable.
                         }
                     } else {
                         if (effectiveIndex === timestamps.length) {
@@ -471,10 +452,9 @@ function renderGrid() {
             slotCounter++;
         }
 
-        // Only append day card if it has slots (or if it's a day with hidden skipped slots)
         if (slotsContainer.children.length > 0) {
             dayCard.appendChild(slotsContainer);
-            elements.grid.appendChild(dayCard);
+            if (elements.grid) elements.grid.appendChild(dayCard);
         }
     }
 }
@@ -485,10 +465,11 @@ function updateProgressInfo() {
 
     const startOffset = currentTabState.config.startOffset || 0;
     const remaining = (currentTabState.config.totalSlots - startOffset) - currentTabState.progress.stamps;
-    elements.remainingCount.textContent = remaining;
+    if (elements.remainingCount) elements.remainingCount.textContent = remaining.toString();
 }
 
 function updateCharacter() {
+    if (!elements.characterArea) return;
     const img = document.createElement('img');
     img.src = 'images/doctor_bear.png';
     img.className = 'character-img';
@@ -496,57 +477,42 @@ function updateCharacter() {
     elements.characterArea.appendChild(img);
 }
 
-function handleSlotClick(clickedIndex) {
+function handleSlotClick(clickedIndex: number) {
     const currentTabState = getCurrentTabState();
+    if (!currentTabState.config) return;
+
     const currentStamps = currentTabState.progress.stamps;
     const startOffset = currentTabState.config.startOffset || 0;
 
-    // If this is the VERY FIRST interaction (stamps === 0 and startOffset === 0)
-    // We allow clicking ANY slot on Day 1.
     if (currentStamps === 0 && startOffset === 0) {
         const dosesPerDay = currentTabState.config.dosesPerDay;
-        // Check if clicked slot is on Day 1
         if (clickedIndex < dosesPerDay) {
-            // If clickedIndex > 0, we are skipping.
             if (clickedIndex > 0) {
                 if (confirm(`${clickedIndex + 1} 回目からスタートしますか？\n前の${clickedIndex} 回分はスキップされ、期間が延長されます。`)) {
-                    // Apply Skip
                     currentTabState.config.startOffset = clickedIndex;
                     currentTabState.config.totalSlots += clickedIndex;
-
-                    // Recalculate duration days if needed (to render enough days)
-                    // New total slots / doses per day -> ceil
                     currentTabState.config.durationDays = Math.ceil(currentTabState.config.totalSlots / dosesPerDay);
 
                     saveState();
-                    // Now proceed to stamp this slot (which is now effectively index 0)
                     handleStamp();
                     return;
                 } else {
-                    return; // Cancelled
+                    return;
                 }
             } else {
-                // Normal start at 0
                 handleStamp();
                 return;
             }
         }
     }
 
-    // Normal behavior for subsequent clicks
-    // The expected clickedIndex should be (startOffset + currentStamps)
     const expectedIndex = startOffset + currentStamps;
 
-    // Check if we are clicking a PAST slot (Retroactive)
     if (clickedIndex < expectedIndex) {
         const effectiveIndex = clickedIndex - startOffset;
         if (effectiveIndex >= 0 && currentTabState.progress.timestamps[effectiveIndex] === 'SKIPPED') {
             if (confirm('このスキップを取り消して、現在時刻でスタンプしますか？')) {
-                // Retroactive Stamp
                 currentTabState.progress.timestamps[effectiveIndex] = new Date().toISOString();
-                // We do NOT update lastStampTime because that tracks the HEAD of the chain.
-                // Unless... wait, if we fill a hole, does it affect the head?
-                // No, the head is still the head.
                 saveState();
                 render();
             }
@@ -554,7 +520,6 @@ function handleSlotClick(clickedIndex) {
         return;
     }
 
-    // Enforce strict interval lock for ANY action (stamp or skip)
     if (!canStamp()) {
         playErrorSound();
         alert('まだ早いよ！次のお薬の時間まで待ってね。');
@@ -562,15 +527,12 @@ function handleSlotClick(clickedIndex) {
     }
 
     if (clickedIndex > expectedIndex) {
-        // Skipping intermediate slots
         const skippedCount = clickedIndex - expectedIndex;
         if (confirm(`間の ${skippedCount} 回分をスキップして、ここを記録しますか？`)) {
-            // Mark intermediate as SKIPPED
             for (let i = 0; i < skippedCount; i++) {
                 currentTabState.progress.stamps++;
                 currentTabState.progress.timestamps.push('SKIPPED');
             }
-            // Proceed to stamp the clicked one
             handleStamp();
         }
         return;
@@ -581,27 +543,23 @@ function handleSlotClick(clickedIndex) {
 
 function handleStamp() {
     const currentTabState = getCurrentTabState();
+    if (!currentTabState.config) return;
+
     currentTabState.progress.stamps++;
     currentTabState.progress.timestamps.push(new Date().toISOString());
     currentTabState.progress.lastStampTime = new Date().toISOString();
     saveState();
 
-    // Trigger Surprise
     triggerSurprise();
 
-    // Recalculate which week to show (if we just finished a week)
     const dosesPerDay = currentTabState.config.dosesPerDay;
     const startOffset = currentTabState.config.startOffset || 0;
 
-    // Current visual slot index is (startOffset + stamps - 1)
     const currentVisualIndex = startOffset + currentTabState.progress.stamps - 1;
     const currentDay0Indexed = Math.floor(currentVisualIndex / dosesPerDay);
     const newWeekIndex = Math.floor(currentDay0Indexed / 7);
 
     if (newWeekIndex !== currentWeekIndex) {
-        // We might want to auto-advance? 
-        // Or if we filled the last slot of the current view?
-        // Let's check max slot visible
         const currentEndDay0Indexed = (currentWeekIndex * 7) + 6;
         if (currentDay0Indexed > currentEndDay0Indexed) {
             currentWeekIndex++;
@@ -610,34 +568,32 @@ function handleStamp() {
 
     render();
 
-    // Check completion
     if ((currentTabState.progress.stamps + startOffset) >= currentTabState.config.totalSlots) {
         setTimeout(triggerCompletion, 1000);
     }
 }
 
-// Reset Logic
-elements.resetBtn.addEventListener('click', () => {
-    if (confirm('本当にリセットしますか？これまでの記録は消えてしまいます。')) {
-        const currentTabState = getCurrentTabState();
-        currentTabState.config = null;
-        currentTabState.progress = { stamps: 0, timestamps: [], lastStampTime: null };
-        currentWeekIndex = 0;
-        saveState();
-        render();
-    }
-});
+if (elements.resetBtn) {
+    elements.resetBtn.addEventListener('click', () => {
+        if (confirm('本当にリセットしますか？これまでの記録は消えてしまいます。')) {
+            const currentTabState = getCurrentTabState();
+            currentTabState.config = null;
+            currentTabState.progress = { stamps: 0, timestamps: [], lastStampTime: null };
+            currentWeekIndex = 0;
+            saveState();
+            render();
+        }
+    });
+}
 
-// Surprise System
 const surprises = [
     spawnConfetti,
     showFloatingEmojis,
     flashScreen,
     showBigStamp,
-    showBigStamp // Increase probability
+    showBigStamp
 ];
 
-// Praise Messages (Parental Nudges)
 const praiseMessages = [
     "ハイタッチして『ゴックン、かっこよかったよ！』",
     "ぎゅーっと抱きしめて『最後までがんばったね！』",
@@ -694,49 +650,35 @@ const praiseMessages = [
 function triggerSurprise() {
     playHappySound();
 
-    // Always show the nurse rabbit first
-    elements.characterArea.innerHTML = '<img src="images/nurse_rabbit.png" class="character-img" />';
+    if (elements.characterArea) {
+        elements.characterArea.innerHTML = '<img src="images/nurse_rabbit.png" class="character-img" />';
+    }
 
-    // Pick a random praise message
     const praise = praiseMessages[Math.floor(Math.random() * praiseMessages.length)];
     showPraiseMessage(praise);
 
-    // Rare Effect Check (10% chance)
     if (Math.random() < 0.1) {
         showRareEffect();
     } else {
-        // Normal random effect
         const effect = surprises[Math.floor(Math.random() * surprises.length)];
         effect();
     }
 }
 
-function showPraiseMessage(message) {
-    const overlay = elements.surpriseOverlay;
-    const content = elements.surpriseElement;
-
-    // Clear previous content but keep structure if needed
-    // We want to show the message in a nice way, maybe overlaying the screen briefly
-    // or using the existing overlay system but customized.
-
-    // Let's use a toast-like notification or the overlay itself if it's not intrusive.
-    // Since the overlay was used for "Medicine Details" and "Completion", let's use a separate container or reuse it.
-    // For the "Surprise" context, usually it's visual effects on the main screen.
-    // Let's add a "Praise Bubble" to the character area or floating.
+function showPraiseMessage(message: string) {
+    // const overlay = elements.surpriseOverlay; // Unused variable removed
+    // const content = elements.surpriseElement; // Unused variable removed
 
     const bubble = document.createElement('div');
     bubble.className = 'praise-bubble';
     bubble.textContent = message;
 
-    // Position near character or center
     document.body.appendChild(bubble);
 
-    // Animate in
     requestAnimationFrame(() => {
         bubble.classList.add('show');
     });
 
-    // Remove after a few seconds
     setTimeout(() => {
         bubble.classList.remove('show');
         setTimeout(() => bubble.remove(), 500);
@@ -744,7 +686,6 @@ function showPraiseMessage(message) {
 }
 
 function showRareEffect() {
-    // Golden Stamp Shower
     const stampText = '👑';
     for (let i = 0; i < 20; i++) {
         const el = document.createElement('div');
@@ -758,7 +699,6 @@ function showRareEffect() {
         setTimeout(() => el.remove(), 4000);
     }
 
-    // Play special sound
     playRareSound();
 }
 
@@ -774,7 +714,7 @@ function showBigStamp() {
 }
 
 function playHappySound() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
@@ -794,8 +734,7 @@ function playHappySound() {
 }
 
 function playRareSound() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    // Arpeggio
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     [523.25, 659.25, 783.99, 1046.50, 1318.51, 1567.98].forEach((freq, i) => {
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
@@ -815,7 +754,7 @@ function playRareSound() {
 }
 
 function playErrorSound() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
@@ -842,7 +781,7 @@ function spawnConfetti() {
 
     for (let i = 0; i < 30; i++) {
         const el = document.createElement('div');
-        const isIcon = Math.random() > 0.6; // 40% chance of icon, 60% shape
+        const isIcon = Math.random() > 0.6;
 
         if (isIcon) {
             el.className = 'confetti confetti-icon';
@@ -857,10 +796,7 @@ function spawnConfetti() {
 
         el.style.left = Math.random() * 100 + 'vw';
         el.style.top = -50 + 'px';
-
-        // Random fall duration between 3s and 6s
         el.style.animationDuration = (3 + Math.random() * 3) + 's';
-        // Random sway delay
         el.style.animationDelay = Math.random() + 's';
 
         container.appendChild(el);
@@ -877,15 +813,11 @@ function showFloatingEmojis() {
         el.className = 'floating-emoji';
         el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
 
-        // Random position
         el.style.left = (10 + Math.random() * 80) + '%';
         el.style.top = (50 + Math.random() * 30) + '%';
 
-        // Random speed (duration) between 4s and 7s (Much Slower)
         const duration = 4 + Math.random() * 3;
         el.style.animationDuration = `${duration}s`;
-
-        // Random delay
         el.style.animationDelay = Math.random() * 0.5 + 's';
 
         container.appendChild(el);
@@ -905,17 +837,8 @@ function triggerCompletion() {
     const overlay = document.getElementById('surprise-overlay');
     const content = document.getElementById('surprise-element');
 
-    // Expose reset function for the modal
-    window.resetCurrentTabApp = () => {
-        const currentTabState = getCurrentTabState();
-        currentTabState.config = null;
-        currentTabState.progress = { stamps: 0, timestamps: [], lastStampTime: null };
-        currentWeekIndex = 0;
-        saveState();
-        location.reload();
-    };
+    if (!overlay || !content) return;
 
-    // Get today's date for the certificate
     const today = new Date();
     const dateStr = `${today.getFullYear()}年 ${today.getMonth() + 1}月 ${today.getDate()}日`;
 
@@ -965,14 +888,13 @@ function triggerCompletion() {
                 </div>
 
                 <div class="no-print">
-                    <button onclick="window.print()" class="btn-secondary" style="margin-right: 10px;">🖨️ 賞状を印刷する</button>
-                    <button onclick="resetCurrentTabApp()" class="btn-primary">もういっかい！</button>
+                    <button id="print-cert-btn" class="btn-secondary" style="margin-right: 10px;">🖨️ 賞状を印刷する</button>
+                    <button id="reset-cert-btn" class="btn-primary">もういっかい！</button>
                 </div>
             </div>
         </div>
     `;
 
-    // Trigger effects first
     flashScreen();
     showFloatingEmojis();
 
@@ -980,20 +902,35 @@ function triggerCompletion() {
         setTimeout(spawnConfetti, i * 300);
     }
 
-    // Delay showing the certificate overlay to allow effects to be seen
-    // and to stabilize performance on mobile devices.
     setTimeout(() => {
-        // Erase falling and floating effects when certificate is shown
         document.querySelectorAll('.confetti, .floating-emoji, .rare-stamp-effect, .big-stamp-effect').forEach(el => el.remove());
 
         overlay.classList.remove('hidden');
         overlay.classList.add('active');
         overlay.classList.add('show');
-    }, 9500); // 9.5 seconds delay (further delayed by 3s as requested)
+
+        const printBtn = document.getElementById('print-cert-btn');
+        const resetBtn = document.getElementById('reset-cert-btn');
+
+        if (printBtn) {
+            printBtn.addEventListener('click', () => window.print());
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                const currentTabState = getCurrentTabState();
+                currentTabState.config = null;
+                currentTabState.progress = { stamps: 0, timestamps: [], lastStampTime: null };
+                currentWeekIndex = 0;
+                saveState();
+                location.reload();
+            });
+        }
+    }, 9500);
 }
 
 function playFanfare() {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const ctx = new (window.AudioContext || (window as any).webkitAudioContext)();
     const now = ctx.currentTime;
     [261.63, 329.63, 392.00, 523.25].forEach((freq, i) => {
         const osc = ctx.createOscillator();
@@ -1009,14 +946,11 @@ function playFanfare() {
     });
 }
 
-// Ensure correct week on initial load
 window.addEventListener('load', () => {
-    // If state is loaded, calculate where we are
     const currentTabState = getCurrentTabState();
     if (currentTabState && currentTabState.config && currentTabState.progress.stamps > 0) {
         calculateCurrentWeek();
     }
 });
 
-// Start
 init();

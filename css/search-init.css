@@ -1,0 +1,14 @@
+/* search-init.css - Initial page display styles (moved from inline) */
+[v-cloak],
+.v-cloak {
+    display: none !important;
+}
+
+body {
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+}
+
+body.loaded {
+    opacity: 1;
+}

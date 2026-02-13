@@ -1,54 +1,53 @@
-import { loadAndCacheData, clearCacheAndReload } from '../js/data.js';
-import { normalizeString, formatDate } from '../js/utils.js';
-import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../js/ui.js';
-import '../js/components/MainHeader.js';
-import '../js/components/MainFooter.js';
+import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../js/data';
+import { normalizeString, formatDate } from '../js/utils';
+import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../js/ui';
+import '../js/components/MainHeader';
+import '../js/components/MainFooter';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const drugNameInput = document.getElementById('drugName');
-    const ingredientNameInput = document.getElementById('ingredientName');
+    const drugNameInput = document.getElementById('drugName') as HTMLInputElement;
+    const ingredientNameInput = document.getElementById('ingredientName') as HTMLInputElement;
 
-    const catACheckbox = document.getElementById('catA');
-    const catBCheckbox = document.getElementById('catB');
-    const catCCheckbox = document.getElementById('catC');
+    const catACheckbox = document.getElementById('catA') as HTMLInputElement;
+    const catBCheckbox = document.getElementById('catB') as HTMLInputElement;
+    const catCCheckbox = document.getElementById('catC') as HTMLInputElement;
 
-    const routeInternalCheckbox = document.getElementById('routeInternal');
-    const routeInjectableCheckbox = document.getElementById('routeInjectable');
-    const routeExternalCheckbox = document.getElementById('routeExternal');
+    const routeInternalCheckbox = document.getElementById('routeInternal') as HTMLInputElement;
+    const routeInjectableCheckbox = document.getElementById('routeInjectable') as HTMLInputElement;
+    const routeExternalCheckbox = document.getElementById('routeExternal') as HTMLInputElement;
 
-    const statusNormalCheckbox = document.getElementById('statusNormal');
-    const statusLimitedCheckbox = document.getElementById('statusLimited');
-    const statusStoppedCheckbox = document.getElementById('statusStopped');
+    const statusNormalCheckbox = document.getElementById('statusNormal') as HTMLInputElement;
+    const statusLimitedCheckbox = document.getElementById('statusLimited') as HTMLInputElement;
+    const statusStoppedCheckbox = document.getElementById('statusStopped') as HTMLInputElement;
 
-    const summaryTableBody = document.getElementById('summaryTableBody');
+    const summaryTableBody = document.getElementById('summaryTableBody') as HTMLTableSectionElement;
     const summaryCardContainer = document.getElementById('summaryCardContainer');
     const summaryResults = document.getElementById('summaryResults');
-    const tableBody = document.getElementById('searchResultTableBody');
+    const tableBody = document.getElementById('searchResultTableBody') as HTMLTableSectionElement;
     const cardContainer = document.getElementById('cardContainer');
 
     const summaryContainer = document.getElementById('summaryContainer');
     const detailContainer = document.getElementById('detailContainer');
     const backButtonContainer = document.getElementById('backButtonContainer');
-    const backBtn = document.getElementById('backBtn');
+    const backBtn = document.getElementById('backBtn') as HTMLButtonElement;
 
     const categoryFilterContainer = document.getElementById('categoryFilterContainer');
     const statusFilterContainer = document.getElementById('statusFilterContainer');
     const routeFilterContainer = document.getElementById('routeFilterContainer');
 
-    const reloadDataBtn = document.getElementById('reload-data');
-    const shareBtn = document.getElementById('share-btn');
+    const reloadDataBtn = document.getElementById('reload-data') as HTMLButtonElement;
+    const shareBtn = document.getElementById('share-btn') as HTMLButtonElement;
 
-    let allData = [];
+    let allData: any[] = [];
     let categoryMap = new Map();
-    let categoryData = []; // Added back as it's used in some places
-    let filteredData = [];
-    let currentView = 'summary';
-    let currentIngredient = null;
+    let categoryData = [];
+    let filteredData: any[] = [];
+    let currentView: 'summary' | 'detail' = 'summary';
+    let currentIngredient: string | null = null;
     let currentSort = { key: 'category', direction: 'asc' };
 
-    function getRouteFromYJCode(yjCode) {
+    function getRouteFromYJCode(yjCode: string | number | null) {
         if (!yjCode) return null;
-        // YJコードの5桁目が区分を示す（0-3:内, 4-6:注, 7-9:外）
         const yjStr = String(yjCode);
         if (yjStr.length < 5) return null;
         const digit = parseInt(yjStr.charAt(4));
@@ -62,16 +61,14 @@ document.addEventListener('DOMContentLoaded', () => {
     init();
 
     async function init() {
-        // Restore state from URL before first render
         restoreStateFromUrl();
         try {
             updateProgress('初期化中...', 10);
             const catResponse = await fetch('data/category_data.json');
             categoryData = await catResponse.json();
 
-            // Create a Map for O(1) lookups with priority A > B > C
             categoryMap = new Map();
-            categoryData.forEach(c => {
+            categoryData.forEach((c: any) => {
                 const normIng = normalizeString(c.ingredient_name);
                 const key = `${normIng}|${c.route}`;
                 categoryMap.set(key, c);
@@ -81,8 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await loadAndCacheData(updateProgress);
             if (result && result.data) {
-                // Optimize data processing: reuse pre-normalized fields and use Map lookup
-                allData = result.data.map(item => {
+                allData = result.data.map((item: MedicineData) => {
                     const route = getRouteFromYJCode(item.yjCode);
                     const catItem = route ? categoryMap.get(item.normalizedIngredientName + '|' + route) : null;
                     return {
@@ -94,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     };
                 });
 
-                // Add ingredients from category_data.json that are missing in allData
                 const seenKeys = new Set(allData.map(d => `${d.normalizedIngredientName}|${d.route}`));
                 categoryMap.forEach((c, key) => {
                     if (!seenKeys.has(key)) {
@@ -133,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error loading data:', error);
             const loadingIndicator = document.getElementById('loadingIndicator');
             if (loadingIndicator) loadingIndicator.classList.add('hidden');
-            summaryTableBody.innerHTML = '<tr><td colspan="8" class="px-4 py-4 text-center text-red-500">データの読み込みに失敗しました</td></tr>';
+            if (summaryTableBody) summaryTableBody.innerHTML = '<tr><td colspan="8" class="px-4 py-4 text-center text-red-500">データの読み込みに失敗しました</td></tr>';
             showMessage('データの読み込みに失敗しました。', 'error');
         }
     }
@@ -149,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const result = await clearCacheAndReload(updateProgress);
                 if (result && result.data) {
-                    allData = result.data.map(item => {
+                    allData = result.data.map((item: MedicineData) => {
                         const route = getRouteFromYJCode(item.yjCode);
                         const catItem = route ? categoryMap.get(item.normalizedIngredientName + '|' + route) : null;
                         return {
@@ -161,7 +156,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         };
                     });
 
-                    // Add ingredients from category_data.json that are missing in allData
                     const seenKeys = new Set(allData.map(d => `${d.normalizedIngredientName}|${d.route}`));
                     categoryMap.forEach((c, key) => {
                         if (!seenKeys.has(key)) {
@@ -191,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     showMessage(`データを更新しました: ${allData.length}件`, 'success');
                     renderResults();
                 }
-            } catch (err) {
+            } catch (err: any) {
                 console.error('Reload failed:', err);
                 showMessage(`データの更新に失敗しました: ${err.message || '不明なエラー'}`, 'error');
             } finally {
@@ -201,9 +195,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const inputs = [drugNameInput, ingredientNameInput, catACheckbox, catBCheckbox, catCCheckbox,
-        routeInternalCheckbox, routeInjectableCheckbox, routeExternalCheckbox,
-        statusNormalCheckbox, statusLimitedCheckbox, statusStoppedCheckbox];
     if (shareBtn) shareBtn.addEventListener('click', handleShare);
 
     function handleShare() {
@@ -218,25 +209,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function generateShareUrl() {
         const params = new URLSearchParams();
-        if (drugNameInput.value) params.set('drug', drugNameInput.value);
-        if (ingredientNameInput.value) params.set('ing', ingredientNameInput.value);
+        if (drugNameInput?.value) params.set('drug', drugNameInput.value);
+        if (ingredientNameInput?.value) params.set('ing', ingredientNameInput.value);
 
         const cats = [];
-        if (catACheckbox.checked) cats.push('A');
-        if (catBCheckbox.checked) cats.push('B');
-        if (catCCheckbox.checked) cats.push('C');
+        if (catACheckbox?.checked) cats.push('A');
+        if (catBCheckbox?.checked) cats.push('B');
+        if (catCCheckbox?.checked) cats.push('C');
         if (cats.length < 3) params.set('cat', cats.join(','));
 
         const routes = [];
-        if (routeInternalCheckbox.checked) routes.push('internal');
-        if (routeInjectableCheckbox.checked) routes.push('injectable');
-        if (routeExternalCheckbox.checked) routes.push('external');
+        if (routeInternalCheckbox?.checked) routes.push('internal');
+        if (routeInjectableCheckbox?.checked) routes.push('injectable');
+        if (routeExternalCheckbox?.checked) routes.push('external');
         if (routes.length < 3) params.set('route', routes.join(','));
 
         const status = [];
-        if (statusNormalCheckbox.checked) status.push('normal');
-        if (statusLimitedCheckbox.checked) status.push('limited');
-        if (statusStoppedCheckbox.checked) status.push('stopped');
+        if (statusNormalCheckbox?.checked) status.push('normal');
+        if (statusLimitedCheckbox?.checked) status.push('limited');
+        if (statusStoppedCheckbox?.checked) status.push('stopped');
         if (status.length < 3) params.set('status', status.join(','));
 
 
@@ -252,33 +243,33 @@ document.addEventListener('DOMContentLoaded', () => {
     function restoreStateFromUrl() {
         const params = new URLSearchParams(window.location.search);
 
-        if (params.has('drug')) drugNameInput.value = params.get('drug');
-        if (params.has('ing')) ingredientNameInput.value = params.get('ing');
+        if (params.has('drug') && drugNameInput) drugNameInput.value = params.get('drug')!;
+        if (params.has('ing') && ingredientNameInput) ingredientNameInput.value = params.get('ing')!;
 
         if (params.has('cat')) {
-            const cats = params.get('cat').split(',');
-            catACheckbox.checked = cats.includes('A');
-            catBCheckbox.checked = cats.includes('B');
-            catCCheckbox.checked = cats.includes('C');
+            const cats = params.get('cat')!.split(',');
+            if (catACheckbox) catACheckbox.checked = cats.includes('A');
+            if (catBCheckbox) catBCheckbox.checked = cats.includes('B');
+            if (catCCheckbox) catCCheckbox.checked = cats.includes('C');
         }
 
         if (params.has('route')) {
-            const routes = params.get('route').split(',');
-            routeInternalCheckbox.checked = routes.includes('internal');
-            routeInjectableCheckbox.checked = routes.includes('injectable');
-            routeExternalCheckbox.checked = routes.includes('external');
+            const routes = params.get('route')!.split(',');
+            if (routeInternalCheckbox) routeInternalCheckbox.checked = routes.includes('internal');
+            if (routeInjectableCheckbox) routeInjectableCheckbox.checked = routes.includes('injectable');
+            if (routeExternalCheckbox) routeExternalCheckbox.checked = routes.includes('external');
         }
 
         if (params.has('status')) {
-            const status = params.get('status').split(',');
-            statusNormalCheckbox.checked = status.includes('normal');
-            statusLimitedCheckbox.checked = status.includes('limited');
-            statusStoppedCheckbox.checked = status.includes('stopped');
+            const status = params.get('status')!.split(',');
+            if (statusNormalCheckbox) statusNormalCheckbox.checked = status.includes('normal');
+            if (statusLimitedCheckbox) statusLimitedCheckbox.checked = status.includes('limited');
+            if (statusStoppedCheckbox) statusStoppedCheckbox.checked = status.includes('stopped');
         }
 
 
         if (params.has('sort')) {
-            currentSort.key = params.get('sort');
+            currentSort.key = params.get('sort')!;
             currentSort.direction = params.get('dir') || 'asc';
             updateSortIcons();
         }
@@ -287,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const summaryTableHeaders = document.querySelectorAll('#summaryTable th[data-sort]');
     summaryTableHeaders.forEach(header => {
         header.addEventListener('click', () => {
-            const key = header.getAttribute('data-sort');
+            const key = header.getAttribute('data-sort')!;
             if (currentSort.key === key) {
                 currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
             } else {
@@ -302,6 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateSortIcons() {
         summaryTableHeaders.forEach(header => {
             const icon = header.querySelector('.sort-icon');
+            if (!icon) return;
             if (header.getAttribute('data-sort') === currentSort.key) {
                 icon.classList.remove('text-gray-400', 'group-hover:text-gray-600');
                 icon.classList.add('text-indigo-600');
@@ -316,10 +308,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Debounce helper
-    function debounce(func, delay) {
-        let timeout;
-        return function (...args) {
+    function debounce(func: Function, delay: number) {
+        let timeout: any;
+        return function (this: any, ...args: any[]) {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(this, args), delay);
         };
@@ -330,6 +321,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const textInputs = [drugNameInput, ingredientNameInput];
     textInputs.forEach(input => {
+        if (!input) return;
         input.addEventListener('compositionstart', () => {
             isComposing = true;
         });
@@ -345,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                renderResults(); // Immediate execution on Enter
+                renderResults();
                 input.blur();
             }
         });
@@ -360,29 +352,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (checkbox) checkbox.addEventListener('change', renderResults);
     });
 
-    backBtn.addEventListener('click', () => {
-        currentView = 'summary';
-        currentIngredient = null;
-        showSummaryView();
-        renderResults();
-    });
+    if (backBtn) {
+        backBtn.addEventListener('click', () => {
+            currentView = 'summary';
+            currentIngredient = null;
+            showSummaryView();
+            renderResults();
+        });
+    }
 
     function renderResults() {
-        const drugQuery = drugNameInput.value.trim();
-        const ingredientQuery = ingredientNameInput.value.trim();
+        const drugQuery = drugNameInput?.value.trim() || '';
+        const ingredientQuery = ingredientNameInput?.value.trim() || '';
 
-        // 検索中（非デフォルト状態）判定
-        const isDefaultState = !drugQuery && !ingredientQuery &&
-            catACheckbox.checked && catBCheckbox.checked && catCCheckbox.checked &&
-            routeInternalCheckbox.checked && routeInjectableCheckbox.checked && routeExternalCheckbox.checked &&
-            statusNormalCheckbox.checked && statusLimitedCheckbox.checked && statusStoppedCheckbox.checked &&
-            currentView === 'summary';
-
-        const processQuery = (query) => {
+        const processQuery = (query: string) => {
             if (!query) return { include: [], exclude: [] };
             const terms = query.split(/[\s　]+/).filter(t => t.length > 0);
-            const include = [];
-            const exclude = [];
+            const include: string[] = [];
+            const exclude: string[] = [];
             terms.forEach(term => {
                 if (term.startsWith('ー') && term.length > 1) {
                     exclude.push(normalizeString(term.substring(1)));
@@ -396,27 +383,27 @@ document.addEventListener('DOMContentLoaded', () => {
         const drugFilter = processQuery(drugQuery);
         const ingredientFilter = processQuery(ingredientQuery);
 
-        const selectedCats = [];
-        if (catACheckbox.checked) selectedCats.push('A');
-        if (catBCheckbox.checked) selectedCats.push('B');
-        if (catCCheckbox.checked) selectedCats.push('C');
+        const selectedCats: string[] = [];
+        if (catACheckbox?.checked) selectedCats.push('A');
+        if (catBCheckbox?.checked) selectedCats.push('B');
+        if (catCCheckbox?.checked) selectedCats.push('C');
 
-        const selectedRoutes = [];
-        if (routeInternalCheckbox.checked) selectedRoutes.push('内');
-        if (routeInjectableCheckbox.checked) selectedRoutes.push('注');
-        if (routeExternalCheckbox.checked) selectedRoutes.push('外');
+        const selectedRoutes: string[] = [];
+        if (routeInternalCheckbox?.checked) selectedRoutes.push('内');
+        if (routeInjectableCheckbox?.checked) selectedRoutes.push('注');
+        if (routeExternalCheckbox?.checked) selectedRoutes.push('外');
 
-        const selectedStatuses = [];
-        if (statusNormalCheckbox.checked) selectedStatuses.push('通常出荷');
-        if (statusLimitedCheckbox.checked) selectedStatuses.push('限定出荷');
-        if (statusStoppedCheckbox.checked) selectedStatuses.push('供給停止');
+        const selectedStatuses: string[] = [];
+        if (statusNormalCheckbox?.checked) selectedStatuses.push('通常出荷');
+        if (statusLimitedCheckbox?.checked) selectedStatuses.push('限定出荷');
+        if (statusStoppedCheckbox?.checked) selectedStatuses.push('供給停止');
 
 
         filteredData = allData.filter(item => {
-            const matchQuery = (text, filter) => {
+            const matchQuery = (text: string, filter: any) => {
                 const normalizedText = text || '';
-                const matchInclude = filter.include.length === 0 || filter.include.every(term => normalizedText.includes(term));
-                const matchExclude = filter.exclude.length === 0 || !filter.exclude.some(term => normalizedText.includes(term));
+                const matchInclude = filter.include.length === 0 || filter.include.every((term: string) => normalizedText.includes(term));
+                const matchExclude = filter.exclude.length === 0 || !filter.exclude.some((term: string) => normalizedText.includes(term));
                 return matchInclude && matchExclude;
             };
 
@@ -431,7 +418,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedStatuses.includes('限定出荷') && (currentStatus.includes('限定') || currentStatus.includes('制限') || currentStatus.includes('限') || currentStatus.includes('制'))) matchStatus = true;
             if (selectedStatuses.includes('供給停止') && (currentStatus.includes('停止') || currentStatus.includes('停'))) matchStatus = true;
 
-            // "No data" items are shown regardless of status filter if they match name/category
             if (currentStatus === 'データなし') matchStatus = true;
 
             return matchDrug && matchIngredient && matchCat && matchRoute && matchStatus;
@@ -440,17 +426,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentView === 'summary') {
             renderSummaryTable(filteredData);
         } else {
-            renderDetailView(filteredData.filter(item => item.normalizedIngredientName === normalizeString(currentIngredient)));
+            renderDetailView(filteredData.filter(item => item.normalizedIngredientName === normalizeString(currentIngredient!)));
         }
 
-        // 医薬品データが表示されている時、または詳細表示の時にヘッダーを隠す
-        // 結果が0件の場合のみ表示したままにする
         const hasResults = filteredData.length > 0;
         const isDetailView = currentView === 'detail';
         document.body.classList.toggle('search-mode', hasResults || isDetailView);
     }
 
-    function renderSummaryTable(data) {
+    function renderSummaryTable(data: any[]) {
+        if (!summaryTableBody || !summaryCardContainer) return;
+
         summaryTableBody.innerHTML = '';
         summaryCardContainer.innerHTML = '';
         if (data.length === 0) {
@@ -459,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const grouped = {};
+        const grouped: Record<string, any> = {};
         data.forEach(item => {
             const ingredient = item.ingredientName || '不明';
             const route = item.route || '-';
@@ -471,12 +457,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     route: route,
                     category: item.category,
                     drugClassCode: item.drugClassCode,
-                    drugClassName: item.drugClassName, // Fixed undefined bug
+                    drugClassName: item.drugClassName,
                     counts: { normal: 0, limited: 0, stopped: 0 }
                 };
             }
 
-            // Count statuses
             const status = (item.shipmentStatus || '').trim();
             if (status.includes('通常') || status.includes('通')) {
                 grouped[groupKey].counts.normal++;
@@ -491,15 +476,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const statsA = grouped[a];
             const statsB = grouped[b];
 
-            // Priority maps for custom sorting
-            const categoryPriority = { 'A': 1, 'B': 2, 'C': 3 };
-            const routePriority = { '内': 1, '注': 2, '外': 3 };
+            const categoryPriority: Record<string, number> = { 'A': 1, 'B': 2, 'C': 3 };
+            const routePriority: Record<string, number> = { '内': 1, '注': 2, '外': 3 };
 
-            // Helper for comparison
-            const compare = (valA, valB, key, dir = 'asc') => {
+            const compare = (valA: any, valB: any, key: string, dir: string = 'asc') => {
                 const direction = dir === 'asc' ? 1 : -1;
 
-                // Use priority maps if applicable
                 if (key === 'category') {
                     const pA = categoryPriority[valA] || 99;
                     const pB = categoryPriority[valB] || 99;
@@ -518,36 +500,33 @@ document.addEventListener('DOMContentLoaded', () => {
                 return 0;
             };
 
-            // Define hierarchy of keys for tie-breaking
             const hierarchy = [
-                { key: 'category', getVal: (s) => s.category },
-                { key: 'route', getVal: (s) => s.route },
-                { key: 'drugClassCode', getVal: (s) => s.drugClassCode },
-                { key: 'drugClassName', getVal: (s) => s.drugClassName },
-                { key: 'ingredientName', getVal: (s) => s.ingredientName },
-                { key: 'statusNormal', getVal: (s) => s.counts.normal },
-                { key: 'statusLimited', getVal: (s) => s.counts.limited },
-                { key: 'statusStopped', getVal: (s) => s.counts.stopped }
+                { key: 'category', getVal: (s: any) => s.category },
+                { key: 'route', getVal: (s: any) => s.route },
+                { key: 'drugClassCode', getVal: (s: any) => s.drugClassCode },
+                { key: 'drugClassName', getVal: (s: any) => s.drugClassName },
+                { key: 'ingredientName', getVal: (s: any) => s.ingredientName },
+                { key: 'statusNormal', getVal: (s: any) => s.counts.normal },
+                { key: 'statusLimited', getVal: (s: any) => s.counts.limited },
+                { key: 'statusStopped', getVal: (s: any) => s.counts.stopped }
             ];
 
-            // 1. Compare by Primary Key
             let getPrimaryVal;
             switch (currentSort.key) {
-                case 'category': getPrimaryVal = (s) => s.category; break;
-                case 'route': getPrimaryVal = (s) => s.route; break;
-                case 'drugClassCode': getPrimaryVal = (s) => s.drugClassCode; break;
-                case 'drugClassName': getPrimaryVal = (s) => s.drugClassName; break;
-                case 'ingredientName': getPrimaryVal = (s) => s.ingredientName; break;
-                case 'statusNormal': getPrimaryVal = (s) => s.counts.normal; break;
-                case 'statusLimited': getPrimaryVal = (s) => s.counts.limited; break;
-                case 'statusStopped': getPrimaryVal = (s) => s.counts.stopped; break;
-                default: getPrimaryVal = (s) => s.ingredientName;
+                case 'category': getPrimaryVal = (s: any) => s.category; break;
+                case 'route': getPrimaryVal = (s: any) => s.route; break;
+                case 'drugClassCode': getPrimaryVal = (s: any) => s.drugClassCode; break;
+                case 'drugClassName': getPrimaryVal = (s: any) => s.drugClassName; break;
+                case 'ingredientName': getPrimaryVal = (s: any) => s.ingredientName; break;
+                case 'statusNormal': getPrimaryVal = (s: any) => s.counts.normal; break;
+                case 'statusLimited': getPrimaryVal = (s: any) => s.counts.limited; break;
+                case 'statusStopped': getPrimaryVal = (s: any) => s.counts.stopped; break;
+                default: getPrimaryVal = (s: any) => s.ingredientName;
             }
 
             const primaryDiff = compare(getPrimaryVal(statsA), getPrimaryVal(statsB), currentSort.key, currentSort.direction);
             if (primaryDiff !== 0) return primaryDiff;
 
-            // 2. Compare by Hierarchy (Tie-breakers) - Always ASC for stability
             for (const item of hierarchy) {
                 if (item.key === currentSort.key) continue;
 
@@ -592,7 +571,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             summaryTableBody.appendChild(row);
 
-            // Render Card for Mobile
             const card = document.createElement('div');
             card.className = 'bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors';
             card.addEventListener('click', () => showDetailView(stats.ingredientName, stats.route));
@@ -626,26 +604,24 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function showDetailView(ingredient, route) {
+    function showDetailView(ingredient: string, route: string) {
         currentView = 'detail';
         currentIngredient = ingredient;
         const normalizedIng = normalizeString(ingredient);
 
-        summaryContainer.classList.add('hidden');
-        detailContainer.classList.remove('hidden');
-        backButtonContainer.classList.remove('hidden');
+        summaryContainer?.classList.add('hidden');
+        detailContainer?.classList.remove('hidden');
+        backButtonContainer?.classList.remove('hidden');
 
         if (categoryFilterContainer) categoryFilterContainer.classList.add('hidden');
         if (routeFilterContainer) routeFilterContainer.classList.add('hidden');
         if (statusFilterContainer) statusFilterContainer.classList.remove('hidden');
 
-        // Toggle grid columns
         const filterGrid = document.getElementById('filterGrid');
         if (filterGrid) {
             filterGrid.classList.remove('md:grid-cols-3');
         }
 
-        // Filter allData for this ingredient AND route
         const details = allData.filter(item => {
             return item.normalizedIngredientName === normalizedIng && item.route === route;
         });
@@ -655,15 +631,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showSummaryView() {
-        summaryContainer.classList.remove('hidden');
-        detailContainer.classList.add('hidden');
-        backButtonContainer.classList.add('hidden');
+        summaryContainer?.classList.remove('hidden');
+        detailContainer?.classList.add('hidden');
+        backButtonContainer?.classList.add('hidden');
 
         if (categoryFilterContainer) categoryFilterContainer.classList.remove('hidden');
         if (routeFilterContainer) routeFilterContainer.classList.remove('hidden');
         if (statusFilterContainer) statusFilterContainer.classList.add('hidden');
 
-        // Restore grid columns
         const filterGrid = document.getElementById('filterGrid');
         if (filterGrid) {
             filterGrid.classList.add('md:grid-cols-3');
@@ -671,12 +646,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    function renderDetailView(data) {
+    function renderDetailView(data: any[]) {
         renderTable(data);
         renderCards(data);
     }
 
-    function renderTable(data) {
+    function renderTable(data: any[]) {
+        if (!tableBody) return;
         tableBody.innerHTML = '';
         if (data.length === 0) {
             tableBody.innerHTML = '<tr><td colspan="9" class="px-4 py-4 text-center text-gray-500">該当するデータがありません</td></tr>';
@@ -702,7 +678,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td class="px-4 py-2 text-xs text-gray-500 whitespace-nowrap align-top">${formattedDate}</td>
             `;
 
-            // Drug Name 
             const drugNameCell = row.cells[2];
 
             const labelsContainer = document.createElement('div');
@@ -748,7 +723,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function renderCards(data) {
+    function renderCards(data: any[]) {
+        if (!cardContainer) return;
         cardContainer.innerHTML = '';
         if (data.length === 0) {
             cardContainer.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">該当するデータがありません</div>';
@@ -795,7 +771,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
             `;
 
-            const nameContainer = card.querySelector('.product-name-container');
+            const nameContainer = card.querySelector('.product-name-container') as HTMLElement;
 
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'vertical-labels-container';
@@ -833,7 +809,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             nameContainer.appendChild(flexContainer);
 
-            const placeholder = card.querySelector('#status-placeholder');
+            const placeholder = card.querySelector('#status-placeholder')!;
             placeholder.replaceWith(statusBtn);
 
             cardContainer.appendChild(card);

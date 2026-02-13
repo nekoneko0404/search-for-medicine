@@ -1,7 +1,11 @@
-import { loadAndCacheData } from './data.js';
-import { updateProgress } from './ui.js';
-import './components/MainFooter.js';
-import './components/MainHeader.js';
+import { loadAndCacheData } from './data';
+import { updateProgress } from './ui';
+import './components/MainFooter';
+import './components/MainHeader';
+
+// Marked.js and DOMPurify types override for global variables
+declare const marked: any;
+declare const DOMPurify: any;
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- Notification script from original index.html logic ---
@@ -14,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             notificationToggle.addEventListener('click', () => {
                 const isOpen = notificationContent.classList.toggle('open');
                 notificationToggle.classList.toggle('open', isOpen);
-                notificationToggle.setAttribute('aria-expanded', isOpen);
+                notificationToggle.setAttribute('aria-expanded', String(isOpen));
             });
         }
 
@@ -48,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const infectionTimeElement = document.getElementById('infection-update-time');
     const shippingTimeElement = document.getElementById('shipping-update-time');
 
-    const formatDateTime = (isoString) => {
+    const formatDateTime = (isoString: string) => {
         if (!isoString) return '取得不可';
         try {
             const date = new Date(isoString);
@@ -94,12 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const noticeId = topNotice.getAttribute('data-notice-id');
         const hiddenNotices = JSON.parse(localStorage.getItem('kusuri_compass_hidden_notices') || '[]');
 
-        if (!hiddenNotices.includes(noticeId)) {
+        if (noticeId && !hiddenNotices.includes(noticeId)) {
             // Show the banner
             topNotice.style.display = 'block';
 
             const closeBtn = document.getElementById('notice-close-btn');
-            const hideCheckbox = document.getElementById('notice-hide-checkbox');
+            const hideCheckbox = document.getElementById('notice-hide-checkbox') as HTMLInputElement;
 
             if (closeBtn) {
                 closeBtn.addEventListener('click', () => {

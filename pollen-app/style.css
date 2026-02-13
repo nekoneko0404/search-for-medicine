@@ -612,6 +612,9 @@ html {
 .popup-chart-container {
     width: 100%;
     height: 250px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin-top: 10px;
 }
 
 .popup-header {
