@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 05: フローティング・コックピット - Kusuri Compass</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f3f4f6;
+            /* Gray 100 */
+            color: #1f2937;
+            /* Gray 800 */
+        }
+
+        .cockpit-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .cockpit-sidebar {
+            width: 320px;
+            background: #ffffff;
+            /* height: 100vh; */
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 40px);
+            margin: 20px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #4f46e5;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .brand i {
+            background: #e0e7ff;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .control-group {
+            margin-bottom: 25px;
+        }
+
+        .control-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #9ca3af;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            background: #f9fafb;
+            border: 2px solid transparent;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-weight: 600;
+            color: #374151;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus {
+            background: #fff;
+            border-color: #4f46e5;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+            outline: none;
+        }
+
+        .chip-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .chip-check {
+            position: relative;
+        }
+
+        .chip-check input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .chip-label {
+            display: block;
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #4b5563;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip-check input:checked+.chip-label {
+            background: #4f46e5;
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            transform: translateY(-1px);
+        }
+
+        /* Main Content */
+        .cockpit-main {
+            flex-grow: 1;
+            padding: 20px 20px 20px 0;
+            overflow-y: auto;
+        }
+
+        .main-header {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .results-panel {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            min-height: 500px;
+        }
+
+        /* Floating Table Headers */
+        thead {
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 10;
+        }
+
+        th {
+            padding: 15px 10px;
+            text-align: left;
+            font-size: 0.8rem;
+            color: #6b7280;
+            font-weight: 600;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        td {
+            padding: 20px 10px;
+            border-bottom: 1px solid #f9fafb;
+            vertical-align: middle;
+        }
+
+        tr {
+            transition: background 0.2s;
+            border-radius: 8px;
+        }
+
+        tr:hover td {
+            background: #f9fafb;
+            /* first and last child rounding trick usually needs specific td styling, simplified here */
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .badge-norm {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-limit {
+            background: #fef9c3;
+            color: #854d0e;
+        }
+
+        .badge-stop {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* Mobile */
+        @media (max-width: 1024px) {
+            .cockpit-layout {
+                flex-direction: column;
+            }
+
+            .cockpit-sidebar {
+                width: auto;
+                height: auto;
+                position: relative;
+                top: 0;
+                margin: 20px;
+            }
+
+            .cockpit-main {
+                padding: 0 20px 20px;
+            }
+        }
+
+        #backBtn {
+            background: #eff6ff;
+            color: #4f46e5;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 700;
+            border: none;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="cockpit-layout">
+        <!-- Sticky Sidebar -->
+        <aside class="cockpit-sidebar">
+            <div class="brand">
+                <i class="fas fa-layer-group"></i>
+                Kusuri Compass
+            </div>
+
+            <div class="control-group">
+                <span class="control-label">検索</span>
+                <input type="text" id="drugName" placeholder="医薬品名">
+                <input type="text" id="ingredientName" placeholder="成分名" style="margin-top:10px;">
+                <input type="text" id="makerName" placeholder="規格・剤形・メーカー" style="margin-top:10px;">
+            </div>
+
+
+
+            <div class="control-group" id="routeFilterContainer">
+                <span class="control-label">投与経路</span>
+                <div class="chip-group">
+                    <label class="chip-check">
+                        <input type="checkbox" id="routeInternal" checked>
+                        <span class="chip-label">内服</span>
+                    </label>
+                    <label class="chip-check">
+                        <input type="checkbox" id="routeInjectable" checked>
+                        <span class="chip-label">注射</span>
+                    </label>
+                    <label class="chip-check">
+                        <input type="checkbox" id="routeExternal" checked>
+                        <span class="chip-label">外用</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="control-group" id="statusFilterContainer">
+                <span class="control-label">ステータス</span>
+                <div class="chip-group">
+                    <label class="chip-check">
+                        <input type="checkbox" id="statusNormal" checked>
+                        <span class="chip-label">通常供給</span>
+                    </label>
+                    <label class="chip-check">
+                        <input type="checkbox" id="statusLimited" checked>
+                        <span class="chip-label">限定出荷</span>
+                    </label>
+                    <label class="chip-check">
+                        <input type="checkbox" id="statusStopped" checked>
+                        <span class="chip-label">供給停止</span>
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Area -->
+        <main class="cockpit-main">
+            <header class="main-header">
+                <h1 class="page-title">供給状況モニター</h1>
+                <div class="user-profile">
+                    <!-- Placeholder for user or date -->
+                    <span style="font-size:0.8rem; font-weight:600; color:#6b7280;">最終更新: 本日</span>
+                </div>
+            </header>
+
+            <div class="results-panel" id="resultsWrapper">
+                <div id="tableContainer">
+                    <table id="summaryTable" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th id="sort-productName-button" class="cursor-pointer">品名 <span
+                                        id="sort-productName-icon">↕</span></th>
+                                <th id="sort-ingredientName-button" class="cursor-pointer">成分名 <span
+                                        id="sort-ingredientName-icon">↕</span></th>
+                                <th id="sort-status-button" class="cursor-pointer">出荷状況 <span
+                                        id="sort-status-icon">↕</span></th>
+                                <th>制限理由</th>
+                                <th>出荷量状況</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultTableBody">
+                            <!-- JS Injected Content -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cardContainer" class="md:hidden"></div>
+            </div>
+
+
+
+            <div id="loadingIndicator" class="hidden py-20 text-center">
+                <i class="fas fa-circle-notch fa-spin text-indigo-500 text-2xl"></i>
+                <p class="mt-4 font-semibold text-gray-500">ダッシュボードのデータを読み込み中...</p>
+            </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- Hidden elements required by script.ts -->
+    <!-- Internal elements for script.ts -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+</body>
+
+</html>

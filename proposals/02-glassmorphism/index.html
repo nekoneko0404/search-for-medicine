@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 02: グラスモーフィズム - Kusuri Compass</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            padding: 24px;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-weight: 200;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 span {
+            font-weight: 700;
+        }
+
+        /* Inputs */
+        input[type="text"] {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 12px;
+            padding: 12px 20px;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+
+        input[type="text"]::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        input[type="text"]:focus {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.5);
+            outline: none;
+        }
+
+        /* Filters */
+        .filter-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.8;
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 5px;
+        }
+
+        .glass-checkbox {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 20px;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .glass-checkbox:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-checkbox input {
+            accent-color: #a5b4fc;
+            margin-right: 8px;
+        }
+
+        /* Table Overrides */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 16px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.8);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .status-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* Back Button */
+        #backBtn {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 8px 16px;
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Kusuri <span>Compass</span> <small style="font-size:0.5em; opacity:0.7">/ 供給管理インテリジェンス</small></h1>
+
+        <div class="glass-panel mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <div class="filter-title">キーワード</div>
+                    <input type="text" id="drugName" placeholder="医薬品名を検索...">
+                    <input type="text" id="ingredientName" placeholder="成分名...">
+                    <input type="text" id="makerName" placeholder="規格・剤形・メーカー...">
+                </div>
+                <div>
+                    <div class="flex flex-col gap-6">
+                        <div>
+                            <div class="filter-title">フィルター</div>
+
+                            <div class="mt-4" id="routeFilterContainer">
+                                <label class="glass-checkbox"><input type="checkbox" id="routeInternal" checked>
+                                    内服</label>
+                                <label class="glass-checkbox"><input type="checkbox" id="routeInjectable" checked>
+                                    注射</label>
+                                <label class="glass-checkbox"><input type="checkbox" id="routeExternal" checked>
+                                    外用</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="filter-title">ステータス</div>
+                            <div id="statusFilterContainer">
+                                <label class="glass-checkbox"><input type="checkbox" id="statusNormal" checked>
+                                    通常</label>
+                                <label class="glass-checkbox"><input type="checkbox" id="statusLimited" checked>
+                                    限定</label>
+                                <label class="glass-checkbox"><input type="checkbox" id="statusStopped" checked>
+                                    停止</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-panel" style="min-height: 400px;" id="resultsWrapper">
+            <div id="tableContainer">
+                <div class="overflow-x-auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="cursor-pointer" id="sort-productName-button">品名 <span
+                                        id="sort-productName-icon">↕</span></th>
+                                <th class="cursor-pointer" id="sort-ingredientName-button">成分名 <span
+                                        id="sort-ingredientName-icon">↕</span></th>
+                                <th class="cursor-pointer" id="sort-status-button">出荷状況 <span
+                                        id="sort-status-icon">↕</span></th>
+                                <th>制限理由</th>
+                                <th>出荷量状況</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultTableBody">
+                            <!-- JS Injected Content -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="cardContainer" class="md:hidden"></div>
+
+            <div id="loadingIndicator" class="hidden text-center p-10">
+                <div class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-white/20 border-t-white">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden elements required by script.ts -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+</body>
+
+</html>

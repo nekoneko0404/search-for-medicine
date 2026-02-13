@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 07: インタラクティブ・カード - Kusuri Compass</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: #f0f4f8;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .card-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        /* Search Bar floating */
+        .search-hero {
+            background: #fff;
+            padding: 20px;
+            border-radius: 50px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            gap: 15px;
+        }
+
+        .search-hero i {
+            color: #3498db;
+            font-size: 1.2rem;
+            margin-left: 20px;
+        }
+
+        input[type="text"] {
+            border: none;
+            font-size: 1.1rem;
+            width: 100%;
+            outline: none;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        /* Filters as Pills */
+        .filter-pills {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .pill-label {
+            background: #fff;
+            padding: 10px 20px;
+            border-radius: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            color: #555;
+            user-select: none;
+        }
+
+        .pill-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .pill-label input {
+            accent-color: #3498db;
+        }
+
+        /* Force Card View */
+        #summaryTable,
+        #detailContainer table {
+            display: none !important;
+        }
+
+        #summaryCardContainer,
+        #cardContainer {
+            display: grid !important;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        /* Card Styling Overrides */
+        #summaryCardContainer>div,
+        #cardContainer>div {
+            background: #fff;
+            border-radius: 20px;
+            border: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.03);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        #summaryCardContainer>div:hover,
+        #cardContainer>div:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            z-index: 10;
+        }
+
+        /* Status Indicator Line */
+        #summaryCardContainer>div::after,
+        #cardContainer>div::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: #eee;
+        }
+
+        /* Just a trick: since I can't easily change the HTML structure inside the card purely by CSS to match specific statuses without classes on the parent, 
+           I'll leave the default colored left border or try to target specific elements if possible. 
+           The script generates inline styles/classes. 
+           Let's just style the content.
+        */
+
+        #summaryCardContainer h3,
+        #cardContainer h3 {
+            font-size: 1.2rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .bg-indigo-100 {
+            background: #e0f2fe !important;
+            color: #0284c7 !important;
+            border-radius: 8px !important;
+        }
+
+        .bg-blue-50 {
+            background: #eff6ff !important;
+            border-radius: 12px !important;
+        }
+
+        .bg-yellow-50 {
+            background: #fefce8 !important;
+            border-radius: 12px !important;
+        }
+
+        .bg-red-50 {
+            background: #fef2f2 !important;
+            border-radius: 12px !important;
+        }
+
+        /* Back Button */
+        #backBtn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #3498db;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            box-shadow: 0 10px 20px rgba(52, 152, 219, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            z-index: 100;
+            border: none;
+            transition: transform 0.3s;
+        }
+
+        #backBtn:hover {
+            transform: scale(1.1);
+        }
+
+        #backBtn span {
+            display: none;
+        }
+
+        /* Hide text if any, show icon */
+        #backBtn::before {
+            content: '\f060';
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+        }
+
+        @media (max-width: 768px) {
+            .search-hero {
+                margin: 0 20px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header class="card-header">
+            <h1>ディスカバリー・カード</h1>
+        </header>
+
+        <div class="search-hero">
+            <i class="fas fa-search"></i>
+            <input type="text" id="drugName" placeholder="医薬品名で検索...">
+            <input type="text" id="ingredientName" placeholder="成分名で検索..." class="mt-2"
+                style="width:100%; border:none; background:transparent; border-bottom:1px solid #ddd; padding:10px; margin-top:10px">
+            <input type="text" id="makerName" placeholder="規格・剤形・メーカーで検索..." class="mt-2"
+                style="width:100%; border:none; background:transparent; border-bottom:1px solid #ddd; padding:10px; margin-top:10px">
+        </div>
+
+        <!-- Collapsed generic filters for cleaner look -->
+
+
+        <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-bottom: 20px; justify-content: center;">
+            <div class="filter-pills" id="routeFilterContainer" style="margin-bottom: 0;">
+                <label class="pill-label"><input type="checkbox" id="routeInternal" checked> 内服</label>
+                <label class="pill-label"><input type="checkbox" id="routeInjectable" checked> 注射</label>
+                <label class="pill-label"><input type="checkbox" id="routeExternal" checked> 外用</label>
+            </div>
+
+            <div class="filter-pills" id="statusFilterContainer" style="margin-bottom: 0;">
+                <label class="pill-label"><input type="checkbox" id="statusNormal" checked> 通常供給</label>
+                <label class="pill-label"><input type="checkbox" id="statusLimited" checked> 限定出荷</label>
+                <label class="pill-label"><input type="checkbox" id="statusStopped" checked> 供給停止</label>
+            </div>
+        </div>
+
+        <!-- Hidden input -->
+        <input type="text" id="ingredientName" placeholder="Ingredient" style="display:none">
+
+        <div id="resultsWrapper">
+            <div id="tableContainer">
+                <!-- Table hidden via CSS but required for sorting logic -->
+                <table id="summaryTable" class="hidden">
+                    <thead>
+                        <tr>
+                            <th id="sort-productName-button">品名</th>
+                            <th id="sort-ingredientName-button">成分名</th>
+                            <th id="sort-status-button">出荷状況</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchResultTableBody"></tbody>
+                </table>
+                <!-- Card Container (Always Visible via CSS) -->
+                <div id="cardContainer"></div>
+            </div>
+        </div>
+
+
+
+        <div id="loadingIndicator" class="hidden py-10 text-center">
+            <i class="fas fa-spinner fa-spin fa-2x text-gray-300"></i>
+        </div>
+    </div>
+
+    <!-- Hidden elements required by script.ts -->
+    <!-- Backend components -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+</body>
+
+</html>

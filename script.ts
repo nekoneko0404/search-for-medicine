@@ -52,19 +52,26 @@ function searchData() {
     const statusNormalInput = getEl('statusNormal') as HTMLInputElement;
     const statusLimitedInput = getEl('statusLimited') as HTMLInputElement;
     const statusStoppedInput = getEl('statusStopped') as HTMLInputElement;
+    const routeInternalInput = getEl('routeInternal') as HTMLInputElement;
+    const routeInjectableInput = getEl('routeInjectable') as HTMLInputElement;
+    const routeExternalInput = getEl('routeExternal') as HTMLInputElement;
+
     const resultsWrapper = getEl('resultsWrapper');
 
     const drugKeywords = getSearchKeywords(drugNameInput?.value || '');
     const ingredientKeywords = getSearchKeywords(ingredientNameInput?.value || '');
     const makerKeywords = getSearchKeywords(makerNameInput?.value || '');
 
-    const allCheckboxesChecked = statusNormalInput?.checked && statusLimitedInput?.checked && statusStoppedInput?.checked;
+    const allStatusChecked = statusNormalInput?.checked && statusLimitedInput?.checked && statusStoppedInput?.checked;
+    const allRoutesChecked = (!routeInternalInput || routeInternalInput.checked) &&
+        (!routeInjectableInput || routeInjectableInput.checked) &&
+        (!routeExternalInput || routeExternalInput.checked);
 
     const allSearchFieldsEmpty = drugKeywords.include.length === 0 && drugKeywords.exclude.length === 0 &&
         ingredientKeywords.include.length === 0 && ingredientKeywords.exclude.length === 0 &&
         makerKeywords.include.length === 0 && makerKeywords.exclude.length === 0;
 
-    if (allSearchFieldsEmpty && allCheckboxesChecked) {
+    if (allSearchFieldsEmpty && allStatusChecked && allRoutesChecked) {
         renderTable([]);
         if (resultsWrapper) resultsWrapper.classList.add('hidden');
         document.body.classList.remove('search-mode');
@@ -112,7 +119,33 @@ function searchData() {
             matchStatus = true;
         }
 
-        return matchDrug && matchIngredient && matchMaker && matchStatus;
+        if (!matchStatus) return false;
+
+        // --- Route Filtering Logic ---
+        const yjCode = normalizeString(item.yjCode || '');
+        // Default to match if no YJ code or no filters exist
+        if (!yjCode || (!routeInternalInput && !routeInjectableInput && !routeExternalInput)) {
+            return matchDrug && matchIngredient && matchMaker;
+        }
+
+        const routeDigit = yjCode.length >= 8 ? yjCode.charAt(7) : null;
+        let matchRoute = false;
+
+        if (!routeDigit) {
+            matchRoute = true; // Can't determine, so include it
+        } else {
+            if (routeInternalInput?.checked && routeDigit === '1') matchRoute = true;
+            if (routeInjectableInput?.checked && routeDigit === '4') matchRoute = true;
+            if (routeExternalInput?.checked && (routeDigit === '6' || routeDigit === '7')) matchRoute = true;
+            // If it's something else and all filters are off, it might be excluded. 
+            // But if it doesn't match any of the 1, 4, 6/7 but some other route, what then?
+            // Usually we only have these 3 categories. If it's something else, let's include it if all filters are ON.
+            if (!['1', '4', '6', '7'].includes(routeDigit)) {
+                matchRoute = true;
+            }
+        }
+
+        return matchDrug && matchIngredient && matchMaker && matchRoute;
     });
 
     renderTable(filteredResults);
@@ -560,6 +593,9 @@ function attachSearchListeners() {
     getEl('statusNormal')?.addEventListener('change', searchData);
     getEl('statusLimited')?.addEventListener('change', searchData);
     getEl('statusStopped')?.addEventListener('change', searchData);
+    getEl('routeInternal')?.addEventListener('change', searchData);
+    getEl('routeInjectable')?.addEventListener('change', searchData);
+    getEl('routeExternal')?.addEventListener('change', searchData);
 
     getEl('sort-productName-button')?.addEventListener('click', () => sortResults('productName'));
     getEl('sort-ingredientName-button')?.addEventListener('click', () => sortResults('ingredientName'));
