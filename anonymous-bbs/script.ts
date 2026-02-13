@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const el = document.createElement('div');
             el.className = 'post';
             if (post.is_admin) el.classList.add('is-admin');
-            el.dataset.postNumber = post.post_number.toString();
+            el.dataset.postNumber = (post.post_number ?? 0).toString();
 
             const date = new Date(post.created_at).toLocaleString('ja-JP');
             const currentAdminKey = new URLSearchParams(window.location.search).get('key');

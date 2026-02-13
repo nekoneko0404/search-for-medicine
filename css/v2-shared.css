@@ -289,3 +289,52 @@ footer {
         margin: 0 auto;
     }
 }
+
+/* Print Styles */
+@media print {
+
+    header,
+    footer,
+    .no-print,
+    .update-notice,
+    #top-notice,
+    #reload-data,
+    #share-btn,
+    .magazine-container .hero-section,
+    main-header,
+    main-footer {
+        display: none !important;
+    }
+
+    body {
+        background-color: white !important;
+        color: black !important;
+        font-size: 10pt;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Reset container widths for print */
+    .container,
+    .magazine-container,
+    .max-w-7xl {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    /* Ensure tables and cards break nicely */
+    .table-container {
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+    }
+
+    /* Hide background images if needed */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}

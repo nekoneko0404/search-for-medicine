@@ -10,7 +10,8 @@ export async function generateMedicationGuidePDF(medication: Medication) {
 
   // Load Japanese Font
   try {
-    const fontRes = await fetch('https://raw.githubusercontent.com/google/fonts/main/ofl/notosansjp/NotoSansJP-Regular.ttf');
+    // Use Google Fonts CDN (Noto Sans JP Regular v53)
+    const fontRes = await fetch('https://fonts.gstatic.com/s/notosansjp/v53/-F6jfjtqLzI2JPCgQBnw7HFyzSD-AsregP8VFBEj75s.ttf');
     if (!fontRes.ok) throw new Error('Font fetch failed');
     const fontBuffer = await fontRes.arrayBuffer();
 
