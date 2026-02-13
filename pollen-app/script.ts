@@ -845,7 +845,9 @@ async function handlePopupOpen(city: City, marker: any) {
             datasets: [{
                 label: '花粉数',
                 data: dayData.map(d => d.pollen >= 0 ? d.pollen : 0),
-                backgroundColor: dayData.map(d => getPollenColor(d.pollen >= 0 ? d.pollen : 0))
+                backgroundColor: dayData.map(d => getPollenColor(d.pollen >= 0 ? d.pollen : 0)),
+                borderColor: '#cccccc',
+                borderWidth: 1
             }]
         },
         options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
