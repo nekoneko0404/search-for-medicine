@@ -12,7 +12,8 @@ declare const Chart: any;
 const CONFIG = {
     API_ENDPOINT: 'https://wxtech.weathernews.com/opendata/v1/pollen',
     ZOOM_THRESHOLD: 11,
-    CACHE_DURATION: 10 * 60 * 1000 // 10 minutes
+    CACHE_DURATION: 10 * 60 * 1000, // 10 minutes
+    MAP_STATE_KEY: 'pollen_map_state'
 };
 
 const WORKER_URL = 'https://pollen-worker.neko-neko-0404.workers.dev';
@@ -938,8 +939,24 @@ async function updateVisibleMarkers() {
 document.addEventListener('DOMContentLoaded', async () => {
     state.currentDate = getJSTDateString();
 
+    // Restore Map State
+    let initialCenter: [number, number] = [36.2048, 138.2529];
+    let initialZoom = 5;
+    try {
+        const savedState = localStorage.getItem(CONFIG.MAP_STATE_KEY);
+        if (savedState) {
+            const { center, zoom } = JSON.parse(savedState);
+            if (center && zoom) {
+                initialCenter = center;
+                initialZoom = zoom;
+            }
+        }
+    } catch (e) {
+        console.error('Failed to load map state:', e);
+    }
+
     // Init Map
-    map = L.map('map', { zoomControl: false }).setView([36.2048, 138.2529], 5);
+    map = L.map('map', { zoomControl: false }).setView(initialCenter, initialZoom);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     const baseLayers = {
@@ -965,8 +982,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Map Events
     const debouncedUpdate = debounce(() => updateVisibleMarkers(), 500);
-    map.on('moveend', debouncedUpdate);
-    map.on('zoomend', debouncedUpdate);
+    const saveMapState = debounce(() => {
+        if (!map) return;
+        const center = map.getCenter();
+        const zoom = map.getZoom();
+        localStorage.setItem(CONFIG.MAP_STATE_KEY, JSON.stringify({ center: [center.lat, center.lng], zoom }));
+    }, 1000);
+
+    map.on('moveend', () => {
+        debouncedUpdate();
+        saveMapState();
+    });
+    map.on('zoomend', () => {
+        debouncedUpdate();
+        saveMapState();
+    });
 
     map.on('popupopen', () => {
         const crosshair = document.getElementById('crosshair');
@@ -1048,6 +1078,17 @@ function setupUIListeners() {
         const newDate = getJSTDateString(d);
         if (newDate <= todayStr) updateDate(newDate);
     });
+
+    // Initialize Date UI on load
+    const datePicker = document.getElementById('date-picker') as HTMLInputElement;
+    if (datePicker) {
+        datePicker.value = state.currentDate;
+        // Trigger generic update to highlight "Today" button
+        document.querySelectorAll('.btn-quick-date').forEach(btn => {
+            const days = (btn as HTMLElement).dataset.days;
+            if (days === "0") btn.classList.add('active'); // "Today" button
+        });
+    }
 
     document.querySelectorAll('.btn-quick-date').forEach(btn => {
         btn.addEventListener('click', () => {
