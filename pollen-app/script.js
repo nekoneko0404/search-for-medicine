@@ -1,4 +1,23 @@
+import '../css/main.css';
+
 document.addEventListener('DOMContentLoaded', function () {
+    // Modal event listeners (CSP: replacing inline onclick handlers)
+    const qrModalOpen = document.getElementById('qr-modal-open');
+    const qrModalClose = document.getElementById('qr-modal-close');
+    const guideModalClose = document.getElementById('guide-modal-close');
+    const qrModal = document.getElementById('qr-modal');
+    const guideModal = document.getElementById('guide-modal');
+
+    if (qrModalOpen && qrModal) {
+        qrModalOpen.addEventListener('click', () => qrModal.classList.add('show'));
+    }
+    if (qrModalClose && qrModal) {
+        qrModalClose.addEventListener('click', () => qrModal.classList.remove('show'));
+    }
+    if (guideModalClose && guideModal) {
+        guideModalClose.addEventListener('click', () => guideModal.classList.remove('show'));
+    }
+
     // Notification Banner Logic
     const noticeBanner = document.getElementById('update-notice');
     if (noticeBanner) {

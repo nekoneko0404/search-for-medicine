@@ -7,12 +7,7 @@
     <title>ぱっくんスタンプ - 取扱説明書</title>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-H44R8N7W32');
-    </script>
+    <script src="../js/gtag-init.js"></script>
 
     <script type="module" src="qrcode.min.js"></script>
     <style>
@@ -529,10 +524,16 @@
 
 <body>
     <div class="print-btn-container">
-        <button class="btn-print" onclick="window.print()">
+        <button class="btn-print" id="btn-print">
             <span>🖨️ 印刷する (A4サイズ1枚)</span>
         </button>
     </div>
+
+    <script>
+        document.getElementById('btn-print').addEventListener('click', function () {
+            window.print();
+        });
+    </script>
 
     <div class="container">
         <header>

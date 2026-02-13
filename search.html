@@ -8,7 +8,7 @@
 
     <!-- CSP: Strict Policy -->
     <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://docs.google.com https://spreadsheets.google.com https://analytics.google.com https://*.googleusercontent.com; base-uri 'self'; form-action 'self';">
+        content="default-src 'self'; script-src 'self' https://www.googletagmanager.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com https://cdn.jsdelivr.net; img-src 'self' data: https:; connect-src 'self' https://www.google-analytics.com https://docs.google.com https://spreadsheets.google.com https://analytics.google.com https://*.googleusercontent.com; base-uri 'self'; form-action 'self';">
 
     <!-- Styles -->
     <link rel="stylesheet" href="css/main.css">
@@ -16,34 +16,15 @@
 
 
     <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VXSZGE4HP7"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-VXSZGE4HP7');
-    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-H44R8N7W32"></script>
+    <script src="js/gtag-init.js"></script>
 
 
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
         rel="stylesheet">
 
-    <style>
-        [v-cloak],
-        .v-cloak {
-            display: none !important;
-        }
-
-        body {
-            opacity: 0;
-            transition: opacity 0.2s ease-in;
-        }
-
-        body.loaded {
-            opacity: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="css/search-init.css">
     <!-- Inline styles removed. Using css/style.css and Tailwind. -->
 
     <!-- Dependencies -->
