@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- Last Build: 2026-02-13 22:39 -->
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kusuri Compass - デザイン案一覧</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        p {
+            color: #6b7280;
+            font-size: 1.1rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #e5e7eb;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: #6366f1;
+        }
+
+        .card-number {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #6366f1;
+            margin-bottom: 8px;
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .card-desc {
+            font-size: 0.9rem;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>デザイン案</h1>
+            <p>供給状況検索のための10のUI/UXコンセプト</p>
+        </header>
+
+        <div class="grid">
+            <a href="01-editorial/index.html" class="card">
+                <span class="card-number">案 01</span>
+                <div class="card-title">エディトリアル</div>
+                <div class="card-desc">高コントラストな明朝体タイポグラフィを採用した、雑誌スタイルのレイアウト。可読性と大胆な見出しに焦点を当てています。</div>
+            </a>
+
+            <a href="02-glassmorphism/index.html" class="card">
+                <span class="card-number">案 02</span>
+                <div class="card-title">グラスモーフィズム</div>
+                <div class="card-desc">抽象的な背景にすりガラスのような質感を組み合わせた、現代的な美学。未来的で深みのあるデザインです。</div>
+            </a>
+
+            <a href="03-dark-mode/index.html" class="card">
+                <span class="card-number">案 03</span>
+                <div class="card-title">ダークモード・プロ</div>
+                <div class="card-desc">暗所での使用やデータ負荷の高い作業に最適化された、プロフェッショナルなダークインターフェース。</div>
+            </a>
+
+            <a href="04-swiss-modern/index.html" class="card">
+                <span class="card-number">案 04</span>
+                <div class="card-title">スイス・モダン</div>
+                <div class="card-desc">グリッドベースのミニマルなデザイン。大胆なサンセリフ体と強いアクセントカラーが特徴です。</div>
+            </a>
+
+            <a href="05-floating-cockpit/index.html" class="card">
+                <span class="card-number">案 05</span>
+                <div class="card-title">フローティング・コックピット</div>
+                <div class="card-desc">固定サイドバーと浮遊感のあるコンテンツパネルを備えた、ダッシュボードレイアウト。効率的な操作を可能にします。</div>
+            </a>
+
+            <a href="06-split-screen/index.html" class="card">
+                <span class="card-number">案 06</span>
+                <div class="card-title">スプリット・スクリーン</div>
+                <div class="card-desc">操作エリアの固定サイドバーと、スクロール可能な結果リストを組み合わせた機能的なレイアウト。</div>
+            </a>
+
+            <a href="07-interactive-cards/index.html" class="card">
+                <span class="card-number">案 07</span>
+                <div class="card-title">インタラクティブ・カード</div>
+                <div class="card-desc">表の代わりにカードUIを採用したモバイルファーストのアプローチ。直感的でタッチ操作に適しています。</div>
+            </a>
+
+            <a href="08-neumorphism/index.html" class="card">
+                <span class="card-number">案 08</span>
+                <div class="card-title">ニューモーフィズム</div>
+                <div class="card-desc">控えめな影と立体感のある要素で構成されたソフトなUI。低コントラストで目に優しいデザインです。</div>
+            </a>
+
+            <a href="09-data-viz/index.html" class="card">
+                <span class="card-number">案 09</span>
+                <div class="card-title">データ・ビジュアライザー</div>
+                <div class="card-desc">検索機能の前に主要な統計データやチャートを配置した、分析重視のダッシュボード。</div>
+            </a>
+
+            <a href="10-gradient-mesh/index.html" class="card">
+                <span class="card-number">案 10</span>
+                <div class="card-title">グラデーション・メッシュ</div>
+                <div class="card-desc">有機的なグラデーションと半透明のカードを組み合わせた、現代的で活気のあるデザイン。</div>
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

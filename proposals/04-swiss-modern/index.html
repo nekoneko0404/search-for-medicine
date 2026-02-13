@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 04: スイス・モダン - Kusuri Compass</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        :root {
+            --swiss-red: #ff3b30;
+            --swiss-black: #000000;
+            --swiss-gray: #f2f2f2;
+        }
+
+        body {
+            font-family: 'Inter', Helvetica, Arial, sans-serif;
+            background-color: #fff;
+            color: var(--swiss-black);
+            font-size: 16px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* Header */
+        header {
+            grid-column: 1 / -1;
+            margin-bottom: 60px;
+            border-top: 20px solid var(--swiss-red);
+            padding-top: 40px;
+        }
+
+        h1 {
+            font-weight: 900;
+            font-size: 4rem;
+            line-height: 0.9;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* Sidebar / Controls */
+        aside {
+            grid-column: 1 / 4;
+        }
+
+        .control-group {
+            margin-bottom: 40px;
+        }
+
+        label {
+            display: block;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            border: 4px solid var(--swiss-black);
+            padding: 15px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            border-radius: 0;
+            background: #fff;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"]::placeholder {
+            color: #ccc;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            background: var(--swiss-gray);
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .swiss-checkbox {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .swiss-checkbox input {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--swiss-black);
+            margin-right: 10px;
+            border-radius: 0;
+            display: grid;
+            place-content: center;
+        }
+
+        .swiss-checkbox input::before {
+            content: "";
+            width: 10px;
+            height: 10px;
+            background: var(--swiss-red);
+            transform: scale(0);
+            transition: 0.1s transform ease-in-out;
+        }
+
+        .swiss-checkbox input:checked::before {
+            transform: scale(1);
+        }
+
+        /* Main Content */
+        main {
+            grid-column: 4 / -1;
+            padding-left: 40px;
+            border-left: 2px solid var(--swiss-gray);
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 15px 0;
+            border-bottom: 4px solid var(--swiss-black);
+            font-weight: 900;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        td {
+            padding: 20px 0;
+            border-bottom: 1px solid #ccc;
+            vertical-align: top;
+        }
+
+        .status-dot {
+            height: 12px;
+            width: 12px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .status-normal {
+            background: #000;
+        }
+
+        .status-limited {
+            background: var(--swiss-red);
+        }
+
+        .status-stopped {
+            border: 2px solid var(--swiss-red);
+            background: transparent;
+        }
+
+        .back-btn {
+            background: var(--swiss-black);
+            color: #fff;
+            padding: 15px 30px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            background: var(--swiss-red);
+        }
+
+        /* Mobile */
+        @media (max-width: 900px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            aside {
+                grid-column: 1 / -1;
+                margin-bottom: 40px;
+                border-bottom: 2px solid var(--swiss-gray);
+                padding-bottom: 20px;
+            }
+
+            main {
+                grid-column: 1 / -1;
+                padding-left: 0;
+                border-left: none;
+            }
+
+            h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="grid-container">
+        <header>
+            <h1>供給<br>状況モニター</h1>
+        </header>
+
+        <aside>
+            <div class="control-group">
+                <label>検索</label>
+                <input type="text" id="drugName" placeholder="医薬品名">
+                <input type="text" id="ingredientName" placeholder="成分名">
+                <input type="text" id="makerName" placeholder="規格・剤形・メーカー">
+            </div>
+
+
+
+            <div class="control-group">
+                <label>投与経路</label>
+                <div class="checkbox-grid" id="routeFilterContainer">
+                    <label class="swiss-checkbox"><input type="checkbox" id="routeInternal" checked> 内服</label>
+                    <label class="swiss-checkbox"><input type="checkbox" id="routeInjectable" checked> 注射</label>
+                    <label class="swiss-checkbox"><input type="checkbox" id="routeExternal" checked> 外用</label>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>供給状態</label>
+                <div class="checkbox-grid" id="statusFilterContainer">
+                    <label class="swiss-checkbox"><input type="checkbox" id="statusNormal" checked> 通常供給</label>
+                    <label class="swiss-checkbox"><input type="checkbox" id="statusLimited" checked> 限定出荷</label>
+                    <label class="swiss-checkbox"><input type="checkbox" id="statusStopped" checked> 供給停止</label>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <div id="resultsWrapper">
+                <div id="tableContainer">
+                    <table id="summaryTable">
+                        <thead>
+                            <tr>
+                                <th id="sort-productName-button" class="cursor-pointer">品名 <span
+                                        id="sort-productName-icon">↕</span></th>
+                                <th id="sort-ingredientName-button" class="cursor-pointer">成分名 <span
+                                        id="sort-ingredientName-icon">↕</span></th>
+                                <th id="sort-status-button" class="cursor-pointer">出荷状況 <span
+                                        id="sort-status-icon">↕</span></th>
+                                <th>制限理由</th>
+                                <th>出荷量状況</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultTableBody">
+                            <!-- JS Injected Content -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cardContainer" class="md:hidden"></div>
+            </div>
+
+
+
+            <div id="loadingIndicator" class="hidden py-10" style="font-weight:700">
+                読み込み中...
+            </div>
+        </main>
+    </div>
+
+    <!-- Hidden elements required by script.ts -->
+    <!-- Necessary elements for script.ts -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+</body>
+
+</html>

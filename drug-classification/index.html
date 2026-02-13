@@ -37,11 +37,37 @@
 
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 max-w-7xl">
         <div class="text-center mb-8 flex-shrink-0">
-            <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">薬効分類検索</h2>
+            <h2 class="text-3xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">薬効分類検索</h2>
             <p class="text-gray-500 text-sm">薬効分類から医薬品情報を検索します</p>
         </div>
 
+        <!-- Dashboard Gauges -->
+        <div class="dash-header mb-8 flex-shrink-0">
+            <div class="stat-card stat-normal">
+                <div class="stat-info">
+                    <h3>通常供給</h3>
+                    <div class="value" id="stat-normal-value">--%</div>
+                </div>
+                <div class="chart-circle" id="stat-normal-chart"></div>
+            </div>
+            <div class="stat-card stat-limited">
+                <div class="stat-info">
+                    <h3>限定出荷</h3>
+                    <div class="value" id="stat-limited-value">--%</div>
+                </div>
+                <div class="chart-circle" id="stat-limited-chart"></div>
+            </div>
+            <div class="stat-card stat-stopped">
+                <div class="stat-info">
+                    <h3>供給停止</h3>
+                    <div class="value" id="stat-stopped-value">--%</div>
+                </div>
+                <div class="chart-circle" id="stat-stopped-chart"></div>
+            </div>
+        </div>
+
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 flex-shrink-0">
+
             <!-- Row 1: Search Conditions & Input -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                 <div class="flex items-center gap-2 flex-wrap">

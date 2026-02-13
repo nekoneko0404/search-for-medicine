@@ -31,10 +31,10 @@
     <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
 </head>
 
-<body class="min-h-screen flex flex-col">
+<body class="bg-[#f0f9ff] min-h-screen flex flex-col">
     <!-- Header Component -->
     <main-header base-dir="./" active-page="search">
-        <a href="#usage-guide" class="usage-link"
+        <a href="help/index.html#main-search" target="_blank" rel="noopener noreferrer" class="usage-link"
             style="margin-left: 15px; color: #4f46e5; font-weight: bold; text-decoration: none; display: flex; align-items: center; gap: 5px;">
             <i class="fas fa-book-open"></i> 使い方
         </a>
@@ -48,7 +48,34 @@
             <h2 class="text-3xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">医薬品出荷状況検索</h2>
             <p class="text-gray-500 text-lg font-medium">最新の供給状況をリアルタイムで確認できます</p>
         </div>
+
+        <!-- Dashboard Gauges -->
+        <div class="dash-header flex-shrink-0">
+            <div class="stat-card stat-normal">
+                <div class="stat-info">
+                    <h3>通常供給</h3>
+                    <div class="value" id="stat-normal-value">--%</div>
+                </div>
+                <div class="chart-circle" id="stat-normal-chart"></div>
+            </div>
+            <div class="stat-card stat-limited">
+                <div class="stat-info">
+                    <h3>限定出荷</h3>
+                    <div class="value" id="stat-limited-value">--%</div>
+                </div>
+                <div class="chart-circle" id="stat-limited-chart"></div>
+            </div>
+            <div class="stat-card stat-stopped">
+                <div class="stat-info">
+                    <h3>供給停止</h3>
+                    <div class="value" id="stat-stopped-value">--%</div>
+                </div>
+                <div class="chart-circle" id="stat-stopped-chart"></div>
+            </div>
+        </div>
+
         <!-- Search Form -->
+
         <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 flex-shrink-0">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <div class="space-y-2">
@@ -117,7 +144,7 @@
         <!-- Info Container (Usage Guide) -->
         <div id="infoContainer" class="flex flex-col gap-8 md:flex-grow md:min-h-0">
             <div id="usage-guide" class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex-shrink-0">
-                <a href="/help/index.html#main-search"
+                <a href="help/index.html#main-search"
                     class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center gap-1 transition-colors no-print">
                     使い方を表示
                     <i class="fas fa-external-link-alt text-xs"></i>

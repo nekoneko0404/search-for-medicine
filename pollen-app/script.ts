@@ -966,7 +966,7 @@ let trendChart: any = null;
     if (!modal) return;
 
     modal.classList.add('show');
-    if (cityNameEl) cityNameEl.textContent = `${cityName} の花粉飛散傾向 (4週間)`;
+    if (cityNameEl) cityNameEl.textContent = `${cityName}の28日間推移 (花粉・気温・降水量)`;
     if (loading) loading.classList.remove('hidden');
 
     // Get 4 weeks data (28 days) based on selected date
@@ -974,25 +974,78 @@ let trendChart: any = null;
     const start = new Date(state.currentDate);
     start.setDate(end.getDate() - 27);
 
-    const startStr = getJSTDateString(start).replace(/-/g, '');
-    const endStr = getJSTDateString(end).replace(/-/g, '');
+    const startStr = getJSTDateString(start);
+    const endStr = getJSTDateString(end);
+    const startStrCompact = startStr.replace(/-/g, '');
+    const endStrCompact = endStr.replace(/-/g, '');
+
+    // Resolve City Coordinates
+    const city = CITIES.find(c => c.code === cityCode);
+    const lat = city ? city.lat : null;
+    const lng = city ? city.lng : null;
 
     try {
-        const data = await fetchData(cityCode, startStr, endStr);
+        // Parallel Fetch: Pollen and Weather
+        const pollenPromise = fetchData(cityCode, startStrCompact, endStrCompact);
+        let weatherPromise: Promise<any> = Promise.resolve(null);
+
+        if (lat && lng) {
+            const url = `https://archive-api.open-meteo.com/v1/archive?latitude=${lat}&longitude=${lng}&start_date=${startStr}&end_date=${endStr}&daily=temperature_2m_max,precipitation_sum&timezone=Asia%2FTokyo`;
+            weatherPromise = fetch(url).then(res => res.json()).catch(e => {
+                console.error("Weather fetch failed", e);
+                return null;
+            });
+        }
+
+        const [pollenData, weatherDataResult] = await Promise.all([pollenPromise, weatherPromise]);
+
         if (loading) loading.classList.add('hidden');
 
         const canvas = document.getElementById('trendChart') as HTMLCanvasElement;
         if (!canvas) return;
 
-        // Group by day
-        const dailyData: { [key: string]: number } = {};
-        data.forEach(d => {
-            if (!dailyData[d.dateKey]) dailyData[d.dateKey] = 0;
-            if (d.pollen >= 0) dailyData[d.dateKey] += d.pollen;
+        // Group Pollen by day
+        const dailyPollen: { [key: string]: number } = {};
+        const allDates: string[] = [];
+        // Init all dates from start to end
+        let loopDate = new Date(start);
+        while (loopDate <= end) {
+            const dKey = getJSTDateString(loopDate);
+            allDates.push(dKey);
+            dailyPollen[dKey] = -1; // Default
+            loopDate.setDate(loopDate.getDate() + 1);
+        }
+
+        pollenData.forEach(d => {
+            if (dailyPollen[d.dateKey] !== undefined) {
+                // If multiple entries (rare), sum positive values
+                if (dailyPollen[d.dateKey] === -1 && d.pollen >= 0) dailyPollen[d.dateKey] = d.pollen;
+                else if (d.pollen >= 0) dailyPollen[d.dateKey] += d.pollen;
+            }
         });
 
-        const labels = Object.keys(dailyData).sort();
-        const values = labels.map(l => dailyData[l]);
+        const labels = allDates;
+        const pollenValues = labels.map(l => dailyPollen[l] === -1 ? 0 : dailyPollen[l]);
+
+        // Process Weather Data
+        let tempValues: number[] = new Array(labels.length).fill(null);
+        let precipValues: number[] = new Array(labels.length).fill(0);
+
+        if (weatherDataResult && weatherDataResult.daily) {
+            const wDaily = weatherDataResult.daily;
+            const wTimes = wDaily.time; // array of "YYYY-MM-DD"
+            const wTemps = wDaily.temperature_2m_max;
+            const wPrecip = wDaily.precipitation_sum;
+
+            // Map weather data to our labels
+            labels.forEach((label, index) => {
+                const wIndex = wTimes.indexOf(label);
+                if (wIndex !== -1) {
+                    tempValues[index] = wTemps[wIndex];
+                    precipValues[index] = wPrecip[wIndex];
+                }
+            });
+        }
 
         if (trendChart) trendChart.destroy();
 
@@ -1003,24 +1056,107 @@ let trendChart: any = null;
             type: 'bar',
             data: {
                 labels: labels.map(l => l.substring(5)), // MM-DD
-                datasets: [{
-                    label: '花粉飛散量 (個)',
-                    data: values,
-                    backgroundColor: values.map(v => getPollenColorDaily(v)),
-                    borderColor: '#999',
-                    borderWidth: 1
-                }]
+                datasets: [
+                    {
+                        label: '最高気温 (°C)',
+                        data: tempValues,
+                        type: 'line',
+                        borderColor: '#FF9800', // Orange
+                        backgroundColor: '#FF9800',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#FF9800',
+                        borderDash: [5, 5],
+                        tension: 0,
+                        order: 0,
+                        yAxisID: 'y1'
+                    },
+                    {
+                        label: '1日積算花粉数',
+                        data: pollenValues,
+                        type: 'line',
+                        borderColor: '#2196F3', // Blue
+                        backgroundColor: '#2196F3',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#2196F3',
+                        fill: false,
+                        order: 1,
+                        yAxisID: 'y'
+                    },
+                    {
+                        label: '降水量 (mm)',
+                        data: precipValues,
+                        type: 'bar',
+                        backgroundColor: 'rgba(135, 206, 235, 0.5)', // Light Blue transparent
+                        borderColor: 'rgba(135, 206, 235, 1)',
+                        borderWidth: 1,
+                        barPercentage: 0.5,
+                        order: 2,
+                        yAxisID: 'y2'
+                    }
+                ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
                 plugins: {
-                    legend: { display: false }
+                    legend: {
+                        display: true,
+                        position: 'top',
+                        labels: {
+                            usePointStyle: true,
+                            boxWidth: 8
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context: any) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y;
+                                }
+                                return label;
+                            }
+                        }
+                    }
                 },
                 scales: {
                     y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
                         beginAtZero: true,
-                        title: { display: true, text: '飛散量' }
+                        title: { display: true, text: '積算花粉数' },
+                        grid: {
+                            display: true
+                        }
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        title: { display: true, text: '気温 (°C)' },
+                        grid: {
+                            drawOnChartArea: false
+                        }
+                    },
+                    y2: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        title: { display: true, text: '降水量 (mm)' },
+                        grid: {
+                            drawOnChartArea: false
+                        }
                     }
                 }
             }

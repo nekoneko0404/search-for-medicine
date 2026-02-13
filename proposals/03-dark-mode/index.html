@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 03: ダークモード・プロ - Kusuri Compass</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        :root {
+            --bg-dark: #09090b;
+            --bg-card: #18181b;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --accent: #38bdf8;
+            /* Sky 400 */
+            --accent-glow: rgba(56, 189, 248, 0.3);
+            --border: #27272a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-primary);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        nav {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.2rem;
+            letter-spacing: -0.05em;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .container-dark {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            /* Sharper corners */
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: grid;
+            grid-template-columns: 2fr 3fr;
+            gap: 2rem;
+        }
+
+        .panel-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"] {
+            background: #0f172a;
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.75rem;
+            border-radius: 4px;
+            width: 100%;
+            font-family: 'Inter', sans-serif;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px var(--accent-glow);
+            outline: none;
+        }
+
+        .status-toggles {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .toggle-btn {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toggle-btn.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .toggle-btn input {
+            display: none;
+        }
+
+        /* Data Grid */
+        .data-grid-header {
+            display: grid;
+            grid-template-columns: 80px 80px 100px 1fr 1fr 100px 100px 100px;
+            padding: 0.75rem 1rem;
+            background: #1e293b;
+            border-bottom: 2px solid var(--border);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            font-weight: 700;
+        }
+
+        .data-row {
+            display: grid;
+            grid-template-columns: 80px 80px 100px 1fr 1fr 100px 100px 100px;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+            transition: background 0.1s;
+        }
+
+        .data-row:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cell-mono {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: -0.05em;
+        }
+
+        .cell-highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .stat-bar {
+            height: 4px;
+            background: #334155;
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+            width: 80%;
+        }
+
+        .stat-fill {
+            height: 100%;
+        }
+
+        .fill-normal {
+            background: #3b82f6;
+            width: 60%;
+        }
+
+        .fill-limited {
+            background: #eab308;
+            width: 30%;
+        }
+
+        .fill-stopped {
+            background: #ef4444;
+            width: 10%;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .control-panel {
+                grid-template-columns: 1fr;
+            }
+
+            .data-grid-header,
+            .data-row {
+                display: none;
+            }
+
+            /* Hide grid on small screens for this demo */
+            /* Add mobile card view styles here if needed */
+        }
+
+        /* Hide default tables to use grid layout simulation or override */
+        #summaryTable,
+        #searchResultTableBody {
+            /* We will let the script render into the table structure but style the table rows as block/grid */
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        /* Overriding table display for grid feel */
+        table {
+            width: 100%;
+        }
+
+        thead {
+            background: #1e293b;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-primary);
+        }
+
+        tr:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .status-badge-dark {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .bg-blue-100 {
+            background: rgba(59, 130, 246, 0.2) !important;
+            color: #60a5fa !important;
+        }
+
+        .bg-yellow-100 {
+            background: rgba(234, 179, 8, 0.2) !important;
+            color: #facc15 !important;
+        }
+
+        .bg-red-100 {
+            background: rgba(239, 68, 68, 0.2) !important;
+            color: #f87171 !important;
+        }
+
+        .bg-indigo-100 {
+            background: rgba(99, 102, 241, 0.2) !important;
+            color: #818cf8 !important;
+        }
+
+        .text-gray-900 {
+            color: #f8fafc !important;
+        }
+
+        .text-gray-700 {
+            color: #cbd5e1 !important;
+        }
+
+        .text-gray-500 {
+            color: #64748b !important;
+        }
+
+        .text-indigo-900 {
+            color: #a5b4fc !important;
+        }
+
+        .bg-white {
+            background: var(--bg-card) !important;
+            border-color: var(--border) !important;
+        }
+
+        .bg-gray-50 {
+            background: #0f172a !important;
+        }
+
+        /* Loading */
+        #loadingIndicator p {
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <div class="brand">KUSURI COMPASS <span class="mono" style="font-size:0.5em; color:var(--text-secondary)">v3.0
+                PRO</span></div>
+        <div style="font-size: 0.8rem; color: var(--text-secondary);">
+            <i class="fas fa-circle" style="color: #22c55e; font-size: 6px; vertical-align: middle;"></i> システム稼働中
+        </div>
+    </nav>
+
+    <div class="container-dark">
+        <div class="control-panel">
+            <div>
+                <div class="panel-label">検索パラメータ</div>
+                <input type="text" id="drugName" placeholder="医薬品名 (例: アメル)...">
+                <div style="display:flex; gap:10px; margin-top:10px;">
+                    <input type="text" id="ingredientName" placeholder="成分名" style="flex:1">
+                    <input type="text" id="makerName" placeholder="規格・剤形・メーカー" style="flex:1">
+                </div>
+            </div>
+
+            <div>
+                <div class="panel-label">投与経路</div>
+                <div class="status-toggles" id="routeFilterContainer">
+                    <label class="toggle-btn"><input type="checkbox" id="routeInternal" checked> 内服</label>
+                    <label class="toggle-btn"><input type="checkbox" id="routeInjectable" checked> 注射</label>
+                    <label class="toggle-btn"><input type="checkbox" id="routeExternal" checked> 外用</label>
+                </div>
+
+                <div class="panel-label" style="margin-top:1.5rem">供給状態</div>
+                <div class="status-toggles" id="statusFilterContainer">
+                    <label class="toggle-btn"><input type="checkbox" id="statusNormal" checked> 通常供給</label>
+                    <label class="toggle-btn"><input type="checkbox" id="statusLimited" checked> 限定出荷</label>
+                    <label class="toggle-btn"><input type="checkbox" id="statusStopped" checked> 供給停止</label>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsWrapper">
+            <!-- Results View -->
+            <div id="tableContainer">
+                <table id="summaryTable">
+                    <thead>
+                        <tr>
+                            <th id="sort-productName-button" class="cursor-pointer">品名 <span
+                                    id="sort-productName-icon">↕</span></th>
+                            <th id="sort-ingredientName-button" class="cursor-pointer">成分名 <span
+                                    id="sort-ingredientName-icon">↕</span></th>
+                            <th id="sort-status-button" class="cursor-pointer">出荷状況 <span id="sort-status-icon">↕</span>
+                            </th>
+                            <th>制限理由</th>
+                            <th>出荷量状況</th>
+                        </tr>
+                    </thead>
+                    <tbody id="searchResultTableBody">
+                        <!-- JS Injected Content -->
+                    </tbody>
+                </table>
+                <div id="cardContainer" class="md:hidden"></div>
+            </div>
+        </div>
+
+        <div id="loadingIndicator" class="hidden py-10 text-center">
+            <span class="mono">データストリームを取得中...</span>
+        </div>
+    </div>
+
+    <!-- Required elements for script.ts -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+    <script>
+        // Custom toggle active state script
+        document.querySelectorAll('.toggle-btn input').forEach(input => {
+            const btn = input.closest('.toggle-btn');
+            if (input.checked) btn.classList.add('active');
+            input.addEventListener('change', () => {
+                if (input.checked) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+
+</html>

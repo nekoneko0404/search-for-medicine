@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 01: エディトリアル - Kusuri Compass</title>
+
+    <!-- Google Fonts for Editorial Feel -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Noto+Serif+JP:wght@400;700&family=Inter:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Base Styles -->
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        /* Evangelion Theme */
+        :root {
+            --eva-purple: #7030a0;
+            --eva-green: #70ad47;
+            --eva-orange: #ed7d31;
+            --eva-yellow: #ffc000;
+            --eva-black: #1a1a1b;
+            --eva-dark-grey: #2d2d30;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Serif JP', serif;
+            background-color: var(--eva-black);
+            color: #eee;
+        }
+
+        h1,
+        h2,
+        h3,
+        .brand-font {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .editorial-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            min-height: 100vh;
+            background-color: var(--eva-black);
+        }
+
+        .editorial-header {
+            text-align: center;
+            padding: 60px 0 40px;
+            border-bottom: 8px double var(--eva-purple);
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .editorial-header::after {
+            content: "CAUTION";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--eva-orange);
+            color: #000;
+            font-weight: 900;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            letter-spacing: 0.2em;
+        }
+
+        .editorial-title {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: 10px;
+            color: var(--eva-green);
+            text-shadow: 2px 2px 0px var(--eva-purple);
+        }
+
+        .editorial-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--eva-orange);
+        }
+
+        /* Search Form Styled as "Filters" */
+        .search-section {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .search-sidebar {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding-right: 20px;
+        }
+
+        .search-main {
+            padding-top: 10px;
+        }
+
+        .filter-group {
+            margin-bottom: 30px;
+        }
+
+        .filter-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+            color: var(--eva-purple);
+            border-left: 4px solid var(--eva-green);
+            padding-left: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            border: none;
+            border-bottom: 2px solid var(--eva-dark-grey);
+            padding: 10px 0;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.2rem;
+            background: transparent;
+            color: #fff;
+            transition: all 0.3s;
+            border-radius: 0;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom-color: var(--eva-green);
+            box-shadow: 0 5px 15px rgba(112, 173, 71, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+
+        .checkbox-label input {
+            margin-right: 10px;
+            accent-color: var(--eva-green);
+        }
+
+        /* Result Table - Minimalist */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0 10px 20px;
+            border-bottom: 2px solid var(--eva-purple);
+            color: var(--eva-orange);
+        }
+
+        td {
+            padding: 20px 10px;
+            border-bottom: 1px solid var(--eva-dark-grey);
+            vertical-align: top;
+            color: #ddd;
+        }
+
+        tr:hover td {
+            background-color: rgba(112, 48, 160, 0.05);
+        }
+
+        .cell-name {
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-radius: 2px;
+        }
+
+        .status-normal {
+            background: var(--eva-dark-grey);
+            color: #aaa;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .status-limited {
+            background: var(--eva-purple);
+            color: #fff;
+            box-shadow: 0 0 10px rgba(112, 48, 160, 0.5);
+        }
+
+        .status-stopped {
+            border: 1px solid var(--eva-orange);
+            color: var(--eva-orange);
+            background-color: rgba(237, 125, 49, 0.1);
+        }
+
+        /* YJ Code links */
+        a {
+            color: var(--eva-green) !important;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .text-red-600 {
+            color: var(--eva-orange) !important;
+            text-shadow: 0 0 5px rgba(237, 125, 49, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .search-section {
+                grid-template-columns: 1fr;
+            }
+
+            .search-sidebar {
+                border-right: none;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 30px;
+            }
+
+            .editorial-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="editorial-container">
+        <header class="editorial-header">
+            <h1 class="editorial-title">供給<br>状況</h1>
+            <p class="editorial-subtitle">医薬品サプライチェーン・インテリジェンス</p>
+        </header>
+
+        <div class="search-section">
+            <aside class="search-sidebar">
+                <div class="filter-group">
+                    <label class="filter-label">検索クエリ</label>
+                    <input type="text" id="drugName" placeholder="医薬品名...">
+                    <input type="text" id="ingredientName" placeholder="成分名..." style="margin-top: 15px;">
+                    <input type="text" id="makerName" placeholder="規格・剤形・メーカー..." style="margin-top: 15px;">
+                </div>
+
+
+
+                <div class="filter-group" id="routeFilterContainer">
+                    <label class="filter-label">投与経路</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" id="routeInternal" checked>
+                            内服</label>
+                        <label class="checkbox-label"><input type="checkbox" id="routeInjectable" checked>
+                            注射</label>
+                        <label class="checkbox-label"><input type="checkbox" id="routeExternal" checked>
+                            外用</label>
+                    </div>
+                </div>
+
+                <div class="filter-group" id="statusFilterContainer">
+                    <label class="filter-label">供給状態</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-label"><input type="checkbox" id="statusNormal" checked> 通常供給</label>
+                        <label class="checkbox-label"><input type="checkbox" id="statusLimited" checked> 限定出荷</label>
+                        <label class="checkbox-label"><input type="checkbox" id="statusStopped" checked> 供給停止</label>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="search-main" id="resultsWrapper">
+                <div id="tableContainer">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th id="sort-productName-button" class="cursor-pointer">品名 <span
+                                        id="sort-productName-icon">↕</span></th>
+                                <th id="sort-ingredientName-button" class="cursor-pointer">成分名 <span
+                                        id="sort-ingredientName-icon">↕</span></th>
+                                <th id="sort-status-button" class="cursor-pointer">出荷状況 <span
+                                        id="sort-status-icon">↕</span></th>
+                                <th>制限理由</th>
+                                <th>出荷量状況</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultTableBody">
+                            <!-- JS Injected Content -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cardContainer" class="md:hidden"></div>
+                <div id="loadingIndicator" class="hidden py-10 text-center">
+                    データを読み込み中...
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Required elements for script.ts -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+
+    <!-- Script overrides to adapting the rendering to this template if necessary -->
+    <script>
+        // Optional: formatting adjustments after load
+    </script>
+</body>
+
+</html>

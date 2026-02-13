@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>案 09: データ・ビジュアライゼーション - Kusuri Compass</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+
+    <style>
+        body {
+            font-family: 'Barlow', sans-serif;
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Dashboard Top Section */
+        .dash-header {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stat-info h3 {
+            font-size: 0.875rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 5px;
+        }
+
+        .stat-info .value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .chart-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(var(--color) 70%, #e2e8f0 0);
+            position: relative;
+        }
+
+        .chart-circle::after {
+            content: "";
+            position: absolute;
+            inset: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .stat-normal {
+            border-color: #3b82f6;
+            --color: #3b82f6;
+        }
+
+        .stat-limited {
+            border-color: #eab308;
+            --color: #eab308;
+        }
+
+        .stat-stopped {
+            border-color: #ef4444;
+            --color: #ef4444;
+        }
+
+        /* Search Section */
+        .search-panel {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1rem;
+        }
+
+        input[type="text"]:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .pill-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .filter-header {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 8px;
+        }
+
+        .pill-check {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .pill-check input {
+            display: none;
+        }
+
+        .pill-check span {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            background: #f1f5f9;
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .pill-check input:checked+span {
+            background: #3b82f6;
+            color: #fff;
+        }
+
+        /* Results Table Styled as Data Grid */
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            background: #f8fafc;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #475569;
+            border-bottom: 2px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+        }
+
+        td {
+            padding: 16px;
+            background: #fff;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-bar {
+            height: 6px;
+            width: 100px;
+            background: #e2e8f0;
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .fill-normal {
+            background: #3b82f6;
+            width: 100%;
+        }
+
+        .fill-limited {
+            background: #eab308;
+            width: 50%;
+        }
+
+        .fill-stopped {
+            background: #ef4444;
+            width: 100%;
+        }
+
+        /* Override script generated badges to be bars or simpler dots if possible, 
+           Script generates simple badges. We can style them. */
+        .bg-indigo-100 {
+            background: #eff6ff !important;
+            color: #1d4ed8 !important;
+        }
+
+        @media (max-width: 768px) {
+            .dash-header {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        #backBtn {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Mock Dashboard Metrics -->
+        <div class="dash-header">
+            <div class="stat-card stat-normal">
+                <div class="stat-info">
+                    <h3>通常供給</h3>
+                    <div class="value">84%</div>
+                </div>
+                <div class="chart-circle" style="background: conic-gradient(#3b82f6 84%, #e2e8f0 0);"></div>
+            </div>
+            <div class="stat-card stat-limited">
+                <div class="stat-info">
+                    <h3>限定出荷</h3>
+                    <div class="value">12%</div>
+                </div>
+                <div class="chart-circle" style="background: conic-gradient(#eab308 12%, #e2e8f0 0);"></div>
+            </div>
+            <div class="stat-card stat-stopped">
+                <div class="stat-info">
+                    <h3>供給停止</h3>
+                    <div class="value">4%</div>
+                </div>
+                <div class="chart-circle" style="background: conic-gradient(#ef4444 4%, #e2e8f0 0);"></div>
+            </div>
+        </div>
+
+        <div class="search-panel">
+            <div class="panel-title">
+                <i class="fas fa-search text-blue-500"></i>
+                データ・エクスプローラー
+            </div>
+
+            <input type="text" id="drugName" placeholder="商品名でフィルタ...">
+            <input type="text" id="ingredientName" placeholder="成分名でフィルタ..." style="margin-top:-10px">
+            <input type="text" id="makerName" placeholder="メーカー・規格でフィルタ..." style="margin-top:-10px">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+                <div>
+                    <div class="filter-header">投与経路</div>
+                    <div class="pill-filters" id="routeFilterContainer">
+                        <label class="pill-check"><input type="checkbox" id="routeInternal"
+                                checked><span>内服</span></label>
+                        <label class="pill-check"><input type="checkbox" id="routeInjectable"
+                                checked><span>注射</span></label>
+                        <label class="pill-check"><input type="checkbox" id="routeExternal"
+                                checked><span>外用</span></label>
+                    </div>
+                </div>
+                <div>
+                    <div class="filter-header">供給状態</div>
+                    <div class="pill-filters" id="statusFilterContainer">
+                        <label class="pill-check"><input type="checkbox" id="statusNormal"
+                                checked><span>通常</span></label>
+                        <label class="pill-check"><input type="checkbox" id="statusLimited"
+                                checked><span>限定</span></label>
+                        <label class="pill-check"><input type="checkbox" id="statusStopped"
+                                checked><span>停止</span></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="resultsWrapper">
+            <div id="tableContainer">
+                <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-slate-200">
+                    <table id="summaryTable">
+                        <thead>
+                            <tr>
+                                <th id="sort-productName-button" class="cursor-pointer">品名 <span
+                                        id="sort-productName-icon">↕</span></th>
+                                <th id="sort-ingredientName-button" class="cursor-pointer">成分名 <span
+                                        id="sort-ingredientName-icon">↕</span></th>
+                                <th id="sort-status-button" class="cursor-pointer">出荷状況 <span
+                                        id="sort-status-icon">↕</span></th>
+                                <th>制限理由</th>
+                                <th>出荷量状況</th>
+                            </tr>
+                        </thead>
+                        <tbody id="searchResultTableBody">
+                            <!-- JS Injected Content -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="cardContainer" class="md:hidden mt-4"></div>
+            </div>
+        </div>
+
+
+
+        <div id="loadingIndicator" class="hidden py-10 text-center">
+            データセットを読み込み中...
+        </div>
+    </div>
+
+    <!-- Hidden elements required by script.ts -->
+    <!-- Viz components -->
+    <div id="messageBox" class="hidden"></div>
+    <div id="progressBarContainer" class="hidden">
+        <div id="progressBar"></div>
+        <div id="progressMessage"></div>
+    </div>
+    <div style="display:none;">
+        <button id="reload-data"></button>
+        <button id="share-btn"></button>
+        <div id="backButtonContainer"></div>
+        <div id="infoContainer"></div>
+    </div>
+
+    <script type="module" src="../../script.ts"></script>
+    <script>
+        // Dynamic Chart Update Logic
+        const observer = new MutationObserver(() => {
+            updateDashboard();
+        });
+
+        const target = document.getElementById('searchResultTableBody');
+        if (target) {
+            observer.observe(target, { childList: true });
+        }
+
+        function updateDashboard() {
+            const rows = document.querySelectorAll('#searchResultTableBody tr');
+            if (rows.length === 0) return;
+
+            let normal = 0, limited = 0, stopped = 0;
+            rows.forEach(row => {
+                const statusText = row.innerText || "";
+                if (statusText.includes('通常')) normal++;
+                else if (statusText.includes('限定') || statusText.includes('出荷制限')) limited++;
+                else if (statusText.includes('停止')) stopped++;
+            });
+
+            const total = normal + limited + stopped;
+            if (total === 0) return;
+
+            const pNormal = Math.round((normal / total) * 100);
+            const pLimited = Math.round((limited / total) * 100);
+            const pStopped = 100 - pNormal - pLimited; // Ensure it sums to 100
+
+            updateMetric('stat-normal', pNormal, '#3b82f6');
+            updateMetric('stat-limited', pLimited, '#eab308');
+            updateMetric('stat-stopped', pStopped, '#ef4444');
+        }
+
+        function updateMetric(className, percent, color) {
+            const card = document.querySelector(`.${className}`);
+            if (!card) return;
+            const valueEl = card.querySelector('.value');
+            const chartEl = card.querySelector('.chart-circle');
+
+            if (valueEl) valueEl.textContent = `${percent}%`;
+            if (chartEl) {
+                chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
+            }
+        }
+    </script>
+</body>
+
+</html>
