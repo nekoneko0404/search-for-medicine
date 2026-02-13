@@ -37,6 +37,7 @@ export interface GlobalState {
     };
     currentDate: string;
     currentMode: 'hourly' | 'daily';
+    currentPopup: { city: City, marker: any } | null;
 }
 
 interface Window {

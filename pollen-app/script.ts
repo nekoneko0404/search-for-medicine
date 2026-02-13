@@ -22,7 +22,8 @@ const WORKER_URL = 'https://pollen-worker.neko-neko-0404.workers.dev';
 const state: GlobalState = {
     cache: {},
     currentDate: '',
-    currentMode: 'hourly'
+    currentMode: 'hourly',
+    currentPopup: null
 };
 
 let currentOpenCity: City | null = null;
@@ -1273,6 +1274,11 @@ function setupUIListeners() {
         updateVisibleMarkers();
         NotificationManager.updateRegisteredLocationUI();
         if (typeof updateWeatherMarkers === 'function') updateWeatherMarkers(map, state, state.currentDate);
+
+        // Auto-refresh open popup
+        if (state.currentPopup) {
+            handlePopupOpen(state.currentPopup.city, state.currentPopup.marker);
+        }
     }
 
     // Trend Modal Close
