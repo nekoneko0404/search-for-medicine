@@ -73,6 +73,7 @@ function searchData() {
 
     if (allSearchFieldsEmpty && allStatusChecked && allRoutesChecked) {
         renderTable([]);
+        updateDashboardMetrics([]); // Reset gauges to global stats
         if (resultsWrapper) resultsWrapper.classList.add('hidden');
         document.body.classList.remove('search-mode');
         if (infoContainer) infoContainer.classList.remove('hidden');
@@ -149,6 +150,7 @@ function searchData() {
     });
 
     renderTable(filteredResults);
+    updateDashboardMetrics(filteredResults);
 
     // Control header/footer visibility based on results
     document.body.classList.toggle('search-mode', filteredResults.length > 0);
@@ -177,6 +179,42 @@ function searchData() {
     const ingredientNameIcon = getEl('sort-ingredientName-icon');
     if (ingredientNameIcon) ingredientNameIcon.textContent = '↕';
 }
+
+function updateDashboardMetrics(data: MedicineData[]) {
+    // If search is empty (initial state), show all data ratios
+    const targetData = (data.length === 0 && excelData.length > 0) ? excelData : data;
+
+    if (targetData.length === 0) return;
+
+    let normal = 0, limited = 0, stopped = 0;
+    targetData.forEach(item => {
+        const s = (item.shipmentStatus || '').trim();
+        if (s.includes('通常')) normal++;
+        else if (s.includes('限定') || s.includes('出荷制限') || s.includes('限') || s.includes('制')) limited++;
+        else if (s.includes('停止') || s.includes('停')) stopped++;
+    });
+
+    const total = normal + limited + stopped;
+    if (total === 0) return;
+
+    const pNormal = Math.round((normal / total) * 100);
+    const pLimited = Math.round((limited / total) * 100);
+    const pStopped = 100 - pNormal - pLimited;
+
+    updateGauge('stat-normal', pNormal, '#3b82f6');
+    updateGauge('stat-limited', pLimited, '#eab308');
+    updateGauge('stat-stopped', pStopped, '#ef4444');
+}
+
+function updateGauge(idPrefix: string, percent: number, color: string) {
+    const valueEl = getEl(`${idPrefix}-value`);
+    const chartEl = getEl(`${idPrefix}-chart`);
+    if (valueEl) valueEl.textContent = `${percent}%`;
+    if (chartEl) {
+        chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
+    }
+}
+
 
 
 function renderTable(data: MedicineData[]) {
@@ -656,6 +694,7 @@ const initApp = async function () {
         if (restoreFromUrlParams()) {
             searchData();
         } else {
+            updateDashboardMetrics([]);
             showMessage(`データ(${result.date}) ${excelData.length} 件を読み込みました。検索を開始できます。`, "success");
         }
     } else {

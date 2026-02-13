@@ -105,6 +105,7 @@ async function initApp() {
         if (dataResult && dataResult.data) {
             excelData = dataResult.data;
             console.log(`Loaded ${excelData.length} items for YJ search.`);
+            updateDashboardMetrics([]);
             showMessage(`データ(${dataResult.date}) ${excelData.length} 件を読み込みました。`, "success");
         } else {
             console.error('No data received from loadAndCacheData');
@@ -151,8 +152,8 @@ async function initApp() {
                 if (elements.checkboxes.brand) elements.checkboxes.brand.checked = false;
 
                 if (elements.statusCheckboxes.normal) elements.statusCheckboxes.normal.checked = true;
-                if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = isAlternativeSearch;
-                if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = isAlternativeSearch;
+                if (elements.statusCheckboxes.limited) elements.statusCheckboxes.limited.checked = true;
+                if (elements.statusCheckboxes.stopped) elements.statusCheckboxes.stopped.checked = true;
             }
 
             searchYjCode();
@@ -378,6 +379,7 @@ function searchYjCode() {
     if (!isAnyFilterChecked && !isAnyStatusChecked) {
         showMessage('検索条件と出荷状況のチェックを全て外したため、検索結果は表示されません。', 'info');
         renderResults([]);
+        updateDashboardMetrics([]); // Reset gauges to global stats
         return;
     }
 
@@ -447,6 +449,7 @@ function searchYjCode() {
     if (elements.sortIcons.yjCode) elements.sortIcons.yjCode.textContent = '↕';
 
     renderResults(filteredResults);
+    updateDashboardMetrics(filteredResults);
     scrollTo(0, 0); // Scroll to top after search
 
     if (filteredResults.length === 0) {
@@ -455,6 +458,47 @@ function searchYjCode() {
         showMessage(`${filteredResults.length} 件見つかりました。`, 'success');
     }
 }
+
+/**
+ * Update dashboard gauges based on data
+ * @param {Array} data 
+ */
+function updateDashboardMetrics(data) {
+    const targetData = (data.length === 0 && excelData.length > 0) ? excelData : data;
+    if (targetData.length === 0) return;
+
+    let normal = 0, limited = 0, stopped = 0;
+    targetData.forEach(item => {
+        const s = normalizeString(item.shipmentStatus || '');
+        if (s.includes('通常')) normal++;
+        else if (s.includes('限定') || s.includes('出荷制限') || s.includes('限') || s.includes('制')) limited++;
+        else if (s.includes('停止') || s.includes('停')) stopped++;
+    });
+
+    const total = normal + limited + stopped;
+    if (total === 0) return;
+
+    const pNormal = Math.round((normal / total) * 100);
+    const pLimited = Math.round((limited / total) * 100);
+    const pStopped = 100 - pNormal - pLimited;
+
+    updateGauge('stat-normal', pNormal, '#3b82f6');
+    updateGauge('stat-limited', pLimited, '#eab308');
+    updateGauge('stat-stopped', pStopped, '#ef4444');
+}
+
+/**
+ * Helper to update a single gauge
+ */
+function updateGauge(idPrefix, percent, color) {
+    const valueEl = document.getElementById(`${idPrefix}-value`);
+    const chartEl = document.getElementById(`${idPrefix}-chart`);
+    if (valueEl) valueEl.textContent = `${percent}%`;
+    if (chartEl) {
+        chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
+    }
+}
+
 
 function renderResults(data) {
     const isMobile = window.innerWidth <= 640;
