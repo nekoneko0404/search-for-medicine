@@ -565,6 +565,12 @@ function renderResults(data) {
 
             const makerName = item.manufacturer || '';
             const normalizedMaker = item.normalizedManufacturer || normalizeString(makerName);
+            // Debug Log for Tanabe
+            if (makerName.includes('田辺') || makerName.toLowerCase().includes('tanabe')) {
+                console.log(`[DEBUG] Maker: "${makerName}", Normalized: "${normalizedMaker}", Link Found: ${!!manufacturerLinks[normalizedMaker]}`);
+                if (manufacturerLinks[normalizedMaker]) console.log(`[DEBUG] Link URL: ${manufacturerLinks[normalizedMaker]}`);
+            }
+
             if (manufacturerLinks[normalizedMaker]) {
                 const link = document.createElement('a');
                 link.href = manufacturerLinks[normalizedMaker];
