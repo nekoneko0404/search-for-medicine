@@ -836,7 +836,7 @@ async function handlePopupOpen(city: City, marker: any) {
     const data = await fetchData(city.code, start, end);
     const dayData = data;
 
-    // Chart.js implementation inside popup
+    state.currentPopup = { city, marker };
     const chartId = `chart-${city.code}`;
     container.innerHTML = `
         <div class="popup-header">
@@ -1231,6 +1231,10 @@ function setupUIListeners() {
             else if (years !== undefined) d.setFullYear(d.getFullYear() - parseInt(years));
             updateDate(getJSTDateString(d));
         });
+    });
+
+    map.on('popupclose', () => {
+        state.currentPopup = null;
     });
 
     function updateDate(newDateStr: string) {
