@@ -122,8 +122,8 @@ function render() {
         elements.dosesInput.value = 3;
         elements.durationInput.value = 7;
         elements.testModeInput.checked = false;
-        elements.medicineInputs.forEach(input => input.value = '');
-        elements.medicineInfoPreview.classList.add('hidden');
+        // elements.medicineInputs.forEach(input => input.value = ''); // Removed: undefined
+        // elements.medicineInfoPreview.classList.add('hidden'); // Removed: undefined
         selectedMedicinesBuffer = [null, null, null, null, null, null];
     } else {
         showView('main');
@@ -905,15 +905,8 @@ function triggerCompletion() {
     const overlay = document.getElementById('surprise-overlay');
     const content = document.getElementById('surprise-element');
 
-    // Expose reset function for the modal
-    window.resetCurrentTabApp = () => {
-        const currentTabState = getCurrentTabState();
-        currentTabState.config = null;
-        currentTabState.progress = { stamps: 0, timestamps: [], lastStampTime: null };
-        currentWeekIndex = 0;
-        saveState();
-        location.reload();
-    };
+    // Expose reset function for the modal -> REMOVED global exposure for CSP/Module safety
+    // Logic moved to event listener
 
     // Get today's date for the certificate
     const today = new Date();
@@ -965,8 +958,8 @@ function triggerCompletion() {
                 </div>
 
                 <div class="no-print">
-                    <button onclick="window.print()" class="btn-secondary" style="margin-right: 10px;">🖨️ 賞状を印刷する</button>
-                    <button onclick="resetCurrentTabApp()" class="btn-primary">もういっかい！</button>
+                    <button id="print-cert-btn" class="btn-secondary" style="margin-right: 10px;">🖨️ 賞状を印刷する</button>
+                    <button id="reset-cert-btn" class="btn-primary">もういっかい！</button>
                 </div>
             </div>
         </div>
@@ -989,6 +982,25 @@ function triggerCompletion() {
         overlay.classList.remove('hidden');
         overlay.classList.add('active');
         overlay.classList.add('show');
+
+        // Add event listeners to dynamically created buttons
+        const printBtn = document.getElementById('print-cert-btn');
+        const resetBtn = document.getElementById('reset-cert-btn');
+
+        if (printBtn) {
+            printBtn.addEventListener('click', () => window.print());
+        }
+
+        if (resetBtn) {
+            resetBtn.addEventListener('click', () => {
+                const currentTabState = getCurrentTabState();
+                currentTabState.config = null;
+                currentTabState.progress = { stamps: 0, timestamps: [], lastStampTime: null };
+                currentWeekIndex = 0;
+                saveState();
+                location.reload();
+            });
+        }
     }, 9500); // 9.5 seconds delay (further delayed by 3s as requested)
 }
 
