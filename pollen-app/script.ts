@@ -966,7 +966,7 @@ let trendChart: any = null;
     if (!modal) return;
 
     modal.classList.add('show');
-    if (cityNameEl) cityNameEl.textContent = `${cityName} の花粉飛散傾向 (4週間)`;
+    if (cityNameEl) cityNameEl.textContent = `${cityName}の28日間推移 (花粉・気温・降水量)`;
     if (loading) loading.classList.remove('hidden');
 
     // Get 4 weeks data (28 days) based on selected date
@@ -1058,35 +1058,42 @@ let trendChart: any = null;
                 labels: labels.map(l => l.substring(5)), // MM-DD
                 datasets: [
                     {
-                        label: '花粉飛散量 (個)',
-                        data: pollenValues,
-                        backgroundColor: pollenValues.map(v => getPollenColorDaily(v)),
-                        borderColor: '#999',
-                        borderWidth: 1,
-                        order: 2,
-                        yAxisID: 'y'
-                    },
-                    {
                         label: '最高気温 (°C)',
                         data: tempValues,
                         type: 'line',
-                        borderColor: '#ff7043',
-                        backgroundColor: '#ff7043',
+                        borderColor: '#FF9800', // Orange
+                        backgroundColor: '#FF9800',
                         borderWidth: 2,
-                        pointRadius: 2,
-                        tension: 0.1,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#FF9800',
+                        borderDash: [5, 5],
+                        tension: 0,
                         order: 0,
                         yAxisID: 'y1'
+                    },
+                    {
+                        label: '1日積算花粉数',
+                        data: pollenValues,
+                        type: 'line',
+                        borderColor: '#2196F3', // Blue
+                        backgroundColor: '#2196F3',
+                        borderWidth: 2,
+                        pointRadius: 3,
+                        pointBackgroundColor: '#2196F3',
+                        fill: false,
+                        order: 1,
+                        yAxisID: 'y'
                     },
                     {
                         label: '降水量 (mm)',
                         data: precipValues,
                         type: 'bar',
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        backgroundColor: 'rgba(135, 206, 235, 0.5)', // Light Blue transparent
+                        borderColor: 'rgba(135, 206, 235, 1)',
                         borderWidth: 1,
-                        order: 1,
-                        yAxisID: 'y1'
+                        barPercentage: 0.5,
+                        order: 2,
+                        yAxisID: 'y2'
                     }
                 ]
             },
@@ -1100,7 +1107,7 @@ let trendChart: any = null;
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'bottom',
+                        position: 'top',
                         labels: {
                             usePointStyle: true,
                             boxWidth: 8
@@ -1127,7 +1134,7 @@ let trendChart: any = null;
                         display: true,
                         position: 'left',
                         beginAtZero: true,
-                        title: { display: true, text: '飛散量 (個)' },
+                        title: { display: true, text: '積算花粉数' },
                         grid: {
                             display: true
                         }
@@ -1136,10 +1143,19 @@ let trendChart: any = null;
                         type: 'linear',
                         display: true,
                         position: 'right',
-                        beginAtZero: true,
-                        title: { display: true, text: '気温(°C) / 降水量(mm)' },
+                        title: { display: true, text: '気温 (°C)' },
                         grid: {
-                            drawOnChartArea: false // only want the grid lines for one axis to show up
+                            drawOnChartArea: false
+                        }
+                    },
+                    y2: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        beginAtZero: true,
+                        title: { display: true, text: '降水量 (mm)' },
+                        grid: {
+                            drawOnChartArea: false
                         }
                     }
                 }
