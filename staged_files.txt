@@ -1,0 +1,14 @@
+A  proposals/01-editorial/index.html
+A  proposals/02-glassmorphism/index.html
+A  proposals/03-dark-mode/index.html
+A  proposals/04-swiss-modern/index.html
+A  proposals/05-floating-cockpit/index.html
+A  proposals/06-split-screen/index.html
+A  proposals/07-interactive-cards/index.html
+A  proposals/08-neumorphism/index.html
+A  proposals/09-data-viz/index.html
+A  proposals/10-gradient-mesh/index.html
+A  proposals/index.html
+M  script.ts
+M  supply-status/script.ts
+?? staged_files.txt
