@@ -102,7 +102,10 @@ export default function MedicationsPage() {
             -webkit-print-color-adjust: exact !important;
             print-color-adjust: exact !important;
           }
-          .no-print {
+          /* Hide Web Header/Footer on print */
+          main-header,
+          main-footer,
+          header.no-print {
             display: none !important;
           }
           
