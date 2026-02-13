@@ -839,10 +839,13 @@ async function handlePopupOpen(city: City, marker: any) {
     // Chart.js implementation inside popup
     const chartId = `chart-${city.code}`;
     container.innerHTML = `
-        <div class="popup-header"><span>${city.name}</span><div>
-        <button class="btn-trend">週間推移</button>
-        <button class="btn-notification"><i class="fas fa-bell"></i></button>
-        </div></div>
+        <div class="popup-header">
+            <span>${city.name}</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <button class="btn-trend"><i class="fas fa-chart-line"></i> 4週間トレンド</button>
+                <button class="btn-notification"><i class="fas fa-bell"></i></button>
+            </div>
+        </div>
         <div class="popup-chart-container"><canvas id="${chartId}"></canvas></div>
     `;
 
@@ -953,12 +956,110 @@ async function updateVisibleMarkers() {
     }
 }
 
-// Global Export for Weekly Trend (simplified)
-(window as any).showWeeklyTrend = function (cityCode: string, cityName: string) {
-    console.log('Open trend for', cityName);
+// Global Export for 4-Week Trend
+let trendChart: any = null;
+(window as any).showWeeklyTrend = async function (cityCode: string, cityName: string) {
     const modal = document.getElementById('trend-modal');
-    if (modal) modal.classList.add('show');
+    const loading = document.getElementById('trend-loading');
+    const cityNameEl = document.getElementById('modal-city-name');
+    if (!modal) return;
+
+    modal.classList.add('show');
+    if (cityNameEl) cityNameEl.textContent = `${cityName} の花粉飛散傾向 (4週間)`;
+    if (loading) loading.classList.remove('hidden');
+
+    // Get 4 weeks data (28 days)
+    const end = new Date();
+    const start = new Date();
+    start.setDate(end.getDate() - 27);
+
+    const startStr = getJSTDateString(start).replace(/-/g, '');
+    const endStr = getJSTDateString(end).replace(/-/g, '');
+
+    try {
+        const data = await fetchData(cityCode, startStr, endStr);
+        if (loading) loading.classList.add('hidden');
+
+        const canvas = document.getElementById('trendChart') as HTMLCanvasElement;
+        if (!canvas) return;
+
+        // Group by day
+        const dailyData: { [key: string]: number } = {};
+        data.forEach(d => {
+            if (!dailyData[d.dateKey]) dailyData[d.dateKey] = 0;
+            if (d.pollen >= 0) dailyData[d.dateKey] += d.pollen;
+        });
+
+        const labels = Object.keys(dailyData).sort();
+        const values = labels.map(l => dailyData[l]);
+
+        if (trendChart) trendChart.destroy();
+
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        trendChart = new (window as any).Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels.map(l => l.substring(5)), // MM-DD
+                datasets: [{
+                    label: '花粉飛散量 (個)',
+                    data: values,
+                    backgroundColor: values.map(v => getPollenColorDaily(v)),
+                    borderColor: '#666',
+                    borderWidth: values.map(v => v === 0 ? 1 : 0)
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: '飛散量' }
+                    }
+                }
+            }
+        });
+    } catch (e) {
+        console.error('Failed to load trend data:', e);
+        if (loading) loading.classList.add('hidden');
+    }
 };
+
+function getPollenColorDaily(pollen: number) {
+    if (pollen >= 300) return '#9C27B0';
+    if (pollen >= 150) return '#f44336';
+    if (pollen >= 90) return '#FFEB3B';
+    if (pollen >= 30) return '#2196F3';
+    return '#FFFFFF';
+}
+
+function initUpdateNotice() {
+    const banner = document.getElementById('update-notice');
+    const closeBtn = document.getElementById('notice-close-btn');
+    const checkbox = document.getElementById('notice-hide-checkbox') as HTMLInputElement;
+
+    if (!banner || !closeBtn || !checkbox) return;
+
+    const noticeId = banner.dataset.noticeId;
+    const hideKey = `hide_notice_${noticeId}`;
+
+    if (localStorage.getItem(hideKey) === 'true') {
+        banner.style.display = 'none';
+        return;
+    }
+
+    closeBtn.addEventListener('click', () => {
+        banner.style.display = 'none';
+        if (checkbox.checked) {
+            localStorage.setItem(hideKey, 'true');
+        }
+    });
+}
 
 // Initialize App
 document.addEventListener('DOMContentLoaded', async () => {
@@ -1003,6 +1104,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Init Logic
     updateVisibleMarkers();
+    initUpdateNotice();
     NotificationManager.init();
     AutoUpdateManager.init();
 
@@ -1152,6 +1254,18 @@ function setupUIListeners() {
         NotificationManager.updateRegisteredLocationUI();
         if (typeof updateWeatherMarkers === 'function') updateWeatherMarkers(map, state, state.currentDate);
     }
+
+    // Trend Modal Close
+    document.getElementById('trend-modal-close')?.addEventListener('click', () => {
+        document.getElementById('trend-modal')?.classList.remove('show');
+    });
+
+    window.addEventListener('click', (e) => {
+        const trendModal = document.getElementById('trend-modal');
+        if (e.target === trendModal) {
+            trendModal?.classList.remove('show');
+        }
+    });
 
     // Display Mode Toggle Logic
     document.querySelectorAll('input[name="display-mode"]').forEach(radio => {
