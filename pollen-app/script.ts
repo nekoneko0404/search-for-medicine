@@ -100,8 +100,10 @@ async function fetchData(cityCode: string, start: string, end: string): Promise<
             const date = new Date(dateStr);
             const dateKey = dateStr.split('T')[0];
 
-            return { date, dateKey, pollen };
-        });
+            return { code, date, dateKey, pollen };
+        })
+            .filter(item => item.code === cityCode)
+            .map(item => ({ date: item.date, dateKey: item.dateKey, pollen: item.pollen }));
 
         state.cache[cacheKey] = { data, timestamp: now };
         return data;
@@ -630,9 +632,10 @@ const NotificationManager = {
                     const data = await fetchData(settings.cityCode, start, endStr);
 
                     if (data && data.length > 0 && dot && countSpan) {
-                        // Simplified display logic
                         let displayValue = 0;
-                        if (isToday) {
+
+                        // Fix: Check state.currentMode to switch between hourly and daily logic
+                        if (isToday && state.currentMode === 'hourly') {
                             const now = new Date();
                             const validData = data.filter(v => v.date <= now && v.pollen >= 0);
                             const latest = validData.length > 0 ? validData[validData.length - 1] : null;
@@ -641,7 +644,7 @@ const NotificationManager = {
                             displayValue = data.reduce((sum, item) => sum + (item.pollen > 0 ? item.pollen : 0), 0);
                         }
 
-                        dot.style.backgroundColor = getPollenColor(displayValue, !isToday);
+                        dot.style.backgroundColor = getPollenColor(displayValue, !isToday || state.currentMode !== 'hourly');
                         dot.classList.remove('hidden');
                         countSpan.textContent = displayValue.toString();
                         countSpan.classList.remove('hidden');
@@ -810,6 +813,13 @@ async function handlePopupOpen(city: City, marker: any) {
 
     const start = state.currentDate.replace(/-/g, '');
     const end = start;
+
+    // Force refresh cache if viewing today's data to ensure graph matches latest values
+    if (state.currentDate === getJSTDateString()) {
+        const cacheKey = `${city.code}-${start}-${end}`;
+        delete state.cache[cacheKey];
+    }
+
     const data = await fetchData(city.code, start, end);
     const dayData = data;
 
