@@ -1219,7 +1219,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Init Map
-    map = L.map('map', { zoomControl: false }).setView(initialCenter, initialZoom);
+    map = L.map('map', { 
+        zoomControl: false,
+        minZoom: 2,
+        maxZoom: 12
+    }).setView(initialCenter, initialZoom);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     // Map Layers Definition (Global Access)
