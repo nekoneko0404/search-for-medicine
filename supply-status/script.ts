@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredData: any[] = [];
     let currentView: 'summary' | 'detail' = 'summary';
     let currentIngredient: string | null = null;
-    let currentRoute: string | null = null;
     let currentSort = { key: 'category', direction: 'asc' };
 
     function getRouteFromYJCode(yjCode: string | number | null) {
@@ -357,7 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
         backBtn.addEventListener('click', () => {
             currentView = 'summary';
             currentIngredient = null;
-            currentRoute = null;
             showSummaryView();
             renderResults();
         });
@@ -427,55 +425,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentView === 'summary') {
             renderSummaryTable(filteredData);
-            // サマリー時は現在のフィルター条件に合致する全データを反映
-            updateDashboardMetrics(filteredData);
         } else {
-            const normalizedIng = normalizeString(currentIngredient!);
-            const detailData = filteredData.filter(item =>
-                item.normalizedIngredientName === normalizedIng &&
-                (currentRoute === null || item.route === currentRoute)
-            );
-            renderDetailView(detailData);
-            // 詳細時はその成分のデータのみを反映
-            updateDashboardMetrics(detailData);
+            renderDetailView(filteredData.filter(item => item.normalizedIngredientName === normalizeString(currentIngredient!)));
         }
 
         const hasResults = filteredData.length > 0;
         const isDetailView = currentView === 'detail';
         document.body.classList.toggle('search-mode', hasResults || isDetailView);
-    }
-
-    function updateDashboardMetrics(data: any[]) {
-        if (!data || data.length === 0) return;
-
-        let normal = 0, limited = 0, stopped = 0;
-        data.forEach(item => {
-            const s = (item.shipmentStatus || '').trim();
-            if (s.includes('通常') || s.includes('通')) normal++;
-            else if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) limited++;
-            else if (s.includes('停止') || s.includes('停')) stopped++;
-        });
-
-        const total = normal + limited + stopped;
-        if (total === 0) return;
-
-        const pNormal = Math.round((normal / total) * 100);
-        const pLimited = Math.round((limited / total) * 100);
-        const pStopped = 100 - pNormal - pLimited;
-
-        updateGauge('normal', pNormal, '#4f46e5'); // Indigo 600
-        updateGauge('limited', pLimited, '#ca8a04'); // Yellow 600
-        updateGauge('stopped', pStopped, '#4b5563'); // Gray 600
-    }
-
-    function updateGauge(type: 'normal' | 'limited' | 'stopped', percent: number, color: string) {
-        const valueEl = document.getElementById(`stat-${type}-value`);
-        const chartEl = document.getElementById(`stat-${type}-chart`);
-
-        if (valueEl) valueEl.textContent = `${percent}%`;
-        if (chartEl) {
-            chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
-        }
     }
 
     function renderSummaryTable(data: any[]) {
@@ -651,7 +607,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showDetailView(ingredient: string, route: string) {
         currentView = 'detail';
         currentIngredient = ingredient;
-        currentRoute = route;
+        const normalizedIng = normalizeString(ingredient);
 
         summaryContainer?.classList.add('hidden');
         detailContainer?.classList.remove('hidden');
@@ -666,7 +622,11 @@ document.addEventListener('DOMContentLoaded', () => {
             filterGrid.classList.remove('md:grid-cols-3');
         }
 
-        renderResults();
+        const details = allData.filter(item => {
+            return item.normalizedIngredientName === normalizedIng && item.route === route;
+        });
+
+        renderDetailView(details);
         window.scrollTo(0, 0);
     }
 
