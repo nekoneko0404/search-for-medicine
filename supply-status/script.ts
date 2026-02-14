@@ -425,16 +425,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentView === 'summary') {
             renderSummaryTable(filteredData);
+            // サマリー時は現在のフィルター条件に合致する全データを反映
+            updateDashboardMetrics(filteredData);
         } else {
-            renderDetailView(filteredData.filter(item => item.normalizedIngredientName === normalizeString(currentIngredient!)));
+            const detailData = filteredData.filter(item => item.normalizedIngredientName === normalizeString(currentIngredient!));
+            renderDetailView(detailData);
+            // 詳細時はその成分のデータのみを反映
+            updateDashboardMetrics(detailData);
         }
 
         const hasResults = filteredData.length > 0;
         const isDetailView = currentView === 'detail';
         document.body.classList.toggle('search-mode', hasResults || isDetailView);
-
-        // メーターの更新
-        updateDashboardMetrics(filteredData);
     }
 
     function updateDashboardMetrics(data: any[]) {
