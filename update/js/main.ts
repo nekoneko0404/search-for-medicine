@@ -50,6 +50,14 @@ interface Elements {
         productName: HTMLElement | null;
         ingredientName: HTMLElement | null;
     };
+    gaugeElements: {
+        normalValue: HTMLElement | null;
+        normalChart: HTMLElement | null;
+        limitedValue: HTMLElement | null;
+        limitedChart: HTMLElement | null;
+        stoppedValue: HTMLElement | null;
+        stoppedChart: HTMLElement | null;
+    };
 }
 
 const elements: Elements = {
@@ -82,6 +90,14 @@ const elements: Elements = {
         status: null,
         productName: null,
         ingredientName: null
+    },
+    gaugeElements: {
+        normalValue: null,
+        normalChart: null,
+        limitedValue: null,
+        limitedChart: null,
+        stoppedValue: null,
+        stoppedChart: null
     }
 };
 
@@ -112,6 +128,13 @@ function initElements() {
     elements.sortIcons.status = document.getElementById('sort-status-icon');
     elements.sortIcons.productName = document.getElementById('sort-productName-icon');
     elements.sortIcons.ingredientName = document.getElementById('sort-ingredientName-icon');
+
+    elements.gaugeElements.normalValue = document.getElementById('stat-normal-value');
+    elements.gaugeElements.normalChart = document.getElementById('stat-normal-chart');
+    elements.gaugeElements.limitedValue = document.getElementById('stat-limited-value');
+    elements.gaugeElements.limitedChart = document.getElementById('stat-limited-chart');
+    elements.gaugeElements.stoppedValue = document.getElementById('stat-stopped-value');
+    elements.gaugeElements.stoppedChart = document.getElementById('stat-stopped-chart');
 }
 
 async function initApp() {
@@ -153,6 +176,7 @@ async function initApp() {
                 searchData();
             } else {
                 clearAndResetSearch();
+                updateDashboardMetrics(excelData); // Initial default metrics
             }
         }
     } catch (e) {
@@ -245,13 +269,13 @@ async function initApp() {
             searchData();
         }
     });
-    elements.updatePeriod?.addEventListener('change', searchData);
+    elements.updatePeriod?.addEventListener('change', () => searchData());
 
     Object.values(elements.statusCheckboxes).forEach(cb => {
-        if (cb) cb.addEventListener('change', searchData);
+        if (cb) cb.addEventListener('change', () => searchData());
     });
     Object.values(elements.trendCheckboxes).forEach(cb => {
-        if (cb) cb.addEventListener('change', searchData);
+        if (cb) cb.addEventListener('change', () => searchData());
     });
 
     // Sort Event Listeners
@@ -384,6 +408,44 @@ function sortResults(key: 'status' | 'productName' | 'ingredientName') {
     showMessage(`「${sortKeyName}」を${newDirection === 'asc' ? '昇順' : '降順'}でソートしました。`, "success");
 }
 
+/**
+ * ダッシュボードのメトリクスを更新
+ */
+function updateDashboardMetrics(data: any[]) {
+    // データが空の場合はexcelDataを使用するようにしたいが、
+    // 要件に基づいたsearchData内での呼び出しで制御するため、ここでは渡されたデータをそのまま集計する
+    if (!data || data.length === 0) return;
+
+    let normal = 0, limited = 0, stopped = 0;
+    data.forEach(item => {
+        const s = (item.shipmentStatus || '').trim();
+        if (s.includes('通常')) normal++;
+        else if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) limited++;
+        else if (s.includes('停止') || s.includes('停')) stopped++;
+    });
+
+    const total = normal + limited + stopped;
+    if (total === 0) return;
+
+    const pNormal = Math.round((normal / total) * 100);
+    const pLimited = Math.round((limited / total) * 100);
+    const pStopped = 100 - pNormal - pLimited;
+
+    updateGauge('normal', pNormal, '#4f46e5'); // Indigo 600
+    updateGauge('limited', pLimited, '#ca8a04'); // Yellow 600
+    updateGauge('stopped', pStopped, '#4b5563'); // Gray 600
+}
+
+function updateGauge(type: 'normal' | 'limited' | 'stopped', percent: number, color: string) {
+    const valueEl = elements.gaugeElements[`${type}Value` as keyof Elements['gaugeElements']];
+    const chartEl = elements.gaugeElements[`${type}Chart` as keyof Elements['gaugeElements']];
+
+    if (valueEl) valueEl.textContent = `${percent}%`;
+    if (chartEl) {
+        chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
+    }
+}
+
 function searchData(reset = false) {
     if (reset) {
         document.body.classList.remove('search-mode');
@@ -479,6 +541,15 @@ function searchData(reset = false) {
 
         return true;
     });
+
+    // メーターの更新
+    // デフォルトは全医薬品の状況をメーターに反映。
+    // 医薬品名や成分名で検索されたとき（searchInputに値があるとき）だけ表示を反映。
+    if (elements.searchInput && elements.searchInput.value.trim() !== '') {
+        updateDashboardMetrics(filteredResults);
+    } else {
+        updateDashboardMetrics(excelData);
+    }
 
     // Sort by update date desc initially
     filteredResults.sort((a, b) => {
