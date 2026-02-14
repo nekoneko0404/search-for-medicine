@@ -755,8 +755,11 @@ function updateVis() {
 
     Object.values(markers).forEach(marker => {
         if (showGraph) {
-            updateMarkerTooltip(marker);
-            marker.openTooltip();
+            // データ取得済み（maxPollenが定義されている）のマーカーのみツールチップを作成
+            if (marker.maxPollen !== undefined) {
+                updateMarkerTooltip(marker);
+                marker.openTooltip();
+            }
         } else {
             marker.closeTooltip();
             marker.unbindTooltip();
