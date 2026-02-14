@@ -1269,6 +1269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     map.on('zoomend', () => {
         debouncedUpdate();
         saveMapState();
+        updateVis();  // ズームレベルに応じてツールチップを更新
     });
 
     map.on('popupopen', () => {
