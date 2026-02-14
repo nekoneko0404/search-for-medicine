@@ -1361,6 +1361,13 @@ function setupUIListeners() {
     const datePicker = document.getElementById('date-picker') as HTMLInputElement;
     if (datePicker) {
         datePicker.value = state.currentDate;
+
+        // Add event listener for manual date selection via calendar
+        datePicker.addEventListener('change', (e) => {
+            const newDate = (e.target as HTMLInputElement).value;
+            if (newDate) updateDate(newDate);
+        });
+
         // Trigger generic update to highlight "Today" button
         document.querySelectorAll('.btn-quick-date').forEach(btn => {
             const days = (btn as HTMLElement).dataset.days;
