@@ -754,12 +754,16 @@ function updateVis() {
     const showGraph = zoom >= CONFIG.ZOOM_THRESHOLD;
 
     Object.values(markers).forEach(marker => {
-        if (showGraph) {
-            updateMarkerTooltip(marker);
-            marker.openTooltip();
-        } else {
+        // 常にツールチップの状態をクリーンアップ
+        if (marker.getTooltip()) {
             marker.closeTooltip();
             marker.unbindTooltip();
+        }
+
+        // ズームレベルが閾値以上かつデータ取得済みの場合のみツールチップを作成
+        if (showGraph && marker.maxPollen !== undefined) {
+            updateMarkerTooltip(marker);
+            marker.openTooltip();
         }
     });
 }
@@ -1219,7 +1223,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Init Map
-    map = L.map('map', { zoomControl: false }).setView(initialCenter, initialZoom);
+    map = L.map('map', {
+        zoomControl: false,
+        minZoom: 4,
+        maxZoom: 12
+    }).setView(initialCenter, initialZoom);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
     // Map Layers Definition (Global Access)
@@ -1261,6 +1269,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     map.on('zoomend', () => {
         debouncedUpdate();
         saveMapState();
+        updateVis();  // ズームレベルに応じてツールチップを更新
     });
 
     map.on('popupopen', () => {
