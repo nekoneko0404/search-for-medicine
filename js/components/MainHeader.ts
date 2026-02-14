@@ -60,7 +60,7 @@ export class MainHeader extends HTMLElement {
             const path = link.path.startsWith('http') || link.path.startsWith('#') || link.path.startsWith('/') ? link.path : baseDir + link.path;
 
             // simple active style inline or rely on CSS
-            const style = isActive ? 'style="border-bottom: 2px solid black;"' : '';
+            const style = isActive ? 'style="border-bottom: 3px solid black;"' : '';
 
             return `<a href="${path}" ${target} ${style}>${link.label}</a>`;
         }).join('');
