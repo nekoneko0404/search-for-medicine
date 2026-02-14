@@ -1219,9 +1219,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Init Map
-    map = L.map('map', { 
+    map = L.map('map', {
         zoomControl: false,
-        minZoom: 2,
+        minZoom: 4,
         maxZoom: 12
     }).setView(initialCenter, initialZoom);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
