@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let filteredData: any[] = [];
     let currentView: 'summary' | 'detail' = 'summary';
     let currentIngredient: string | null = null;
+    let currentRoute: string | null = null;
     let currentSort = { key: 'category', direction: 'asc' };
 
     function getRouteFromYJCode(yjCode: string | number | null) {
@@ -356,6 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
         backBtn.addEventListener('click', () => {
             currentView = 'summary';
             currentIngredient = null;
+            currentRoute = null;
             showSummaryView();
             renderResults();
         });
@@ -428,7 +430,11 @@ document.addEventListener('DOMContentLoaded', () => {
             // サマリー時は現在のフィルター条件に合致する全データを反映
             updateDashboardMetrics(filteredData);
         } else {
-            const detailData = filteredData.filter(item => item.normalizedIngredientName === normalizeString(currentIngredient!));
+            const normalizedIng = normalizeString(currentIngredient!);
+            const detailData = filteredData.filter(item =>
+                item.normalizedIngredientName === normalizedIng &&
+                (currentRoute === null || item.route === currentRoute)
+            );
             renderDetailView(detailData);
             // 詳細時はその成分のデータのみを反映
             updateDashboardMetrics(detailData);
@@ -645,7 +651,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showDetailView(ingredient: string, route: string) {
         currentView = 'detail';
         currentIngredient = ingredient;
-        const normalizedIng = normalizeString(ingredient);
+        currentRoute = route;
 
         summaryContainer?.classList.add('hidden');
         detailContainer?.classList.remove('hidden');
@@ -660,11 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
             filterGrid.classList.remove('md:grid-cols-3');
         }
 
-        const details = allData.filter(item => {
-            return item.normalizedIngredientName === normalizedIng && item.route === route;
-        });
-
-        renderDetailView(details);
+        renderResults();
         window.scrollTo(0, 0);
     }
 
