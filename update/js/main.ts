@@ -433,7 +433,7 @@ function updateDashboardMetrics(data: any[]) {
 
     updateGauge('normal', pNormal, '#4f46e5'); // Indigo 600
     updateGauge('limited', pLimited, '#ca8a04'); // Yellow 600
-    updateGauge('stopped', pStopped, '#4b5563'); // Gray 600
+    updateGauge('stopped', pStopped, '#ef4444'); // Red 500
 }
 
 function updateGauge(type: 'normal' | 'limited' | 'stopped', percent: number, color: string) {
