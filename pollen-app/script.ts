@@ -754,15 +754,16 @@ function updateVis() {
     const showGraph = zoom >= CONFIG.ZOOM_THRESHOLD;
 
     Object.values(markers).forEach(marker => {
-        if (showGraph) {
-            // データ取得済み（maxPollenが定義されている）のマーカーのみツールチップを作成
-            if (marker.maxPollen !== undefined) {
-                updateMarkerTooltip(marker);
-                marker.openTooltip();
-            }
-        } else {
+        // 常にツールチップの状態をクリーンアップ
+        if (marker.getTooltip()) {
             marker.closeTooltip();
             marker.unbindTooltip();
+        }
+
+        // ズームレベルが閾値以上かつデータ取得済みの場合のみツールチップを作成
+        if (showGraph && marker.maxPollen !== undefined) {
+            updateMarkerTooltip(marker);
+            marker.openTooltip();
         }
     });
 }
