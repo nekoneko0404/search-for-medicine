@@ -431,9 +431,9 @@ function updateDashboardMetrics(data: any[]) {
     const pLimited = Math.round((limited / total) * 100);
     const pStopped = 100 - pNormal - pLimited;
 
-    updateGauge('normal', pNormal, '#4f46e5'); // Indigo 600
-    updateGauge('limited', pLimited, '#ca8a04'); // Yellow 600
-    updateGauge('stopped', pStopped, '#ef4444'); // Red 500
+    updateGauge('normal', pNormal, '#3b82f6');
+    updateGauge('limited', pLimited, '#eab308');
+    updateGauge('stopped', pStopped, '#ef4444');
 }
 
 function updateGauge(type: 'normal' | 'limited' | 'stopped', percent: number, color: string) {
