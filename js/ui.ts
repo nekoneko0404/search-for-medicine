@@ -113,7 +113,7 @@ export function renderStatusButton(status: string, isUpdated: boolean = false): 
         span.classList.add('bg-yellow-100', 'text-yellow-800', 'border-yellow-200');
         span.textContent = '限定出荷';
     } else if (trimmedStatus.includes("供給停止") || trimmedStatus.includes("停止") || trimmedStatus.includes("停")) {
-        span.classList.add('bg-gray-100', 'text-gray-800', 'border-gray-200');
+        span.classList.add('bg-red-100', 'text-red-800', 'border-red-200');
         span.textContent = '供給停止';
     } else {
         span.classList.add('bg-gray-50', 'text-gray-600', 'border-gray-200');

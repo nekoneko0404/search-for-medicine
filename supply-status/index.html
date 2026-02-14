@@ -17,12 +17,14 @@
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/v2-shared.css">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
-<body class="bg-[#f0f9ff] min-h-screen flex flex-col font-sans text-gray-900 antialiased">
+<body class="bg-[#f0f9ff] min-h-screen flex flex-col text-gray-900 antialiased">
     <!-- Header Component -->
     <main-header base-dir="../" active-page="supply-status">
     </main-header>
@@ -30,15 +32,15 @@
     <main class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 max-w-7xl transition-all duration-500">
         <!-- Title Section -->
         <div class="text-center mb-8">
-            <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mb-2 uppercase tracking-tight">供給確保医薬品一覧</h2>
-            <p class="text-gray-500 text-sm">最新の供給状況、制限理由、解消見込みなどを確認できます</p>
+            <h2 class="text-3xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">供給確保医薬品一覧</h2>
+            <p class="text-gray-500 text-lg font-medium">最新の供給状況、制限理由、解消見込みなどを確認できます</p>
         </div>
 
         <!-- Dashboard Gauges -->
         <div class="dash-header flex-shrink-0">
             <div class="stat-card stat-normal">
                 <div class="stat-info">
-                    <h3>通常供給</h3>
+                    <h3>通常出荷</h3>
                     <div class="value" id="stat-normal-value">--%</div>
                 </div>
                 <div class="chart-circle" id="stat-normal-chart"></div>
@@ -64,24 +66,24 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <!-- Drug Name Search -->
                 <div class="space-y-2">
-                    <label for="drugName" class="block text-sm font-bold text-indigo-900">医薬品名</label>
+                    <label for="drugName" class="block text-sm font-semibold text-gray-700">医薬品名</label>
                     <div class="relative">
                         <input type="text" id="drugName" placeholder="医薬品名を入力"
-                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pl-10 py-2.5 bg-gray-50/50">
+                            class="w-full rounded-lg border-gray-200 shadow-sm focus:border-black focus:ring-black transition-all pl-10 py-3 text-lg font-medium">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-search text-indigo-400"></i>
+                            <i class="fas fa-search text-gray-400"></i>
                         </div>
                     </div>
                 </div>
 
                 <!-- Ingredient Name Search -->
                 <div class="space-y-2">
-                    <label for="ingredientName" class="block text-sm font-bold text-indigo-900">成分名</label>
+                    <label for="ingredientName" class="block text-sm font-semibold text-gray-700">成分名</label>
                     <div class="relative">
                         <input type="text" id="ingredientName" placeholder="成分名を入力"
-                            class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors pl-10 py-2.5 bg-gray-50/50">
+                            class="w-full rounded-lg border-gray-200 shadow-sm focus:border-black focus:ring-black transition-all pl-10 py-3 text-lg font-medium">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <i class="fas fa-flask text-indigo-400"></i>
+                            <i class="fas fa-flask text-gray-400"></i>
                         </div>
                     </div>
                 </div>
@@ -92,7 +94,7 @@
                 class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6 pt-6 border-t border-gray-100 items-end">
                 <!-- Category Filter -->
                 <div id="categoryFilterContainer">
-                    <label class="block text-sm font-bold text-indigo-900 mb-2">カテゴリ</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">カテゴリ</label>
                     <div class="flex flex-wrap gap-4">
                         <label
                             class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
@@ -117,7 +119,7 @@
 
                 <!-- Route Filter (Moved Here) -->
                 <div id="routeFilterContainer">
-                    <label class="block text-sm font-bold text-indigo-900 mb-2">区分</label>
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">区分</label>
                     <div class="flex flex-wrap gap-4">
                         <label
                             class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
@@ -202,28 +204,28 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                    class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                     カテゴリ</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                    class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                     区分</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                    class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                     薬効分類</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[150px]">
+                                    class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest min-w-[150px]">
                                     薬効分類名</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[200px]">
+                                    class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest min-w-[200px]">
                                     成分名</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-center text-indigo-900 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
+                                    class="px-4 py-4 text-left text-xs font-black text-center text-gray-900 uppercase tracking-widest whitespace-nowrap min-w-[130px]">
                                     通常出荷</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-center text-indigo-900 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
+                                    class="px-4 py-4 text-left text-xs font-black text-center text-gray-900 uppercase tracking-widest whitespace-nowrap min-w-[130px]">
                                     限定出荷</th>
                                 <th scope="col"
-                                    class="px-4 py-3 text-left text-xs font-bold text-center text-indigo-900 uppercase tracking-wider whitespace-nowrap min-w-[130px]">
+                                    class="px-4 py-4 text-left text-xs font-black text-center text-gray-900 uppercase tracking-widest whitespace-nowrap min-w-[130px]">
                                     供給停止</th>
                             </tr>
                         </thead>
@@ -246,31 +248,31 @@
                     <thead class="bg-gray-50">
                         <tr>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                 カテゴリ</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                 区分</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[200px]">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest min-w-[200px]">
                                 医薬品名</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[150px]">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest min-w-[150px]">
                                 成分名</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                 出荷状況</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider min-w-[150px]">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest min-w-[150px]">
                                 制限理由</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                 解消見込み</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                 見込み時期</th>
                             <th scope="col"
-                                class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider whitespace-nowrap">
+                                class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest whitespace-nowrap">
                                 更新日</th>
                         </tr>
                     </thead>

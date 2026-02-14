@@ -17,7 +17,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="../css/main.css">
     <link rel="stylesheet" href="../css/v2-shared.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
     <!-- Inline styles removed. Using css/style.css and Tailwind. -->
 
     <!-- Dependencies -->
@@ -25,7 +27,7 @@
     <!-- <link rel="stylesheet" href="../css/v2-shared.css"> -->
 </head>
 
-<body class="bg-[#f0f9ff] min-h-screen flex flex-col font-sans text-gray-900 antialiased">
+<body class="bg-[#f0f9ff] min-h-screen flex flex-col text-gray-900 antialiased">
     <!-- Header Component -->
     <main-header base-dir="../" active-page="update">
         <a href="/help/index.html" target="_blank" rel="noopener noreferrer" class="manual-link">使い方</a>
@@ -35,14 +37,14 @@
         class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 w-full max-w-7xl md:flex md:flex-col pb-32 transition-all duration-500">
         <div class="text-center mb-8 flex-shrink-0">
             <h2 class="text-3xl sm:text-5xl font-black text-gray-900 mb-4 tracking-tight">情報更新表示</h2>
-            <p class="text-gray-500 text-sm">最近更新された医薬品情報を確認できます</p>
+            <p class="text-gray-500 text-lg font-medium">最近更新された医薬品情報を確認できます</p>
         </div>
 
         <!-- Dashboard Gauges -->
         <div class="dash-header flex-shrink-0">
             <div class="stat-card stat-normal">
                 <div class="stat-info">
-                    <h3>通常供給</h3>
+                    <h3>通常出荷</h3>
                     <div class="value" id="stat-normal-value">--%</div>
                 </div>
                 <div class="chart-circle" id="stat-normal-chart"></div>
@@ -69,7 +71,7 @@
                 <div class="flex-grow">
                     <label for="searchInput" class="sr-only">キーワード検索</label>
                     <input type="text" id="searchInput" placeholder="製品名や成分名で検索..."
-                        class="w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 transition-colors py-2.5 px-4 bg-gray-50/50">
+                        class="w-full rounded-lg border-gray-200 shadow-sm focus:border-black focus:ring-black transition-all py-3 px-4 text-lg font-medium">
                 </div>
                 <div class="flex gap-2 shrink-0">
                     <button id="search-btn"
@@ -100,7 +102,7 @@
             <div class="flex flex-wrap items-center gap-x-6 gap-y-3 pt-4 border-t border-gray-100 text-sm">
                 <!-- Status -->
                 <div class="flex items-center gap-2">
-                    <span class="font-bold text-indigo-900">出荷状況:</span>
+                    <span class="font-semibold text-gray-700">出荷状況:</span>
                     <div class="flex gap-2">
                         <label
                             class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
@@ -125,7 +127,7 @@
 
                 <!-- Trend -->
                 <div class="flex items-center gap-2">
-                    <span class="font-bold text-indigo-900">傾向:</span>
+                    <span class="font-semibold text-gray-700">傾向:</span>
                     <div class="flex gap-2">
                         <label
                             class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
@@ -144,7 +146,7 @@
 
                 <!-- Update Period -->
                 <div class="flex items-center gap-2 ml-auto">
-                    <label for="updatePeriod" class="font-bold text-indigo-900">更新期間:</label>
+                    <label for="updatePeriod" class="font-semibold text-gray-700">更新期間:</label>
                     <select id="updatePeriod"
                         class="rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 py-1.5 text-sm bg-gray-50/50">
                         <option value="all">全期間</option>
@@ -163,34 +165,34 @@
                 <thead class="bg-gray-50">
                     <tr>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[20%] group cursor-pointer hover:bg-gray-100 transition-colors">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[20%] group cursor-pointer hover:bg-gray-100 transition-colors">
                             <div class="flex items-center gap-1" id="sort-productName-button">品名 <span
-                                    id="sort-productName-icon" class="text-indigo-500">↕</span></div>
+                                    id="sort-productName-icon" class="text-gray-400">↕</span></div>
                         </th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[15%] group cursor-pointer hover:bg-gray-100 transition-colors">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[15%] group cursor-pointer hover:bg-gray-100 transition-colors">
                             <div class="flex items-center gap-1" id="sort-ingredientName-button">成分名 <span
-                                    id="sort-ingredientName-icon" class="text-indigo-500">↕</span></div>
+                                    id="sort-ingredientName-icon" class="text-gray-400">↕</span></div>
                         </th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[10%] group cursor-pointer hover:bg-gray-100 transition-colors">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[10%] group cursor-pointer hover:bg-gray-100 transition-colors">
                             <div class="flex items-center gap-1" id="sort-status-button">出荷状況 <span
-                                    id="sort-status-icon" class="text-indigo-500">↕</span></div>
+                                    id="sort-status-icon" class="text-gray-400">↕</span></div>
                         </th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[15%]">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[15%]">
                             制限理由</th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[10%]">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[10%]">
                             解消見込み</th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[10%]">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[10%]">
                             見込み時期</th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[10%]">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[10%]">
                             出荷量</th>
                         <th scope="col"
-                            class="px-4 py-3 text-left text-xs font-bold text-indigo-900 uppercase tracking-wider w-[10%]">
+                            class="px-4 py-4 text-left text-xs font-black text-gray-900 uppercase tracking-widest w-[10%]">
                             更新日</th>
                     </tr>
                 </thead>
