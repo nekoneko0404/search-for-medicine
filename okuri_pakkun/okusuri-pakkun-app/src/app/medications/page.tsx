@@ -120,60 +120,59 @@ export default function MedicationsPage() {
             break-after: avoid;
           }
           
-          /* Scale Content 85% */
+          /* Scale Content 100% (No scaling) */
           main {
             padding: 0 !important;
             max-width: none !important;
-            width: 118% !important;
-            transform: scale(0.85) !important;
-            transform-origin: top left !important;
-            margin-top: 0 !important;
+            width: 100% !important;
+            transform: none !important;
+            margin-top: 5mm !important;
           }
 
           .meds-grid {
             display: grid !important;
-            grid-template-columns: repeat(3, 1fr) !important;
-            gap: 1.5mm !important;
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 2mm !important;
             page-break-inside: auto;
           }
           
           .med-card {
             break-inside: avoid !important;
-            border: 1px solid #eee !important;
-            padding: 2mm !important;
+            border: 1px solid #ddd !important;
+            padding: 3mm !important;
             border-radius: 3mm !important;
             background-color: #fff !important;
             box-shadow: none !important;
             display: flex !important;
             flex-direction: column !important;
             margin: 0 !important;
-            font-size: 8pt !important;
+            font-size: 10pt !important;
           }
           .med-card h3 {
-            font-size: 13px !important;
+            font-size: 16px !important;
             margin-bottom: 2mm !important;
           }
           .med-card a {
             display: none !important;
           }
-          /* Adjust font sizes for print readability at scale */
+          /* Adjust font sizes for print readability */
           .med-card .text-xs {
-            font-size: 10px !important;
+            font-size: 12px !important;
           }
           .med-card .space-y-3 {
-            gap: 2mm !important;
+            gap: 2.5mm !important;
           }
           .med-card h3 {
-            font-size: 9pt !important;
-            margin-bottom: 1mm !important;
+            font-size: 11pt !important;
+            margin-bottom: 1.5mm !important;
           }
           
           .med-card p,
           .med-card span,
           .med-card div {
-            font-size: 7pt !important;
-            line-height: 1.2 !important;
-            margin: 0.5mm 0 !important;
+            font-size: 9pt !important;
+            line-height: 1.3 !important;
+            margin: 0.8mm 0 !important;
           }
           
           /* Force colors for visibility */

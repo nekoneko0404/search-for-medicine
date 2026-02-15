@@ -105,11 +105,11 @@ This sort order must be maintained when updating the medication database to ensu
 7. Print Specification
 - **Target Page**: Registered Medication List (/medications)
 - **Layout Reference**:
-    - **Scaling**: Content scaled to 85% to maximize information density per page.
+    - **Scaling**: Content scaled to 100% (original size) for maximum readability.
     - **Header**:
         - App Title & Icon
         - QR Code linking to `https://search-for-medicine.pages.dev/`
         - Page URL text
-    - **Body**: Grid layout of medication cards (3 columns).
+    - **Body**: Grid layout of medication cards (2 columns).
     - **Footer**: Standard browser footer (URL/Date/Page Number) or custom if needed.
 - **Tech Stack**: CSS `@media print`, `react-qr-code`.
