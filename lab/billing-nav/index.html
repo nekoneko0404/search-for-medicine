@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>算定要件ナビゲーター | Kusuri Compass Lab</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+    <link rel="stylesheet" href="../../css/v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .nav-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .billing-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+        }
+
+        .category-list {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            border-radius: 12px;
+            padding: 1rem;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+
+        .category-item {
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .category-item:hover {
+            background: #f8fafc;
+        }
+
+        .category-item.active {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .checklist-section {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            padding: 2.5rem;
+            border-radius: 12px;
+        }
+
+        .checklist-header {
+            border-bottom: 2px solid #f1f5f9;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .checklist-item:hover {
+            border-color: #cbd5e1;
+        }
+
+        .checklist-item.checked {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .checkbox-custom {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #cbd5e1;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #fff;
+        }
+
+        .checked .checkbox-custom {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: #fff;
+        }
+
+        .requirement-text {
+            font-size: 0.9375rem;
+            line-height: 1.6;
+            color: #334155;
+        }
+
+        .result-panel {
+            margin-top: 3rem;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            background: #f1f5f9;
+        }
+
+        .result-panel.eligible {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        @media (max-width: 768px) {
+            .billing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-list {
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main-header base-dir="../../" active-page="lab"></main-header>
+
+    <div class="nav-container">
+        <div class="mb-4">
+            <a href="../index.html" class="text-sm font-bold text-gray-400 hover:text-black transition">
+                <i class="fas fa-arrow-left"></i> Labメニューへ戻る
+            </a>
+        </div>
+
+        <header class="mb-8">
+            <h1 class="text-3xl font-black tracking-tight">算定要件ナビゲーター</h1>
+            <p class="text-gray-500">加算の算定要件をチェックリスト形式で確認します。</p>
+        </header>
+
+        <div class="billing-grid">
+            <aside class="category-list" id="category-container">
+                <!-- Categories populated by JS -->
+            </aside>
+
+            <main class="checklist-section">
+                <div id="checklist-content">
+                    <div class="checklist-header">
+                        <h2 id="current-title" class="text-2xl font-black">カテゴリを選択してください</h2>
+                        <p id="current-desc" class="text-gray-500 mt-2"></p>
+                    </div>
+                    <div id="items-container">
+                        <!-- Items populated by JS -->
+                    </div>
+                    <div id="result-panel" class="result-panel">
+                        <i class="fas fa-info-circle mb-2"></i>
+                        <p id="result-text">要件を全て満たすと「算定可能」と表示されます。</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <main-footer base-dir="../../"></main-footer>
+
+    <script type="module" src="../../js/components/MainHeader.ts"></script>
+    <script type="module" src="../../js/components/MainFooter.ts"></script>
+    <script src="billing.js"></script>
+</body>
+
+</html>

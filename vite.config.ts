@@ -62,6 +62,8 @@ export default defineConfig({
                 'lab/pediatric-calc': resolve(__dirname, 'lab/pediatric-calc/index.html'),
                 'lab/renal-check': resolve(__dirname, 'lab/renal-check/index.html'),
                 'lab/pmda-alerts': resolve(__dirname, 'lab/pmda-alerts/index.html'),
+                'lab/advanced-di': resolve(__dirname, 'lab/advanced-di/index.html'),
+                'lab/billing-nav': resolve(__dirname, 'lab/billing-nav/index.html'),
             },
         },
     },
