@@ -41,6 +41,49 @@ const PEDIATRIC_DRUGS = [
         },
         piSnippet: "小児：通常、1日1回、10mg（力価）/kgを3日間経口投与する。なお、1日量は成人での最大投与量500mg（力価）を超えないものとする。",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6149004C1025_1_18#HDR_InfoDoseAdmin"
+    },
+    {
+        id: "meiact-ms-fine-granules",
+        name: "メイアクトMS小児用細粒10%",
+        yjCode: "6132016C1020",
+        potency: 100,
+        dosage: {
+            minMgKg: 9,
+            maxMgKg: 18,
+            absoluteMaxMgKg: 18,
+            note: "通常、1日9〜18mg（力価）/kgを3回に分割して経口投与する。増量が必要な場合は1回6mg/kg（1日18mg/kg）まで可能。"
+        },
+        piSnippet: "小児：通常、アモキシシリン水和物として1日9〜18mg（力価）/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減するが、1回6mg（力価）/kg、1日18mg（力価）/kgを上限とする。",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6132016C1020_1_13#HDR_InfoDoseAdmin"
+    },
+    {
+        id: "tamiflu-capsule-oseltamivir",
+        name: "タミフルドライシロップ3%",
+        yjCode: "6250021B1021",
+        potency: 30, // 30mg/g (3%)
+        dosage: {
+            minMgKg: 2,
+            maxMgKg: 2,
+            absoluteMaxMgKg: null,
+            isByTime: true,
+            note: "1回2mg/kg（オセルタミビルとして）を1日2回、5日間経口投与する。1回最高用量は75mg。"
+        },
+        piSnippet: "小児：通常、オセルタミビルとして1回2mg/kg（ドライシロップ剤として66.7mg/kg）を1日2回、5日間経口投与する。ただし、1回最高用量は75mgとする。",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6250021B1021_1_25#HDR_InfoDoseAdmin"
+    },
+    {
+        id: "mucodyne-fine-granules",
+        name: "ムコダイン細粒33.3%",
+        yjCode: "2239001C1077",
+        potency: 333, // 333mg/g (33.3%)
+        dosage: {
+            minMgKg: 30,
+            maxMgKg: 30,
+            absoluteMaxMgKg: null,
+            note: "通常、小児に1日量30mg/kgを3回に分割して経口投与する。"
+        },
+        piSnippet: "小児：通常、1日量30mg/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_2239001C1077_1_12#HDR_InfoDoseAdmin"
     }
 ];
 
