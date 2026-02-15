@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小児用量力価計算 | Kusuri Compass Lab</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+    <link rel="stylesheet" href="../../css/v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .calc-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .input-section {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .result-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            border-radius: 8px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 800;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: #1a365d;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1.125rem;
+            font-weight: 600;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #667eea;
+        }
+
+        .drug-info-badge {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+
+        .result-title {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .dose-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #000;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .dose-unit {
+            font-size: 1rem;
+            color: #667eea;
+            margin-left: 0.25rem;
+        }
+
+        .result-item {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .highlight-box {
+            background: #fff;
+            padding: 1rem;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+        }
+
+        .warning-text {
+            color: #ef4444;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .result-section {
+                position: static;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main-header base-dir="../../" active-page="lab"></main-header>
+
+    <div class="calc-container">
+        <div class="mb-4">
+            <a href="../index.html" class="text-sm font-bold text-gray-400 hover:text-black transition">
+                <i class="fas fa-arrow-left"></i> Labメニューへ戻る
+            </a>
+        </div>
+
+        <header class="mb-8">
+            <h1 class="text-3xl font-black tracking-tight">小児用量力価計算</h1>
+            <p class="text-gray-500">体重に基づいた標準用量のシミュレーションを行います。</p>
+        </header>
+
+        <div class="calc-grid">
+            <!-- Left: Inputs -->
+            <section class="input-section">
+                <div class="form-group">
+                    <label for="child-weight">お子様の体重 (kg)</label>
+                    <input type="number" id="child-weight" value="10" step="0.1" min="0" placeholder="例: 10.5">
+                </div>
+
+                <div class="form-group">
+                    <label for="drug-select">薬剤を選択</label>
+                    <select id="drug-select">
+                        <option value="amoxicillin_30">アモキシシリン (30mg/kg/日)</option>
+                        <option value="amoxicillin_40">アモキシシリン (40mg/kg/日)</option>
+                        <option value="amoxicillin_50">アモキシシリン (50mg/kg/日)</option>
+                        <option value="clarithromycin">クラリスロマイシン (10-15mg/kg/日)</option>
+                        <option value="cefditoren">セフジトレンピボキシル (9-18mg/kg/日)</option>
+                        <option value="azithromycin">アジスロマイシン (10mg/kg/日)</option>
+                    </select>
+                    <div id="drug-meta" class="drug-info-badge">1日3回服用</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="formulation-select">剤形・力価</label>
+                    <select id="formulation-select">
+                        <!-- Options will be populated by JS -->
+                    </select>
+                </div>
+            </section>
+
+            <!-- Right: Results -->
+            <section class="result-section">
+                <div class="result-item">
+                    <div class="result-title">1日あたりの総量 (mg)</div>
+                    <div class="highlight-box">
+                        <div id="daily-dose-mg" class="dose-value">0<span class="dose-unit">mg/日</span></div>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-title">1回あたりの分量</div>
+                    <div class="highlight-box">
+                        <div id="single-dose-mg" class="dose-value">0<span class="dose-unit">mg</span></div>
+                        <div id="single-dose-form" class="text-lg font-bold text-blue-600 mt-2">0g / 回</div>
+                    </div>
+                </div>
+
+                <div class="result-item">
+                    <div class="result-title">用法・備考</div>
+                    <p id="calc-notes" class="text-sm font-bold text-gray-700"></p>
+                    <p class="warning-text">※このツールはシミュレーション用です。最終的な用法用量は、処方箋および医師・薬剤師の判断に従ってください。</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <main-footer base-dir="../../"></main-footer>
+
+    <script type="module" src="../../js/components/MainHeader.ts"></script>
+    <script type="module" src="../../js/components/MainFooter.ts"></script>
+    <script src="calc.js"></script>
+</body>
+
+</html>

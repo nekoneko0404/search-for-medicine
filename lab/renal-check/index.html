@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>腎機能チェック | Kusuri Compass Lab</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+    <link rel="stylesheet" href="../../css/v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .calc-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .input-section {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        .result-section {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            padding: 2rem;
+            border-radius: 8px;
+            position: sticky;
+            top: 100px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            font-weight: 800;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            color: #1a365d;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+
+        .egfr-value {
+            font-size: 3rem;
+            font-weight: 900;
+            color: #000;
+            line-height: 1;
+        }
+
+        .stage-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+
+        .stage-g1 {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .stage-g2 {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .stage-g3a {
+            background: #fefce8;
+            color: #854d0e;
+        }
+
+        .stage-g3b {
+            background: #fff7ed;
+            color: #9a3412;
+        }
+
+        .stage-g4 {
+            background: #fff1f2;
+            color: #9f1239;
+        }
+
+        .stage-g5 {
+            background: #450a0a;
+            color: #fff;
+        }
+
+        .guidance-list {
+            margin-top: 2rem;
+        }
+
+        .guidance-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .drug-name {
+            font-weight: 800;
+            color: #1a365d;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.25rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .warning-tag {
+            background: #fef2f2;
+            color: #dc2626;
+            font-size: 0.7rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main-header base-dir="../../" active-page="lab"></main-header>
+
+    <div class="calc-container">
+        <div class="mb-4">
+            <a href="../index.html" class="text-sm font-bold text-gray-400 hover:text-black transition">
+                <i class="fas fa-arrow-left"></i> Labメニューへ戻る
+            </a>
+        </div>
+
+        <header class="mb-8">
+            <h1 class="text-3xl font-black tracking-tight">腎機能チェック (eGFR)</h1>
+            <p class="text-gray-500">血清クレアチニン値から腎機能を推定し、薬剤の減量目安を提示します。</p>
+        </header>
+
+        <div class="calc-grid">
+            <section class="input-section">
+                <div class="form-group">
+                    <label>性別</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="sex" value="male" checked> 男性
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="sex" value="female"> 女性
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">年齢 (歳)</label>
+                    <input type="number" id="age" value="70" min="0" max="120">
+                </div>
+
+                <div class="form-group">
+                    <label for="scr">血清クレアチニン (mg/dL)</label>
+                    <input type="number" id="scr" value="1.00" step="0.01" min="0">
+                </div>
+
+                <p class="text-[10px] text-gray-400 mt-4 leading-relaxed">
+                    ※日本人向けeGFR推算式: 194 × Cr^-1.094 × Age^-0.287 (×0.739 if female)<br>
+                    ※18歳未満には対応していません。
+                </p>
+            </section>
+
+            <section class="result-section">
+                <div class="mb-8">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">推定eGFR</div>
+                    <div class="flex items-baseline">
+                        <div id="egfr-result" class="egfr-value">0</div>
+                        <span class="text-gray-400 font-bold ml-2">mL/min/1.73m²</span>
+                    </div>
+                    <div id="stage-badge" class="stage-badge stage-g1">Stage G1 (正常)</div>
+                </div>
+
+                <div class="guidance-list">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">代表的な薬剤の調整目安</div>
+                    <div id="drug-guidance">
+                        <!-- populated by JS -->
+                    </div>
+                </div>
+
+                <p class="text-[10px] text-red-500 font-bold mt-4">
+                    ※本ツールは参考情報です。実際の投与設計は各薬剤の添付文書および患者の状態に基づき医師・薬剤師が判断してください。
+                </p>
+            </section>
+        </div>
+    </div>
+
+    <main-footer base-dir="../../"></main-footer>
+
+    <script type="module" src="../../js/components/MainHeader.ts"></script>
+    <script type="module" src="../../js/components/MainFooter.ts"></script>
+    <script src="renal.js"></script>
+</body>
+
+</html>
