@@ -152,60 +152,36 @@
 
         <header class="mb-8">
             <h1 class="text-3xl font-black tracking-tight">小児用量力価計算</h1>
-            <p class="text-gray-500">体重に基づいた標準用量のシミュレーションを行います。</p>
+            <p class="text-gray-500">添付文書上の用法・用量に基づき、体重あたりの投与量を正確に算出します。</p>
         </header>
 
         <div class="calc-grid">
-            <!-- Left: Inputs -->
             <section class="input-section">
                 <div class="form-group">
-                    <label for="child-weight">お子様の体重 (kg)</label>
-                    <input type="number" id="child-weight" value="10" step="0.1" min="0" placeholder="例: 10.5">
-                </div>
-
-                <div class="form-group">
-                    <label for="drug-select">薬剤を選択</label>
+                    <label for="drug-select">薬剤の選択 (1薬剤1メニュー)</label>
                     <select id="drug-select">
-                        <option value="amoxicillin_30">アモキシシリン (30mg/kg/日)</option>
-                        <option value="amoxicillin_40">アモキシシリン (40mg/kg/日)</option>
-                        <option value="amoxicillin_50">アモキシシリン (50mg/kg/日)</option>
-                        <option value="clarithromycin">クラリスロマイシン (10-15mg/kg/日)</option>
-                        <option value="cefditoren">セフジトレンピボキシル (9-18mg/kg/日)</option>
-                        <option value="azithromycin">アジスロマイシン (10mg/kg/日)</option>
+                        <!-- populated by JS -->
                     </select>
-                    <div id="drug-meta" class="drug-info-badge">1日3回服用</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="formulation-select">剤形・力価</label>
-                    <select id="formulation-select">
-                        <!-- Options will be populated by JS -->
-                    </select>
+                    <label for="body-weight">体重 (kg)</label>
+                    <input type="number" id="body-weight" value="10.0" step="0.1" min="0">
+                </div>
+
+                <div id="pi-container">
+                    <!-- PI Citation Snippet added here by JS -->
                 </div>
             </section>
 
-            <!-- Right: Results -->
             <section class="result-section">
-                <div class="result-item">
-                    <div class="result-title">1日あたりの総量 (mg)</div>
-                    <div class="highlight-box">
-                        <div id="daily-dose-mg" class="dose-value">0<span class="dose-unit">mg/日</span></div>
-                    </div>
+                <div id="result-area">
+                    <!-- Calculated Results (Ranges) added here by JS -->
                 </div>
 
-                <div class="result-item">
-                    <div class="result-title">1回あたりの分量</div>
-                    <div class="highlight-box">
-                        <div id="single-dose-mg" class="dose-value">0<span class="dose-unit">mg</span></div>
-                        <div id="single-dose-form" class="text-lg font-bold text-blue-600 mt-2">0g / 回</div>
-                    </div>
-                </div>
-
-                <div class="result-item">
-                    <div class="result-title">用法・備考</div>
-                    <p id="calc-notes" class="text-sm font-bold text-gray-700"></p>
-                    <p class="warning-text">※このツールはシミュレーション用です。最終的な用法用量は、処方箋および医師・薬剤師の判断に従ってください。</p>
-                </div>
+                <p class="text-[10px] text-red-500 font-bold mt-8 border-t pt-4">
+                    ※ 本ツールは添付文書情報を基にした計算補助であり、最終的な投与設計は医師・薬剤師の判断で行ってください。
+                </p>
             </section>
         </div>
     </div>
