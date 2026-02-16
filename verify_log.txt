@@ -1,0 +1,32 @@
+Total drugs found: 73
+--- Top 5 Drugs ---
+6131001C1210 サワシリン細粒10%
+6131001C1228 パセトシン細粒10%
+6131001C1260 アモキシシリン細粒10%「タツミ」
+6131001C2100 ワイドシリン細粒20%
+6131008C1033 ユナシン細粒小児用10%
+
+--- Checking Category Transition ---
+Transition at #0: 6131001C1210 サワシリン細粒10%
+Transition at #16: 6141001R2053 エリスロシンドライシロップW20%
+Transition at #23: 6152005D1094 ミノマイシン顆粒2%
+Transition at #24: 6241010C1024 オゼックス小児用細粒15%
+Transition at #26: 6250002D1024 ゾビラックス顆粒40%
+Transition at #30: 2223001B1210 メジコン散10%
+Transition at #31: 2233002Q1159 カルボシステインDS小児用「NIG」
+Transition at #35: 2249003B1037 アスベリン散10%
+Transition at #36: 2251001D1061 テオドールドライシロップ20%
+Transition at #41: 4413004C2022 ゼスラン細粒小児用0.6%
+Transition at #44: 4490003R1228 ザジテンドライシロップ0.1%
+Transition at #57: 1139004C2061 デパケン細粒
+Transition at #59: 1141007C1075 カロナール細粒20%
+Transition at #63: 1180107D1131 PL配合顆粒
+Transition at #64: 2316004B1036 ビオフェルミンR散
+Transition at #67: 2331004B1046 アドソルビン原末
+Transition at #68: 2399005R1163 ナウゼリンドライシロップ1%
+Transition at #69: 3222012Q1030 インクレミンシロップ5%
+Transition at #70: 5200013D1123 葛根湯エキス顆粒
+
+--- Checking Antiviral Snippets ---
+Valaciclovir Snippet: 【水痘】通常、1回25mg/kgを1日2回。1回最大500mg。(他適応は添付文書参照)
+Acyclovir Snippet: 【水痘】通常、1回20mg/kgを1日4回。(他適応は添付文書参照)
