@@ -9,8 +9,9 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 9,
             maxMgKg: 18,
-            absoluteMaxMgKg: 18,
-            note: "通常1日9〜18mg/kgを3回。1回上限6mg/kg。"
+            absoluteMaxMgPerTime: 200,
+            absoluteMaxMgPerDay: 600,
+            note: "通常1日9〜18mg/kgを3回。1回上限200mg(成人量)。"
         },
         piSnippet: "通常1回3mg/kgを1日3回。必要に応じて1回6mg/kgまで増量可。ただし、成人最大量(1回200mg, 1日600mg)を超えないこと。"
     },
@@ -24,7 +25,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 9,
             maxMgKg: 18,
-            note: "通常1日9〜18mg/kgを3回。"
+            absoluteMaxMgPerDay: 300,
+            note: "通常1日9〜18mg/kgを3回。1日上限300mg(成人量)。"
         },
         piSnippet: "通常1回3mg/kgを1日3回。年齢、体重および症状に応じて適宜増減する。"
     },
@@ -38,7 +40,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 9,
             maxMgKg: 18,
-            note: "通常1日9〜18mg/kgを2〜3回。"
+            absoluteMaxMgPerDay: 200,
+            note: "通常1日9〜18mg/kgを2〜3回。1日上限200mg(成人量)。"
         },
         piSnippet: "通常1回3mg/kgを1日3回（または2回）。年齢および症状に応じて適宜増減する。"
     },
@@ -52,7 +55,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 9,
             maxMgKg: 18,
-            note: "1日9〜18mg/kgを3回。"
+            absoluteMaxMgPerDay: 300,
+            note: "1日9〜18mg/kgを3回。1日上限300mg(成人量)。"
         },
         piSnippet: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。"
     },
@@ -184,7 +188,6 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 10,
             maxMgKg: 15,
             isByTime: true,
-            timeMgKg: 5,
             timesPerDay: 2,
             note: "1日10〜15mg/kgを2回。"
         },
@@ -247,12 +250,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6149004C1048",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6149004C1048?user=1",
         potency: 100,
+        piSnippetSource: "通常1日1回10mg/kgを3日間投与。最大500mg。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 10,
+            maxMgKg: 10,
+            absoluteMaxMgPerDay: 500,
+            note: "1日1回10mg/kg(最大500mg)を3日間。"
         },
-        piSnippet: ""
+        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
     },
     {
         id: "yj-6149004C1080",
@@ -260,12 +265,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6149004C1080",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6149004C1080?user=1",
         potency: 100,
+        piSnippetSource: "通常1日1回10mg/kgを3日間投与。最大500mg。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 10,
+            maxMgKg: 10,
+            absoluteMaxMgPerDay: 500,
+            note: "1日1回10mg/kg(最大500mg)を3日間。"
         },
-        piSnippet: ""
+        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
     },
     {
         id: "yj-6149004C1102",
@@ -273,12 +280,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6149004C1102",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6149004C1102?user=1",
         potency: 100,
+        piSnippetSource: "通常1日1回10mg/kgを3日間投与。最大500mg。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 10,
+            maxMgKg: 10,
+            absoluteMaxMgPerDay: 500,
+            note: "1日1回10mg/kg(最大500mg)を3日間。"
         },
-        piSnippet: ""
+        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
     },
     {
         id: "yj-6141001R2053",
@@ -691,16 +700,15 @@ const PEDIATRIC_DRUGS = [
         yjCode: "2223001B1210",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2223001B1210?user=1",
         potency: 100,
-        piSnippetSource: "通常1日1〜2mg/kgを3〜4回。年齢および症状に応じて適宜増減する。",
+        calcType: "age",
+        adultDose: 90,
+        unit: "mg",
+        isAdultOnly: true,
+        piSnippetSource: "通常、成人には1回15〜30mgを1日1〜4回経口投与。年齢、症状により適宜増減する。",
         dosage: {
-            minMgKg: 1,
-            maxMgKg: 2,
-            isByTime: true,
-            timeMgKg: 0.33,
-            timesPerDay: 3,
-            note: "通常1日1〜2mg/kgを3〜4回。"
+            note: "添付文書に小児用量なし。Augsberger式算定。"
         },
-        piSnippet: "通常1日1〜2mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常、成人には1回15〜30mgを1日1〜4回経口投与。年齢、症状により適宜増減する。"
     },
     {
         id: "yj-2259002R1061",
@@ -846,7 +854,6 @@ const PEDIATRIC_DRUGS = [
             maxMgKg: 15,
             absoluteMaxMgKg: 60,
             isByTime: true,
-            timeMgKg: 10,
             timesPerDay: 4,
             note: "1回10〜15mg/kg。原則4時間空ける。"
         },
@@ -857,14 +864,13 @@ const PEDIATRIC_DRUGS = [
         name: "カロナール細粒50%",
         yjCode: "1141007C2020",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1141007C2020?user=1",
-        potency: 200,
+        potency: 500,
         piSnippetSource: "1回10〜15mg/kg。投与間隔は4〜6時間以上。1日総量60mg/kg限度。成人最大量(1回500mg, 1日1500mg)を超えないこと。",
         dosage: {
             minMgKg: 10,
             maxMgKg: 15,
             absoluteMaxMgKg: 60,
             isByTime: true,
-            timeMgKg: 10,
             timesPerDay: 4,
             note: "1回10〜15mg/kg。原則4時間空ける。"
         },
@@ -906,13 +912,15 @@ const PEDIATRIC_DRUGS = [
         name: "PL配合顆粒",
         yjCode: "1180107D1131",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1180107D1131?user=1",
-        potency: 100,
+        calcType: "age",
+        adultDose: 3,
+        unit: "g",
+        isAdultOnly: true,
+        piSnippetSource: "通常、成人には1回1gを1日3回経口投与。年齢、症状により適宜増減する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "添付文書に小児用量なし。Augsberger式算定。"
         },
-        piSnippet: ""
+        piSnippet: "通常、成人には1回1gを1日3回経口投与。年齢、症状により適宜増減する。"
     },
     {
         id: "yj-2316004B1036",
@@ -1316,14 +1324,25 @@ function updateCalculations() {
         return;
     }
 
+    const formatDose = (val, d) => {
+        // クラバモックス (yj-6139100R1036) は小数点第2位、他は第1位
+        return d.id === 'yj-6139100R1036' ? val.toFixed(2) : val.toFixed(1);
+    };
+
     if (drug.calcType === 'age') {
         const factor = (age * 4 + 20) / 100;
         const childDose = drug.adultDose * factor;
+        const augLabel = drug.isAdultOnly ? `
+            <div class="bg-amber-400/20 text-amber-200 text-[9px] p-2 rounded mb-3 border border-amber-400/30">
+                <i class="fas fa-info-circle"></i> 添付文書に小児用量の記載がないため、成人量(${drug.adultDose}${drug.unit}/日)に基づきAugsberger式で算出。
+            </div>
+        ` : '';
         resultArea.innerHTML = `
             <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-800">
                 <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">Augsberger式算出 (${age}歳 | 成人量の${(factor * 100).toFixed(0)}%)</div>
+                ${augLabel}
                 <div class="flex items-baseline gap-2">
-                    <span class="text-2xl font-black">${childDose.toFixed(2)}</span>
+                    <span class="text-3xl font-black">${formatDose(childDose, drug)}</span>
                     <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
                 </div>
                 <div class="text-[10px] opacity-70">(成人量 ${drug.adultDose}${drug.unit || 'g'}/日 基準)</div>
@@ -1336,7 +1355,7 @@ function updateCalculations() {
                 <div class="bg-purple-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-purple-800">
                     <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">年齢別基準量 (${found.label})</div>
                     <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-black">${found.dose}</span>
+                        <span class="text-3xl font-black">${formatDose(found.dose, drug)}</span>
                         <span class="text-xl font-bold">${found.unit} / 回</span>
                     </div>
                 </div>
@@ -1355,14 +1374,14 @@ function updateCalculations() {
                         <div class="bg-white/10 p-3 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1回量 (目安)</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-2xl font-black">${(dailyDose / 2).toFixed(3)}</span>
-                                <span class="text-lg font-bold">${found.unit} / 回</span>
+                                <span class="text-3xl font-black">${formatDose(dailyDose / 2, drug)}</span>
+                                <span class="text-xl font-bold">${found.unit} / 回</span>
                             </div>
                         </div>
                         <div class="bg-white/10 p-2 px-3 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${dailyDose.toFixed(3)}</span>
+                                <span class="text-xl font-black">${formatDose(dailyDose, drug)}</span>
                                 <span class="text-base font-bold">${found.unit} / 日</span>
                             </div>
                         </div>
@@ -1396,14 +1415,14 @@ function updateCalculations() {
                         <div class="bg-white/10 p-3 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-2xl font-black">${displayDosePerTime.toFixed(3)}</span>
-                                <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
+                                <span class="text-3xl font-black">${formatDose(displayDosePerTime, drug)}</span>
+                                <span class="text-xl font-bold">${drug.unit || 'g'} / 回</span>
                             </div>
                         </div>
                         <div class="bg-white/10 p-2 px-3 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量 (${info.timesPerDay || '1-3'}回)</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${dailyTotal.toFixed(3)}</span>
+                                <span class="text-xl font-black">${formatDose(dailyTotal, drug)}</span>
                                 <span class="text-base font-bold">${drug.unit || 'g'} / 日</span>
                             </div>
                         </div>
@@ -1428,34 +1447,57 @@ function updateCalculations() {
             maxMgPerTime = (weight * doseInfo.maxMgKg) / tpd;
         }
 
-        // 上限値制限
+        // 成人上限値制限 (1回量)
+        let isMaxPerTimeReached = false;
         if (doseInfo.absoluteMaxMgPerTime) {
+            if (minMgPerTime >= doseInfo.absoluteMaxMgPerTime || maxMgPerTime >= doseInfo.absoluteMaxMgPerTime) {
+                isMaxPerTimeReached = true;
+            }
             minMgPerTime = Math.min(minMgPerTime, doseInfo.absoluteMaxMgPerTime);
             maxMgPerTime = Math.min(maxMgPerTime, doseInfo.absoluteMaxMgPerTime);
         }
 
+        // 成人上限値制限 (1日量からの逆算)
+        let isMaxPerDayReached = false;
+        if (doseInfo.absoluteMaxMgPerDay) {
+            const currentDailyMin = minMgPerTime * tpd;
+            const currentDailyMax = maxMgPerTime * tpd;
+            if (currentDailyMin >= doseInfo.absoluteMaxMgPerDay || currentDailyMax >= doseInfo.absoluteMaxMgPerDay) {
+                isMaxPerDayReached = true;
+                minMgPerTime = Math.min(minMgPerTime, doseInfo.absoluteMaxMgPerDay / tpd);
+                maxMgPerTime = Math.min(maxMgPerTime, doseInfo.absoluteMaxMgPerDay / tpd);
+            }
+        }
+
         const minGPerTime = minMgPerTime / drug.potency;
         const maxGPerTime = maxMgPerTime / drug.potency;
-        const isRange = minGPerTime !== maxGPerTime;
+        const isRange = minGPerTime.toFixed(3) !== maxGPerTime.toFixed(3);
 
         const dailyMinG = minGPerTime * tpd;
         const dailyMaxG = maxGPerTime * tpd;
 
+        const badgeHtml = (isMaxPerTimeReached || isMaxPerDayReached)
+            ? `<div class="bg-amber-400 text-indigo-950 text-[10px] px-2 py-0.5 rounded-full font-black inline-block mb-2 animate-pulse shadow-sm border border-amber-500/20">成人用量にて上限調整済</div>`
+            : '';
+
         resultArea.innerHTML = `
-            <div class="bg-indigo-700 text-white p-5 rounded-xl shadow-lg border-b-4 border-indigo-900">
-                <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">体重あたり計算 (1日${tpd}回)</div>
+            <div class="bg-indigo-700 text-white p-5 rounded-xl shadow-lg border-b-4 border-indigo-900 transition-all duration-300">
+                <div class="flex flex-col mb-2">
+                    <div class="text-[10px] font-black uppercase tracking-widest opacity-80">体重あたり計算 (1日${tpd}回)</div>
+                    ${badgeHtml}
+                </div>
                 <div class="flex flex-col gap-3">
                     <div class="bg-white/10 p-3 rounded-lg border border-white/10">
                         <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-2xl font-black">${minGPerTime.toFixed(3)}${isRange ? '〜' + maxGPerTime.toFixed(3) : ''}</span>
-                            <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
+                            <span class="text-3xl font-black">${formatDose(minGPerTime, drug)}${isRange ? '〜' + formatDose(maxGPerTime, drug) : ''}</span>
+                            <span class="text-xl font-bold">${drug.unit || 'g'} / 回</span>
                         </div>
                     </div>
                     <div class="bg-white/10 p-2 px-3 rounded-lg">
                         <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-xl font-black">${dailyMinG.toFixed(3)}${isRange ? '〜' + dailyMaxG.toFixed(3) : ''}</span>
+                            <span class="text-xl font-black">${formatDose(dailyMinG, drug)}${isRange ? '〜' + formatDose(dailyMaxG, drug) : ''}</span>
                             <span class="text-base font-bold">${drug.unit || 'g'} / 日</span>
                         </div>
                     </div>
