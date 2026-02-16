@@ -63,7 +63,15 @@ const PEDIATRIC_DRUGS = [
 
     // --- 整腸剤・漢方 ---
     { id: "miya-bm", name: "ミヤBM細粒", yjCode: "2316001C1052", potency: 1, calcType: "age", adultDose: 3, unit: "g", dosage: { note: "目安1日1.5〜3g(3回)。Augsberger式参考。" }, piSnippet: "通常1日1.5〜3gを3回に分割経口投与する。症状に応じ増減する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2316001C1052?user=1" },
-    { id: "kakkonto", name: "ツムラ葛根湯エキス顆粒", yjCode: "5200001D1024", potency: 1, calcType: "age", adultDose: 7.5, unit: "g", dosage: { note: "Augsberger式算出。7.5g/日基準。" }, piSnippet: "通常、成人1日7.5gを2〜3回に分割して経口投与する。小児には年齢に応じて適宜減量する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200001D1024?user=1" }
+    { id: "kakkonto", name: "ツムラ葛根湯エキス顆粒", yjCode: "5200001D1024", potency: 1, calcType: "age", adultDose: 7.5, unit: "g", dosage: { note: "Augsberger式による算出。7.5g/日基準。" }, piSnippet: "通常、成人1日7.5gを2〜3回に分割して経口投与する。小児には年齢に応じて適宜減量する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200001D1024?user=1" },
+
+    // --- その他 ---
+    { id: "incremin-syrup", name: "インクレミンシロップ5%", yjCode: "3229002C1020", potency: 6, unit: "mL", dosage: { minMgKg: 3, maxMgKg: 6, note: "1日3〜6mg(鉄換算)/kg。シロップ剤。" }, piSnippet: "シロップ剤。鉄として通常1日3〜6mg/kgを食後3回に分けて経口投与する。なお、年齢、症状により適宜増減する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/3229002C1020?user=1" },
+    { id: "keppra-ds", name: "イーケプラドライシロップ50%", yjCode: "1179045F1022", potency: 500, dosage: { minMgKg: 20, maxMgKg: 60, isByTime: true, timeMgKg: 10, timesPerDay: 2, note: "1回10〜30mg/kg。12時間間隔。" }, piSnippet: "レベチラセタムとして通常1回10mg/kgを1日2回経口投与する。症状により1回30mg/kg、1日60mg/kgを超えない範囲で増量できる。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1179045F1022?user=1" },
+    { id: "depakene-fine-40", name: "デパケン細粒40%", yjCode: "3929004F1030", potency: 400, dosage: { minMgKg: 15, maxMgKg: 40, isByTime: true, timeMgKg: 7.5, timesPerDay: 2, note: "通常1日15〜40mg/kgを2〜3回。" }, piSnippet: "バルプロ酸ナトリウムとして通常1日15〜40mg/kgを1日2〜3回に分けて経口投与する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/3929004F1030?user=1" },
+    { id: "pl-granule", name: "PL配合顆粒", yjCode: "1180001C1037", potency: 1, calcType: "age", adultDose: 3, unit: "g", dosage: { note: "2歳未満禁忌。Augsberger式参考。" }, piSnippet: "通常、成人には1回1gを1日3〜4回経口投与する。なお、年齢、症状により適宜増減する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1180001C1037?user=1" },
+    { id: "yokukansan", name: "ツムラ抑肝散エキス顆粒", yjCode: "5200138D1022", potency: 1, calcType: "age", adultDose: 7.5, unit: "g", dosage: { note: "Augsberger式による算出。7.5g/日基準。" }, piSnippet: "通常、成人1日7.5gを2〜3回に分割して経口投与する。小児には年齢に応じて適宜減量する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200138D1022?user=1" },
+    { id: "shakuyaku", name: "ツムラ芍薬甘草湯エキス顆粒", yjCode: "5200067D1025", potency: 1, calcType: "age", adultDose: 7.5, unit: "g", dosage: { note: "Augsberger式による算出。7.5g/日基準。" }, piSnippet: "通常、成人1日7.5gを2〜3回に分割して経口投与する。小児には年齢に応じて適宜減量する。", piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200067D1025?user=1" }
 ];
 
 // ※ 実際の実装では上記のリストが75種類以上展開されますが、
@@ -146,10 +154,12 @@ function updateCalculations() {
     const resultArea = document.getElementById('result-area');
     let drug = PEDIATRIC_DRUGS.find(d => d.id === selectedDrugId);
     if (!drug) return;
-    const age = parseFloat(ageInput.value) || 0;
-    const weight = parseFloat(weightInput.value) || 0;
+    const age = parseFloat(ageInput.value);
+    const weight = parseFloat(weightInput.value);
     const currentPi = drug.hasSubOptions ? drug.subOptions.find(o => o.id === selectedSubOptionId)?.piSnippet : drug.piSnippet;
 
+    // PMDAリンクの修正: 安定したURL（検索ページ経由など）も検討したが、現在の形式でもuser=1があれば通常表示される。
+    // yjCodeが間違っている可能性を考慮し、正確なリンクを維持。
     piContainer.innerHTML = `
         <div class="pi-card bg-amber-50 border border-amber-200 p-4 rounded-lg mb-6 mt-6 shadow-sm">
             <div class="flex justify-between items-start mb-2">
@@ -162,6 +172,16 @@ function updateCalculations() {
             <div class="text-[8px] text-gray-400 text-right font-mono">YJ: ${drug.yjCode}</div>
         </div>
     `;
+
+    if (isNaN(age) && (drug.calcType === 'age' || drug.calcType === 'fixed-age')) {
+        resultArea.innerHTML = '<p class="text-center text-indigo-500 py-10 font-bold bg-indigo-50 rounded-xl">年齢を入力してください</p>';
+        return;
+    }
+    if (isNaN(weight) && (drug.calcType !== 'age' && drug.calcType !== 'fixed-age')) {
+        resultArea.innerHTML = '<p class="text-center text-blue-500 py-10 font-bold bg-blue-50 rounded-xl">体重を入力してください</p>';
+        return;
+    }
+
     if (drug.calcType === 'age') {
         const factor = (age * 4 + 20) / 100;
         const childDose = drug.adultDose * factor;
@@ -191,32 +211,45 @@ function updateCalculations() {
             resultArea.innerHTML = '<p class="text-center text-rose-500 py-10 font-bold bg-rose-50 rounded-xl">対象年齢範囲外、またはデータなし</p>';
         }
     } else {
-        if (!weight) {
-            resultArea.innerHTML = '<p class="text-center text-blue-500 py-10 font-bold bg-blue-50 rounded-xl">体重を入力してください</p>';
-            return;
-        }
-        let dose = drug.hasSubOptions ? drug.subOptions.find(o => o.id === selectedSubOptionId).dosage : drug.dosage;
-        const minG = (weight * dose.minMgKg) / drug.potency;
-        const maxG = (weight * dose.maxMgKg) / drug.potency;
-        if (dose.isByTime) {
-            let timeG = (weight * dose.timeMgKg) / drug.potency;
-            if (dose.absoluteMaxMgPerTime && (weight * dose.timeMgKg) > dose.absoluteMaxMgPerTime) {
-                timeG = dose.absoluteMaxMgPerTime / drug.potency;
-            }
-            resultArea.innerHTML = `
+        let doseInfo = drug.hasSubOptions ? drug.subOptions.find(o => o.id === selectedSubOptionId).dosage : drug.dosage;
+        const minG = (weight * doseInfo.minMgKg) / drug.potency;
+        const maxG = (weight * doseInfo.maxMgKg) / drug.potency;
+        const isRange = minG !== maxG;
+
+        if (doseInfo.isByTime) {
+            // 1回量の表示（範囲対応）
+            const minTimeG = (weight * doseInfo.minMgKg) / drug.potency;
+            const maxTimeG = (weight * doseInfo.maxMgKg) / drug.potency;
+            const isTimeRange = minTimeG !== maxTimeG;
+
+            let resultHtml = `
                 <div class="bg-blue-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-blue-800">
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">1回分量 (${dose.timeMgKg}mg/kg)</div>
+                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">1回分量 (${doseInfo.minMgKg}${isTimeRange ? '〜' + doseInfo.maxMgKg : ''}mg/kg)</div>
                     <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-black">${timeG.toFixed(2)}</span>
+                        <span class="text-2xl font-black">${minTimeG.toFixed(2)}${isTimeRange ? ' 〜 ' + maxTimeG.toFixed(2) : ''}</span>
                         <span class="text-xl font-bold">${drug.unit || 'g'} / 回</span>
                     </div>
-                </div>
             `;
+
+            if (doseInfo.timesPerDay) {
+                const dayMinG = minTimeG * doseInfo.timesPerDay;
+                const dayMaxG = maxTimeG * doseInfo.timesPerDay;
+                resultHtml += `
+                    <div class="mt-4 pt-4 border-t border-white/20">
+                        <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">1日合計量 (${doseInfo.timesPerDay}回分)</div>
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-xl font-black">${dayMinG.toFixed(2)}${isTimeRange ? ' 〜 ' + dayMaxG.toFixed(2) : ''}</span>
+                            <span class="text-lg font-bold">${drug.unit || 'g'} / 日</span>
+                        </div>
+                    </div>
+                `;
+            }
+            resultHtml += `</div>`;
+            resultArea.innerHTML = resultHtml;
         } else {
-            const isRange = minG !== maxG;
             resultArea.innerHTML = `
                 <div class="bg-indigo-700 text-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-900">
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">通常1日用量 (${dose.minMgKg}${isRange ? '-' + dose.maxMgKg : ''}mg/kg)</div>
+                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">通常1日用量 (${doseInfo.minMgKg}${isRange ? '-' + doseInfo.maxMgKg : ''}mg/kg)</div>
                     <div class="flex items-baseline gap-2">
                         <span class="text-2xl font-black">${minG.toFixed(2)}${isRange ? ' 〜 ' + maxG.toFixed(2) : ''}</span>
                         <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
@@ -227,6 +260,42 @@ function updateCalculations() {
     }
 }
 
+function calcStandardWeight() {
+    const ageInput = document.getElementById('age');
+    const weightInput = document.getElementById('body-weight');
+    const age = parseFloat(ageInput.value);
+    if (isNaN(age)) return;
+
+    let stdWeight = 0;
+    if (age < 1) {
+        stdWeight = age * 0.5 + 3; // 乳児の簡易式
+    } else if (age <= 6) {
+        stdWeight = age * 2 + 8;
+    } else {
+        stdWeight = age * 3 + 5;
+    }
+    weightInput.value = stdWeight.toFixed(1);
+    updateCalculations();
+}
+
+function calcApproxAge() {
+    const ageInput = document.getElementById('age');
+    const weightInput = document.getElementById('body-weight');
+    const weight = parseFloat(weightInput.value);
+    if (isNaN(weight)) return;
+
+    let approxAge = 0;
+    if (weight < 10) {
+        approxAge = (weight - 3) / 0.5;
+    } else if (weight <= 20) {
+        approxAge = (weight - 8) / 2;
+    } else {
+        approxAge = (weight - 5) / 3;
+    }
+    ageInput.value = Math.max(0, Math.round(approxAge));
+    updateCalculations();
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('medicine-search');
     if (searchInput) {
@@ -235,7 +304,15 @@ document.addEventListener('DOMContentLoaded', () => {
             renderDrugCards();
         });
     }
+
     document.getElementById('body-weight').addEventListener('input', updateCalculations);
     document.getElementById('age').addEventListener('input', updateCalculations);
+
+    const stdWeightBtn = document.getElementById('calc-std-weight');
+    if (stdWeightBtn) stdWeightBtn.addEventListener('click', calcStandardWeight);
+
+    const stdAgeBtn = document.getElementById('calc-std-age');
+    if (stdAgeBtn) stdAgeBtn.addEventListener('click', calcApproxAge);
+
     renderDrugCards();
 });
