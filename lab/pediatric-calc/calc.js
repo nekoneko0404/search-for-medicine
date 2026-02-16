@@ -367,12 +367,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6135001R2110",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6135001R2110?user=1",
         potency: 100,
+        piSnippetSource: "通常1日40〜120mg/kg(製剤0.1〜0.3g/kg)を3〜4回に分けて経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 40,
+            maxMgKg: 120,
+            timesPerDay: 4,
+            note: "通常1日40〜120mg/kgを3〜4回。1日最大2g。"
         },
-        piSnippet: ""
+        piSnippet: "通常1日40〜120mg/kg(製剤0.1〜0.3g/kg)を3〜4回に分けて経口投与する。"
     },
     {
         id: "yj-6152005D1094",
@@ -380,12 +382,16 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6152005D1094",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6152005D1094?user=1",
         potency: 100,
+        piSnippetSource: "通常、初回1回2mg/kg(力価)とし、以後1mg/kg(力価)を12時間ごとに経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 2,
+            maxMgKg: 2,
+            isByTime: true,
+            timeMgKg: 1,
+            timesPerDay: 2,
+            note: "初回の服用から12時間後に、以後12時間ごとの服用を開始すること。"
         },
-        piSnippet: ""
+        piSnippet: "通常、初回1回2mg/kg(力価)とし、以後1mg/kg(力価)を12時間ごとに服用する。"
     },
     {
         id: "yj-6250021R1024",
@@ -431,26 +437,35 @@ const PEDIATRIC_DRUGS = [
         name: "オセルタミビルDS3%「サワイ」",
         yjCode: "6250021R1032",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250021R1032?user=1",
-        potency: 100,
+        potency: 30,
+        piSnippetSource: "通常1回2mg/kg（製剤として66.7mg/kg）を1日2回、5日間経口投与する。ただし、1回最高用量は75mg（オセルタミビルとして）とする。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 4,
+            maxMgKg: 4,
+            isByTime: true,
+            timeMgKg: 2,
+            timesPerDay: 2,
+            absoluteMaxMgPerTime: 75,
+            note: "1回2mg/kgを1日2回、5日間。最大1回75mg。"
         },
-        piSnippet: ""
+        piSnippet: "通常1回2mg/kg（製剤として66.7mg/kg）を1日2回、5日間服用する。最大1回75mg。"
     },
     {
         id: "yj-6250002D1024",
         name: "ゾビラックス顆粒40%",
         yjCode: "6250002D1024",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250002D1024?user=1",
-        potency: 100,
+        potency: 400,
+        piSnippetSource: "通常、1回20mg/kgを1日4回経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 80,
+            maxMgKg: 80,
+            isByTime: true,
+            timeMgKg: 20,
+            timesPerDay: 4,
+            note: "通常1回20mg/kg(アシクロビルとして)を1日4回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1回20mg/kgを1日4回経口投与する。"
     },
     {
         id: "yj-4490020R1027",
@@ -483,13 +498,17 @@ const PEDIATRIC_DRUGS = [
         name: "セチリジン塩酸塩DS1.25%「タカタ」",
         yjCode: "4490020R1035",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490020R1035?user=1",
-        potency: 100,
+        potency: 12.5,
+        calcType: "fixed-age",
+        fixedDoses: [
+            { ageMin: 2, ageMax: 7, dose: 0.2, unit: "g", label: "2-7歳未満" },
+            { ageMin: 7, ageMax: 15, dose: 0.4, unit: "g", label: "7-15歳未満" }
+        ],
+        piSnippetSource: "通常、1回量として、2歳以上7歳未満の小児には0.2g、7歳以上15歳未満の小児には0.4gを1日2回経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "2-7歳未満:0.2g、7歳-15歳未満:0.4gを1日2回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、2歳以上7歳未満：1回0.2g、7歳以上15歳未満：1回0.4gを1日2回。"
     },
     {
         id: "yj-4490023R2027",
@@ -548,13 +567,18 @@ const PEDIATRIC_DRUGS = [
         name: "ザイザルシロップ0.05%",
         yjCode: "4490028Q1028",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490028Q1028?user=1",
-        potency: 100,
+        potency: 0.5,
+        unit: "mL",
+        calcType: "fixed-age",
+        fixedDoses: [
+            { ageMin: 0.5, ageMax: 1, dose: 2.5, unit: "mL", label: "6ヶ月-1歳未満(1日1回)" },
+            { ageMin: 1, ageMax: 15, dose: 2.5, unit: "mL", label: "1歳-15歳未満(1日2回)" }
+        ],
+        piSnippetSource: "通常、1回量として、6ヶ月以上1歳未満には2.5mLを1日1回。1歳以上15歳未満には2.5mLを1日2回経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "6ヶ月-1歳未満:2.5mL(1回)、1歳-15歳未満:2.5mL(2回)。"
         },
-        piSnippet: ""
+        piSnippet: "6ヶ月以上1歳未満：2.5mLを1日1回。1歳以上15歳未満：2.5mLを1日2回服用する。"
     },
     {
         id: "yj-4490025D1022",
@@ -709,14 +733,14 @@ const PEDIATRIC_DRUGS = [
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2223001B1210?user=1",
         potency: 100,
         calcType: "age",
-        adultDose: 90,
-        unit: "mg",
+        adultDose: 0.9,
+        unit: "g",
         isAdultOnly: true,
-        piSnippetSource: "通常、成人には1回15〜30mgを1日1〜4回経口投与。年齢、症状により適宜増減する。",
+        piSnippetSource: "通常、成人には1回0.15〜0.3g（デキストロメトルファン臭化水素酸塩水和物として15〜30mg）を1日1〜4回経口投与する。なお、年齢、症状により適宜増減する。",
         dosage: {
-            note: "添付文書に小児用量なし。Augsberger式算定。"
+            note: "添付文書に小児用量なし。成人量0.9g/日(平均)を基準にAugsberger式で算出。"
         },
-        piSnippet: "通常、成人には1回15〜30mgを1日1〜4回経口投与。年齢、症状により適宜増減する。"
+        piSnippet: "通常、成人には1回0.15〜0.3gを1日1〜4回経口投与。なお、年齢、症状により適宜増減する。"
     },
     {
         id: "yj-2259002R1061",
@@ -740,26 +764,32 @@ const PEDIATRIC_DRUGS = [
         name: "ツロブテロールDS0.1%「タカタ」",
         yjCode: "2259002R1118",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2259002R1118?user=1",
-        potency: 100,
+        potency: 1,
+        piSnippetSource: "通常、小児には1回体重1kgあたり本剤0.02g（ツロブテロールとして0.02mg）を1日2回経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 0.04,
+            maxMgKg: 0.04,
+            isByTime: true,
+            timeMgKg: 0.02,
+            timesPerDay: 2,
+            note: "通常1回0.02mg/kg(製剤0.02g/kg)を2回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、小児には1回体重1kgあたり0.02g(ツロブテロールとして0.02mg)を1日2回服用する。"
     },
     {
         id: "yj-2251001D1061",
         name: "テオドールドライシロップ20%",
         yjCode: "2251001D1061",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2251001D1061?user=1",
-        potency: 100,
+        potency: 200,
+        piSnippetSource: "通常、1日回1kgあたり8〜20mgを2回に分けて、朝及び夕食後に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 8,
+            maxMgKg: 20,
+            timesPerDay: 2,
+            note: "通常1日8〜20mg/kg(製剤40〜100mg/kg)を2回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1日1kgあたり8〜20mgを2回に分けて服用する。"
     },
     {
         id: "yj-2254001D1030",
@@ -803,39 +833,51 @@ const PEDIATRIC_DRUGS = [
         name: "シングレア細粒4mg",
         yjCode: "4490026C1030",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490026C1030?user=1",
-        potency: 100,
+        potency: 4,
+        unit: "g",
+        calcType: "fixed-age",
+        fixedDoses: [
+            { ageMin: 1, ageMax: 6, dose: 1.0, unit: "g", label: "1歳以上6歳未満(4mg)" }
+        ],
+        piSnippetSource: "1歳以上6歳未満の小児：通常、1日1回1包（モンテルカストとして4mg）を就寝前に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "1歳以上6歳未満：1日1回1包(1g/4mg)。"
         },
-        piSnippet: ""
+        piSnippet: "1歳以上6歳未満：1日1回1包（4mg）を就寝前に経口投与する。"
     },
     {
         id: "yj-4490026C1021",
         name: "キプレス細粒4mg",
         yjCode: "4490026C1021",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490026C1021?user=1",
-        potency: 100,
+        potency: 4,
+        unit: "g",
+        calcType: "fixed-age",
+        fixedDoses: [
+            { ageMin: 1, ageMax: 6, dose: 1.0, unit: "g", label: "1歳以上6歳未満(4mg)" }
+        ],
+        piSnippetSource: "1歳以上6歳未満の小児：通常、1日1回1包（モンテルカストとして4mg）を就寝前に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "1歳以上6歳未満：1日1回1包(1g/4mg)。"
         },
-        piSnippet: ""
+        piSnippet: "1歳以上6歳未満：1日1回1包（4mg）を就寝前に経口投与する。"
     },
     {
         id: "yj-4490026C1129",
         name: "モンテルカスト細粒4mg「タカタ」",
         yjCode: "4490026C1129",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490026C1129?user=1",
-        potency: 100,
+        potency: 4,
+        unit: "g",
+        calcType: "fixed-age",
+        fixedDoses: [
+            { ageMin: 1, ageMax: 6, dose: 1.0, unit: "g", label: "1歳以上6歳未満(4mg)" }
+        ],
+        piSnippetSource: "1歳以上6歳未満の小児：通常、1日1回1包（モンテルカストとして4mg）を就寝前に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "1歳以上6歳未満：1日1回1包(1g/4mg)。"
         },
-        piSnippet: ""
+        piSnippet: "1歳以上6歳未満：1日1回1包（4mg）を就寝前に経口投与する。"
     },
     {
         id: "yj-4490017R1033",
@@ -843,12 +885,16 @@ const PEDIATRIC_DRUGS = [
         yjCode: "4490017R1033",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490017R1033?user=1",
         potency: 100,
+        piSnippetSource: "通常、小児には1回体重1kgあたり本剤0.07g（プランルカスト水和物として7mg）を1日2回、朝食後及び夕食後に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 14,
+            maxMgKg: 14,
+            isByTime: true,
+            timeMgKg: 7,
+            timesPerDay: 2,
+            note: "通常1回7mg/kg(製剤0.07g/kg)を2回。1日14mg/kg。"
         },
-        piSnippet: ""
+        piSnippet: "通常、小児には1回体重1kgあたり0.07g（プランルカストとして7mg）を1日2回服用する。"
     },
     {
         id: "yj-1141007C1075",
@@ -907,13 +953,15 @@ const PEDIATRIC_DRUGS = [
         name: "ブルフェン顆粒20%",
         yjCode: "1149001D1160",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1149001D1160?user=1",
-        potency: 100,
+        potency: 200,
+        piSnippetSource: "通常、小児には1日量本剤0.1〜0.15g/kg（イブプロフェンとして20〜30mg/kg）を3回に分けて経口投与する。なお、年齢、症状により適宜増減する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 20,
+            maxMgKg: 30,
+            timesPerDay: 3,
+            note: "1日量20〜30mg/kg(製剤0.1〜0.15g/kg)を3回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、小児には1日量0.1〜0.15g/kg（イブプロフェンとして20〜30mg/kg）を3回に分けて服用する。"
     },
     {
         id: "yj-1180107D1131",
@@ -950,12 +998,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "2316009C1026",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2316009C1026?user=1",
         potency: 100,
+        calcType: "age",
+        adultDose: 1.5,
+        unit: "g",
+        piSnippetSource: "通常1日0.3〜1.5gを3回に分割経口投与する。なお、年齢、症状により適宜増減する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "目安1日0.3〜1.5g(3回)。"
         },
-        piSnippet: ""
+        piSnippet: "通常1日0.3〜1.5gを3回に分割経口投与する。"
     },
     {
         id: "yj-2316014B1030",
@@ -963,25 +1013,30 @@ const PEDIATRIC_DRUGS = [
         yjCode: "2316014B1030",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2316014B1030?user=1",
         potency: 100,
+        calcType: "age",
+        adultDose: 3,
+        unit: "g",
+        piSnippetSource: "通常、1日2〜3gを3回に分割経口投与する。なお、年齢、症状により適宜増減する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "目安1日2〜3g(3回)。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1日2〜3gを3回に分割経口投与する。"
     },
     {
         id: "yj-2399005R1163",
         name: "ナウゼリンドライシロップ1%",
         yjCode: "2399005R1163",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2399005R1163?user=1",
-        potency: 100,
+        potency: 10,
+        piSnippetSource: "通常、小児には1日ドンペリドンとして1.0〜2.0mg/kg（本剤0.1〜0.2g/kg）を3回に分けて食前に経口投与する。なお、年齢、体重、症状により適宜増減する。ただし、1日最大投与量は30mg（本剤3g）を限度とする。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 1,
+            maxMgKg: 2,
+            timesPerDay: 3,
+            absoluteMaxMgPerDay: 30,
+            note: "1日1〜2mg/kg(製剤0.1〜0.2g/kg)を3回食前。最大30mg(3g)。"
         },
-        piSnippet: ""
+        piSnippet: "通常、小児には1日1.0〜2.0mg/kg（製剤0.1〜0.2g/kg）を3回に分けて食前に経口投与する。"
     },
     {
         id: "yj-2331004B1046",
@@ -989,38 +1044,45 @@ const PEDIATRIC_DRUGS = [
         yjCode: "2331004B1046",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2331004B1046?user=1",
         potency: 100,
+        calcType: "age",
+        adultDose: 6,
+        unit: "g",
+        piSnippetSource: "通常、1日3〜6gを3回に分割経口投与する。なお、年齢、症状により適宜増減する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "1日3〜6g(3回)。隔日投与可。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1日3〜6gを3回に分割して服用する。"
     },
     {
         id: "yj-3222012Q1030",
         name: "インクレミンシロップ5%",
         yjCode: "3222012Q1030",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/3222012Q1030?user=1",
-        potency: 100,
+        potency: 6,
+        unit: "mL",
+        piSnippetSource: "通常、小児には1日0.1〜0.3mL/kg（鉄として2〜6mg/kg）を3回に分けて食後に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 2,
+            maxMgKg: 6,
+            timesPerDay: 3,
+            note: "1日0.1〜0.3mL/kg(鉄として2〜6mg/kg)を3回。食後。"
         },
-        piSnippet: ""
+        piSnippet: "通常、小児には1日鉄として2〜6mg/kg（本剤0.1〜0.3mL/kg）を3回に分けて服用する。"
     },
     {
         id: "yj-1139010R1020",
         name: "イーケプラドライシロップ50%",
         yjCode: "1139010R1020",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1139010R1020?user=1",
-        potency: 100,
+        potency: 500,
+        piSnippetSource: "通常、4歳以上の小児には1日20mg/kg(製剤0.04g/kg)を2回に分けて経口投与する。症状により1日60mg/kg(製剤0.12g/kg)を超えない範囲で増減する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 20,
+            maxMgKg: 60,
+            timesPerDay: 2,
+            note: "通常1日20mg/kg(製剤0.04g/kg)を2回。最大1日60mg/kg。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1日20mg/kg(製剤0.04g/kg)を2回に分けて服用する。最大1日60mg/kg。"
     },
     {
         id: "yj-1139004C2061",
@@ -1028,12 +1090,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "1139004C2061",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1139004C2061?user=1",
         potency: 100,
+        piSnippetSource: "通常1日15mg/kgを1〜3回に分けて経口投与する。なお、年齢・症状により適宜増減するが、通常1日20〜30mg/kgまでとする。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 15,
+            maxMgKg: 30,
+            timesPerDay: 2,
+            note: "通常1日15mg/kgを1〜3回。標準1日20〜30mg/kg。"
         },
-        piSnippet: ""
+        piSnippet: "通常1日15mg/kgを1〜3回に分けて服用する。標準1日20〜30mg/kg。"
     },
     {
         id: "yj-5200139D1037",
@@ -1043,6 +1107,7 @@ const PEDIATRIC_DRUGS = [
         calcType: "age",
         adultDose: 7.5,
         unit: "g",
+        isKampo: true,
         piSnippetSource: "通常1日7.5gを2〜3回。年齢、体重、症状により適宜増減する(Augsberger式等)。",
         dosage: {
             note: "Augsberger式。7.5g/日基準。"
@@ -1054,26 +1119,30 @@ const PEDIATRIC_DRUGS = [
         name: "葛根湯エキス顆粒",
         yjCode: "5200013D1123",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200013D1123?user=1",
-        potency: 100,
+        calcType: "age",
+        adultDose: 7.5,
+        unit: "g",
+        isKampo: true,
+        piSnippetSource: "通常、成人1日7.5gを2〜3回に分割し、食前又は食間に経口投与。小児は年齢に基づき減量。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "成人1日7.5gを基準に算定。"
         },
-        piSnippet: ""
+        piSnippet: "通常、成人1日7.5gを2〜3回に分割し、食前又は食間に経口投与する。"
     },
     {
         id: "yj-5200072D1058",
         name: "小建中湯エキス顆粒",
         yjCode: "5200072D1058",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200072D1058?user=1",
-        potency: 100,
+        calcType: "age",
+        adultDose: 15,
+        unit: "g",
+        isKampo: true,
+        piSnippetSource: "通常、成人1日15.0gを2〜3回に分割し、経口投与する。小児は年齢に基づき減量。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            note: "成人1日15.0gを基準に算定。"
         },
-        piSnippet: ""
+        piSnippet: "通常、成人1日15.0gを2〜3回に分割し、経口投与する。"
     },
     {
         id: "yj-6139100R1036",
@@ -1137,26 +1206,32 @@ const PEDIATRIC_DRUGS = [
         name: "テオフィリン徐放ドライシロップ小児用20％「サワイ」",
         yjCode: "2251001R1123",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2251001R1123?user=1",
-        potency: 100,
+        potency: 200,
+        piSnippetSource: "通常、1日回1kgあたり8〜20mg(製剤40〜100mg)を2回に分けて、朝及び夕食後に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 8,
+            maxMgKg: 20,
+            timesPerDay: 2,
+            note: "通常1日8〜20mg/kg(製剤40〜100mg/kg)を2回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1日1kgあたり8〜20mg(製剤40〜100mg)を2回に分けて服用する。"
     },
     {
         id: "yj-4490005R1448",
         name: "オキサトミドDS小児用2％「サワイ」",
         yjCode: "4490005R1448",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490005R1448?user=1",
-        potency: 100,
+        potency: 20,
+        piSnippetSource: "通常、1歳以上の小児には1回体重1kgあたり0.5mg(製剤25mg)を1日2回、朝食後及び寝前に経口投与する。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 1,
+            maxMgKg: 1,
+            isByTime: true,
+            timeMgKg: 0.5,
+            timesPerDay: 2,
+            note: "通常1回0.5mg/kg(製剤25mg/kg)を2回。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1歳以上の小児には1回体重1kgあたり0.5mgを1日2回服用する。"
     },
     {
         id: "yj-6132016C1132",
@@ -1196,12 +1271,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6132015C1090",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132015C1090?user=1",
         potency: 100,
+        piSnippetSource: "通常、小児には1回3mg/kg(力価)を1日3回経口投与する。なお、年齢、体重、症状等により適宜増減するが、増量は1回6mg/kg(力価)までとする。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 9,
+            maxMgKg: 18,
+            timesPerDay: 3,
+            note: "通常1回3mg/kgを1日3回。増量時1回6mg/kg。"
         },
-        piSnippet: ""
+        piSnippet: "通常、1回3mg/kgを1日3回服用する。最大1回6mg/kgまで増量可。"
     },
     {
         id: "yj-2233002Q1159",
@@ -1243,7 +1320,7 @@ function renderDrugCards() {
     }
     container.innerHTML = filteredDrugs.map(d => `
         <div class="drug-card ${selectedDrugId === d.id ? 'active' : ''}" data-id="${d.id}">
-            <div class="potency-tag">${d.calcType === 'age' ? '漢方' : (d.calcType === 'fixed-age' ? '固定' : (d.potency >= 100 ? (d.potency / 10).toFixed(1) + '%' : d.potency + (d.unit || 'mg') + '/g'))}</div>
+            <div class="potency-tag">${d.isKampo ? '漢方' : (d.calcType === 'fixed-age' ? '固定' : (d.potency >= 100 ? (d.potency / 10).toFixed(1) + '%' : d.potency + (d.unit || 'mg') + '/g'))}</div>
             <h3 class="line-clamp-2">${d.name}</h3>
             <div class="text-[7px] text-gray-400 mt-auto font-mono opacity-60">YJ: ${d.yjCode}</div>
         </div>
@@ -1382,18 +1459,18 @@ function updateCalculations() {
                     <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}</div>
                     <div class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">体重区分: ${found.label}</div>
                     <div class="flex flex-col gap-4">
-                        <div class="bg-white/10 p-4 rounded-lg">
+                        <div class="bg-white/10 p-3 rounded-lg opacity-80 border border-white/5">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1回量 (目安)</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-black">${formatDose(dailyDose / tpd, drug)}</span>
-                                <span class="text-xl font-bold">${found.unit} / 回</span>
+                                <span class="text-xl font-black">${formatDose(dailyDose / tpd, drug)}</span>
+                                <span class="text-lg font-bold">${found.unit} / 回</span>
                             </div>
                         </div>
-                        <div class="bg-white/10 p-2 px-3 rounded-lg">
-                            <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
+                        <div class="bg-white/20 p-4 rounded-lg ring-1 ring-white/30">
+                            <div class="text-[10px] font-black opacity-90 mb-1 tracking-wider">1日合計量</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${formatDose(dailyDose, drug)}</span>
-                                <span class="text-base font-bold">${found.unit} / 日</span>
+                                <span class="text-3xl font-black">${formatDose(dailyDose, drug)}</span>
+                                <span class="text-xl font-bold">${found.unit} / 日</span>
                             </div>
                         </div>
                     </div>
@@ -1427,15 +1504,15 @@ function updateCalculations() {
                         <div class="bg-white/10 p-3 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-black">${formatDose(displayDosePerTime, drug)}</span>
-                                <span class="text-xl font-bold">${drug.unit || 'g'} / 回</span>
+                                <span class="text-xl font-black">${formatDose(displayDosePerTime, drug)}</span>
+                                <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
                             </div>
                         </div>
                         <div class="bg-white/10 p-2 px-3 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量 (${info.timesPerDay || '1-3'}回)</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${formatDose(dailyTotal, drug)}</span>
-                                <span class="text-base font-bold">${drug.unit || 'g'} / 日</span>
+                                <span class="text-3xl font-black">${formatDose(dailyTotal, drug)}</span>
+                                <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
                             </div>
                         </div>
                     </div>
@@ -1500,18 +1577,18 @@ function updateCalculations() {
                     ${badgeHtml}
                 </div>
                 <div class="flex flex-col gap-3">
-                    <div class="bg-white/10 p-3 rounded-lg border border-white/10">
+                    <div class="bg-white/10 p-3 rounded-lg opacity-80 border border-white/5">
                         <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-3xl font-black">${formatDose(minGPerTime, drug)}${isRange ? '〜' + formatDose(maxGPerTime, drug) : ''}</span>
-                            <span class="text-xl font-bold">${drug.unit || 'g'} / 回</span>
+                            <span class="text-xl font-black">${formatDose(minGPerTime, drug)}${isRange ? '〜' + formatDose(maxGPerTime, drug) : ''}</span>
+                            <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
                         </div>
                     </div>
-                    <div class="bg-white/10 p-2 px-3 rounded-lg">
-                        <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
+                    <div class="bg-white/20 p-4 rounded-lg ring-1 ring-white/30">
+                        <div class="text-[10px] font-black opacity-90 mb-1 tracking-wider">1日合計量</div>
                         <div class="flex items-baseline gap-1">
-                            <span class="text-xl font-black">${formatDose(dailyMinG, drug)}${isRange ? '〜' + formatDose(dailyMaxG, drug) : ''}</span>
-                            <span class="text-base font-bold">${drug.unit || 'g'} / 日</span>
+                            <span class="text-3xl font-black">${formatDose(dailyMinG, drug)}${isRange ? '〜' + formatDose(dailyMaxG, drug) : ''}</span>
+                            <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
                         </div>
                     </div>
                 </div>
