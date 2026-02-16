@@ -109,14 +109,15 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6131001C2100",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6131001C2100?user=1",
         potency: 200,
-        piSnippetSource: "通常1日20〜40mg/kgを3〜4回。1日最大90mg/kg(成人最大2g)を超えないこと。",
+        piSnippetSource: "通常1日20〜40mg/kgを3〜4回。1日最大90mg/kg(成人最大2000mg)を超えないこと。",
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
             absoluteMaxMgKg: 90,
-            note: "1日最大90mg/kg。"
+            absoluteMaxMgPerDay: 2000,
+            note: "1日最大90mg/kg。成人最大2000mg。"
         },
-        piSnippet: "通常1日20〜40mg/kgを3〜4回。1日最大90mg/kg(成人最大2g)を超えないこと。"
+        piSnippet: "通常1日20〜40mg/kgを3〜4回。1日最大90mg/kg(成人最大2000mg)を超えないこと。"
     },
     {
         id: "yj-6131001C1228",
@@ -239,10 +240,11 @@ const PEDIATRIC_DRUGS = [
             }
         ],
         dosage: {
+            timesPerDay: 1,
             note: "1日1回10mg/kg(最大500mg)を3日間。15kg以上は段階的用量設定。"
         },
-        piSnippetSource: "1日1回10mg/kgを3日間投与。最大500mg。体重15kg以上の小児には専用の用量設定表がある。",
-        piSnippet: "1日1回10mg/kgを3日間投与。最大500mg。体重15kg以上の小児には専用の用量設定表がある。"
+        piSnippetSource: "通常、1日1回10mg/kgを3日間経口投与する。最大量として成人の1日量500mgを超えない。また、体重15kg以上の小児には専用の用量設定表がある。",
+        piSnippet: "通常、1日1回10mg/kgを3日間経口投与する。最大量として成人の1日量500mgを超えない。また、体重15kg以上の小児には専用の用量設定表がある。"
     },
     {
         id: "yj-6149004C1048",
@@ -254,8 +256,9 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 10,
             maxMgKg: 10,
+            timesPerDay: 1,
             absoluteMaxMgPerDay: 500,
-            note: "1日1回10mg/kg(最大500mg)を3日間。"
+            note: "通常1日1回10mg/kg(最大500mg)を3日間。"
         },
         piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
     },
@@ -269,10 +272,11 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 10,
             maxMgKg: 10,
+            timesPerDay: 1,
             absoluteMaxMgPerDay: 500,
-            note: "1日1回10mg/kg(最大500mg)を3日間。"
+            note: "通常1日1回10mg/kg(最大500mg)を3日間。"
         },
-        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
+        piSnippet: "通常1日1回10mg/kgを3日間投与. 最大500mg。"
     },
     {
         id: "yj-6149004C1102",
@@ -284,8 +288,9 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 10,
             maxMgKg: 10,
+            timesPerDay: 1,
             absoluteMaxMgPerDay: 500,
-            note: "1日1回10mg/kg(最大500mg)を3日間。"
+            note: "通常1日1回10mg/kg(最大500mg)を3日間。"
         },
         piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
     },
@@ -294,13 +299,16 @@ const PEDIATRIC_DRUGS = [
         name: "エリスロシンドライシロップW20%",
         yjCode: "6141001R2053",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6141001R2053?user=1",
-        potency: 100,
+        potency: 200,
+        piSnippetSource: "小児には1日体重1kgあたり25〜50mg(力価)を4〜6回に分割経口投与。なお、年齢、症状により適宜増減する。ただし、小児用量は成人量(1日800〜1200mg)を上限とする。",
         dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            note: "用量データ未設定"
+            minMgKg: 25,
+            maxMgKg: 50,
+            timesPerDay: 4,
+            absoluteMaxMgPerDay: 800,
+            note: "1日25〜50mg/kgを4〜6回。成人量(800-1200mg)を上限とする。"
         },
-        piSnippet: ""
+        piSnippet: "小児には1日体重1kgあたり25〜50mg(力価)を4〜6回に分割経口投与。なお、年齢、症状により適宜増減する。ただし、小児用量は成人量(1日800〜1200mg)を上限とする。"
     },
     {
         id: "yj-6241010C1024",
@@ -1339,6 +1347,7 @@ function updateCalculations() {
         ` : '';
         resultArea.innerHTML = `
             <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-800">
+                <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}</div>
                 <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">Augsberger式算出 (${age}歳 | 成人量の${(factor * 100).toFixed(0)}%)</div>
                 ${augLabel}
                 <div class="flex items-baseline gap-2">
@@ -1366,15 +1375,17 @@ function updateCalculations() {
     } else if (drug.calcType === 'weight-step') {
         const found = drug.weightSteps.find(ws => weight >= ws.weightMin && weight < ws.weightMax);
         if (found) {
-            let dailyDose = found.isPerKg ? (weight * found.dose) : found.dose;
+            const dailyDose = found.isPerKg ? (weight * found.dose) : found.dose;
+            const tpd = drug.dosage?.timesPerDay || 2;
             resultArea.innerHTML = `
-                <div class="bg-emerald-600 text-white p-5 rounded-xl shadow-lg border-b-4 border-emerald-800">
-                    <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">体重区分: ${found.label}</div>
-                    <div class="flex flex-col gap-3">
-                        <div class="bg-white/10 p-3 rounded-lg">
+                <div class="bg-emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
+                    <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}</div>
+                    <div class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">体重区分: ${found.label}</div>
+                    <div class="flex flex-col gap-4">
+                        <div class="bg-white/10 p-4 rounded-lg">
                             <div class="text-[9px] font-bold opacity-80 mb-1">1回量 (目安)</div>
                             <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-black">${formatDose(dailyDose / 2, drug)}</span>
+                                <span class="text-3xl font-black">${formatDose(dailyDose / tpd, drug)}</span>
                                 <span class="text-xl font-bold">${found.unit} / 回</span>
                             </div>
                         </div>
@@ -1410,6 +1421,7 @@ function updateCalculations() {
 
             resultArea.innerHTML = `
                 <div class="bg-sky-600 text-white p-5 rounded-xl shadow-lg border-b-4 border-sky-800">
+                    <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}</div>
                     <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">${branch.label}</div>
                     <div class="flex flex-col gap-3">
                         <div class="bg-white/10 p-3 rounded-lg">
@@ -1482,6 +1494,7 @@ function updateCalculations() {
 
         resultArea.innerHTML = `
             <div class="bg-indigo-700 text-white p-5 rounded-xl shadow-lg border-b-4 border-indigo-900 transition-all duration-300">
+                <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}</div>
                 <div class="flex flex-col mb-2">
                     <div class="text-[10px] font-black uppercase tracking-widest opacity-80">体重あたり計算 (1日${tpd}回)</div>
                     ${badgeHtml}
