@@ -11,41 +11,65 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         .calc-container {
-            max-width: 1000px;
-            margin: 2rem auto;
-            padding: 0 5%;
+            max-width: 1400px;
+            margin: 1rem auto;
+            padding: 0 2%;
+        }
+
+        .main-split-layout {
+            display: grid;
+            grid-template-columns: 1fr 450px;
+            gap: 2rem;
+            height: calc(100vh - 120px);
+            align-items: stretch;
+        }
+
+        .left-pane {
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .right-pane {
+            position: sticky;
+            top: 0;
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            height: fit-content;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
 
         .drug-selector-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 1rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 2rem;
         }
 
         .drug-card {
             background: #fff;
-            border: 2px solid #e2e8f0;
-            padding: 1.5rem;
-            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.25rem;
             position: relative;
         }
 
         .drug-card:hover {
             border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+            background: #fdfdff;
+            transform: translateY(-1px);
         }
 
         .drug-card.active {
             border-color: #4338ca;
             background: #f5f7ff;
-            box-shadow: 0 0 0 4px rgba(67, 56, 202, 0.1);
+            box-shadow: inset 0 0 0 1px #4338ca;
         }
 
         .drug-card.active::after {
@@ -53,33 +77,29 @@
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
             position: absolute;
-            top: 1rem;
-            right: 1rem;
+            top: 0.5rem;
+            right: 0.5rem;
             color: #4338ca;
+            font-size: 0.8rem;
         }
 
         .drug-card h3 {
-            font-weight: 900;
-            font-size: 1.1rem;
+            font-weight: 800;
+            font-size: 0.85rem;
             color: #1a365d;
             margin: 0;
+            line-height: 1.3;
         }
 
         .drug-card .potency-tag {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
             color: #64748b;
-            background: #f1f5f9;
-            padding: 0.2rem 0.5rem;
-            border-radius: 4px;
+            background: #f8fafc;
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
             width: fit-content;
-        }
-
-        .calc-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-            align-items: start;
+            border: 1px solid #f1f5f9;
         }
 
         .hidden {
@@ -88,40 +108,31 @@
 
         .input-section {
             background: #fff;
-            border: 1px solid #e5e5e5;
-            padding: 2rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        .result-section {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            padding: 2rem;
-            border-radius: 12px;
-            position: sticky;
-            top: 100px;
+            padding: 1.25rem;
+            border-radius: 10px;
+            border: 1px solid #f1f5f9;
+            margin-bottom: 1rem;
         }
 
         .form-group {
-            margin-bottom: 2rem;
+            margin-bottom: 1.25rem;
         }
 
         label {
             display: block;
             font-weight: 800;
-            font-size: 0.875rem;
-            margin-bottom: 0.5rem;
-            color: #1a365d;
+            font-size: 0.75rem;
+            margin-bottom: 0.4rem;
+            color: #475569;
             text-transform: uppercase;
         }
 
         input[type="number"] {
             width: 100%;
-            padding: 1rem;
+            padding: 0.75rem;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 900;
             outline: none;
             transition: all 0.2s;
@@ -132,13 +143,39 @@
             box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
         }
 
-        @media (max-width: 768px) {
-            .calc-grid {
+        /* 検索窓のスタイル */
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        #drug-search {
+            padding-left: 2.5rem;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 1024px) {
+            .main-split-layout {
                 grid-template-columns: 1fr;
+                height: auto;
             }
 
-            .result-section {
+            .left-pane {
+                height: auto;
+                overflow: visible;
+            }
+
+            .right-pane {
                 position: static;
+                width: 100%;
             }
         }
     </style>
@@ -148,70 +185,97 @@
     <main-header base-dir="../../" active-page="lab"></main-header>
 
     <div class="calc-container">
-        <div class="mb-4">
-            <a href="../index.html" class="text-sm font-bold text-gray-400 hover:text-black transition">
-                <i class="fas fa-arrow-left"></i> Labメニューへ戻る
-            </a>
-        </div>
-
-        <header class="mb-8">
-            <h1 class="text-4xl font-black tracking-tight mb-2">小児用量力価計算</h1>
-            <p class="text-gray-500 font-bold">1. 薬剤を選択してください（前面配置）</p>
+        <header class="mb-4">
+            <div class="flex justify-between items-end">
+                <div>
+                    <h1 class="text-3xl font-black tracking-tight">小児用量力価計算</h1>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Pediatric Dosage Auditor
+                    </p>
+                </div>
+                <div class="mb-1">
+                    <a href="../index.html"
+                        class="text-[10px] font-black text-gray-400 hover:text-indigo-600 transition uppercase">
+                        <i class="fas fa-arrow-left"></i> Lab Menu
+                    </a>
+                </div>
+            </div>
         </header>
 
-        <!-- Front Menu: Drug Cards -->
-        <div id="drug-cards-container" class="drug-selector-grid">
-            <!-- populated by JS -->
-        </div>
-
-        <div id="calc-main-area" class="calc-grid hidden">
-            <section class="input-section">
-                <!-- Age-based Sub Options (e.g. Tamiflu) -->
-                <div id="sub-option-area" class="form-group hidden">
-                    <label class="text-indigo-600"><i class="fas fa-user-clock"></i> 3. 年齢区分を選択してください</label>
-                    <div id="sub-option-container" class="flex flex-wrap gap-2 mt-2">
-                        <!-- populated by JS -->
-                    </div>
+        <div class="main-split-layout">
+            <!-- Left Pane: Drug List -->
+            <div class="left-pane">
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="drug-search" placeholder="薬剤名またはYJコードで検索..."
+                        class="w-full bg-white border-2 border-slate-200 rounded-lg py-2 pl-10 pr-4 focus:border-indigo-500 transition-all font-bold">
                 </div>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="form-group relative">
-                        <label for="age" class="text-indigo-600">2. 年齢を入力してください (歳)</label>
-                        <div class="relative">
-                            <input type="number" id="age" value="" placeholder="例: 5" step="1" min="0" max="15">
-                            <button id="calc-std-weight"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 text-[10px] font-black px-2 py-1 rounded transition">標準体重</button>
+                <div id="drug-cards-container" class="drug-selector-grid">
+                    <!-- populated by JS -->
+                </div>
+
+                <div id="initial-guide"
+                    class="text-center py-12 bg-white border border-dashed border-slate-200 rounded-xl">
+                    <i class="fas fa-pills text-3xl text-slate-200 mb-2"></i>
+                    <p class="text-slate-400 text-xs font-bold">薬剤を選択して計算を開始</p>
+                </div>
+            </div>
+
+            <!-- Right Pane: Calculation Panel -->
+            <div class="right-pane">
+                <div id="calc-main-area" class="hidden">
+                    <section class="input-section">
+                        <!-- Age-based Sub Options (e.g. Tamiflu) -->
+                        <div id="sub-option-area" class="form-group hidden">
+                            <label class="text-indigo-600"><i class="fas fa-user-clock"></i> 1. 年齢区分</label>
+                            <div id="sub-option-container" class="flex flex-wrap gap-2 mt-1">
+                                <!-- populated by JS -->
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group relative">
-                        <label for="body-weight" class="text-blue-600">3. 体重を入力してください (kg)</label>
-                        <div class="relative">
-                            <input type="number" id="body-weight" value="" placeholder="例: 15.0" step="0.1" min="0">
-                            <button id="calc-std-age"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 bg-blue-100 hover:bg-blue-200 text-blue-700 text-[10px] font-black px-2 py-1 rounded transition">標準年齢</button>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="form-group relative">
+                                <label for="age" class="text-indigo-600">2. 年齢 (歳)</label>
+                                <div class="relative">
+                                    <input type="number" id="age" value="" placeholder="5" step="1" min="0" max="15">
+                                    <button id="calc-std-weight"
+                                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-[8px] font-black px-1.5 py-0.5 rounded transition">標準体重</button>
+                                </div>
+                            </div>
+                            <div class="form-group relative">
+                                <label for="body-weight" class="text-blue-600">3. 体重 (kg)</label>
+                                <div class="relative">
+                                    <input type="number" id="body-weight" value="" placeholder="15.0" step="0.1"
+                                        min="0">
+                                    <button id="calc-std-age"
+                                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-blue-50 hover:bg-blue-100 text-blue-600 text-[8px] font-black px-1.5 py-0.5 rounded transition">標準年齢</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+
+                        <div id="pi-container" class="mt-4">
+                            <!-- PI Citation Snippet added here by JS -->
+                        </div>
+                    </section>
+
+                    <section class="result-outer-section">
+                        <div id="result-area">
+                            <!-- Calculated Results (Ranges) added here by JS -->
+                        </div>
+
+                        <p
+                            class="text-[9px] text-red-500 font-bold mt-6 border-t border-slate-200 pt-3 leading-relaxed">
+                            ※本ツールは添付文書情報を基にした計算補助です。最終的な設計は医師・薬剤師の判断で行ってください。
+                        </p>
+                    </section>
                 </div>
 
-                <div id="pi-container">
-                    <!-- PI Citation Snippet added here by JS -->
+                <div id="empty-state-side"
+                    class="h-full flex flex-col items-center justify-center text-slate-300 py-20">
+                    <i class="fas fa-calculator text-5xl mb-4"></i>
+                    <p class="font-black text-sm">CALCULATION PANEL</p>
                 </div>
-            </section>
-
-            <section class="result-section">
-                <div id="result-area">
-                    <!-- Calculated Results (Ranges) added here by JS -->
-                </div>
-
-                <p class="text-[10px] text-red-500 font-bold mt-8 border-t pt-4">
-                    ※ 本ツールは添付文書情報を基にした計算補助であり、最終的な投与設計は医師・薬剤師の判断で行ってください。
-                </p>
-            </section>
-        </div>
-
-        <div id="initial-guide" class="text-center py-20 bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl">
-            <i class="fas fa-pills text-4xl text-gray-300 mb-4"></i>
-            <p class="text-gray-400 font-bold">上のカードから薬剤を選択すると計算が始まります</p>
+            </div>
         </div>
     </div>
 
