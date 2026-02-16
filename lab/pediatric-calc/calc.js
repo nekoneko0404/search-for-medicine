@@ -11,7 +11,7 @@ const PEDIATRIC_DRUGS = [
             note: "1日量を3〜4回に分割経口投与。1回用量の最大量は記載なし（通常、成人用量を超えない）。"
         },
         piSnippet: "通常、小児には1日20〜40mg（力価）/kgを3〜4回に分割経口投与する。なお、年齢、症状により適宜増減するが、1日量として最大90mg（力価）/kgを超えないこと。",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6131001C1252_1_10#HDR_InfoDoseAdmin"
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6131001C1252?user=1"
     },
     {
         id: "meiact-ms-fine-granules",
@@ -25,7 +25,7 @@ const PEDIATRIC_DRUGS = [
             note: "通常、1日9〜18mg（力価）/kgを3回に分割して経口投与する。増量が必要な場合は1回6mg/kg（1日18mg/kg）まで可能。"
         },
         piSnippet: "小児：通常、アモキシシリン水和物として1日9〜18mg（力価）/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減するが、1回6mg（力価）/kg、1日18mg（力価）/kgを上限とする。",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6132016C1020_1_13#HDR_InfoDoseAdmin"
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132016C1020?user=1"
     },
     {
         id: "tamiflu-ds",
@@ -63,7 +63,7 @@ const PEDIATRIC_DRUGS = [
                 piSnippet: "1歳未満の小児：通常、オセルタミビルとして1回3mg/kgを1日2回、5日間経口投与する。ただし、1回最高用量は75mgとする。"
             }
         ],
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6250021B1021_1_25#HDR_InfoDoseAdmin"
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250021B1021?user=1"
     },
     {
         id: "mucodyne-fine-granules",
@@ -77,7 +77,7 @@ const PEDIATRIC_DRUGS = [
             note: "通常、小児に1日量30mg/kgを3回に分割して経口投与する。"
         },
         piSnippet: "小児：通常、1日量30mg/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_2239001C1077_1_12#HDR_InfoDoseAdmin"
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2239001C1077?user=1"
     },
     {
         id: "kefral-fine-granules",
@@ -91,7 +91,7 @@ const PEDIATRIC_DRUGS = [
             note: "通常、1日20〜40mg（力価）/kgを3回に分割して経口投与する。重症等の場合には1日100mg/kgまで増量できる。"
         },
         piSnippet: "小児：通常、1日20〜40mg（力価）/kgを3回に分割して経口投与する。重症等の場合には1日100mg（力価）/kgまで増量できる。",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6132005C1021_1_05#HDR_InfoDoseAdmin"
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132005C1021?user=1"
     },
     {
         id: "zithromac-fine-granules",
@@ -108,7 +108,7 @@ const PEDIATRIC_DRUGS = [
             note: "1日1回10mg/kgを3日間経口投与する。1日量は成人最大量500mgを超えないこと。"
         },
         piSnippet: "小児：通常、1日1回、10mg（力価）/kgを3日間経口投与する。なお、1日量は成人での最大投与量500mg（力価）を超えないものとする。",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/780009_6149004C1025_1_18#HDR_InfoDoseAdmin"
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6149004C1025?user=1"
     }
 ];
 
