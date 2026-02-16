@@ -1349,17 +1349,22 @@ function updateCalculations() {
         if (found) {
             let dailyDose = found.isPerKg ? (weight * found.dose) : found.dose;
             resultArea.innerHTML = `
-                <div class="bg-emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">体重段階別用量 (${found.label})</div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-black">${dailyDose.toFixed(2)}</span>
-                        <span class="text-xl font-bold">${found.unit} / 日</span>
-                    </div>
-                    <div class="mt-4 pt-4 border-t border-white/20">
-                        <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">1回分量 (2分服)</div>
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-xl font-black">${(dailyDose / 2).toFixed(2)}</span>
-                            <span class="text-lg font-bold">${found.unit} / 回</span>
+                <div class="bg-emerald-600 text-white p-5 rounded-xl shadow-lg border-b-4 border-emerald-800">
+                    <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">体重区分: ${found.label}</div>
+                    <div class="flex flex-col gap-3">
+                        <div class="bg-white/10 p-3 rounded-lg">
+                            <div class="text-[9px] font-bold opacity-80 mb-1">1回量 (目安)</div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-black">${(dailyDose / 2).toFixed(3)}</span>
+                                <span class="text-lg font-bold">${found.unit} / 回</span>
+                            </div>
+                        </div>
+                        <div class="bg-white/10 p-2 px-3 rounded-lg">
+                            <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-xl font-black">${dailyDose.toFixed(3)}</span>
+                                <span class="text-base font-bold">${found.unit} / 日</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1371,32 +1376,39 @@ function updateCalculations() {
         const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax);
         if (branch) {
             let info = branch.dosage;
-            let displayDose = '';
+            let displayDosePerTime = 0;
             let subText = '';
 
             if (info.isFixed) {
-                const dosePerTime = info.dosePerTime;
-                const gPerTime = dosePerTime / drug.potency;
-                displayDose = `${gPerTime.toFixed(3)} ${drug.unit || 'g'} / 回`;
-                subText = `(固定量: 1回${dosePerTime}${info.unit || 'μg'})`;
+                displayDosePerTime = info.dosePerTime / drug.potency;
+                subText = `(固定量: 1回${info.dosePerTime}${info.unit || 'μg'})`;
             } else {
-                const mgPerTime = weight * info.timeMgKg;
-                const gPerTime = mgPerTime / drug.potency;
-                displayDose = `${gPerTime.toFixed(3)} ${drug.unit || 'g'} / 回`;
+                displayDosePerTime = (weight * info.timeMgKg) / drug.potency;
                 subText = `(体重換算: 1回${info.timeMgKg}${info.unit || 'μg'}/kg)`;
             }
 
+            const dailyTotal = displayDosePerTime * (info.timesPerDay || 1);
+
             resultArea.innerHTML = `
-                <div class="bg-sky-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-sky-800">
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">${branch.label}</div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-black">${displayDose}</span>
+                <div class="bg-sky-600 text-white p-5 rounded-xl shadow-lg border-b-4 border-sky-800">
+                    <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">${branch.label}</div>
+                    <div class="flex flex-col gap-3">
+                        <div class="bg-white/10 p-3 rounded-lg">
+                            <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-2xl font-black">${displayDosePerTime.toFixed(3)}</span>
+                                <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
+                            </div>
+                        </div>
+                        <div class="bg-white/10 p-2 px-3 rounded-lg">
+                            <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量 (${info.timesPerDay || '1-3'}回)</div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-xl font-black">${dailyTotal.toFixed(3)}</span>
+                                <span class="text-base font-bold">${drug.unit || 'g'} / 日</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="mt-2 text-xs opacity-70">${subText}</div>
-                    <div class="mt-4 pt-4 border-t border-white/20">
-                        <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">用法: ${info.timesPerDay || '1-3'}回 / 日</div>
-                        <div class="text-[10px] opacity-80 leading-tight">${info.note}</div>
-                    </div>
+                    <div class="mt-2 text-[9px] opacity-70 italic">${subText}</div>
                 </div>
             `;
         } else {
@@ -1404,60 +1416,52 @@ function updateCalculations() {
         }
     } else {
         let doseInfo = drug.hasSubOptions ? drug.subOptions.find(o => o.id === selectedSubOptionId).dosage : drug.dosage;
-        let minMgPerTime = weight * (doseInfo.timeMgKg || (doseInfo.minMgKg / (doseInfo.timesPerDay || 1)));
-        let maxMgPerTime = weight * (doseInfo.timeMgKg || (doseInfo.maxMgKg / (doseInfo.timesPerDay || 1)));
+        const tpd = doseInfo.timesPerDay || 3; // デフォルト3回
 
-        // 上限値制限（タミフル等）
+        // 1回量の算出
+        let minMgPerTime, maxMgPerTime;
+        if (doseInfo.isByTime || doseInfo.timeMgKg) {
+            minMgPerTime = weight * (doseInfo.timeMgKg || doseInfo.minMgKg);
+            maxMgPerTime = weight * (doseInfo.timeMgKg || doseInfo.maxMgKg);
+        } else {
+            minMgPerTime = (weight * doseInfo.minMgKg) / tpd;
+            maxMgPerTime = (weight * doseInfo.maxMgKg) / tpd;
+        }
+
+        // 上限値制限
         if (doseInfo.absoluteMaxMgPerTime) {
             minMgPerTime = Math.min(minMgPerTime, doseInfo.absoluteMaxMgPerTime);
             maxMgPerTime = Math.min(maxMgPerTime, doseInfo.absoluteMaxMgPerTime);
         }
 
-        const minG = minMgPerTime / drug.potency;
-        const maxG = maxMgPerTime / drug.potency;
-        const isRange = minG !== maxG;
+        const minGPerTime = minMgPerTime / drug.potency;
+        const maxGPerTime = maxMgPerTime / drug.potency;
+        const isRange = minGPerTime !== maxGPerTime;
 
-        if (doseInfo.isByTime) {
-            // 1回量の表示（範囲対応：数値計算結果ではなく定義値の有無で判定）
-            const minTimeG = (weight * doseInfo.minMgKg) / drug.potency;
-            const maxTimeG = (weight * doseInfo.maxMgKg) / drug.potency;
-            const isTimeRange = doseInfo.minMgKg !== doseInfo.maxMgKg;
+        const dailyMinG = minGPerTime * tpd;
+        const dailyMaxG = maxGPerTime * tpd;
 
-            let resultHtml = `
-                <div class="bg-blue-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-blue-800">
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">1回分量 (${doseInfo.minMgKg}${isTimeRange ? '〜' + doseInfo.maxMgKg : ''}mg/kg)</div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-black">${minTimeG.toFixed(2)}${isTimeRange ? ' 〜 ' + maxTimeG.toFixed(2) : ''}</span>
-                        <span class="text-xl font-bold">${drug.unit || 'g'} / 回</span>
-                    </div>
-            `;
-
-            if (doseInfo.timesPerDay) {
-                const dayMinG = minTimeG * doseInfo.timesPerDay;
-                const dayMaxG = maxTimeG * doseInfo.timesPerDay;
-                resultHtml += `
-                    <div class="mt-4 pt-4 border-t border-white/20">
-                        <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">1日合計量 (${doseInfo.timesPerDay}回分)</div>
-                        <div class="flex items-baseline gap-2">
-                            <span class="text-xl font-black">${dayMinG.toFixed(2)}${isTimeRange ? ' 〜 ' + dayMaxG.toFixed(2) : ''}</span>
-                            <span class="text-lg font-bold">${drug.unit || 'g'} / 日</span>
+        resultArea.innerHTML = `
+            <div class="bg-indigo-700 text-white p-5 rounded-xl shadow-lg border-b-4 border-indigo-900">
+                <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">体重あたり計算 (1日${tpd}回)</div>
+                <div class="flex flex-col gap-3">
+                    <div class="bg-white/10 p-3 rounded-lg border border-white/10">
+                        <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-2xl font-black">${minGPerTime.toFixed(3)}${isRange ? '〜' + maxGPerTime.toFixed(3) : ''}</span>
+                            <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
                         </div>
                     </div>
-                `;
-            }
-            resultHtml += `</div>`;
-            resultArea.innerHTML = resultHtml;
-        } else {
-            resultArea.innerHTML = `
-                <div class="bg-indigo-700 text-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-900">
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">通常1日用量 (${doseInfo.minMgKg}${isRange ? '-' + doseInfo.maxMgKg : ''}mg/kg)</div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-2xl font-black">${minG.toFixed(2)}${isRange ? ' 〜 ' + maxG.toFixed(2) : ''}</span>
-                        <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
+                    <div class="bg-white/10 p-2 px-3 rounded-lg">
+                        <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-xl font-black">${dailyMinG.toFixed(3)}${isRange ? '〜' + dailyMaxG.toFixed(3) : ''}</span>
+                            <span class="text-base font-bold">${drug.unit || 'g'} / 日</span>
+                        </div>
                     </div>
                 </div>
-            `;
-        }
+            </div>
+        `;
     }
 }
 
