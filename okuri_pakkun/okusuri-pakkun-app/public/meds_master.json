@@ -1175,7 +1175,7 @@
     "source": "沢井製薬 指導箋"
   },
   {
-    "yj_code": "6132016C1140",
+    "yj_code": "6132016C1132",
     "brand_name": "セフカペンピボキシル塩酸塩細粒小児用10%「TW」",
     "manufacturer": "東和薬品",
     "taste_smell": "苦味防止設計。",
@@ -1206,8 +1206,18 @@
     "source": "東和薬品"
   },
   {
-    "yj_code": "2233002R2070",
-    "brand_name": "カルボシステインDS小児用「日医工」",
+    "yj_code": "6132015C1090",
+    "brand_name": "セフジトレンピボキシル細粒10%小児用「日医工」",
+    "manufacturer": "日医工",
+    "taste_smell": "甘く、わずかに苦い。だいだい色。",
+    "good_compatibility": [],
+    "bad_compatibility": [],
+    "special_notes": "メイアクトのジェネリック。",
+    "source": "日医工"
+  },
+  {
+    "yj_code": "2233002Q1159",
+    "brand_name": "カルボシステインDS小児用「NIG」",
     "manufacturer": "日医工",
     "taste_smell": "ピーチ風味（甘く少し酸味）。",
     "good_compatibility": [
@@ -1219,17 +1229,7 @@
     "bad_compatibility": [
       "麦茶"
     ],
-    "special_notes": "麦茶と混ぜると飲みにくくなることがある。",
-    "source": "日医工"
-  },
-  {
-    "yj_code": "6132015C1090",
-    "brand_name": "セフジトレンピボキシル細粒10%小児用「日医工」",
-    "manufacturer": "日医工",
-    "taste_smell": "甘く、わずかに苦い。だいだい色。",
-    "good_compatibility": [],
-    "bad_compatibility": [],
-    "special_notes": "メイアクトのジェネリック。",
+    "special_notes": "ムコダインのジェネリック。麦茶と混ぜると飲みにくくなることがある。",
     "source": "日医工"
   }
 ]
