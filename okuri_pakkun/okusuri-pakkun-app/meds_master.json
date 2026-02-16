@@ -523,7 +523,7 @@
     "source": "飲み合わせ.xlsx"
   },
   {
-    "yj_code": "UNKNOWN_CLAVAMOX",
+    "yj_code": "6139100R1036",
     "brand_name": "クラバモックス小児用配合ドライシロップ",
     "manufacturer": "GSK",
     "taste_smell": "イチゴ風味（特異な芳香）。甘い。",
@@ -542,7 +542,7 @@
     "source": "GSK 指導箋 / 調査レポート"
   },
   {
-    "yj_code": "UNKNOWN_THEOPHYLLINE_SAWAI",
+    "yj_code": "2251001R1123",
     "brand_name": "テオフィリン徐放ドライシロップ小児用20％「サワイ」",
     "manufacturer": "沢井製薬",
     "taste_smell": "甘い。",
@@ -558,7 +558,7 @@
     "source": "沢井製薬 指導箋"
   },
   {
-    "yj_code": "UNKNOWN_OXATOMIDE_SAWAI",
+    "yj_code": "4490005R1448",
     "brand_name": "オキサトミドDS小児用2％「サワイ」",
     "manufacturer": "沢井製薬",
     "taste_smell": "甘い。",
@@ -575,7 +575,7 @@
     "source": "沢井製薬 指導箋"
   },
   {
-    "yj_code": "UNKNOWN_CEFCAPENE_TOWA",
+    "yj_code": "6132016C1132",
     "brand_name": "セフカペンピボキシル塩酸塩細粒小児用10%「TW」",
     "manufacturer": "東和薬品",
     "taste_smell": "苦味防止設計。",
@@ -589,7 +589,7 @@
     "source": "東和薬品"
   },
   {
-    "yj_code": "UNKNOWN_VALACICLOVIR_TOWA",
+    "yj_code": "6250019D1046",
     "brand_name": "バラシクロビル顆粒50%「トーワ」",
     "manufacturer": "東和薬品",
     "taste_smell": "顆粒。",
@@ -606,24 +606,7 @@
     "source": "東和薬品"
   },
   {
-    "yj_code": "UNKNOWN_CARBOCISTEINE_NICHI",
-    "brand_name": "カルボシステインDS小児用「日医工」",
-    "manufacturer": "日医工",
-    "taste_smell": "ピーチ風味（甘く少し酸味）。",
-    "good_compatibility": [
-      "アイスクリーム",
-      "ヨーグルト",
-      "オレンジジュース",
-      "スポーツドリンク"
-    ],
-    "bad_compatibility": [
-      "麦茶"
-    ],
-    "special_notes": "麦茶と混ぜると飲みにくくなることがある。",
-    "source": "日医工"
-  },
-  {
-    "yj_code": "UNKNOWN_CEFDITOREN_NICHI",
+    "yj_code": "6132015C1090",
     "brand_name": "セフジトレンピボキシル細粒10%小児用「日医工」",
     "manufacturer": "日医工",
     "taste_smell": "甘く、わずかに苦い。だいだい色。",
@@ -633,7 +616,7 @@
     "source": "日医工"
   },
   {
-    "yj_code": "UNKNOWN_OZEX_FUJIFILM",
+    "yj_code": "6241010C1024",
     "brand_name": "オゼックス小児用細粒15%",
     "manufacturer": "富山化学",
     "taste_smell": "イチゴ風味。甘い。",
@@ -652,7 +635,7 @@
       "スポーツ飲料",
       "牛乳（吸収低下注意）"
     ],
-    "special_notes": "苦味が強いのでチョコ系推奨。牛乳などCa含有食品との同時摂取は避ける（2時間空ける）。メーカー指導箋あり。",
+    "special_notes": "苦味が強いのでチョコ系推奨. 牛乳などCa含有食品との同時摂取は避ける（2時間空ける）. メーカー指導箋あり.",
     "source": "富山化学 IF / 指導箋"
   }
 ]
