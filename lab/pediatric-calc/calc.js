@@ -66,18 +66,21 @@ const PEDIATRIC_DRUGS = [
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250021B1021?user=1"
     },
     {
-        id: "mucodyne-fine-granules",
-        name: "ムコダイン細粒33.3%",
-        yjCode: "2239001C1077",
-        potency: 333, // 333mg/g (33.3%)
+        id: "mucodyne-ds",
+        name: "ムコダインDS50%",
+        yjCode: "2233002R2029",
+        potency: 500, // 500mg/g (50%)
         dosage: {
             minMgKg: 30,
             maxMgKg: 30,
             absoluteMaxMgKg: null,
-            note: "通常、小児に1日量30mg/kgを3回に分割して経口投与する。"
+            isByTime: true,
+            timeMgKg: 10,
+            timesPerDay: 3,
+            note: "通常、幼・小児には1回10mg/kg（1日30mg/kg）を1日3回、用時懸濁して経口投与する。"
         },
-        piSnippet: "小児：通常、1日量30mg/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2239001C1077?user=1"
+        piSnippet: "幼・小児：通常、L-カルボシステインとして体重1kgあたり1回10mg（本剤0.02g）を用時懸濁し、1日3回経口投与する。なお、年齢、症状により適宜増減する。",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2233002R2029?user=1"
     },
     {
         id: "kefral-fine-granules",
