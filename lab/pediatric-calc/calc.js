@@ -1338,7 +1338,7 @@ function renderDrugCards() {
     }
     container.innerHTML = filteredDrugs.map(d => `
         <div class="drug-card ${selectedDrugId === d.id ? 'active' : ''}" data-id="${d.id}">
-            <div class="potency-tag">${d.isKampo ? '漢方' : (d.calcType === 'fixed-age' ? '固定' : (d.potency >= 100 ? (d.potency / 10).toFixed(1) + '%' : d.potency + (d.unit || 'mg') + '/g'))}</div>
+            <div class="potency-tag">${getPharmaClass(d.yjCode)}</div>
             <h3 class="line-clamp-2">${d.name}</h3>
             <div class="text-[7px] text-gray-400 mt-auto font-mono opacity-60">YJ: ${d.yjCode}</div>
         </div>
@@ -1671,3 +1671,56 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderDrugCards();
 });
+
+function getPharmaClass(yjCode) {
+    if (!yjCode) return '';
+    const code = yjCode.replace('yj-', '');
+    const p3 = code.substring(0, 3);
+    const p4 = code.substring(0, 4);
+
+    // Antibiotics
+    if (p3 === '611' || p3 === '612') return 'ペニシリン系';
+    if (p3 === '613') {
+        if (p4 === '6131') return 'ペニシリン系';
+        if (p4 === '6132') return 'セフェム系';
+        if (p4 === '6135') return 'ホスホマイシン系';
+        if (p4 === '6139') {
+            if (code.includes('6139100')) return '配合抗菌薬'; // Clavamox
+            return 'ペネム系'; // Farom
+        }
+        return 'その他抗菌薬';
+    }
+    if (p3 === '614') return 'マクロライド系';
+    if (p3 === '615') return 'テトラサイクリン';
+    if (p3 === '624') return 'ニューキノロン';
+
+    // Antivirals
+    if (p3 === '625') return '抗ウイルス薬';
+
+    // CNS
+    if (p3 === '113') return '抗てんかん薬';
+    if (p3 === '114') return '解熱鎮痛薬';
+    if (p3 === '118') return '総合感冒薬';
+
+    // Respiratory
+    if (p3 === '222') return '鎮咳薬';
+    if (p3 === '223') return '去痰薬';
+    if (p3 === '224') return '鎮咳去痰薬';
+    if (p3 === '225') return '気管支拡張薬';
+
+    // GI
+    if (p3 === '231') return '整腸剤';
+    if (p3 === '233') return '止瀉薬';
+    if (p3 === '239') return '制吐剤';
+
+    // Others
+    if (p3 === '322') return '鉄剤';
+
+    // Allergy
+    if (p3 === '441') return '抗ヒスタミン薬';
+    if (p3 === '449') return '抗アレルギー薬';
+
+    if (p3 === '520') return '漢方薬';
+
+    return 'その他';
+}
