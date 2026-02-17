@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PMDA安全情報アラート | Kusuri Compass Lab</title>
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/v2-shared.css">
+    <link rel="stylesheet" href="../../css/v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .alert-container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 5%;
+        }
+
+        .alert-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .alert-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            padding: 1.5rem;
+            border-radius: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .alert-card:hover {
+            border-color: #ef4444;
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .alert-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .alert-date {
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .alert-badge {
+            font-size: 0.75rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+        }
+
+        .badge-emergency {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+
+        .badge-recall {
+            background: #fef9c3;
+            color: #a16207;
+            border: 1px solid #fde047;
+        }
+
+        .badge-info {
+            background: #f0f9ff;
+            color: #0369a1;
+            border: 1px solid #bae6fd;
+        }
+
+        .alert-title {
+            font-size: 1.125rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .alert-desc {
+            font-size: 0.875rem;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .loading-state {
+            text-align: center;
+            padding: 4rem;
+            color: #94a3b8;
+        }
+
+        .refresh-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.875rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: opacity 0.2s;
+        }
+
+        .refresh-btn:hover {
+            opacity: 0.8;
+        }
+    </style>
+</head>
+
+<body>
+    <main-header base-dir="../../" active-page="lab"></main-header>
+
+    <div class="alert-container">
+        <div class="mb-4">
+            <a href="../index.html" class="text-sm font-bold text-gray-400 hover:text-black transition">
+                <i class="fas fa-arrow-left"></i> Labメニューへ戻る
+            </a>
+        </div>
+
+        <header class="flex justify-between items-end mb-8">
+            <div>
+                <h1 class="text-3xl font-black tracking-tight">PMDA安全情報アラート</h1>
+                <p class="text-gray-500">PMDAが発出する最新の安全性情報・回収情報を統合して表示します。</p>
+            </div>
+            <button id="refresh-btn" class="refresh-btn">
+                <i class="fas fa-sync-alt"></i> 更新
+            </button>
+        </header>
+
+        <div id="alert-list-container" class="alert-list">
+            <!-- Loading -->
+            <div class="loading-state">
+                <i class="fas fa-circle-notch fa-spin fa-2x mb-2"></i>
+                <p>最新情報を取得中...</p>
+            </div>
+        </div>
+
+        <div class="mt-8 pt-8 border-t border-gray-100">
+            <p class="text-[10px] text-gray-400">
+                ※データソース: <a href="https://www.pmda.go.jp/" target="_blank" class="underline">PMDA RSSフィード</a><br>
+                ※本機能はGASによるプロキシを介して情報を取得します。
+            </p>
+        </div>
+    </div>
+
+    <main-footer base-dir="../../"></main-footer>
+
+    <script type="module" src="../../js/components/MainHeader.ts"></script>
+    <script type="module" src="../../js/components/MainFooter.ts"></script>
+    <script src="alerts.js"></script>
+</body>
+
+</html>

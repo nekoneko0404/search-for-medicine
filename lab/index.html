@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab (試験機能エリア) | Kusuri Compass</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/v2-shared.css">
+    <link rel="stylesheet" href="../css/v2.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .lab-container {
+            max-width: 1000px;
+            margin: 4rem auto;
+            padding: 0 5%;
+        }
+
+        .lab-header {
+            margin-bottom: 3rem;
+            border-bottom: 2px solid #000;
+            padding-bottom: 1.5rem;
+        }
+
+        .lab-header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .lab-header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .lab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .lab-card {
+            background: #fff;
+            border: 1px solid #e5e5e5;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .lab-card:hover {
+            border-color: #000;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .lab-card .status-tag {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        .status-dev {
+            background: #fff7ed;
+            color: #c2410c;
+            border: 1px solid #fdba74;
+        }
+
+        .status-prep {
+            background: #f8fafc;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .lab-card i {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: #000;
+        }
+
+        .lab-card h2 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .lab-card p {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 2rem;
+            flex-grow: 1;
+            line-height: 1.6;
+        }
+
+        .lab-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            font-size: 0.875rem;
+            text-decoration: none;
+            color: #000;
+            border-bottom: 2px solid transparent;
+            width: fit-content;
+            transition: all 0.2s;
+        }
+
+        .lab-card:hover .lab-btn {
+            border-bottom-color: #000;
+        }
+
+        .lab-card.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .lab-card.disabled:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: #e5e5e5;
+        }
+    </style>
+</head>
+
+<body>
+    <main-header base-dir="../" active-page="lab"></main-header>
+
+    <div class="lab-container">
+        <header class="lab-header">
+            <h1>Kusuri Compass Lab</h1>
+            <p>薬剤師・調剤事務の業務をよりスマートにするための実験的機能エリアです。</p>
+        </header>
+
+        <div class="lab-grid">
+            <!-- Feature 1: Pediatric Calc -->
+            <div class="lab-card">
+                <span class="status-tag status-dev">In Development</span>
+                <i class="fas fa-calculator"></i>
+                <h2>小児用量力価計算</h2>
+                <p>体重と薬剤を選択するだけで、標準的な用法用量に基づいた力価計算（mg/mL）を瞬時に行います。複雑な計算ミスの防止を支援します。</p>
+                <a href="./pediatric-calc/index.html" class="lab-btn">
+                    使ってみる <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Feature 2: Renal Check -->
+            <div class="lab-card">
+                <span class="status-tag status-dev">In Development</span>
+                <i class="fas fa-kidney"></i>
+                <h2>腎機能用法用量チェック</h2>
+                <p>eGFRやCcrの値を基に、腎機能低下時の推奨用量をエビデンスに基づいて提示します。疑義照会の判断材料として活用いただけます。</p>
+                <a href="./renal-check/index.html" class="lab-btn">
+                    使ってみる <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Feature 3: PMDA Alert -->
+            <div class="lab-card">
+                <span class="status-tag status-dev">In Development</span>
+                <i class="fas fa-exclamation-circle"></i>
+                <h2>PMDA安全情報アラート</h2>
+                <p>緊急安全性情報や自主回収情報をリアルタイムに抽出し、重要なニュースを優先的に表示します。リスク管理の初動を早めます。</p>
+                <a href="./pmda-alerts/index.html" class="lab-btn">
+                    使ってみる <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Feature 4: Advanced DI -->
+            <div class="lab-card">
+                <span class="status-tag status-dev">In Development</span>
+                <i class="fas fa-search-plus"></i>
+                <h2>高度DI（医薬品情報）検索</h2>
+                <p>粉砕・経管投与・簡易懸濁の可否情報や、配合変化（一包化・混合）時の安定性データを検索します。IF情報を集約し、迅速な判断を支援します。</p>
+                <a href="./advanced-di/index.html" class="lab-btn">
+                    使ってみる <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+
+            <!-- Feature 5: Billing Navigator -->
+            <div class="lab-card">
+                <span class="status-tag status-dev">In Development</span>
+                <i class="fas fa-tasks"></i>
+                <h2>算定要件ナビゲーター</h2>
+                <p>地域支援体制加算や指導加算など、複雑な算定要件をチェックリスト形式で確認します。算定漏れ防止と事務作業の効率化を支援します。</p>
+                <a href="./billing-nav/index.html" class="lab-btn">
+                    使ってみる <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <main-footer base-dir="../"></main-footer>
+
+    <script type="module" src="../js/components/MainHeader.ts"></script>
+    <script type="module" src="../js/components/MainFooter.ts"></script>
+</body>
+
+</html>

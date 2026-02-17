@@ -66,7 +66,7 @@ export default function Home() {
                 <Database className="w-4 h-4" />
                 登録医薬品一覧
               </Link>
-              <a href="https://search-for-medicine.pages.dev/Okusuri_pakkun/usage_guide" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-pink-600 bg-pink-50 px-4 py-2 rounded-full border border-pink-200 hover:bg-pink-100 transition">
+              <a href="https://search-for-medicine.pages.dev/pakkun-stamp/usage_guide.html" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-sm font-bold text-pink-600 bg-pink-50 px-4 py-2 rounded-full border border-pink-200 hover:bg-pink-100 transition">
                 <span className="text-lg">💊</span>
                 ぱっくんスタンプ
               </a>
