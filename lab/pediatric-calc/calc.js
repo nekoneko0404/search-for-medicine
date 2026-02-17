@@ -9,10 +9,11 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
+            absoluteMaxMgKg: 90,
             absoluteMaxMgPerDay: 1500,
-            note: "1日20〜40mg/kgを3〜4回。最大1500mg/日。"
+            note: "1日20〜40mg/kgを3〜4回。通常最大90mg/kg。成人最大1500mg。"
         },
-        piSnippet: "通常1日20〜40mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常1日20〜40mg(力価)/kgを3〜4回に分割経口投与する。なお、年齢、症状により適宜増減するが、1日量として最大90mg(力価)/kgを超えないこと。"
     },
     {
         id: "yj-6131001C1228",
@@ -24,10 +25,11 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
+            absoluteMaxMgKg: 90,
             absoluteMaxMgPerDay: 1500,
-            note: "1日20〜40mg/kgを3〜4回。最大1500mg/日。"
+            note: "1日20〜40mg/kgを3〜4回。通常最大90mg/kg。成人最大1500mg。"
         },
-        piSnippet: "通常1日20〜40mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常1日20〜40mg(力価)/kgを3〜4回に分割経口投与する。なお、年齢、症状により適宜増減するが、1日量として最大90mg(力価)/kgを超えないこと。"
     },
     {
         id: "yj-6131001C1260",
@@ -39,10 +41,11 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
+            absoluteMaxMgKg: 90,
             absoluteMaxMgPerDay: 1500,
-            note: "1日20〜40mg/kgを3〜4回。最大1500mg/日。"
+            note: "1日20〜40mg/kgを3〜4回。通常最大90mg/kg。成人最大1500mg。"
         },
-        piSnippet: "通常1日20〜40mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常1日20〜40mg(力価)/kgを3〜4回に分割経口投与する。なお、年齢、症状により適宜増減するが、1日量として最大90mg(力価)/kgを超えないこと。"
     },
     {
         id: "yj-6131001C2100",
@@ -66,14 +69,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6131008C1033",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6131008C1033?user=1",
         potency: 100,
-        piSnippetSource: "通常1日30〜60mg/kgを3回。年齢および症状に応じて適宜増減する。",
+        piSnippetSource: "通常小児に対しスルタミシリンとして、1日量15〜30mg(力価)/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
         dosage: {
             minMgKg: 15,
             maxMgKg: 30,
             absoluteMaxMgPerDay: 1125,
             note: "通常1日15〜30mg/kgを3回。最大1125mg(375mg×3)/日。"
         },
-        piSnippet: "通常1日30〜60mg/kgを3回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常小児に対しスルタミシリンとして、1日量15〜30mg(力価)/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。"
     },
     {
         id: "yj-6132005C1053",
@@ -690,7 +693,7 @@ const PEDIATRIC_DRUGS = [
         yjCode: "2249003B1037",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2249003B1037?user=1",
         potency: 100,
-        piSnippetSource: "通常1日1mg/kgを3回。年齢および症状に応じて適宜増減する。",
+        piSnippetSource: "通常成人1日60〜120mg(クエン酸塩換算)を3回に分割。小児1歳未満5〜20mg、1〜3歳未満10〜25mg、3〜6歳未満15〜40mgを3回に分割。",
         dosage: {
             minMgKg: 1,
             maxMgKg: 1,
@@ -698,9 +701,9 @@ const PEDIATRIC_DRUGS = [
             timeMgKg: 0.33,
             timesPerDay: 3,
             absoluteMaxMgPerDay: 90,
-            note: "通常1日1mg/kgを3回。上限90mg/日。"
+            note: "通常1日1mg/kgを3回(目安)。1歳未満5-20mg, 1-3歳10-25mg, 3-6歳15-40mg。"
         },
-        piSnippet: "通常1日1mg/kgを3回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常、小児にはチペピジンクエン酸塩として、1日1歳未満5〜20mg、1歳以上3歳未満10〜25mg、3歳以上6歳未満15〜40mgを3回に分割経口投与する。"
     },
     {
         id: "yj-2251001D1061",
@@ -1208,14 +1211,14 @@ const PEDIATRIC_DRUGS = [
         yjCode: "1180107D1131",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1180107D1131?user=1",
         calcType: "age",
-        adultDose: 3,
+        adultDose: 4,
         unit: "g",
         isAdultOnly: true,
-        piSnippetSource: "通常、成人には1回1gを1日3回経口投与。年齢、症状により適宜増減する。",
+        piSnippetSource: "通常、成人には1回1gを1日4回経口投与。なお、年齢、症状により適宜増減する。",
         dosage: {
-            note: "添付文書に小児用量なし。Augsberger式算定。"
+            note: "通常、成人1回1gを1日4回。添付文書に小児用量なし。Augsberger式で算出。"
         },
-        piSnippet: "通常、成人には1回1gを1日3回経口投与。年齢、症状により適宜増減する。"
+        piSnippet: "通常、成人には1回1gを1日4回経口投与。なお、年齢、症状により適宜増減する。"
     },
     {
         id: "yj-2316004B1036",
