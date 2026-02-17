@@ -790,8 +790,8 @@
     "source": "IF"
   },
   {
-    "yj_code": "2254001D1030",
-    "brand_name": "メプチン顆粒0.01%",
+    "yj_code": "2254001R1053",
+    "brand_name": "メプチンDS0.005%",
     "manufacturer": "大塚製薬",
     "taste_smell": "甘い。",
     "good_compatibility": [
@@ -802,8 +802,8 @@
       "アイス"
     ],
     "bad_compatibility": [],
-    "special_notes": "気管支拡張剤。",
-    "source": "IF"
+    "special_notes": "気管支拡張剤。ドライシロップ。",
+    "source": "大塚製薬 IF"
   },
   {
     "yj_code": "4490026C1030",

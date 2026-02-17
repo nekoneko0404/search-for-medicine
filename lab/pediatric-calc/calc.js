@@ -9,7 +9,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
-            note: "1日20〜40mg/kgを3〜4回。"
+            absoluteMaxMgPerDay: 1500,
+            note: "1日20〜40mg/kgを3〜4回。最大1500mg/日。"
         },
         piSnippet: "通常1日20〜40mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
     },
@@ -23,7 +24,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
-            note: "1日20〜40mg/kgを3〜4回。"
+            absoluteMaxMgPerDay: 1500,
+            note: "1日20〜40mg/kgを3〜4回。最大1500mg/日。"
         },
         piSnippet: "通常1日20〜40mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
     },
@@ -37,7 +39,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 20,
             maxMgKg: 40,
-            note: "1日20〜40mg/kgを3〜4回。"
+            absoluteMaxMgPerDay: 1500,
+            note: "1日20〜40mg/kgを3〜4回。最大1500mg/日。"
         },
         piSnippet: "通常1日20〜40mg/kgを3〜4回。年齢および症状に応じて適宜増減する。"
     },
@@ -65,9 +68,10 @@ const PEDIATRIC_DRUGS = [
         potency: 100,
         piSnippetSource: "通常1日30〜60mg/kgを3回。年齢および症状に応じて適宜増減する。",
         dosage: {
-            minMgKg: 30,
-            maxMgKg: 60,
-            note: "通常1日30〜60mg/kgを3回。"
+            minMgKg: 15,
+            maxMgKg: 30,
+            absoluteMaxMgPerDay: 1125,
+            note: "通常1日15〜30mg/kgを3回。最大1125mg(375mg×3)/日。"
         },
         piSnippet: "通常1日30〜60mg/kgを3回。年齢および症状に応じて適宜増減する。"
     },
@@ -82,7 +86,8 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 20,
             maxMgKg: 40,
             absoluteMaxMgKg: 100,
-            note: "通常1日20〜40mg/kgを3回。"
+            absoluteMaxMgPerDay: 1500,
+            note: "通常1日20〜40mg/kgを3回。最大1500mg/日。"
         },
         piSnippet: "通常1日20〜40mg/kgを3回。重症等の場合は1日100mg/kgまで。"
     },
@@ -96,7 +101,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 9,
             maxMgKg: 18,
-            note: "1日9〜18mg/kgを3回。"
+            absoluteMaxMgPerDay: 600,
+            note: "1日9〜18mg/kgを3回。最大600mg/日。"
         },
         piSnippet: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。"
     },
@@ -109,9 +115,9 @@ const PEDIATRIC_DRUGS = [
         piSnippetSource: "通常1回3mg/kgを1日3回（または2回）。年齢および症状に応じて適宜増減する。",
         dosage: {
             minMgKg: 9,
-            maxMgKg: 18,
+            maxMgKg: 13.5,
             absoluteMaxMgPerDay: 200,
-            note: "通常1日9〜18mg/kgを2〜3回。1日上限200mg(成人量)。"
+            note: "通常1日9〜13.5mg/kgを2〜3回。重症時13.5mg/kg(4.5mg/kg×3)。1日上限200mg(成人量)。"
         },
         piSnippet: "通常1回3mg/kgを1日3回（または2回）。年齢および症状に応じて適宜増減する。"
     },
@@ -141,7 +147,9 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 9,
             maxMgKg: 18,
             timesPerDay: 3,
-            note: "通常1回3mg/kgを1日3回。増量時1回6mg/kg。"
+            absoluteMaxMgPerTime: 200,
+            absoluteMaxMgPerDay: 600,
+            note: "通常1回3mg/kgを1日3回。増量時1回6mg/kg。上限600mg/日。"
         },
         piSnippet: "通常、1回3mg/kgを1日3回服用する。最大1回6mg/kgまで増量可。"
     },
@@ -186,7 +194,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             minMgKg: 9,
             maxMgKg: 18,
-            note: "通常1日9〜18mg/kgを3回。"
+            absoluteMaxMgPerDay: 300,
+            note: "通常1日9〜18mg/kgを3回。上限300mg/日。"
         },
         piSnippet: "通常1回3mg/kgを1日3回。年齢、体重および症状に応じて適宜増減する。"
     },
@@ -201,7 +210,8 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 40,
             maxMgKg: 120,
             timesPerDay: 4,
-            note: "通常1日40〜120mg/kgを3〜4回。1日最大2g。"
+            absoluteMaxMgPerDay: 4000,
+            note: "通常1日40〜120mg/kgを3〜4回。1日最大4g(成人量)。"
         },
         piSnippet: "通常1日40〜120mg/kg(製剤0.1〜0.3g/kg)を3〜4回に分けて経口投与する。"
     },
@@ -218,7 +228,9 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 5,
             timesPerDay: 3,
-            note: "通常1回5mg/kgを3回。最大1回10mg/kg。"
+            absoluteMaxMgPerTime: 300,
+            absoluteMaxMgPerDay: 900,
+            note: "通常1回5mg/kgを3回。最大1回10mg/kg。上限900mg(300mg×3)/日。"
         },
         piSnippet: "通常1回5mg/kgを3回。最大1回10mg/kg。年齢、体重、症状により適宜増減する。"
     },
@@ -235,42 +247,42 @@ const PEDIATRIC_DRUGS = [
                 weightMax: 11,
                 dose: 1.01,
                 unit: "g",
-                label: "6〜10kg: 1.01g(2パウチ)"
+                label: "6〜10kg: 1.01g"
             },
             {
                 weightMin: 11,
                 weightMax: 17,
                 dose: 2.02,
                 unit: "g",
-                label: "11〜16kg: 2.02g(4パウチ)"
+                label: "11〜16kg: 2.02g"
             },
             {
                 weightMin: 17,
                 weightMax: 24,
                 dose: 3.03,
                 unit: "g",
-                label: "17〜23kg: 3.03g(6パウチ)"
+                label: "17〜23kg: 3.03g"
             },
             {
                 weightMin: 24,
                 weightMax: 31,
                 dose: 4.04,
                 unit: "g",
-                label: "24〜30kg: 4.04g(8パウチ)"
+                label: "24〜30kg: 4.04g"
             },
             {
                 weightMin: 31,
                 weightMax: 37,
                 dose: 5.05,
                 unit: "g",
-                label: "31〜36kg: 5.05g(10パウチ)"
+                label: "31〜36kg: 5.05g"
             },
             {
                 weightMin: 37,
                 weightMax: 40,
                 dose: 6.06,
                 unit: "g",
-                label: "37〜39kg: 6.06g(12パウチ)"
+                label: "37〜39kg: 6.06g"
             }
         ],
         dosage: {
@@ -290,8 +302,8 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 25,
             maxMgKg: 50,
             timesPerDay: 4,
-            absoluteMaxMgPerDay: 800,
-            note: "1日25〜50mg/kgを4〜6回。成人量(800-1200mg)を上限とする。"
+            absoluteMaxMgPerDay: 1200,
+            note: "1日25〜50mg/kgを4〜6回。成人量(1200mg)を上限とする。"
         },
         piSnippet: "小児には1日体重1kgあたり25〜50mg(力価)を4〜6回に分割経口投与。なお、年齢、症状により適宜増減する。ただし、小児用量は成人量(1日800〜1200mg)を上限とする。"
     },
@@ -308,7 +320,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 5,
             timesPerDay: 2,
-            note: "1日10〜15mg/kgを2回。"
+            absoluteMaxMgPerDay: 400,
+            note: "1日10〜15mg/kgを2回。最大400mg/日。"
         },
         piSnippet: "通常1日10〜15mg/kgを2回。年齢および症状に応じて適宜増減する。"
     },
@@ -324,7 +337,8 @@ const PEDIATRIC_DRUGS = [
             maxMgKg: 15,
             isByTime: true,
             timesPerDay: 2,
-            note: "1日10〜15mg/kgを2回。"
+            absoluteMaxMgPerDay: 400,
+            note: "1日10〜15mg/kgを2回。最大400mg/日。"
         },
         piSnippet: "通常1日10〜15mg/kgを2回。年齢および症状に応じて適宜増減する。"
     },
@@ -380,22 +394,7 @@ const PEDIATRIC_DRUGS = [
         piSnippetSource: "通常、1日1回10mg/kgを3日間経口投与する。最大量として成人の1日量500mgを超えない。また、体重15kg以上の小児には専用の用量設定表がある。",
         piSnippet: "通常、1日1回10mg/kgを3日間経口投与する。最大量として成人の1日量500mgを超えない。また、体重15kg以上の小児には専用の用量設定表がある。"
     },
-    {
-        id: "yj-6149004C1048",
-        name: "アジスロマイシン細粒小児用10%「JG」",
-        yjCode: "6149004C1048",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6149004C1048?user=1",
-        potency: 100,
-        piSnippetSource: "通常1日1回10mg/kgを3日間投与。最大500mg。",
-        dosage: {
-            minMgKg: 10,
-            maxMgKg: 10,
-            timesPerDay: 1,
-            absoluteMaxMgPerDay: 500,
-            note: "通常1日1回10mg/kg(最大500mg)を3日間。"
-        },
-        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
-    },
+
     {
         id: "yj-6149004C1080",
         name: "アジスロマイシン小児用細粒10%「タカタ」",
@@ -404,29 +403,50 @@ const PEDIATRIC_DRUGS = [
         potency: 100,
         piSnippetSource: "通常1日1回10mg/kgを3日間投与。最大500mg。",
         dosage: {
-            minMgKg: 10,
-            maxMgKg: 10,
             timesPerDay: 1,
-            absoluteMaxMgPerDay: 500,
-            note: "通常1日1回10mg/kg(最大500mg)を3日間。"
+            note: "1日1回10mg/kg(最大500mg)を3日間。15kg以上は段階的用量設定。"
         },
-        piSnippet: "通常1日1回10mg/kgを3日間投与. 最大500mg。"
-    },
-    {
-        id: "yj-6149004C1102",
-        name: "アジスロマイシン細粒小児用10%「トーワ」",
-        yjCode: "6149004C1102",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6149004C1102?user=1",
-        potency: 100,
-        piSnippetSource: "通常1日1回10mg/kgを3日間投与。最大500mg。",
-        dosage: {
-            minMgKg: 10,
-            maxMgKg: 10,
-            timesPerDay: 1,
-            absoluteMaxMgPerDay: 500,
-            note: "通常1日1回10mg/kg(最大500mg)を3日間。"
-        },
-        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。"
+        piSnippetSource: "通常、1日1回10mg/kgを3日間経口投与する。最大量として成人の1日量500mgを超えない。体重15kg以上の小児には専用の用量設定表がある。",
+        piSnippet: "通常1日1回10mg/kgを3日間投与。最大500mg。",
+        calcType: "weight-step",
+        weightSteps: [
+            {
+                weightMin: 0.1,
+                weightMax: 15,
+                dose: 0.1,
+                isPerKg: true,
+                unit: "g",
+                label: "15kg未満: 10mg/kg"
+            },
+            {
+                weightMin: 15,
+                weightMax: 25,
+                dose: 2,
+                unit: "g",
+                label: "15kg〜25kg未満: 2g"
+            },
+            {
+                weightMin: 25,
+                weightMax: 35,
+                dose: 3,
+                unit: "g",
+                label: "25kg〜35kg未満: 3g"
+            },
+            {
+                weightMin: 35,
+                weightMax: 45,
+                dose: 4,
+                unit: "g",
+                label: "35kg〜45kg未満: 4g"
+            },
+            {
+                weightMin: 45,
+                weightMax: 1000,
+                dose: 5,
+                unit: "g",
+                label: "45kg以上: 5g"
+            }
+        ]
     },
     {
         id: "yj-6152005D1094",
@@ -437,11 +457,12 @@ const PEDIATRIC_DRUGS = [
         piSnippetSource: "通常、初回1回2mg/kg(力価)とし、以後1mg/kg(力価)を12時間ごとに経口投与する。",
         dosage: {
             minMgKg: 2,
-            maxMgKg: 2,
+            maxMgKg: 4,
             isByTime: true,
             timeMgKg: 1,
             timesPerDay: 2,
-            note: "初回の服用から12時間後に、以後12時間ごとの服用を開始すること。"
+            absoluteMaxMgPerDay: 200,
+            note: "初回2mg/kg、以後1mg/kgを12時間ごと。1日2〜4mg/kg。上限200mg/日。"
         },
         piSnippet: "通常、初回1回2mg/kg(力価)とし、以後1mg/kg(力価)を12時間ごとに服用する。"
     },
@@ -458,7 +479,9 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 6,
             timesPerDay: 2,
-            note: "通常1回6mg/kgを1日2回。最大1回12mg/kg。"
+            absoluteMaxMgPerTime: 180,
+            absoluteMaxMgPerDay: 360,
+            note: "通常1回6mg/kgを1日2回。最大1回12mg/kg。上限360mg/日。"
         },
         piSnippet: "通常1回6mg/kgを1日2回。最大1回12mg/kgまで。"
     },
@@ -475,7 +498,9 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 6,
             timesPerDay: 2,
-            note: "通常1回6mg/kgを1日2回。最大1回12mg/kg。"
+            absoluteMaxMgPerTime: 180,
+            absoluteMaxMgPerDay: 360,
+            note: "通常1回6mg/kgを1日2回。最大1回12mg/kg。上限360mg/日。"
         },
         piSnippet: "通常1回6mg/kgを1日2回。最大1回12mg/kgまで。"
     },
@@ -492,7 +517,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 20,
             timesPerDay: 4,
-            note: "通常1回20mg/kg(アシクロビルとして)を1日4回。"
+            absoluteMaxMgPerDay: 4000,
+            note: "通常1回20mg/kg(アシクロビルとして)を1日4回。上限4000mg/日(成人水痘量)。"
         },
         piSnippet: "【水痘】通常、1回20mg/kgを1日4回。(他適応は添付文書参照)"
     },
@@ -532,7 +558,8 @@ const PEDIATRIC_DRUGS = [
                     timeMgKg: 2,
                     timesPerDay: 2,
                     absoluteMaxMgPerTime: 75,
-                    note: "1回2mg/kgを2回。5日間。"
+                    absoluteMaxMgPerDay: 150,
+                    note: "1回2mg/kgを2回。5日間。上限150mg/日。"
                 },
                 piSnippet: "1回2mg/kgを1日2回、5日間投与。1回最高75mg。"
             },
@@ -546,7 +573,8 @@ const PEDIATRIC_DRUGS = [
                     timeMgKg: 3,
                     timesPerDay: 2,
                     absoluteMaxMgPerTime: 75,
-                    note: "1回3mg/kgを2回。5日間。"
+                    absoluteMaxMgPerDay: 150,
+                    note: "1回3mg/kgを2回。5日間。上限150mg/日。"
                 },
                 piSnippet: "1回3mg/kgを1日2回、5日間投与。1回最高75mg。"
             }
@@ -651,7 +679,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 0.3,
             timesPerDay: 3,
-            note: "通常1日0.9〜1.2mg/kgを3回。"
+            absoluteMaxMgPerDay: 45,
+            note: "通常1日0.9〜1.2mg/kgを3回。上限45mg(成人量)/日。"
         },
         piSnippet: "通常1日0.9〜1.2mg/kgを3回。年齢および症状に応じて適宜増減する。"
     },
@@ -668,7 +697,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 0.33,
             timesPerDay: 3,
-            note: "通常1日1mg/kgを3回。"
+            absoluteMaxMgPerDay: 90,
+            note: "通常1日1mg/kgを3回。上限90mg/日。"
         },
         piSnippet: "通常1日1mg/kgを3回。年齢および症状に応じて適宜増減する。"
     },
@@ -683,7 +713,8 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 8,
             maxMgKg: 20,
             timesPerDay: 2,
-            note: "通常1日8〜20mg/kg(製剤0.04〜0.1g/kg)を2回。"
+            absoluteMaxMgPerDay: 400,
+            note: "通常1日8〜20mg/kg(製剤0.04〜0.1g/kg)を2回。上限400mg/日。"
         },
         piSnippet: "通常、1日1kgあたり8〜20mg(製剤0.04〜0.1g)を2回に分けて服用する。"
     },
@@ -698,19 +729,20 @@ const PEDIATRIC_DRUGS = [
             minMgKg: 8,
             maxMgKg: 20,
             timesPerDay: 2,
-            note: "通常1日8〜20mg/kg(製剤0.04〜0.1g/kg)を2回。"
+            absoluteMaxMgPerDay: 400,
+            note: "通常1日8〜20mg/kg(製剤0.04〜0.1g/kg)を2回。上限400mg/日。"
         },
         piSnippet: "通常、1日1kgあたり8〜20mg(製剤0.04〜0.1g)を2回に分けて服用する。"
     },
     {
-        id: "yj-2254001D1030",
-        name: "メプチン顆粒0.01%",
-        yjCode: "2254001D1030",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2254001D1030?user=1",
-        potency: 0.1,
+        id: "yj-2254001R1053",
+        name: "メプチンDS0.005%",
+        yjCode: "2254001R1053",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2254001R1053?user=1",
+        potency: 0.05,
         unit: "g",
+        piSnippetSource: "通常、小児には1回体重1kgあたり1.25μg（プロカテロール塩酸塩水和物として）を1日2回経口投与する。6歳以上の小児には1回25μgを1日2回経口投与する。",
         calcType: "age-weight-switch",
-        piSnippetSource: "6歳以上：1回25μg(0.25g)を1日2回。6歳未満：1回1.25μg/kg(0.025g/kg)を1日2〜3回。",
         ageBranches: [
             {
                 ageMin: 0,
@@ -718,10 +750,10 @@ const PEDIATRIC_DRUGS = [
                 label: "6歳未満: 体重換算 (1.25μg/kg)",
                 dosage: {
                     isFixed: false,
-                    timeMgKg: 1.25,
-                    unit: "μg",
+                    timeMgKg: 0.00125,
+                    unit: "g",
                     timesPerDay: 2,
-                    note: "通常1回1.25μg/kgを1日2回（または3回）。"
+                    note: "通常1回1.25μg/kg(0.00125mg/kg)を1日2回。"
                 }
             },
             {
@@ -730,14 +762,14 @@ const PEDIATRIC_DRUGS = [
                 label: "6歳以上: 固定量 (1回25μg)",
                 dosage: {
                     isFixed: true,
-                    dosePerTime: 25,
-                    unit: "μg",
-                    timesPerDay: 1,
-                    note: "通常1回25μg(0.25g)を1日1〜2回。"
+                    dosePerTime: 0.5,
+                    unit: "g",
+                    timesPerDay: 2,
+                    note: "通常1回0.5g(25μg)を1日2回。"
                 }
             }
         ],
-        piSnippet: "6歳以上：1回25μg(0.25g)を1日2回。6歳未満：1回1.25μg/kg(0.025g/kg)を1日2〜3回。"
+        piSnippet: "6歳以上：1回0.5g(25μg)を1日2回。6歳未満：1回1.25μg/kg(0.00125mg/kg)を1日2回。"
     },
     {
         id: "yj-2259002R1061",
@@ -752,7 +784,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 0.02,
             timesPerDay: 2,
-            note: "通常1回0.02mg/kgを2回。"
+            absoluteMaxMgPerDay: 2,
+            note: "通常1回0.02mg/kgを2回。上限2mg/日。"
         },
         piSnippet: "通常1回0.02mg/kgを2回。年齢および症状に応じて適宜増減する。"
     },
@@ -769,7 +802,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 0.02,
             timesPerDay: 2,
-            note: "通常1回0.02mg/kg(製剤0.02g/kg)を2回。"
+            absoluteMaxMgPerDay: 2,
+            note: "通常1回0.02mg/kg(製剤0.02g/kg)を2回。上限2mg/日。"
         },
         piSnippet: "通常、小児には1回体重1kgあたり0.02g(ツロブテロールとして0.02mg)を1日2回服用する。"
     },
@@ -786,7 +820,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 0.06,
             timesPerDay: 2,
-            note: "通常1回0.06mg/kg(製剤0.01g/kg)を2回。"
+            absoluteMaxMgPerDay: 12,
+            note: "通常1回0.06mg/kg(製剤0.01g/kg)を2回。上限12mg/日。"
         },
         piSnippet: "通常、小児には1回体重1kgあたり0.06mg（製剤0.01g）を1日2回経口投与する。"
     },
@@ -827,13 +862,14 @@ const PEDIATRIC_DRUGS = [
         name: "ザジテンドライシロップ0.1%",
         yjCode: "4490003R1228",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490003R1228?user=1",
-        potency: 100,
+        potency: 1,
         piSnippetSource: "通常、小児には1日量体重1kgあたり0.06g（ケトチフェンとして0.06mg）を2回に分けて、朝食後及び就寝前に用時溶解して経口投与する。",
         dosage: {
             minMgKg: 0.06,
             maxMgKg: 0.06,
             timesPerDay: 2,
-            note: "1日0.06mg/kg(製剤0.06g/kg)を2回。"
+            absoluteMaxMgPerDay: 2,
+            note: "1日0.06mg/kg(製剤0.06g/kg)を2回。上限2mg/日(成人量)。"
         },
         piSnippet: "通常、小児には1日量0.06mg/kg（製剤0.06g/kg）を2回に分けて朝食後及び就寝前に服用する。"
     },
@@ -850,7 +886,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 0.5,
             timesPerDay: 2,
-            note: "通常1回0.5mg/kg(製剤0.025g/kg)を2回。"
+            absoluteMaxMgPerDay: 60,
+            note: "通常1回0.5mg/kg(製剤0.025g/kg)を2回。上限60mg/日。"
         },
         piSnippet: "通常、1歳以上の小児には1回体重1kgあたり0.5mg(製剤0.025g)を1日2回服用する。"
     },
@@ -867,7 +904,8 @@ const PEDIATRIC_DRUGS = [
             isByTime: true,
             timeMgKg: 7,
             timesPerDay: 2,
-            note: "通常1回7mg/kg(製剤0.07g/kg)を2回。1日14mg/kg。"
+            absoluteMaxMgPerDay: 450,
+            note: "通常1回7mg/kg(製剤0.07g/kg)を2回。1日14mg/kg。上限450mg/日。"
         },
         piSnippet: "通常、小児には1回体重1kgあたり0.07g（プランルカストとして7mg）を1日2回服用する。"
     },
