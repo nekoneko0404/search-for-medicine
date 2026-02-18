@@ -1671,8 +1671,6 @@ window.clearAllDrugs = () => {
 function updatePrescriptionSheet() {
     const sheet = document.getElementById('prescription-sheet');
     const content = document.getElementById('sheet-content');
-    const fab = document.getElementById('fab');
-    const fabBadge = document.getElementById('fab-badge');
     const closeBtn = document.getElementById('close-sheet');
 
     // Update Close Button to Delete
@@ -1681,7 +1679,6 @@ function updatePrescriptionSheet() {
     closeBtn.style.color = '#ef4444';
 
     const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
-    fabBadge.textContent = validCount;
 
     const emptyHtml = `
         <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
@@ -1691,10 +1688,6 @@ function updatePrescriptionSheet() {
 
     if (state.selectedDrugIds.size === 0) {
         content.innerHTML = emptyHtml;
-        sheet.classList.remove('active');
-        document.getElementById('sheet-overlay').classList.remove('active');
-        fab.classList.add('hidden');
-        document.querySelector('.main-container').classList.remove('has-sheet');
         return;
     }
 
@@ -1765,18 +1758,6 @@ function updatePrescriptionSheet() {
     }).join('');
 
     content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
-
-    // Layout check for Side Panel (PC)
-    if (window.innerWidth >= 1024) {
-        if (state.selectedDrugIds.size > 0) {
-            document.querySelector('.main-container').classList.add('has-sheet');
-            sheet.classList.add('active');
-            document.getElementById('sheet-overlay').classList.remove('active');
-        } else {
-            document.querySelector('.main-container').classList.remove('has-sheet');
-            sheet.classList.remove('active');
-        }
-    }
 }
 
 
@@ -1787,12 +1768,6 @@ window.clearAllDrugs = () => {
     saveState();
     renderDrugList();
     updatePrescriptionSheet();
-    // Reset state/UI
-    const sheet = document.getElementById('prescription-sheet');
-    sheet.classList.remove('active');
-    document.getElementById('sheet-overlay').classList.remove('active');
-    document.getElementById('fab').classList.add('hidden');
-    document.querySelector('.main-container').classList.remove('has-sheet');
 };
 
 
@@ -1932,29 +1907,10 @@ document.addEventListener('DOMContentLoaded', () => {
         renderDrugList();
     });
 
-    const sheet = document.getElementById('prescription-sheet');
-    const overlay = document.getElementById('sheet-overlay');
-    const fab = document.getElementById('fab');
-    // document.getElementById('close-sheet').onclick = window.clearAllDrugs; // Set in updatePrescriptionSheet
-
-    const toggleSheet = (show) => {
-        if (show) {
-            sheet.classList.add('active');
-            if (window.innerWidth < 1024) overlay.classList.add('active');
-        }
-        else {
-            sheet.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-    };
-    fab.addEventListener('click', () => toggleSheet(true));
-    overlay.addEventListener('click', () => toggleSheet(false));
-
     loadState();
     renderCategoryTabs();
     renderDrugList();
 
-    // Initial Clear Button status if selection empty
     if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
     else {
         const closeBtn = document.getElementById('close-sheet');

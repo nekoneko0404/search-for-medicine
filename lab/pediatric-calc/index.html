@@ -15,29 +15,24 @@
     <link rel="stylesheet" href="../../css/v2-shared.css">
     <link rel="stylesheet" href="../../css/v2.css">
     <style>
-        /* Phase 23/24: Mobile First Modern UI */
+        /* Phase 25: Static Grid Layout (no position:fixed overlay) */
         :root {
             --header-offset: 80px;
-            --fab-size: 56px;
-            --sheet-height-mobile: 85vh;
-            --panel-width-pc: 450px;
             --primary-color: #4f46e5;
             --accent-color: #f59e0b;
-            --bg-glass: rgba(255, 255, 255, 0.95);
         }
 
         body {
             background-color: #f1f5f9;
         }
 
-        /* Patient Info Bar (Enhanced visibility) */
+        /* Patient Info Bar */
         .patient-info-bar {
             position: sticky;
             top: var(--header-offset);
             z-index: 90;
             background: #ffffff;
             border-bottom: 2px solid #4f46e5;
-            /* Strong border */
             padding: 1rem 5%;
             display: flex;
             flex-direction: column;
@@ -63,10 +58,10 @@
             margin: 0 auto;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 480px) {
             .input-container {
-                grid-template-columns: 1fr;
-                gap: 0.75rem;
+                grid-template-columns: 1fr 40px;
+                gap: 0.5rem;
             }
         }
 
@@ -136,44 +131,50 @@
             cursor: pointer;
             box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
             transition: all 0.2s;
+            align-self: center;
         }
 
         .helper-btn:hover {
             transform: scale(1.05);
         }
 
-        /* Age & Weight Inputs */
+        /* Age Inputs */
         .age-inputs {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             gap: 0.4rem;
         }
 
-        .age-input-wrapper {
-            position: relative;
-            flex: 1;
-        }
-
-        /* Main Container */
+        /* =============================================
+           Main Layout: Static 2-column grid
+           < 768px : single column (stack)
+           >= 768px: 2 columns side by side
+           ============================================= */
         .main-container {
-            padding: 1rem 5% 6rem;
+            padding: 1rem 2% 2rem;
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr;
-            transition: all 0.3s;
-            overflow-x: hidden;
-            /* Prevent horizontal scroll */
+            gap: 1rem;
         }
 
-        @media (min-width: 1024px) {
-            .main-container.has-sheet {
-                padding-right: 470px;
-                /* Offset for sidebar */
+        @media (min-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr 380px;
+                align-items: start;
+                gap: 1.5rem;
+                padding: 1.5rem 2% 2rem;
             }
         }
 
-        /* Search & Filter - Clean Blue Style */
+        @media (min-width: 1100px) {
+            .main-container {
+                grid-template-columns: 1fr 440px;
+            }
+        }
+
+        /* Search & Filter */
         .search-area {
             margin-bottom: 1.5rem;
         }
@@ -199,6 +200,7 @@
             font-size: 1rem;
             background: white;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+            box-sizing: border-box;
         }
 
         .category-tabs {
@@ -237,8 +239,14 @@
         /* Drug Grid */
         .drug-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 1rem;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 0.75rem;
+        }
+
+        @media (max-width: 767px) {
+            .drug-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         .drug-card {
@@ -254,12 +262,12 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            min-height: 100px;
+            min-height: 90px;
         }
 
         .drug-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px -4px rgba(0, 0, 0, 0.1);
         }
 
         .drug-card.selected {
@@ -271,14 +279,15 @@
             position: absolute;
             top: 0.5rem;
             right: 0.5rem;
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             background: #cbd5e1;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
+            font-size: 0.7rem;
             transform: scale(0.8);
             opacity: 0;
             transition: all 0.2s;
@@ -292,82 +301,67 @@
 
         .drug-card h3 {
             margin: 0;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 700;
             color: #1e293b;
             line-height: 1.4;
         }
 
         .drug-card .tag {
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: #64748b;
             background: #f1f5f9;
-            padding: 2px 8px;
+            padding: 2px 6px;
             border-radius: 4px;
             align-self: flex-start;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
-        /* Prescription Sheet */
-        .sheet-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 100;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-
-        .sheet-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
+        /* =============================================
+           Prescription Sheet: static panel (no fixed)
+           ============================================= */
         .prescription-sheet {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: var(--sheet-height-mobile);
             background: white;
-            z-index: 200;
-            /* Higher than FAB */
-            border-radius: 1.5rem 1.5rem 0 0;
-            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius: 1rem;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e2e8f0;
             display: flex;
             flex-direction: column;
+            /* スマホ: 最低高さを確保 */
+            min-height: 300px;
         }
 
-        .prescription-sheet.active {
-            transform: translateY(0);
-        }
-
-
-
-        .sheet-handle {
-            width: 40px;
-            height: 4px;
-            background: #cbd5e1;
-            border-radius: 2px;
-            margin: 0.75rem auto;
+        @media (min-width: 768px) {
+            .prescription-sheet {
+                /* PC/タブレット: 画面に追従するスティッキー */
+                position: sticky;
+                top: calc(var(--header-offset) + 1rem);
+                max-height: calc(100vh - var(--header-offset) - 2rem);
+                overflow: hidden;
+            }
         }
 
         .sheet-header {
-            padding: 0 1.5rem 1rem;
+            padding: 1rem 1.5rem;
             border-bottom: 1px solid #f1f5f9;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .sheet-content {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
             background: #f8fafc;
+            border-radius: 0 0 1rem 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .sheet-content {
+                padding: 1.5rem;
+            }
         }
 
         /* Rx Item Styles */
@@ -390,6 +384,7 @@
         .rx-title {
             font-weight: 800;
             color: #1e293b;
+            font-size: 0.9rem;
         }
 
         .rx-remove {
@@ -474,119 +469,6 @@
             font-weight: bold;
             font-size: 0.7rem;
         }
-
-        /* FAB */
-        .fab {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: var(--fab-size);
-            height: var(--fab-size);
-            background: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.25rem;
-            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
-            cursor: pointer;
-            z-index: 95;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .fab:hover {
-            transform: scale(1.1);
-        }
-
-        .fab.hidden {
-            transform: scale(0);
-            pointer-events: none;
-        }
-
-        .fab-badge {
-            position: absolute;
-            top: 0;
-            right: 0;
-            background: #ef4444;
-            color: white;
-            font-size: 0.7rem;
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            border: 2px solid white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-
-        /* PC Layout: Sidebar mode */
-        @media (min-width: 1024px) {
-            .main-container {
-                /* No grid columns here - sidebar is fixed, not in flow */
-                padding-right: 470px;
-                /* Reserve space for fixed sidebar */
-                padding-bottom: 2rem;
-            }
-
-            .main-container.has-sheet {
-                padding-right: 470px;
-            }
-
-            .sheet-overlay {
-                display: none !important;
-            }
-
-            .prescription-sheet {
-                position: fixed !important;
-                top: var(--header-offset);
-                bottom: 0;
-                left: auto;
-                right: 0;
-                width: var(--panel-width-pc);
-                height: calc(100vh - var(--header-offset));
-                border-radius: 0;
-                border-left: 1px solid #e2e8f0;
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
-                transform: translateX(100%);
-                z-index: 200;
-            }
-
-            .prescription-sheet.active {
-                transform: translateX(0) !important;
-            }
-
-            .sheet-handle {
-                display: none;
-            }
-
-            .fab {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            :root {
-                --header-offset: 60px;
-            }
-
-            .drug-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .drug-card {
-                min-height: auto;
-            }
-
-            .drug-card h3 {
-                font-size: 1rem;
-            }
-
-            .rx-config {
-                flex-direction: column;
-            }
-        }
     </style>
 </head>
 
@@ -638,19 +520,16 @@
             <div id="drug-grid" class="drug-grid"></div>
         </div>
 
-        <!-- Prescription Sheet -->
-        <div class="sheet-overlay" id="sheet-overlay"></div>
+        <!-- Prescription Sheet (static, always visible) -->
         <div class="prescription-sheet" id="prescription-sheet">
-            <div class="sheet-handle"></div>
             <div class="sheet-header">
                 <div style="font-weight:800; font-size:1.1rem; color:#1e293b;">
                     <i class="fas fa-file-prescription"
                         style="color:var(--primary-color); margin-right:0.5rem;"></i>処方設計
                 </div>
                 <button id="close-sheet"
-                    style="border:none; background:none; font-size:1.2rem; color:#94a3b8; cursor:pointer;"
-                    onclick="closeSheet()">
-                    <i class="fas fa-times"></i>
+                    style="border:none; background:none; font-size:1.2rem; color:#94a3b8; cursor:pointer;">
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
             <div class="sheet-content" id="sheet-content">
@@ -660,12 +539,6 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <!-- FAB -->
-    <div class="fab hidden" id="fab">
-        <i class="fas fa-calculator"></i>
-        <div class="fab-badge" id="fab-badge">0</div>
     </div>
 
     <!-- Scripts -->
