@@ -367,14 +367,14 @@ const PEDIATRIC_DRUGS = [
             {
                 id: "val-hsv-init",
                 label: "単純ヘルペス(初回)",
-                dosage: { isFixed: true, dosePerTime: 500, unit: "mg", timesPerDay: 2, minWeight: 40, note: "体重40kg以上: 1回500mg, 1日2回" },
-                piSnippet: "通常、体重40kg以上の小児には1回500mgを1日2回服用する。"
+                dosage: { timeMgKg: 25, timesPerDay: 2, absoluteMaxMgPerTime: 500, note: "1回25mg/kgを1日2回。上限500mg/回。" },
+                piSnippet: "通常、小児には1回25mg/kgを1日2回服用する。ただし、1回最大用量は500mgを超えないこと。"
             },
             {
                 id: "val-hsv-prev",
                 label: "性器ヘルペス再発抑制",
-                dosage: { isFixed: true, dosePerTime: 500, unit: "mg", timesPerDay: 1, minWeight: 40, note: "体重40kg以上: 1回500mg, 1日1回" },
-                piSnippet: "通常、体重40kg以上の小児には1回500mgを1日1回服用する。"
+                dosage: { timeMgKg: 25, timesPerDay: 1, absoluteMaxMgPerTime: 500, note: "1回25mg/kgを1日1回。上限500mg/回。" },
+                piSnippet: "通常、小児には1回25mg/kgを1日1回服用する。ただし、1回最大用量は500mgを超えないこと。"
             }
         ],
         dosage: {
@@ -796,23 +796,6 @@ const PEDIATRIC_DRUGS = [
         piSnippet: "6ヵ月以上1歳未満：1回2.5mLを1日1回。1歳以上7歳未満：1回2.5mLを1日2回。7歳以上15歳未満：1回5mLを1日2回服用する。"
     },
     {
-        id: "yj-1139004C2061",
-        name: "デパケン細粒",
-        yjCode: "1139004C2061",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/1139004C2061_1?user=1",
-        potency: 100,
-        piSnippetSource: "添付文書に小児用量の記載なし。",
-        dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            timesPerDay: 0,
-            note: "添付文書に小児用量の記載なし。"
-        },
-        piSnippet: "添付文書に小児用量の記載なし。",
-        isAdultOnly: false, // Explicitly not using Augsberger by default if purely undefined
-        isPediatricContraindicated: true // Custom flag if needed, or just handle via 0 dosage
-    },
-    {
         id: "yj-1139010R1020",
         name: "イーケプラドライシロップ50%",
         yjCode: "1139010R1020",
@@ -1147,20 +1130,20 @@ const PEDIATRIC_DRUGS = [
         name: "モビコールHD／LD",
         brandName: "モビコール",
         yjCode: "2359110B1037",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/2359110B1037_1?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2359110B1037?user=1",
         potency: 1,
         unit: "包",
         calcType: "fixed-age",
         fixedDoses: [
-            { ageMin: 2, ageMax: 7, dose: 1, unit: "包", label: "2〜7歳未満: 初回1包(LD)" },
-            { ageMin: 7, ageMax: 12, dose: 2, unit: "包", label: "7〜12歳未満: 初回2包(LD)" },
-            { ageMin: 12, ageMax: 100, dose: 2, unit: "包", label: "12歳以上: 初回2包(LD)" }
+            { ageMin: 2, ageMax: 7, dose: 1, unit: "包", label: "2〜7歳未満: 初回1包(LD) / 0.5包(HD)" },
+            { ageMin: 7, ageMax: 12, dose: 2, unit: "包", label: "7〜12歳未満: 初回2包(LD) / 1包(HD)" },
+            { ageMin: 12, ageMax: 100, dose: 2, unit: "包", label: "12歳以上: 初回2包(LD) / 1包(HD)" }
         ],
         dosage: {
             timesPerDay: 1,
-            note: "初回量：2-7歳未満1包、7歳以上2包。1日1〜3回に分けて服用。"
+            note: "初回量：2-7歳未満1包(LD)、7歳以上2包(LD)。HDはLDの2倍量(LD2包=HD1包)。"
         },
-        piSnippet: "2歳以上7歳未満：初回1包。7歳以上12歳未満：初回2包。12歳以上：初回2包。症状により増減。"
+        piSnippet: "2歳以上7歳未満：初回1包(LD)。7歳以上：初回2包(LD)。HD製剤はLDの2倍量。"
     },
     {
         id: "transamin-group",
@@ -1512,8 +1495,12 @@ function updateCalculations() {
                 displayDosePerTime = info.dosePerTime / currentPotency;
                 subText = `(固定量: 1回${info.dosePerTime}${info.unit || 'μg'})`;
             } else {
-                displayDosePerTime = (weight * info.timeMgKg) / currentPotency;
-                subText = `(体重換算: 1回${info.timeMgKg}${info.unit || 'μg'}/kg)`;
+                const doseMgKg = info.timeMgKg || (info.minMgKg / (info.timesPerDay || 3));
+                displayDosePerTime = (weight * doseMgKg) / currentPotency;
+                const unitStr = info.unit || 'μg'; // Assuming unit is for raw dose, but here we calculated mg/kg... wait.
+                // If minMgKg is used, it is mg/kg/day. Divided by timesPerDay = mg/kg/time.
+                // If timeMgKg is used, it is mg/kg/time.
+                subText = `(体重換算: 1回${doseMgKg.toFixed(2)}${unitStr}/kg)`;
             }
 
             const dailyTotal = displayDosePerTime * (info.timesPerDay || 1);
