@@ -1117,10 +1117,17 @@ const PEDIATRIC_DRUGS = [
             },
             {
                 "ageMin": 2,
+                "ageMax": 7,
+                "dose": 0.6,
+                "unit": "g",
+                "label": "2歳以上7歳未満 (1回30mg)"
+            },
+            {
+                "ageMin": 7,
                 "ageMax": 12,
                 "dose": 0.6,
                 "unit": "g",
-                "label": "2歳以上12歳未満 (1回30mg)"
+                "label": "7歳以上12歳未満 (1回30mg)"
             },
             {
                 "ageMin": 12,
@@ -1132,9 +1139,9 @@ const PEDIATRIC_DRUGS = [
         ],
         "dosage": {
             "timesPerDay": 2,
-            "note": "6ヶ月-2歳未満:1回15mg(0.3g)、2-12歳:1回30mg(0.6g)、2回。"
+            "note": "6ヶ月-2歳:15mg(0.3g)、2-7歳:30mg(0.6g)、7-12歳:30mg(0.6g)、12歳以上:60mg(1.2g)。"
         },
-        "piSnippet": "通常、小児には1回量として（6ヶ月-2歳:15mg、2-12歳:30mg、12歳以上:60mg）を1日2回経口投与する。",
+        "piSnippet": "通常（1回量）：12歳以上 60mg(1.2g)、7-12歳 30mg(0.6g)、2-7歳 30mg(0.6g)、6ヶ月-2歳 15mg(0.3g) を1日2回経口投与する。",
         "category": "allergy"
     },
     {
