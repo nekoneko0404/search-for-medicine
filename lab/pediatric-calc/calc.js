@@ -1242,7 +1242,7 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 100,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "6歳以上: 初回1mg (0.5g)"
+                "label": "1mg (0.5g)"
             }
         ],
         "dosage": {
@@ -1574,7 +1574,14 @@ function calculateDrug(drug, years, months, weight) {
     // Fixed Age / Weight Step
     if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
         const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
-        if (fixed) return { result: fixed.label, detail: fixed.label, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
+        if (fixed) {
+            let display = fixed.label;
+            // If label doesn't contain the dose number, prepend dose+unit
+            if (fixed.dose && fixed.unit && !fixed.label.includes(fixed.dose.toString())) {
+                display = `${fixed.dose}${fixed.unit} <span style="font-size:0.8em; color:#64748b;">(${fixed.label})</span>`;
+            }
+            return { result: fixed.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
+        }
         return { error: '該当年齢の用量設定なし' };
     }
     else if (drug.calcType === 'age') {
@@ -1619,8 +1626,16 @@ function calculateDrug(drug, years, months, weight) {
             || drug.ageBranches[drug.ageBranches.length - 1];
         const branchDosage = branch.dosage;
         const times = branchDosage.timesPerDay || 3;
-        const minMgPerDay = (branchDosage.minMgKg || 0) * weight;
-        const maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
+        const times = branchDosage.timesPerDay || 3;
+        let minMgPerDay = 0;
+        let maxMgPerDay = 0;
+        if (branchDosage.isByTime && branchDosage.timeMgKg) {
+            minMgPerDay = branchDosage.timeMgKg * times * weight;
+            maxMgPerDay = minMgPerDay;
+        } else {
+            minMgPerDay = (branchDosage.minMgKg || 0) * weight;
+            maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
+        }
         const round = (n) => Math.round(n * 100) / 100;
         let dayMin = round(minMgPerDay);
         let dayMax = round(maxMgPerDay);
@@ -1652,7 +1667,14 @@ function calculateDrug(drug, years, months, weight) {
             const last = drug.weightSteps[drug.weightSteps.length - 1];
             if (weight >= last.weightMax) step = last;
         }
-        if (step) return { result: step.label, detail: step.label, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
+        if (step) {
+            let display = step.label;
+            // If label doesn't contain the dose number, prepend dose+unit
+            if (step.dose && step.unit && !step.label.includes(step.dose.toString())) {
+                display = `${step.dose}${step.unit} <span style="font-size:0.8em; color:#64748b;">(${step.label})</span>`;
+            }
+            return { result: step.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
+        }
         return { error: '該当体重の用量設定なし' };
     }
 
@@ -1852,6 +1874,15 @@ function updatePrescriptionSheet() {
 window.clearAllDrugs = () => {
     state.selectedDrugIds.clear();
     state.drugOptions = {};
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+};
+
+// Logic for Removing Single Drug
+window.removeDrug = (id) => {
+    state.selectedDrugIds.delete(id);
+    if (state.drugOptions[id]) delete state.drugOptions[id];
     saveState();
     renderDrugList();
     updatePrescriptionSheet();
