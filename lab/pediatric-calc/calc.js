@@ -403,7 +403,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "azithromycin-group",
-        "name": "ジスロマック／アジスロマイシン",
+        "name": "ジスロマック／アジスロマイシン (10%)",
         "brandName": "ジスロマック",
         "yjCode": "6149004C1030",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6149004C1030",
@@ -416,7 +416,8 @@ const PEDIATRIC_DRUGS = [
                 "dose": 0.1,
                 "isPerKg": true,
                 "unit": "g",
-                "label": "15kg未満: 10mg/kg"
+                "label": "15kg未満: 10mg/kg",
+                "display": "10mg/kg"
             },
             {
                 "weightMin": 15,
@@ -634,28 +635,32 @@ const PEDIATRIC_DRUGS = [
                 "weightMax": 10,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "0.5g（1包）"
+                "label": "0.5g（1包）",
+                "display": "0.5g（1包）"
             },
             {
                 "weightMin": 10,
                 "weightMax": 20,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "0.5g（1包）"
+                "label": "0.5g（1包）",
+                "display": "0.5g（1包）"
             },
             {
                 "weightMin": 20,
                 "weightMax": 40,
                 "dose": 1,
                 "unit": "g",
-                "label": "1.0g（2包）"
+                "label": "1.0g（2包）",
+                "display": "1.0g（2包）"
             },
             {
                 "weightMin": 40,
                 "weightMax": 1000,
                 "dose": 2,
                 "unit": "g",
-                "label": "2.0g（4包）"
+                "label": "2.0g（4包）",
+                "display": "2.0g（4包）"
             }
         ],
         "dosage": {
@@ -680,14 +685,16 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 10,
                 "dose": 1,
                 "unit": "容器",
-                "label": "10歳未満: 20mg (1容器)"
+                "label": "10歳未満: 20mg (1容器)",
+                "display": "20mg (1容器)"
             },
             {
                 "ageMin": 10,
                 "ageMax": 100,
                 "dose": 2,
                 "unit": "容器",
-                "label": "10歳以上: 40mg (2容器)"
+                "label": "10歳以上: 40mg (2容器)",
+                "display": "40mg (2容器)"
             }
         ],
         "dosage": {
@@ -720,7 +727,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "medicon-group",
-        "name": "メジコン／デキストロメトルファン",
+        "name": "メジコン／デキストロメトルファン (10%)",
         "brandName": "メジコン",
         "yjCode": "2223001B1210",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2223001B1210",
@@ -738,7 +745,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "carbocisteine-group",
-        "name": "ムコダイン／カルボシステイン",
+        "name": "ムコダイン／カルボシステイン (50%)",
         "brandName": "ムコダイン",
         "yjCode": "2233002R2029",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2233002R2029",
@@ -812,7 +819,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-2251001D1061",
-        "name": "テオドール／テオフィリン",
+        "name": "テオドール／テオフィリン (20%)",
         "yjCode": "2251001D1061",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2251001D1061",
         "potency": 200,
@@ -829,14 +836,27 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "meptin-group",
-        "name": "メプチンドライシロップ0.005%",
+        "name": "メプチン／プロカテロール (規格選択)",
         "brandName": "メプチン",
         "yjCode": "2259004R2024",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2259004R2024",
         "potency": 0.05,
         "unit": "g",
-        "hasSubOptions": false,
-        "subOptions": [],
+        "hasSubOptions": true,
+        "subOptions": [
+            {
+                "id": "meptin-0005",
+                "label": "メプチンドライシロップ0.005%",
+                "potency": 0.05,
+                "unit": "g"
+            },
+            {
+                "id": "procaterol-001",
+                "label": "プロカテロール塩酸塩DS0.01%「タカタ」",
+                "potency": 0.1,
+                "unit": "g"
+            }
+        ],
         "piSnippetSource": "通常、小児には1回体重1kgあたり1.25μgを1日2回経口投与。6歳以上は1回25μgを1日2回。",
         "calcType": "age-weight-switch",
         "ageBranches": [
@@ -870,7 +890,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-2259002R1061",
-        "name": "ホクナリンDS0.1%小児用",
+        "name": "ホクナリン／ツロブテロール 0.1%",
         "yjCode": "2259002R1061",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2259002R1061",
         "potency": 1,
@@ -1242,7 +1262,8 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 100,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "1mg (0.5g)"
+                "label": "1mg (0.5g)",
+                "display": "1mg (0.5g)"
             }
         ],
         "dosage": {
@@ -1575,11 +1596,9 @@ function calculateDrug(drug, years, months, weight) {
     if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
         const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
         if (fixed) {
-            let display = fixed.label;
-            // If label doesn't contain the dose number, prepend dose+unit
-            if (fixed.dose && fixed.unit && !fixed.label.includes(fixed.dose.toString())) {
-                display = `${fixed.dose}${fixed.unit} <span style="font-size:0.8em; color:#64748b;">(${fixed.label})</span>`;
-            }
+            let display = fixed.display || `${fixed.dose}${fixed.unit}`;
+            // If isPerKg
+            if (fixed.isPerKg && !fixed.display) display += "/kg";
             return { result: fixed.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
         }
         return { error: '該当年齢の用量設定なし' };
@@ -1667,11 +1686,9 @@ function calculateDrug(drug, years, months, weight) {
             if (weight >= last.weightMax) step = last;
         }
         if (step) {
-            let display = step.label;
-            // If label doesn't contain the dose number, prepend dose+unit
-            if (step.dose && step.unit && !step.label.includes(step.dose.toString())) {
-                display = `${step.dose}${step.unit} <span style="font-size:0.8em; color:#64748b;">(${step.label})</span>`;
-            }
+            let display = step.display || `${step.dose}${step.unit}`;
+            // If isPerKg
+            if (step.isPerKg && !step.display) display += "/kg";
             return { result: step.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
         }
         return { error: '該当体重の用量設定なし' };
