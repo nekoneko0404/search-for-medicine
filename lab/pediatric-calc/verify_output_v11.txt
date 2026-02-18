@@ -1,0 +1,30 @@
+Successfully parsed 58 drugs.
+PASS: Acetaminophen group found
+PASS: Acetaminophen has 5 specs (including 100% and Syrup)
+PASS: Montelukast group found
+PASS: Clarith corrected to daily dose 10-15mg/kg
+PASS: Hosmicin updated to 20%/40% subOptions
+PASS: Keflex added
+PASS: Ozex added
+PASS: Orapenem added
+PASS: Tomiron refined to single spec (20%)
+PASS: Cetirizine consolidated into single entry
+--- Phase 10 Checks ---
+PASS: Fexofenadine renamed and 3 age steps added
+PASS: Oxatomide renamed
+PASS: Zovirax has disease options
+PASS: Tamiflu newborn dosage (3mg/kg) added
+PASS: Alesion removed
+PASS: Zofluza added
+PASS: Relenza added (fixed dose)
+--- Phase 11 Checks ---
+PASS: Calonal max per time (500mg) set
+PASS: Domperidone age 6+ limit (1.0mg/kg) set
+PASS: Magnesium Oxide added
+PASS: Movicol added
+PASS: Transamin added
+PASS: Melatobel added
+PASS: Adsorbin removed
+PASS: Brufen removed
+PASS: PL removed
+Data integrity check complete.

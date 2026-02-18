@@ -1,0 +1,8 @@
+ERROR during simulation: TypeError: searchInput.addEventListener is not a function
+    at eval (eval at <anonymous> (file:///c:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/debug_ui.mjs:43:20), <anonymous>:1600:21)
+    at Object.addEventListener (file:///c:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/debug_ui.mjs:29:60)
+    at eval (eval at <anonymous> (file:///c:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/debug_ui.mjs:43:20), <anonymous>:1597:10)
+    at file:///c:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/debug_ui.mjs:46:7
+    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
