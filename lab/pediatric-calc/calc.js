@@ -1553,8 +1553,15 @@ function calculateDrug(drug, years, months, weight) {
 
     if (drug.hasSubOptions) {
         const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
-        if (sub && sub.dosage) {
-            dosageConfig = sub.dosage;
+        if (sub) {
+            if (sub.dosage) {
+                // Sub-option has its own dosage config (e.g. Tamiflu)
+                dosageConfig = sub.dosage;
+            }
+            // Always update potency and unit from sub-option
+            potency = sub.potency || potency;
+            unit = sub.unit || unit;
+            subOptionLabel = sub.label;
         }
     }
 
@@ -1596,6 +1603,39 @@ function calculateDrug(drug, years, months, weight) {
             disease: diseaseLabel,
             subOption: subOptionLabel,
             note: (dosageConfig.note || '') + method,
+            piUrl: drug.piUrl,
+            piSnippet: drug.piSnippet
+        };
+    }
+    else if (drug.calcType === 'age-weight-switch' && drug.ageBranches) {
+        // Find the appropriate age branch
+        const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax)
+            || drug.ageBranches[drug.ageBranches.length - 1];
+        const branchDosage = branch.dosage;
+        const times = branchDosage.timesPerDay || 3;
+        const minMgPerDay = (branchDosage.minMgKg || 0) * weight;
+        const maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
+        const round = (n) => Math.round(n * 100) / 100;
+        let dayMin = round(minMgPerDay);
+        let dayMax = round(maxMgPerDay);
+        if (branchDosage.absoluteMaxMgPerDay) {
+            if (dayMin > branchDosage.absoluteMaxMgPerDay) dayMin = branchDosage.absoluteMaxMgPerDay;
+            if (dayMax > branchDosage.absoluteMaxMgPerDay) dayMax = branchDosage.absoluteMaxMgPerDay;
+        }
+        const totalMin = round(dayMin / potency);
+        const totalMax = round(dayMax / potency);
+        const timeMin = round(totalMin / times);
+        const timeMax = round(totalMax / times);
+        const totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
+        const timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
+        return {
+            totalRange: totalStr,
+            perTimeRange: timeStr,
+            times: times,
+            unit: unit,
+            disease: branch.label,
+            subOption: subOptionLabel,
+            note: branchDosage.note,
             piUrl: drug.piUrl,
             piSnippet: drug.piSnippet
         };
@@ -1691,9 +1731,6 @@ window.clearAllDrugs = () => {
     saveState();
     renderDrugList();
     updatePrescriptionSheet();
-    document.getElementById('prescription-sheet').classList.remove('active');
-    document.getElementById('sheet-overlay').classList.remove('active');
-    document.getElementById('fab').classList.add('hidden');
 };
 
 function updatePrescriptionSheet() {
