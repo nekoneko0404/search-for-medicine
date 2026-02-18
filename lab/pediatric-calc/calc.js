@@ -4,6 +4,18 @@ import { PHARMA_CLASSIFICATION_MAP } from './pharma_classification.js';
  * PEDIATRIC_CALC_VERSION: 20260218-1145
  */
 
+
+export const DRUG_CATEGORIES = {
+    antibiotics: "抗生剤",
+    antiviral: "抗ウイルス",
+    respiratory: "呼吸器・鎮咳",
+    allergy: "抗アレルギー",
+    cns: "神経・てんかん",
+    antipyretic: "解熱鎮痛",
+    gi: "消化器・整腸",
+    others: "その他・漢方"
+};
+
 const PEDIATRIC_DRUGS = [
     {
         id: "amoxicillin-group",
@@ -33,7 +45,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 2000,
             note: "1日20〜40mg/kgを3〜4回。通常最大90mg/kg。成人最大2000mg。"
         },
-        piSnippet: "通常1日20〜40mg(力価)/kgを3〜4回に分割経口投与する。なお、年齢、症状により適宜増減するが、1日量として最大90mg(力価)/kgを超えないこと。"
+        piSnippet: "通常1日20〜40mg(力価)/kgを3〜4回に分割経口投与する。なお、年齢、症状により適宜増減するが、1日量として最大90mg(力価)/kgを超えないこと。",
+        category: "antibiotics"
     },
     {
         id: "yj-6131008C1033",
@@ -49,158 +62,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 1125,
             note: "通常1日15〜30mg/kgを3回。最大1125mg(375mg×3)/日。"
         },
-        piSnippet: "通常小児に対しスルタミシリンとして、1日量15〜30mg(力価)/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。"
-    },
-    {
-        id: "yj-6132005C1053",
-        name: "ケフラール／セファクロル",
-        brandName: "ケフラール",
-        yjCode: "6132005C1053",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132005C1053?user=1",
-        potency: 100,
-        piSnippetSource: "通常1日20〜40mg/kgを3回。重症等の場合は1日100mg/kgまで。",
-        dosage: {
-            minMgKg: 20,
-            maxMgKg: 40,
-            absoluteMaxMgKg: 100,
-            absoluteMaxMgPerDay: 1500,
-            note: "通常1日20〜40mg/kgを3回。最大1500mg/日。"
-        },
-        piSnippet: "通常1日20〜40mg/kgを1日3回に分割して服用する。重症等の場合には1日100mg/kgまで増量できる。"
-    },
-    {
-        id: "yj-6132009C2023",
-        name: "トミロン／セフテラム",
-        brandName: "トミロン",
-        yjCode: "6132009C2023",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132009C2023?user=1",
-        potency: 200,
-        piSnippetSource: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。",
-        dosage: {
-            minMgKg: 9,
-            maxMgKg: 18,
-            absoluteMaxMgPerDay: 600,
-            note: "1日9〜18mg/kgを3回。最大600mg(成人量)/日。"
-        },
-        piSnippet: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。"
-    },
-    {
-        id: "yj-6132011R1078",
-        name: "バナン／セフポドキシム",
-        brandName: "バナン",
-        yjCode: "6132011R1078",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132011R1078?user=1",
-        potency: 100,
-        piSnippetSource: "通常1回3mg/kgを1日3回。重症時1回4.5mg/kgを1日3回。年齢および症状に応じて適宜増減する。ただし1日量200mg(力価)を超えないこと。",
-        dosage: {
-            minMgKg: 9,
-            maxMgKg: 13.5,
-            absoluteMaxMgPerDay: 200,
-            note: "通常1日9〜13.5mg/kgを3回。重症時1回4.5mg/kg(13.5mg/kg/日)。上限200mg/日。"
-        },
-        piSnippet: "通常1回3mg/kgを1日3回。重症時、1回4.5mg(力価)/kgを1日3回経口投与する。ただし、1日量として200mg(力価)を超えないこと。"
-    },
-    {
-        id: "yj-6132013C1031",
-        name: "セフゾン／セフジニル",
-        brandName: "セフゾン",
-        yjCode: "6132013C1031",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132013C1031?user=1",
-        potency: 100,
-        piSnippetSource: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。",
-        dosage: {
-            minMgKg: 9,
-            maxMgKg: 18,
-            absoluteMaxMgPerDay: 300,
-            note: "1日9〜18mg/kgを3回。1日上限300mg/日。"
-        },
-        piSnippet: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。"
-    },
-    {
-        id: "yj-6132015C1103",
-        name: "メイアクト／セフジトレン",
-        brandName: "メイアクト",
-        yjCode: "6132015C1103",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132015C1103?user=1",
-        potency: 100,
-        piSnippetSource: "通常1回3mg/kgを1日3回。必要に応じて1回6mg/kgまで増量可。ただし、1日最大600mgを超えないこと。",
-        dosage: {
-            minMgKg: 9,
-            maxMgKg: 18,
-            absoluteMaxMgPerTime: 200,
-            absoluteMaxMgPerDay: 600,
-            note: "通常1日9〜18mg/kgを3回。1回上限200mg(成人量)。"
-        },
-        piSnippet: "通常1回3mg/kgを1日3回。必要に応じて1回6mg(力価)/kgまで増量できる。ただし、1日量として600mg(力価)を超えないこと。"
-    },
-    {
-        id: "yj-6132016C1027",
-        name: "フロモックス／セフカペン",
-        brandName: "フロモックス",
-        yjCode: "6132016C1027",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132016C1027?user=1",
-        potency: 100,
-        piSnippetSource: "通常1回3mg/kgを1日3回。年齢、体重および症状に応じて適宜増減する。",
-        dosage: {
-            minMgKg: 9,
-            maxMgKg: 9,
-            timeMgKg: 3,
-            isByTime: true,
-            timesPerDay: 3,
-            absoluteMaxMgPerDay: 300,
-            note: "通常1回3mg/kgを1日3回。1日上限300mg(成人量)。"
-        },
-        piSnippet: "通常1回3mg/kgを1日3回経口投与する。なお、年齢、体重および症状に応じて適宜増減する。"
-    },
-    {
-        id: "yj-6135001R2110",
-        name: "ホスミシン／ホスホマイシン",
-        brandName: "ホスミシン",
-        yjCode: "6135001R2110",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6135001R2110?user=1",
-        potency: 200,
-        hasSubOptions: true,
-        subOptions: [
-            {
-                id: "fos-20",
-                label: "20%顆粒",
-                potency: 200
-            },
-            {
-                id: "fos-40",
-                label: "40%顆粒",
-                potency: 400
-            }
-        ],
-        piSnippetSource: "通常1日40〜120mg/kg(製剤0.2〜0.6g/kg)を3〜4回に分けて経口投与する。",
-        dosage: {
-            minMgKg: 40,
-            maxMgKg: 120,
-            timesPerDay: 4,
-            absoluteMaxMgPerDay: 4000,
-            note: "通常1日40〜120mg/kgを3〜4回。1日最大4g(成人量)。"
-        },
-        piSnippet: "通常、小児には1日40〜120mg(力価)/kgを3〜4回に分割して服用する。"
-    },
-    {
-        id: "yj-6139001R1032",
-        name: "ファロム／ファロペネム",
-        brandName: "ファロム",
-        yjCode: "6139001R1032",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6139001R1032?user=1",
-        potency: 100,
-        piSnippetSource: "通常1回5mg/kgを3回。最大1回10mg/kg。年齢、体重、症状により適宜増減する。",
-        dosage: {
-            minMgKg: 15,
-            maxMgKg: 30,
-            isByTime: true,
-            timeMgKg: 5,
-            timesPerDay: 3,
-            absoluteMaxMgPerTime: 300,
-            absoluteMaxMgPerDay: 900,
-            note: "通常1回5mg/kgを3回。最大1回10mg/kg。上限900mg(300mg×3)/日。"
-        },
-        piSnippet: "通常1回5mg(力価)/kgを1日3回経口投与する。なお、年齢、体重、症状により適宜増減するが、増量は1回10mg(力価)/kgまでとする。"
+        piSnippet: "通常小児に対しスルタミシリンとして、1日量15〜30mg(力価)/kgを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
+        category: "antibiotics"
     },
     {
         id: "yj-6139100R1036",
@@ -257,7 +120,234 @@ const PEDIATRIC_DRUGS = [
             note: "1日量を12時間ごと(1日2回)に投与。添付文書の分包用量表に準拠。"
         },
         piSnippetSource: "通常、1日96.4mg/kgを2回に分けて経口投与。分包製剤(パウチ)の場合は体重区分(6-10kg, 11-16kg等)ごとの固定量を投与する。",
-        piSnippet: "通常、1日96.4mg/kgを2回に分けて経口投与。分包製剤(パウチ)の場合は体重区分(6-10kg, 11-16kg等)ごとの固定量を投与する。"
+        piSnippet: "通常、1日96.4mg/kgを2回に分けて経口投与。分包製剤(パウチ)の場合は体重区分(6-10kg, 11-16kg等)ごとの固定量を投与する。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6132005C1053",
+        name: "ケフラール／セファクロル",
+        brandName: "ケフラール",
+        yjCode: "6132005C1053",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132005C1053?user=1",
+        potency: 100,
+        piSnippetSource: "通常1日20〜40mg/kgを3回。重症等の場合は1日100mg/kgまで。",
+        dosage: {
+            minMgKg: 20,
+            maxMgKg: 40,
+            absoluteMaxMgKg: 100,
+            absoluteMaxMgPerDay: 1500,
+            note: "通常1日20〜40mg/kgを3回。最大1500mg/日。"
+        },
+        piSnippet: "通常1日20〜40mg/kgを1日3回に分割して服用する。重症等の場合には1日100mg/kgまで増量できる。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6132009C2023",
+        name: "トミロン／セフテラム",
+        brandName: "トミロン",
+        yjCode: "6132009C2023",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132009C2023?user=1",
+        potency: 200,
+        piSnippetSource: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。",
+        dosage: {
+            minMgKg: 9,
+            maxMgKg: 18,
+            absoluteMaxMgPerDay: 600,
+            note: "1日9〜18mg/kgを3回。最大600mg(成人量)/日。"
+        },
+        piSnippet: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6132011R1078",
+        name: "バナン／セフポドキシム",
+        brandName: "バナン",
+        yjCode: "6132011R1078",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132011R1078?user=1",
+        potency: 100,
+        piSnippetSource: "通常1回3mg/kgを1日3回。重症時1回4.5mg/kgを1日3回。年齢および症状に応じて適宜増減する。ただし1日量200mg(力価)を超えないこと。",
+        dosage: {
+            minMgKg: 9,
+            maxMgKg: 13.5,
+            absoluteMaxMgPerDay: 200,
+            note: "通常1日9〜13.5mg/kgを3回。重症時1回4.5mg/kg(13.5mg/kg/日)。上限200mg/日。"
+        },
+        piSnippet: "通常1回3mg/kgを1日3回。重症時、1回4.5mg(力価)/kgを1日3回経口投与する。ただし、1日量として200mg(力価)を超えないこと。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6132013C1031",
+        name: "セフゾン／セフジニル",
+        brandName: "セフゾン",
+        yjCode: "6132013C1031",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132013C1031?user=1",
+        potency: 100,
+        piSnippetSource: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。",
+        dosage: {
+            minMgKg: 9,
+            maxMgKg: 18,
+            absoluteMaxMgPerDay: 300,
+            note: "1日9〜18mg/kgを3回。1日上限300mg/日。"
+        },
+        piSnippet: "通常1日9〜18mg/kgを3回。年齢および症状に応じて適宜増減する。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6132015C1103",
+        name: "メイアクト／セフジトレン",
+        brandName: "メイアクト",
+        yjCode: "6132015C1103",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132015C1103?user=1",
+        potency: 100,
+        piSnippetSource: "通常1回3mg/kgを1日3回。必要に応じて1回6mg/kgまで増量可。ただし、1日最大600mgを超えないこと。",
+        dosage: {
+            minMgKg: 9,
+            maxMgKg: 18,
+            absoluteMaxMgPerTime: 200,
+            absoluteMaxMgPerDay: 600,
+            note: "通常1日9〜18mg/kgを3回。1回上限200mg(成人量)。"
+        },
+        piSnippet: "通常1回3mg/kgを1日3回。必要に応じて1回6mg(力価)/kgまで増量できる。ただし、1日量として600mg(力価)を超えないこと。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6132016C1027",
+        name: "フロモックス／セフカペン",
+        brandName: "フロモックス",
+        yjCode: "6132016C1027",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132016C1027?user=1",
+        potency: 100,
+        piSnippetSource: "通常1回3mg/kgを1日3回。年齢、体重および症状に応じて適宜増減する。",
+        dosage: {
+            minMgKg: 9,
+            maxMgKg: 9,
+            timeMgKg: 3,
+            isByTime: true,
+            timesPerDay: 3,
+            absoluteMaxMgPerDay: 300,
+            note: "通常1回3mg/kgを1日3回。1日上限300mg(成人量)。"
+        },
+        piSnippet: "通常1回3mg/kgを1日3回経口投与する。なお、年齢、体重および症状に応じて適宜増減する。",
+        category: "antibiotics"
+    },
+    {
+        id: "keflex-group",
+        name: "Ｌ－ケフレックス／セファレキシン",
+        brandName: "Ｌ－ケフレックス",
+        yjCode: "6132002E1034",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132002E1034?user=1",
+        potency: 100,
+        piSnippetSource: "通常1日25〜50mg/kgを朝夕2回。重症時は50〜100mg/kg。",
+        diseases: [
+            {
+                id: "keflex-standard",
+                label: "通常 (25-50mg/kg)",
+                dosage: {
+                    minMgKg: 25,
+                    maxMgKg: 50,
+                    timesPerDay: 2,
+                    absoluteMaxMgPerDay: 1000,
+                    note: "1日25〜50mg/kgを2回(朝夕)。成人最大1g/日。"
+                },
+                piSnippet: "通常、幼小児にはセファレキシンとして体重kgあたり1日25〜50mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
+            },
+            {
+                id: "keflex-severe",
+                label: "重症・感受性低 (50-100mg/kg)",
+                dosage: {
+                    minMgKg: 50,
+                    maxMgKg: 100,
+                    timesPerDay: 2,
+                    absoluteMaxMgPerDay: 2000,
+                    note: "1日50〜100mg/kgを2回(朝夕)。成人最大2g/日。"
+                },
+                piSnippet: "重症の場合や分離菌の感受性が比較的低い症例にはセファレキシンとして体重kgあたり1日50〜100mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
+            }
+        ],
+        dosage: {
+            minMgKg: 25,
+            maxMgKg: 50,
+            absoluteMaxMgKg: 100,
+            timesPerDay: 2,
+            absoluteMaxMgPerTime: 500,
+            absoluteMaxMgPerDay: 1000,
+            note: "通常1日25〜50mg/kgを2回(朝夕)。重症時50〜100mg/kg。"
+        },
+        piSnippet: "通常、幼小児には1日25〜50mg(力価)/kgを2回に分割して、朝、夕食後に経口投与する。重症時は1日50〜100mg(力価)/kg。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6135001R2110",
+        name: "ホスミシン／ホスホマイシン",
+        brandName: "ホスミシン",
+        yjCode: "6135001R2110",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6135001R2110?user=1",
+        potency: 200,
+        hasSubOptions: true,
+        subOptions: [
+            {
+                id: "fos-20",
+                label: "20%顆粒",
+                potency: 200
+            },
+            {
+                id: "fos-40",
+                label: "40%顆粒",
+                potency: 400
+            }
+        ],
+        piSnippetSource: "通常1日40〜120mg/kg(製剤0.2〜0.6g/kg)を3〜4回に分けて経口投与する。",
+        dosage: {
+            minMgKg: 40,
+            maxMgKg: 120,
+            timesPerDay: 4,
+            absoluteMaxMgPerDay: 4000,
+            note: "通常1日40〜120mg/kgを3〜4回。1日最大4g(成人量)。"
+        },
+        piSnippet: "通常、小児には1日40〜120mg(力価)/kgを3〜4回に分割して服用する。",
+        category: "antibiotics"
+    },
+    {
+        id: "yj-6139001R1032",
+        name: "ファロム／ファロペネム",
+        brandName: "ファロム",
+        yjCode: "6139001R1032",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6139001R1032?user=1",
+        potency: 100,
+        piSnippetSource: "通常1回5mg/kgを3回。最大1回10mg/kg。年齢、体重、症状により適宜増減する。",
+        dosage: {
+            minMgKg: 15,
+            maxMgKg: 30,
+            isByTime: true,
+            timeMgKg: 5,
+            timesPerDay: 3,
+            absoluteMaxMgPerTime: 300,
+            absoluteMaxMgPerDay: 900,
+            note: "通常1回5mg/kgを3回。最大1回10mg/kg。上限900mg(300mg×3)/日。"
+        },
+        piSnippet: "通常1回5mg(力価)/kgを1日3回経口投与する。なお、年齢、体重、症状により適宜増減するが、増量は1回10mg(力価)/kgまでとする。",
+        category: "antibiotics"
+    },
+    {
+        id: "orapenem-group",
+        name: "オラペネム／テビペネム",
+        brandName: "オラペネム",
+        yjCode: "6139002C1026",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6139002C1026?user=1",
+        potency: 100,
+        piSnippetSource: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。",
+        dosage: {
+            minMgKg: 8,
+            maxMgKg: 12,
+            isByTime: true,
+            timeMgKg: 4,
+            timesPerDay: 2,
+            absoluteMaxMgPerTime: 250,
+            absoluteMaxMgPerDay: 500,
+            note: "通常1回4mg/kgを1日2回。必要に応じて1回6mg/kgまで。成人最大250mg/回。"
+        },
+        piSnippet: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。",
+        category: "antibiotics"
     },
     {
         id: "yj-6141001R2053",
@@ -287,7 +377,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 1200,
             note: "1日25〜50mg/kgを4〜6回。成人量(1200mg)を上限とする。"
         },
-        piSnippet: "小児には1日体重1kgあたり25〜50mg(力価)を4〜6回に分割経口投与。なお、年齢、症状により適宜増減する。ただし、小児用量は成人量(1日800〜1200mg)を上限とする。"
+        piSnippet: "小児には1日体重1kgあたり25〜50mg(力価)を4〜6回に分割経口投与。なお、年齢、症状により適宜増減する。ただし、小児用量は成人量(1日800〜1200mg)を上限とする。",
+        category: "antibiotics"
     },
     {
         id: "clarith-group",
@@ -307,7 +398,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 400,
             note: "1日10〜15mg/kgを2〜3回。最大400mg/日。"
         },
-        piSnippet: "通常、小児には1日10〜15mg(力価)/kgを2〜3回に分けて服用する。なお、年齢、症状により適宜増減する。"
+        piSnippet: "通常、小児には1日10〜15mg(力価)/kgを2〜3回に分けて服用する。なお、年齢、症状により適宜増減する。",
+        category: "antibiotics"
     },
     {
         id: "azithromycin-group",
@@ -360,7 +452,8 @@ const PEDIATRIC_DRUGS = [
             note: "1日1回10mg/kg(最大500mg)を3日間。15kg以上は段階的用量設定。"
         },
         piSnippetSource: "通常、1日1回10mg/kgを3日間経口投与する。最大量として成人の1日量500mgを超えない。また、体重15kg以上の小児には専用の用量設定表がある。",
-        piSnippet: "通常、1日1回10mg(力価)/kgを3日間経口投与する。ただし、1日最大500mg(力価)を超えないこと。体重15kg以上の小児には専用の用量設定表がある。"
+        piSnippet: "通常、1日1回10mg(力価)/kgを3日間経口投与する。ただし、1日最大500mg(力価)を超えないこと。体重15kg以上の小児には専用の用量設定表がある。",
+        category: "antibiotics"
     },
     {
         id: "yj-6152005D1094",
@@ -377,7 +470,29 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 200,
             note: "1日量2〜4mg/kg(製剤0.1〜0.2g/kg)を1〜2回。上限200mg/日。"
         },
-        piSnippet: "通常、小児には体重1kgあたり、2〜4mg(力価)を1日量として、12あるいは24時間ごとに経口投与する。"
+        piSnippet: "通常、小児には体重1kgあたり、2〜4mg(力価)を1日量として、12あるいは24時間ごとに経口投与する。",
+        category: "antibiotics"
+    },
+    {
+        id: "ozex-group",
+        name: "オゼックス／トスフロキサシン",
+        brandName: "オゼックス",
+        yjCode: "6241010C1024",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6241010C1024?user=1",
+        potency: 150,
+        piSnippetSource: "小児に対してはトスフロキサシントシル酸塩水和物として1回6mg/kgを1日2回経口投与する。ただし、1回180mg、1日360mgを超えないこととする。",
+        dosage: {
+            minMgKg: 12,
+            maxMgKg: 12,
+            timeMgKg: 6,
+            isByTime: true,
+            timesPerDay: 2,
+            absoluteMaxMgPerTime: 180,
+            absoluteMaxMgPerDay: 360,
+            note: "1回6mg/kgを1日2回。1回上限180mg、1日上限360mg。"
+        },
+        piSnippet: "小児に対してはトスフロキサシントシル酸塩水和物として1回6mg/kgを1日2回経口投与する。ただし、1回180mg、1日360mgを超えないこととする。",
+        category: "antibiotics"
     },
     {
         id: "yj-6250002D1024",
@@ -415,7 +530,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "通常1回20mg/kgを1日4回。水痘・帯状疱疹：上限800mg/回。単純ヘルペス：上限200mg/回。"
         },
-        piSnippet: "通常、小児には1回20mg/kgを1日4回服用する。疾患により1回量上限（200mg/800mg）が異なります。"
+        piSnippet: "通常、小児には1回20mg/kgを1日4回服用する。疾患により1回量上限（200mg/800mg）が異なります。",
+        category: "antiviral"
     },
     {
         id: "yj-6250019D1020",
@@ -452,7 +568,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "通常1回25mg/kgを1日3回。上限1000mg/回。40kg以上の単純ヘルペスは1回500mgを1日2回。"
         },
-        piSnippet: "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回量として1000mgを超えないこと。"
+        piSnippet: "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回量として1000mgを超えないこと。",
+        category: "antiviral"
     },
     {
         id: "tamiflu-group",
@@ -493,7 +610,107 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "幼小児:1回2mg/kg、新生児・乳児:1回3mg/kg。1日2回。上限75mg/回。"
         },
-        piSnippet: "1回2mg/kg(1歳以上)または3mg/kg(1歳未満)を1日2回。1回最高用量は75mg。"
+        piSnippet: "1回2mg/kg(1歳以上)または3mg/kg(1歳未満)を1日2回。1回最高用量は75mg。",
+        category: "antiviral"
+    },
+    {
+        id: "zofluza-group",
+        name: "ゾフルーザ顆粒2%",
+        brandName: "ゾフルーザ",
+        yjCode: "6250047D1021",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250047D1021?user=1",
+        potency: 10,
+        unit: "g",
+        calcType: "weight-step",
+        weightSteps: [
+            {
+                weightMin: 0,
+                weightMax: 10,
+                dose: 0.5,
+                unit: "g",
+                label: "10kg未満: 10mg (0.5g)"
+            },
+            {
+                weightMin: 10,
+                weightMax: 20,
+                dose: 0.5,
+                unit: "g",
+                label: "10〜20kg未満: 10mg (0.5g)"
+            },
+            {
+                weightMin: 20,
+                weightMax: 40,
+                dose: 1,
+                unit: "g",
+                label: "20〜40kg未満: 20mg (1.0g)"
+            },
+            {
+                weightMin: 40,
+                weightMax: 1000,
+                dose: 2,
+                unit: "g",
+                label: "40kg以上: 40mg (2.0g)"
+            }
+        ],
+        dosage: {
+            timesPerDay: 1,
+            note: "単回投与。体重10-20kg:10mg、20-40kg:20mg、40kg以上:40mg。"
+        },
+        piSnippet: "通常、単回経口投与する。10-20kg未満:10mg(0.5g)、20-40kg未満:20mg(1.0g)、40kg以上:40mg(2.0g)。",
+        category: "antiviral"
+    },
+    {
+        id: "inavir-group",
+        name: "イナビル吸入粉末剤20mg",
+        brandName: "イナビル",
+        yjCode: "6250022G1022",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250022G1022?user=1",
+        potency: 1,
+        unit: "容器",
+        calcType: "fixed-age",
+        fixedDoses: [
+            {
+                ageMin: 0,
+                ageMax: 10,
+                dose: 1,
+                unit: "容器",
+                label: "10歳未満: 20mg (1容器)"
+            },
+            {
+                ageMin: 10,
+                ageMax: 100,
+                dose: 2,
+                unit: "容器",
+                label: "10歳以上: 40mg (2容器)"
+            }
+        ],
+        dosage: {
+            timesPerDay: 1,
+            note: "単回吸入。10歳未満:20mg(1容器)、10歳以上:40mg(2容器)。"
+        },
+        piSnippet: "通常、単回吸入投与する。10歳未満：20mg（1容器）、10歳以上：40mg（2容器）。",
+        category: "antiviral"
+    },
+    {
+        id: "relenza-group",
+        name: "リレンザカプセル5mg (吸入用)",
+        brandName: "リレンザ",
+        yjCode: "6250019G1022",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250019G1022?user=1",
+        potency: 5,
+        unit: "ブリスター",
+        dosage: {
+            minMgKg: 0,
+            maxMgKg: 0,
+            isByTime: true,
+            timeMgKg: 0,
+            isFixed: true,
+            dosePerTime: 10,
+            timesPerDay: 2,
+            note: "1回10mg(2ブリスター)を1日2回、5日間。専用吸入器を使用。"
+        },
+        piSnippet: "通常、1回10mg（2ブリスター）を、1日2回、5日間、専用の吸入器を用いて吸入する。",
+        category: "antiviral"
     },
     {
         id: "medicon-group",
@@ -510,7 +727,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 60,
             note: "1日1〜2mg/kg(目安)。1-2歳4.5-9mg, 3-4歳6-12mg, 5-6歳8-16mg。3-4回分割。"
         },
-        piSnippet: "通常、小児には以下の1日量を3〜4回に分割し服用する。1〜2歳：4.5〜9mg、3〜4歳：6〜12mg、5〜6歳：8〜16mg。"
+        piSnippet: "通常、小児には以下の1日量を3〜4回に分割し服用する。1〜2歳：4.5〜9mg、3〜4歳：6〜12mg、5〜6歳：8〜16mg。",
+        category: "respiratory"
     },
     {
         id: "carbocisteine-group",
@@ -530,7 +748,8 @@ const PEDIATRIC_DRUGS = [
             timesPerDay: 3,
             note: "通常1回10mg/kg(33.3mg=0.1g/kg)を3回。"
         },
-        piSnippet: "通常、小児には1回10mg/kgを1日3回経口投与する。なお、年齢、症状により適宜増減する。"
+        piSnippet: "通常、小児には1回10mg/kgを1日3回経口投与する。なお、年齢、症状により適宜増減する。",
+        category: "respiratory"
     },
     {
         id: "yj-2239001Q1166",
@@ -549,7 +768,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 45,
             note: "通常1日0.9mg/kg(製剤0.06g/kg)を3回。上限45mg(成人量)/日。"
         },
-        piSnippet: "通常、小児には1日0.9mg/kgを3回に分割して経口投与する。"
+        piSnippet: "通常、小児には1日0.9mg/kgを3回に分割して経口投与する。",
+        category: "respiratory"
     },
     {
         id: "asverin-group",
@@ -581,7 +801,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 90,
             note: "通常1日1mg/kgを3回(目安)。1歳未満5-20mg, 1-3歳10-25mg, 3-6歳15-40mg。"
         },
-        piSnippet: "通常、小児には1日1歳未満5〜20mg、1歳以上3歳未満10〜25mg、3歳以上6歳未満15〜40mgを3回に分割経口投与する。なお、年齢、症状により適宜増減する。"
+        piSnippet: "通常、小児には1日1歳未満5〜20mg、1歳以上3歳未満10〜25mg、3歳以上6歳未満15〜40mgを3回に分割経口投与する。なお、年齢、症状により適宜増減する。",
+        category: "respiratory"
     },
     {
         id: "yj-2251001D1061",
@@ -597,7 +818,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 400,
             note: "通常1日8〜20mg/kgを1日2回。6〜15歳は8〜10mg/kg/日から開始。小児1回100〜200mg(製剤0.5〜1g)を1日2回。"
         },
-        piSnippet: "通常、小児1回100〜200mg（本剤0.5〜1g）を1日2回服用する。6〜15歳では8〜10mg/kg/日より開始する。"
+        piSnippet: "通常、小児1回100〜200mg（本剤0.5〜1g）を1日2回服用する。6〜15歳では8〜10mg/kg/日より開始する。",
+        category: "respiratory"
     },
     {
         id: "meptin-group",
@@ -637,7 +859,8 @@ const PEDIATRIC_DRUGS = [
                 }
             }
         ],
-        piSnippet: "6歳以上：1回25μgを1日2回。6歳未満：1回1.25μg/kgを1日2回。"
+        piSnippet: "6歳以上：1回25μgを1日2回。6歳未満：1回1.25μg/kgを1日2回。",
+        category: "respiratory"
     },
     {
         id: "yj-2259002R1061",
@@ -655,7 +878,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 2,
             note: "通常1回0.02mg/kgを2回。上限2mg/日。"
         },
-        piSnippet: "通常1回0.02mg/kgを2回。年齢および症状に応じて適宜増減する。"
+        piSnippet: "通常1回0.02mg/kgを2回。年齢および症状に応じて適宜増減する。",
+        category: "respiratory"
     },
     {
         id: "yj-4413004C2022",
@@ -690,7 +914,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "喘息:1回0.12mg/kg、その他:1回0.06mg/kg。1日2回。上限12mg(成人量)。"
         },
-        piSnippet: "疾患により1回投与量が異なります（喘息 0.12mg/kg、その他 0.06mg/kg）。"
+        piSnippet: "疾患により1回投与量が異なります（喘息 0.12mg/kg、その他 0.06mg/kg）。",
+        category: "allergy"
     },
     {
         id: "yj-4419002B1033",
@@ -706,7 +931,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "成人1回2mg(0.2g)。小児用量記載なし、Augsberger式等で算出。"
         },
-        piSnippet: "通常、成人1回2mg(0.2g)を1日1〜4回。小児は年齢・症状により適宜増減。"
+        piSnippet: "通常、成人1回2mg(0.2g)を1日1〜4回。小児は年齢・症状により適宜増減。",
+        category: "allergy"
     },
     {
         id: "yj-4419005B1045",
@@ -722,7 +948,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "成人1回4mg(0.4g)。小児用量記載なし、Augsberger式等で算出。"
         },
-        piSnippet: "通常、成人1回4mg(0.4g)を1日1〜3回。小児は年齢・症状により適宜増減。"
+        piSnippet: "通常、成人1回4mg(0.4g)を1日1〜3回。小児は年齢・症状により適宜増減。",
+        category: "allergy"
     },
     {
         id: "yj-4490003R1228",
@@ -738,7 +965,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 2,
             note: "1日0.06mg/kg(製剤0.06g/kg)を2回。上限2mg/日(成人量)。"
         },
-        piSnippet: "通常、小児には1日量0.06mg/kg（製剤0.06g/kg）を2回に分けて朝食後及び就寝前に服用する。"
+        piSnippet: "通常、小児には1日量0.06mg/kg（製剤0.06g/kg）を2回に分けて朝食後及び就寝前に服用する。",
+        category: "allergy"
     },
     {
         id: "oxatomide-group",
@@ -757,7 +985,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 60,
             note: "通常1回0.5mg/kgを1日2回。上限60mg(成人量)。"
         },
-        piSnippet: "通常、小児には1回0.5mg/kgを1日2回(朝食後、就寝前)服用する。"
+        piSnippet: "通常、小児には1回0.5mg/kgを1日2回(朝食後、就寝前)服用する。",
+        category: "allergy"
     },
     {
         id: "yj-4490017R1033",
@@ -776,7 +1005,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 450,
             note: "通常1回7mg/kg(製剤0.07g/kg)を2回。1日14mg/kg。上限450mg/日。"
         },
-        piSnippet: "通常、小児には1回体重1kgあたり0.07g（プランルカストとして7mg）を1日2回服用する。"
+        piSnippet: "通常、小児には1回体重1kgあたり0.07g（プランルカストとして7mg）を1日2回服用する。",
+        category: "allergy"
     },
     {
         id: "cetirizine-group",
@@ -807,7 +1037,8 @@ const PEDIATRIC_DRUGS = [
             timesPerDay: 2,
             note: "2-7歳未満:1回0.2g、7-15歳未満:1回0.4gを1日2回。"
         },
-        piSnippet: "通常、2歳以上7歳未満：1回0.2g、7歳以上15歳未満：1回0.4gを1日2回。"
+        piSnippet: "通常、2歳以上7歳未満：1回0.2g、7歳以上15歳未満：1回0.4gを1日2回。",
+        category: "allergy"
     },
     {
         id: "yj-4490023R2027",
@@ -840,7 +1071,8 @@ const PEDIATRIC_DRUGS = [
                 label: "12歳以上 (1回60mg)"
             }
         ],
-        piSnippet: "通常、小児には1回量として（6ヶ月-2歳:15mg、2-12歳:30mg、12歳以上:60mg）を1日2回経口投与する。"
+        piSnippet: "通常、小児には1回量として（6ヶ月-2歳:15mg、2-12歳:30mg、12歳以上:60mg）を1日2回経口投与する。",
+        category: "allergy"
     },
     {
         id: "yj-4490025D1022",
@@ -871,7 +1103,8 @@ const PEDIATRIC_DRUGS = [
             timesPerDay: 2,
             note: "2〜7歳未満:1回0.5g、7歳以上:1回1gを1日2回。"
         },
-        piSnippet: "通常、2〜7歳未満：1回2.5mg(0.5g)、7歳以上：1回5mg(1g)を朝・就寝前の1日2回服用する。"
+        piSnippet: "通常、2〜7歳未満：1回2.5mg(0.5g)、7歳以上：1回5mg(1g)を朝・就寝前の1日2回服用する。",
+        category: "allergy"
     },
     {
         id: "montelukast-group",
@@ -895,7 +1128,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "1歳以上6歳未満：1日1回1包(4mg)。"
         },
-        piSnippet: "1歳以上6歳未満：通常、1日1回1包（4mg）を就寝前に服用する。"
+        piSnippet: "1歳以上6歳未満：通常、1日1回1包（4mg）を就寝前に服用する。",
+        category: "allergy"
     },
     {
         id: "yj-4490027R1029",
@@ -922,7 +1156,8 @@ const PEDIATRIC_DRUGS = [
                 label: "7歳以上"
             }
         ],
-        piSnippet: "3歳以上7歳未満：1回0.5gを1日1回。7歳以上：1回1.0gを1日1回。"
+        piSnippet: "3歳以上7歳未満：1回0.5gを1日1回。7歳以上：1回1.0gを1日1回。",
+        category: "allergy"
     },
     {
         id: "yj-4490028Q1028",
@@ -960,7 +1195,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "6ヶ月-1歳未満:2.5mL(1回)、1-7歳:2.5mL(2回)、7-15歳:5mL(2回)。"
         },
-        piSnippet: "6ヵ月以上1歳未満：1回2.5mLを1日1回。1歳以上7歳未満：1回2.5mLを1日2回。7歳以上15歳未満：1回5mLを1日2回服用する。"
+        piSnippet: "6ヵ月以上1歳未満：1回2.5mLを1日1回。1歳以上7歳未満：1回2.5mLを1日2回。7歳以上15歳未満：1回5mLを1日2回服用する。",
+        category: "allergy"
     },
     {
         id: "yj-1139010R1020",
@@ -975,7 +1211,32 @@ const PEDIATRIC_DRUGS = [
             timesPerDay: 2,
             note: "通常1日20mg/kg(製剤0.04g/kg)を2回。最大1日60mg/kg。"
         },
-        piSnippet: "通常、1日20mg/kg(製剤0.04g/kg)を2回に分けて服用する。最大1日60mg/kg。"
+        piSnippet: "通常、1日20mg/kg(製剤0.04g/kg)を2回に分けて服用する。最大1日60mg/kg。",
+        category: "cns"
+    },
+    {
+        id: "melatobel-group",
+        name: "メラトベル顆粒0.2%小児用",
+        brandName: "メラトベル",
+        yjCode: "1190028D1026",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1190028D1026?user=1",
+        potency: 2,
+        calcType: "fixed-age",
+        fixedDoses: [
+            {
+                ageMin: 6,
+                ageMax: 100,
+                dose: 0.5,
+                unit: "g",
+                label: "6歳以上: 初回1mg (0.5g)"
+            }
+        ],
+        dosage: {
+            timesPerDay: 1,
+            note: "6歳以上。1日1回就寝前1mg(0.5g)から開始。最大4mg(2g)。"
+        },
+        piSnippet: "通常、6歳以上の小児には1日1回1mg(0.5g)を就寝前に服用する。最大4mg(2g)。",
+        category: "cns"
     },
     {
         id: "acetaminophen-group",
@@ -1024,7 +1285,8 @@ const PEDIATRIC_DRUGS = [
             timesPerDay: 4,
             note: "1回10〜15mg/kg。原則4時間空ける。上限：500mg/回、1500mg/日。"
         },
-        piSnippet: "1回10〜15mg/kg。投与間隔は4〜6時間以上。1日総量60mg/kg限度。成人最大量(1回500mg, 1日1500mg)を超えないこと。"
+        piSnippet: "1回10〜15mg/kg。投与間隔は4〜6時間以上。1日総量60mg/kg限度。成人最大量(1回500mg, 1日1500mg)を超えないこと。",
+        category: "antipyretic"
     },
     {
         id: "yj-2316004B1036",
@@ -1039,7 +1301,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "目安1日1.5〜3g(3回)。"
         },
-        piSnippet: "通常、小児には1日1.5〜3gを3回に分割して服用する。なお、年齢、症状により適宜増減する。"
+        piSnippet: "通常、小児には1日1.5〜3gを3回に分割して服用する。なお、年齢、症状により適宜増減する。",
+        category: "gi"
     },
     {
         id: "yj-2316009C1026",
@@ -1055,7 +1318,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "目安1日0.3〜1.5g(3回)。"
         },
-        piSnippet: "通常、小児には1日0.3〜1.5gを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。"
+        piSnippet: "通常、小児には1日0.3〜1.5gを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
+        category: "gi"
     },
     {
         id: "yj-2316014B1030",
@@ -1071,7 +1335,8 @@ const PEDIATRIC_DRUGS = [
         dosage: {
             note: "目安1日2〜3g(3回)。"
         },
-        piSnippet: "通常、小児には1日2〜3gを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。"
+        piSnippet: "通常、小児には1日2〜3gを3回に分割して経口投与する。なお、年齢、症状により適宜増減する。",
+        category: "gi"
     },
     {
         id: "yj-2399005R1163",
@@ -1107,253 +1372,8 @@ const PEDIATRIC_DRUGS = [
                 }
             }
         ],
-        piSnippet: "通常1日1.0〜2.0mg/kgを3回食前。6歳以上は1日最高1.0mg/kgを限度とする。1日最大30mg。"
-    },
-    {
-        id: "yj-3222012Q1030",
-        name: "インクレミン／溶性ピロリン酸第二鉄",
-        brandName: "インクレミン",
-        yjCode: "3222012Q1030",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/3222012Q1030?user=1",
-        potency: 6,
-        unit: "mL",
-        piSnippetSource: "通常、小児には1日0.1〜0.3mL/kg（鉄として2〜6mg/kg）を3回に分けて食後に経口投与する。",
-        dosage: {
-            minMgKg: 2,
-            maxMgKg: 6,
-            timesPerDay: 3,
-            note: "1日0.1〜0.3mL/kg(鉄として2〜6mg/kg)を3回。食後。"
-        },
-        piSnippet: "通常、小児には1日鉄として2〜6mg/kg（本剤0.1〜0.3mL/kg）を3回に分けて服用する。"
-    },
-    {
-        id: "yj-5200013D1123",
-        name: "ツムラ葛根湯エキス顆粒",
-        brandName: "ツムラ葛根湯",
-        yjCode: "5200013D1123",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200013D1123?user=1",
-        calcType: "age",
-        adultDose: 7.5,
-        unit: "g",
-        isKampo: true,
-        piSnippetSource: "通常、成人1日7.5gを2〜3回に分割し、食前又は食間に経口投与。小児は年齢に基づき減量。",
-        dosage: {
-            note: "成人1日7.5gを基準に算定。"
-        },
-        piSnippet: "通常、成人1日7.5gを2〜3回に分割し、食前又は食間に経口投与する。小児は年齢により適宜減量する。"
-    },
-    {
-        id: "yj-5200072D1058",
-        name: "ツムラ小建中湯エキス顆粒",
-        brandName: "ツムラ小建中湯",
-        yjCode: "5200072D1058",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200072D1058?user=1",
-        calcType: "age",
-        adultDose: 15,
-        unit: "g",
-        isKampo: true,
-        piSnippetSource: "通常、成人1日15.0gを2〜3回に分割し、経口投与する。小児は年齢に基づき減量。",
-        dosage: {
-            note: "成人1日15.0gを基準に算定。"
-        },
-        piSnippet: "通常、成人1日15.0gを2〜3回に分割し、服用する。小児は年齢により適宜減量する。"
-    },
-    {
-        id: "yj-5200139D1037",
-        name: "ツムラ抑肝散エキス顆粒",
-        brandName: "ツムラ抑肝散",
-        yjCode: "5200139D1037",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200139D1037?user=1",
-        calcType: "age",
-        adultDose: 7.5,
-        unit: "g",
-        isKampo: true,
-        piSnippetSource: "通常1日7.5gを2〜3回。年齢、体重、症状により適宜増減する(Augsberger式等)。",
-        dosage: {
-            note: "Augsberger式。7.5g/日基準。"
-        },
-        piSnippet: "通常1日7.5gを2〜3回に分割して服用する。なお、年齢、体重、症状により適宜増減する。"
-    },
-    {
-        id: "zofluza-group",
-        name: "ゾフルーザ顆粒2%",
-        brandName: "ゾフルーザ",
-        yjCode: "6250047D1021",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250047D1021?user=1",
-        potency: 10,
-        unit: "g",
-        calcType: "weight-step",
-        weightSteps: [
-            {
-                weightMin: 0,
-                weightMax: 10,
-                dose: 0.5,
-                unit: "g",
-                label: "10kg未満: 10mg (0.5g)"
-            },
-            {
-                weightMin: 10,
-                weightMax: 20,
-                dose: 0.5,
-                unit: "g",
-                label: "10〜20kg未満: 10mg (0.5g)"
-            },
-            {
-                weightMin: 20,
-                weightMax: 40,
-                dose: 1,
-                unit: "g",
-                label: "20〜40kg未満: 20mg (1.0g)"
-            },
-            {
-                weightMin: 40,
-                weightMax: 1000,
-                dose: 2,
-                unit: "g",
-                label: "40kg以上: 40mg (2.0g)"
-            }
-        ],
-        dosage: {
-            timesPerDay: 1,
-            note: "単回投与。体重10-20kg:10mg、20-40kg:20mg、40kg以上:40mg。"
-        },
-        piSnippet: "通常、単回経口投与する。10-20kg未満:10mg(0.5g)、20-40kg未満:20mg(1.0g)、40kg以上:40mg(2.0g)。"
-    },
-    {
-        id: "inavir-group",
-        name: "イナビル吸入粉末剤20mg",
-        brandName: "イナビル",
-        yjCode: "6250022G1022",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250022G1022?user=1",
-        potency: 1,
-        unit: "容器",
-        calcType: "fixed-age",
-        fixedDoses: [
-            {
-                ageMin: 0,
-                ageMax: 10,
-                dose: 1,
-                unit: "容器",
-                label: "10歳未満: 20mg (1容器)"
-            },
-            {
-                ageMin: 10,
-                ageMax: 100,
-                dose: 2,
-                unit: "容器",
-                label: "10歳以上: 40mg (2容器)"
-            }
-        ],
-        dosage: {
-            timesPerDay: 1,
-            note: "単回吸入。10歳未満:20mg(1容器)、10歳以上:40mg(2容器)。"
-        },
-        piSnippet: "通常、単回吸入投与する。10歳未満：20mg（1容器）、10歳以上：40mg（2容器）。"
-    },
-    {
-        id: "relenza-group",
-        name: "リレンザカプセル5mg (吸入用)",
-        brandName: "リレンザ",
-        yjCode: "6250019G1022",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250019G1022?user=1",
-        potency: 5,
-        unit: "ブリスター",
-        dosage: {
-            minMgKg: 0,
-            maxMgKg: 0,
-            isByTime: true,
-            timeMgKg: 0,
-            isFixed: true,
-            dosePerTime: 10,
-            timesPerDay: 2,
-            note: "1回10mg(2ブリスター)を1日2回、5日間。専用吸入器を使用。"
-        },
-        piSnippet: "通常、1回10mg（2ブリスター）を、1日2回、5日間、専用の吸入器を用いて吸入する。"
-    },
-    {
-        id: "keflex-group",
-        name: "Ｌ－ケフレックス／セファレキシン",
-        brandName: "Ｌ－ケフレックス",
-        yjCode: "6132002E1034",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132002E1034?user=1",
-        potency: 100,
-        piSnippetSource: "通常1日25〜50mg/kgを朝夕2回。重症時は50〜100mg/kg。",
-        diseases: [
-            {
-                id: "keflex-standard",
-                label: "通常 (25-50mg/kg)",
-                dosage: {
-                    minMgKg: 25,
-                    maxMgKg: 50,
-                    timesPerDay: 2,
-                    absoluteMaxMgPerDay: 1000,
-                    note: "1日25〜50mg/kgを2回(朝夕)。成人最大1g/日。"
-                },
-                piSnippet: "通常、幼小児にはセファレキシンとして体重kgあたり1日25〜50mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
-            },
-            {
-                id: "keflex-severe",
-                label: "重症・感受性低 (50-100mg/kg)",
-                dosage: {
-                    minMgKg: 50,
-                    maxMgKg: 100,
-                    timesPerDay: 2,
-                    absoluteMaxMgPerDay: 2000,
-                    note: "1日50〜100mg/kgを2回(朝夕)。成人最大2g/日。"
-                },
-                piSnippet: "重症の場合や分離菌の感受性が比較的低い症例にはセファレキシンとして体重kgあたり1日50〜100mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
-            }
-        ],
-        dosage: {
-            minMgKg: 25,
-            maxMgKg: 50,
-            absoluteMaxMgKg: 100,
-            timesPerDay: 2,
-            absoluteMaxMgPerTime: 500,
-            absoluteMaxMgPerDay: 1000,
-            note: "通常1日25〜50mg/kgを2回(朝夕)。重症時50〜100mg/kg。"
-        },
-        piSnippet: "通常、幼小児には1日25〜50mg(力価)/kgを2回に分割して、朝、夕食後に経口投与する。重症時は1日50〜100mg(力価)/kg。"
-    },
-    {
-        id: "ozex-group",
-        name: "オゼックス／トスフロキサシン",
-        brandName: "オゼックス",
-        yjCode: "6241010C1024",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6241010C1024?user=1",
-        potency: 150,
-        piSnippetSource: "小児に対してはトスフロキサシントシル酸塩水和物として1回6mg/kgを1日2回経口投与する。ただし、1回180mg、1日360mgを超えないこととする。",
-        dosage: {
-            minMgKg: 12,
-            maxMgKg: 12,
-            timeMgKg: 6,
-            isByTime: true,
-            timesPerDay: 2,
-            absoluteMaxMgPerTime: 180,
-            absoluteMaxMgPerDay: 360,
-            note: "1回6mg/kgを1日2回。1回上限180mg、1日上限360mg。"
-        },
-        piSnippet: "小児に対してはトスフロキサシントシル酸塩水和物として1回6mg/kgを1日2回経口投与する。ただし、1回180mg、1日360mgを超えないこととする。"
-    },
-    {
-        id: "orapenem-group",
-        name: "オラペネム／テビペネム",
-        brandName: "オラペネム",
-        yjCode: "6139002C1026",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6139002C1026?user=1",
-        potency: 100,
-        piSnippetSource: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。",
-        dosage: {
-            minMgKg: 8,
-            maxMgKg: 12,
-            isByTime: true,
-            timeMgKg: 4,
-            timesPerDay: 2,
-            absoluteMaxMgPerTime: 250,
-            absoluteMaxMgPerDay: 500,
-            note: "通常1回4mg/kgを1日2回。必要に応じて1回6mg/kgまで。成人最大250mg/回。"
-        },
-        piSnippet: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。"
+        piSnippet: "通常1日1.0〜2.0mg/kgを3回食前。6歳以上は1日最高1.0mg/kgを限度とする。1日最大30mg。",
+        category: "gi"
     },
     {
         id: "magnesium-oxide-group",
@@ -1369,7 +1389,8 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 2000,
             note: "通常1日30mg/kgを3回に分けて食後。成人最大1日2g。"
         },
-        piSnippet: "通常、小児には1日量0.03g/kg(30mg/kg)を3回に分割して食後服用する。成人最大1日2g。"
+        piSnippet: "通常、小児には1日量0.03g/kg(30mg/kg)を3回に分割して食後服用する。成人最大1日2g。",
+        category: "gi"
     },
     {
         id: "movicol-group",
@@ -1407,7 +1428,26 @@ const PEDIATRIC_DRUGS = [
             timesPerDay: 1,
             note: "初回量：2-7歳未満1包(LD)、7歳以上2包(LD)。HDはLDの2倍量(LD2包=HD1包)。"
         },
-        piSnippet: "2歳以上7歳未満：初回1包(LD)。7歳以上：初回2包(LD)。HD製剤はLDの2倍量。"
+        piSnippet: "2歳以上7歳未満：初回1包(LD)。7歳以上：初回2包(LD)。HD製剤はLDの2倍量。",
+        category: "gi"
+    },
+    {
+        id: "yj-3222012Q1030",
+        name: "インクレミン／溶性ピロリン酸第二鉄",
+        brandName: "インクレミン",
+        yjCode: "3222012Q1030",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/3222012Q1030?user=1",
+        potency: 6,
+        unit: "mL",
+        piSnippetSource: "通常、小児には1日0.1〜0.3mL/kg（鉄として2〜6mg/kg）を3回に分けて食後に経口投与する。",
+        dosage: {
+            minMgKg: 2,
+            maxMgKg: 6,
+            timesPerDay: 3,
+            note: "1日0.1〜0.3mL/kg(鉄として2〜6mg/kg)を3回。食後。"
+        },
+        piSnippet: "通常、小児には1日鉄として2〜6mg/kg（本剤0.1〜0.3mL/kg）を3回に分けて服用する。",
+        category: "others"
     },
     {
         id: "transamin-group",
@@ -1423,30 +1463,59 @@ const PEDIATRIC_DRUGS = [
             absoluteMaxMgPerDay: 2000,
             note: "通常1日30〜50mg/kgを3〜4回。成人最大1日2g。"
         },
-        piSnippet: "通常、小児にはトラネキサム酸として1日30〜50mg/kgを3〜4回に分割して服用する。"
+        piSnippet: "通常、小児にはトラネキサム酸として1日30〜50mg/kgを3〜4回に分割して服用する。",
+        category: "others"
     },
     {
-        id: "melatobel-group",
-        name: "メラトベル顆粒0.2%小児用",
-        brandName: "メラトベル",
-        yjCode: "1190028D1026",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1190028D1026?user=1",
-        potency: 2,
-        calcType: "fixed-age",
-        fixedDoses: [
-            {
-                ageMin: 6,
-                ageMax: 100,
-                dose: 0.5,
-                unit: "g",
-                label: "6歳以上: 初回1mg (0.5g)"
-            }
-        ],
+        id: "yj-5200013D1123",
+        name: "ツムラ葛根湯エキス顆粒",
+        brandName: "ツムラ葛根湯",
+        yjCode: "5200013D1123",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200013D1123?user=1",
+        calcType: "age",
+        adultDose: 7.5,
+        unit: "g",
+        isKampo: true,
+        piSnippetSource: "通常、成人1日7.5gを2〜3回に分割し、食前又は食間に経口投与。小児は年齢に基づき減量。",
         dosage: {
-            timesPerDay: 1,
-            note: "6歳以上。1日1回就寝前1mg(0.5g)から開始。最大4mg(2g)。"
+            note: "成人1日7.5gを基準に算定。"
         },
-        piSnippet: "通常、6歳以上の小児には1日1回1mg(0.5g)を就寝前に服用する。最大4mg(2g)。"
+        piSnippet: "通常、成人1日7.5gを2〜3回に分割し、食前又は食間に経口投与する。小児は年齢により適宜減量する。",
+        category: "others"
+    },
+    {
+        id: "yj-5200072D1058",
+        name: "ツムラ小建中湯エキス顆粒",
+        brandName: "ツムラ小建中湯",
+        yjCode: "5200072D1058",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200072D1058?user=1",
+        calcType: "age",
+        adultDose: 15,
+        unit: "g",
+        isKampo: true,
+        piSnippetSource: "通常、成人1日15.0gを2〜3回に分割し、経口投与する。小児は年齢に基づき減量。",
+        dosage: {
+            note: "成人1日15.0gを基準に算定。"
+        },
+        piSnippet: "通常、成人1日15.0gを2〜3回に分割し、服用する。小児は年齢により適宜減量する。",
+        category: "others"
+    },
+    {
+        id: "yj-5200139D1037",
+        name: "ツムラ抑肝散エキス顆粒",
+        brandName: "ツムラ抑肝散",
+        yjCode: "5200139D1037",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200139D1037?user=1",
+        calcType: "age",
+        adultDose: 7.5,
+        unit: "g",
+        isKampo: true,
+        piSnippetSource: "通常1日7.5gを2〜3回。年齢、体重、症状により適宜増減する(Augsberger式等)。",
+        dosage: {
+            note: "Augsberger式。7.5g/日基準。"
+        },
+        piSnippet: "通常1日7.5gを2〜3回に分割して服用する。なお、年齢、体重、症状により適宜増減する。",
+        category: "others"
     }
 ];
 
@@ -1457,6 +1526,40 @@ let selectedSubOptionId = null;
 let selectedDiseaseId = null;
 let currentSearchQuery = '';
 let currentFocusIndex = -1;
+let currentCategory = 'all';
+
+function renderCategoryTabs() {
+    const container = document.getElementById('category-tabs');
+    if (!container) return;
+
+    // Define tabs order and labels
+    // We can use DRUG_CATEGORIES exported at top, but let's make it robust
+    const tabs = [
+        { id: 'all', label: 'すべて' },
+        { id: 'antibiotics', label: '抗生剤' },
+        { id: 'antiviral', label: '抗ウイルス' },
+        { id: 'respiratory', label: '呼吸器・鎮咳' },
+        { id: 'allergy', label: '抗アレルギー' },
+        { id: 'cns', label: '神経・てんかん' },
+        { id: 'antipyretic', label: '解熱鎮痛' },
+        { id: 'gi', label: '消化器・整腸' },
+        { id: 'others', label: 'その他・漢方' }
+    ];
+
+    container.innerHTML = tabs.map(tab => `
+        <button class="category-tab ${currentCategory === tab.id ? 'active' : ''}" data-cat="${tab.id}">
+            ${tab.label}
+        </button>
+    `).join('');
+
+    container.querySelectorAll('.category-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentCategory = btn.dataset.cat;
+            renderCategoryTabs(); // re-render to update active state
+            renderDrugCards();
+        });
+    });
+}
 
 function safeSetHidden(id, isHidden) {
     const el = document.getElementById(id);
@@ -1466,13 +1569,19 @@ function safeSetHidden(id, isHidden) {
     }
 }
 
+function getFilteredDrugs() {
+    const query = currentSearchQuery.toLowerCase();
+    return PEDIATRIC_DRUGS.filter(d => {
+        const matchesSearch = d.name.toLowerCase().includes(query) || d.yjCode.toLowerCase().includes(query);
+        const matchesCategory = currentCategory === 'all' || d.category === currentCategory;
+        return matchesSearch && matchesCategory;
+    });
+}
+
 function renderDrugCards() {
     const container = document.getElementById('drug-cards-container');
     if (!container) return;
-    const query = currentSearchQuery.toLowerCase();
-    const filteredDrugs = PEDIATRIC_DRUGS.filter(d =>
-        d.name.toLowerCase().includes(query) || d.yjCode.toLowerCase().includes(query)
-    );
+    const filteredDrugs = getFilteredDrugs();
     if (filteredDrugs.length === 0) {
         container.innerHTML = '<div class="col-span-full py-10 text-center text-gray-400 font-bold">該当する薬剤が見つかりません</div>';
         return;
@@ -1555,10 +1664,7 @@ function selectDrug(id, index) {
 }
 
 function handleKeyNavigation(e) {
-    const query = currentSearchQuery.toLowerCase();
-    const filteredDrugs = PEDIATRIC_DRUGS.filter(d =>
-        d.name.toLowerCase().includes(query) || d.yjCode.toLowerCase().includes(query)
-    );
+    const filteredDrugs = getFilteredDrugs();
 
     if (filteredDrugs.length === 0) return;
 
@@ -1938,6 +2044,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('keydown', handleKeyNavigation);
 
+    renderCategoryTabs();
     renderDrugCards();
 });
 
