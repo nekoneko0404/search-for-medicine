@@ -329,7 +329,7 @@ const PEDIATRIC_DRUGS = [
         name: "ゾビラックス／アシクロビル",
         brandName: "ゾビラックス",
         yjCode: "6250002D1024",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250002D1024?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250002D1024?user=1",
         potency: 400,
         diseases: [
             {
@@ -355,7 +355,7 @@ const PEDIATRIC_DRUGS = [
         name: "バルトレックス／バラシクロビル",
         brandName: "バルトレックス",
         yjCode: "6250003C1023",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250003C1023?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250003C1023?user=1",
         potency: 500,
         diseases: [
             {
@@ -1005,7 +1005,7 @@ const PEDIATRIC_DRUGS = [
         name: "ゾフルーザ顆粒2%",
         brandName: "ゾフルーザ",
         yjCode: "6250025R1020",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250025R1020?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250025R1020?user=1",
         potency: 10, // 20mg/g -> 2% -> 1g = 20mg. DS/Powder usually base on mg/g. 10mg/cap equivalent? Wait. 1g=20mg.
         unit: "g",
         calcType: "weight-step",
@@ -1026,7 +1026,7 @@ const PEDIATRIC_DRUGS = [
         name: "イナビル吸入粉末剤20mg",
         brandName: "イナビル",
         yjCode: "6250022G1022",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/6250022G1022_1_01?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250022G1022?user=1",
         potency: 1, // Unit per container
         unit: "容器",
         calcType: "fixed-age",
@@ -1045,7 +1045,7 @@ const PEDIATRIC_DRUGS = [
         name: "リレンザカプセル5mg (吸入用)",
         brandName: "リレンザ",
         yjCode: "6250019G1022",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/6250019G1022_1_01?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250019G1022?user=1",
         potency: 5,
         unit: "ブリスター",
         dosage: {
@@ -1065,7 +1065,7 @@ const PEDIATRIC_DRUGS = [
         name: "Ｌ－ケフレックス／セファレキシン",
         brandName: "Ｌ－ケフレックス",
         yjCode: "6132001B1028",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132001B1028?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6132001B1028?user=1",
         potency: 100,
         piSnippetSource: "通常1日25〜50mg(力価)/kgを4回に分割経口投与する。重症の場合等は1日100mg(力価)/kgまで増量できる。",
         dosage: {
@@ -1084,7 +1084,7 @@ const PEDIATRIC_DRUGS = [
         name: "オゼックス／トスフロキサシン",
         brandName: "オゼックス",
         yjCode: "6241013R1030",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6241013R1030?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6241013R1030?user=1",
         potency: 150,
         piSnippetSource: "通常、小児には1回6mg/kgを1日2回経口投与する。なお、1回最大6mg/kgかつ1日最大12mg/kg、または1日450mgを超えないこと。",
         dosage: {
@@ -1104,7 +1104,7 @@ const PEDIATRIC_DRUGS = [
         name: "オラペネム／テビペネム　ピボキシル",
         brandName: "オラペネム",
         yjCode: "6139002C1026",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/6139002C1026_1?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6139002C1026?user=1",
         potency: 100,
         piSnippetSource: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。",
         dosage: {
@@ -1124,7 +1124,7 @@ const PEDIATRIC_DRUGS = [
         name: "酸化マグネシウム",
         brandName: "酸化マグネシウム",
         yjCode: "2344002B1032",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/2344002B1032_1_10?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2344002B1032?user=1",
         potency: 1000,
         dosage: {
             minMgKg: 30,
@@ -1140,7 +1140,7 @@ const PEDIATRIC_DRUGS = [
         name: "モビコールHD／LD",
         brandName: "モビコール",
         yjCode: "2359005B1021",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/2359005B1021_1_06?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2359005B1021?user=1",
         potency: 1,
         unit: "包",
         calcType: "fixed-age",
@@ -1160,7 +1160,7 @@ const PEDIATRIC_DRUGS = [
         name: "トランサミン散50%",
         brandName: "トランサミン",
         yjCode: "3327002B2039",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/3327002B2039_2_10?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/3327002B2039?user=1",
         potency: 500,
         dosage: {
             minMgKg: 30,
@@ -1176,7 +1176,7 @@ const PEDIATRIC_DRUGS = [
         name: "メラトベル顆粒0.2%小児用",
         brandName: "メラトベル",
         yjCode: "1190013D1020",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/1190013D1020_1_04?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/1190013D1020?user=1",
         potency: 2,
         calcType: "fixed-age",
         fixedDoses: [
@@ -1463,7 +1463,7 @@ function updateCalculations() {
             const dailyDose = found.isPerKg ? (weight * found.dose) : found.dose;
             const tpd = drug.dosage?.timesPerDay || 2;
             resultArea.innerHTML = `
-                <div class="emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
+                <div class="bg-emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
                     ${drugInfoHeader}
                     <div class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">体重区分: ${found.label}</div>
                     <div class="flex flex-col gap-4">
