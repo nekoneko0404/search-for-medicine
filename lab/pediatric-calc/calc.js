@@ -16,6 +16,31 @@ export const DRUG_CATEGORIES = {
     others: "その他・漢方"
 };
 
+// YJ Code Category Map (4-digit)
+const YJ_CATEGORY_MAP = {
+    '1139': '抗てんかん剤',
+    '1141': '解熱鎮痛剤',
+    '1190': '睡眠導入剤',
+    '2223': '鎮咳剤',
+    '2233': '去痰剤',
+    '2249': '鎮咳去痰剤',
+    '2251': '気管支拡張剤',
+    '2259': '気管支拡張剤',
+    '2316': '整腸剤',
+    '2399': '制吐剤',
+    '4413': '抗ヒスタミン剤',
+    '4419': '抗ヒスタミン剤',
+    '4490': '抗アレルギー剤',
+    '5200': '漢方製剤',
+    '6131': 'ペニシリン系',
+    '6132': 'セフェム系',
+    '6139': 'ペネム系',
+    '6149': 'マクロライド系',
+    '6152': 'テトラサイクリン系',
+    '6241': 'ニューキノロン系',
+    '6250': '抗ウイルス剤'
+};
+
 const PEDIATRIC_DRUGS = [
     {
         "id": "amoxicillin-group",
@@ -979,7 +1004,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4490003R1228",
-        "name": "ザジテン／ケトチフェン",
+        "name": "ザジテン／ケトチフェン (0.1%)",
         "yjCode": "4490003R1228",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490003R1228",
         "potency": 1,
@@ -1016,7 +1041,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4490017R1033",
-        "name": "オノン／プランルカスト",
+        "name": "オノン／プランルカスト (10%)",
         "brandName": "オノン",
         "yjCode": "4490017R1033",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490017R1033",
@@ -1036,7 +1061,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "cetirizine-group",
-        "name": "ジルテック／セチリジン",
+        "name": "ジルテック／セチリジン (1.25%)",
         "brandName": "ジルテック",
         "yjCode": "4490020R1027",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490020R1027",
@@ -1106,7 +1131,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4490025D1022",
-        "name": "アレロック／オロパタジン",
+        "name": "アレロック／オロパタジン (0.5%)",
         "brandName": "アレロック",
         "yjCode": "4490025D1022",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490025D1022",
@@ -1128,7 +1153,6 @@ const PEDIATRIC_DRUGS = [
                 "label": "7歳以上"
             }
         ],
-        "piSnippetSource": "通常、7歳以上の小児には1回5mg(1g)、2歳以上7歳未満の小児には1回2.5mg(0.5g)を1日2回、朝及び就寝前に経口投与する。",
         "dosage": {
             "timesPerDay": 2,
             "note": "2〜7歳未満:1回0.5g、7歳以上:1回1gを1日2回。"
@@ -1154,7 +1178,6 @@ const PEDIATRIC_DRUGS = [
                 "label": "1歳以上6歳未満 (4mg)"
             }
         ],
-        "piSnippetSource": "1歳以上6歳未満の小児：通常、1日1回1包（4mg）を就寝前に服用する。",
         "dosage": {
             "note": "1歳以上6歳未満：1日1回1包(4mg)。"
         },
@@ -1163,7 +1186,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4490027R1029",
-        "name": "クラリチンDS1%",
+        "name": "クラリチン／ロラタジン 1%",
         "brandName": "クラリチン",
         "yjCode": "4490027R1029",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490027R1029",
@@ -2002,10 +2025,12 @@ function renderDrugList() {
     container.innerHTML = filtered.map(d => {
         const isSelected = state.selectedDrugIds.has(d.id);
         const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
+        const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
+        const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
         return `
         <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <span class="tag">${DRUG_CATEGORIES[d.category]}</span>
+                <span class="tag">${categoryLabel}</span>
                 <div class="indicator"><i class="fas fa-check"></i></div>
             </div>
             <div>
