@@ -2081,6 +2081,7 @@ function renderCategoryTabs() {
 
 function normalizeText(text) {
     if (!text) return '';
+    if (text.length > 100) return ''; // DoS prevention: Limit search query length
     let t = text.trim();
     // Full-width Alphanumeric to Half-width
     t = t.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
