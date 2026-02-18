@@ -1524,7 +1524,7 @@ const PEDIATRIC_DRUGS = [
 
 function calculateDrug(drug, years, months, weight) {
     if (!weight || weight <= 0) return { error: '体重を入力してください' };
-    
+
     // Effective Age
     const age = (parseInt(years) || 0) + (parseInt(months) || 0) / 12.0;
 
@@ -1534,7 +1534,7 @@ function calculateDrug(drug, years, months, weight) {
     let potency = drug.potency;
     let unit = drug.unit || 'g';
     let subOptionLabel = '';
-    
+
     if (drug.hasSubOptions) {
         if (!opts.subOptionId && drug.subOptions.length > 0) opts.subOptionId = drug.subOptions[0].id;
         const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
@@ -1557,7 +1557,7 @@ function calculateDrug(drug, years, months, weight) {
             diseaseLabel = dis.label;
         }
     }
-    
+
     if (drug.hasSubOptions) {
         const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
         if (sub && sub.dosage) {
@@ -1575,8 +1575,8 @@ function calculateDrug(drug, years, months, weight) {
     else if (drug.calcType === 'weight-step' && drug.weightSteps) {
         let step = drug.weightSteps.find(s => weight >= s.weightMin && weight < s.weightMax);
         if (!step) {
-             const last = drug.weightSteps[drug.weightSteps.length - 1];
-             if (weight >= last.weightMax) step = last;
+            const last = drug.weightSteps[drug.weightSteps.length - 1];
+            if (weight >= last.weightMax) step = last;
         }
         if (step) return { result: step.label, detail: step.dose + (step.unit || ''), isFixed: true, note: dosageConfig.note };
         return { error: '該当体重の用量設定なし' };
@@ -1590,17 +1590,17 @@ function calculateDrug(drug, years, months, weight) {
         // Support Range for Time dose (e.g. Calonal 10-15mg/kg)
         let tMin = dosageConfig.timeMgKg;
         let tMax = dosageConfig.timeMgKg;
-        
+
         // Explicit range overrides single value
         if (dosageConfig.minTimeMgKg) tMin = dosageConfig.minTimeMgKg;
         if (dosageConfig.maxTimeMgKg) tMax = dosageConfig.maxTimeMgKg;
 
         if ((tMin === undefined || tMin === null) && (tMax === undefined || tMax === null)) {
-             // Fallback if data is missing (should not happen if audited)
-             tMin = tMax = 0;
+            // Fallback if data is missing (should not happen if audited)
+            tMin = tMax = 0;
         } else {
-             if (tMin === undefined) tMin = tMax;
-             if (tMax === undefined) tMax = tMin;
+            if (tMin === undefined) tMin = tMax;
+            if (tMax === undefined) tMax = tMin;
         }
 
         mgPerDayMin = tMin * times * weight;
@@ -1616,7 +1616,7 @@ function calculateDrug(drug, years, months, weight) {
         // Daily dose base
         minMg = (dosageConfig.minMgKg || 0) * weight;
         maxMg = (dosageConfig.maxMgKg || 0) * weight;
-        
+
         mgPerDayMin = minMg;
         mgPerDayMax = maxMg;
     }
@@ -1632,7 +1632,7 @@ function calculateDrug(drug, years, months, weight) {
 
     let totalMin = round(mgPerDayMin / potency);
     let totalMax = round(mgPerDayMax / potency);
-    
+
     let timeMin = round(totalMin / times);
     let timeMax = round(totalMax / times);
 
@@ -1686,9 +1686,9 @@ function updatePrescriptionSheet() {
         fab.classList.add('hidden');
         return;
     }
-    
+
     fab.classList.remove('hidden');
-    
+
     const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
     fabBadge.textContent = validCount;
 
@@ -1696,25 +1696,25 @@ function updatePrescriptionSheet() {
     const m = state.params.ageMonth;
     const w = parseFloat(state.params.weight);
 
-    const itemsHtml = Array.from(state.selectedDrugIds).map(id => {
+    const itemsHtml = Array.from(state.selectedDrugIds).reverse().map(id => {
         const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
         if (!drug) return '';
-        
+
         if (!state.drugOptions[id]) state.drugOptions[id] = {};
         const opts = state.drugOptions[id];
 
         const calc = calculateDrug(drug, y, m, w);
-        
+
         // Selectors
         let selectorsHtml = '';
         if (drug.hasSubOptions) {
-            const options = drug.subOptions.map(o => 
+            const options = drug.subOptions.map(o =>
                 `<option value="${o.id}" ${opts.subOptionId === o.id ? 'selected' : ''}>${o.label}</option>`
             ).join('');
             selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'subOptionId', this.value)">${options}</select>`;
         }
         if (drug.diseases) {
-             const options = drug.diseases.map(d => 
+            const options = drug.diseases.map(d =>
                 `<option value="${d.id}" ${opts.diseaseId === d.id ? 'selected' : ''}>${d.label}</option>`
             ).join('');
             selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'diseaseId', this.value)">${options}</select>`;
@@ -1724,14 +1724,14 @@ function updatePrescriptionSheet() {
         if (calc.error) {
             resultMain = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> ${calc.error}</div>`;
         } else if (calc.isFixed) {
-             resultMain = `
+            resultMain = `
                 <div class="result-row">
                     <span class="result-label">固定用量</span>
                     <span class="result-val">${calc.detail}</span>
                 </div>`;
         } else {
-             // Daily First
-             resultMain = `
+            // Daily First
+            resultMain = `
                 <div class="result-row" style="border-bottom:1px dashed #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem; align-items: baseline;">
                     <span class="result-label" style="font-size:0.9rem;">1日量</span>
                     <span class="result-val" style="font-size:1.5rem; color:#0f172a;">${calc.totalRange} <span style="font-size:1rem;color:#64748b;">${calc.unit}</span></span>
@@ -1758,8 +1758,41 @@ function updatePrescriptionSheet() {
         </div>`;
     }).join('');
 
-    content.innerHTML = itemsHtml.length ? itemsHtml : '<div style="text-align:center; padding:2rem;">選択してください</div>';
+    const emptyHtml = `
+        <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
+            <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
+            <p>薬剤を選択してください</p>
+        </div>`;
+    content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
+
+    // Layout check for PC
+    if (window.innerWidth >= 1024) {
+        if (state.selectedDrugIds.size > 0) {
+            document.querySelector('.main-container').classList.add('has-sheet');
+            sheet.classList.add('active');
+            document.getElementById('sheet-overlay').classList.remove('active');
+        } else {
+            document.querySelector('.main-container').classList.remove('has-sheet');
+            sheet.classList.remove('active');
+        }
+    }
 }
+
+
+// Logic for Clearing
+window.clearAllDrugs = () => {
+    state.selectedDrugIds.clear();
+    state.drugOptions = {};
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+    // Reset state/UI
+    const sheet = document.getElementById('prescription-sheet');
+    sheet.classList.remove('active');
+    document.getElementById('sheet-overlay').classList.remove('active');
+    document.getElementById('fab').classList.add('hidden');
+    document.querySelector('.main-container').classList.remove('has-sheet');
+};
 
 
 // State
@@ -1770,7 +1803,7 @@ const state = {
 };
 const STORAGE_KEY = 'kusuri_compass_calc_v25_state';
 
-const STANDARD_WEIGHTS = [{"age":0,"month":0,"w":3},{"age":0,"month":1,"w":4.2},{"age":0,"month":2,"w":5.3},{"age":0,"month":3,"w":6.2},{"age":0,"month":4,"w":6.9},{"age":0,"month":5,"w":7.5},{"age":0,"month":6,"w":7.9},{"age":0,"month":7,"w":8.3},{"age":0,"month":8,"w":8.6},{"age":0,"month":9,"w":8.9},{"age":0,"month":10,"w":9.2},{"age":0,"month":11,"w":9.4},{"age":1,"month":0,"w":9.6},{"age":1,"month":6,"w":10.7},{"age":2,"month":0,"w":12},{"age":3,"month":0,"w":14},{"age":4,"month":0,"w":16},{"age":5,"month":0,"w":18.5},{"age":6,"month":0,"w":21},{"age":7,"month":0,"w":24},{"age":8,"month":0,"w":27},{"age":9,"month":0,"w":30.5},{"age":10,"month":0,"w":34},{"age":11,"month":0,"w":38},{"age":12,"month":0,"w":43},{"age":13,"month":0,"w":49},{"age":14,"month":0,"w":54},{"age":15,"month":0,"w":58}];
+const STANDARD_WEIGHTS = [{ "age": 0, "month": 0, "w": 3 }, { "age": 0, "month": 1, "w": 4.2 }, { "age": 0, "month": 2, "w": 5.3 }, { "age": 0, "month": 3, "w": 6.2 }, { "age": 0, "month": 4, "w": 6.9 }, { "age": 0, "month": 5, "w": 7.5 }, { "age": 0, "month": 6, "w": 7.9 }, { "age": 0, "month": 7, "w": 8.3 }, { "age": 0, "month": 8, "w": 8.6 }, { "age": 0, "month": 9, "w": 8.9 }, { "age": 0, "month": 10, "w": 9.2 }, { "age": 0, "month": 11, "w": 9.4 }, { "age": 1, "month": 0, "w": 9.6 }, { "age": 1, "month": 6, "w": 10.7 }, { "age": 2, "month": 0, "w": 12 }, { "age": 3, "month": 0, "w": 14 }, { "age": 4, "month": 0, "w": 16 }, { "age": 5, "month": 0, "w": 18.5 }, { "age": 6, "month": 0, "w": 21 }, { "age": 7, "month": 0, "w": 24 }, { "age": 8, "month": 0, "w": 27 }, { "age": 9, "month": 0, "w": 30.5 }, { "age": 10, "month": 0, "w": 34 }, { "age": 11, "month": 0, "w": 38 }, { "age": 12, "month": 0, "w": 43 }, { "age": 13, "month": 0, "w": 49 }, { "age": 14, "month": 0, "w": 54 }, { "age": 15, "month": 0, "w": 58 }];
 
 function getStandardWeight(years, months) {
     const y = parseInt(years) || 0;
@@ -1904,8 +1937,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // document.getElementById('close-sheet').onclick = window.clearAllDrugs; // Set in updatePrescriptionSheet
 
     const toggleSheet = (show) => {
-        if (show) { sheet.classList.add('active'); overlay.classList.add('active'); }
-        else { sheet.classList.remove('active'); overlay.classList.remove('active'); }
+        if (show) {
+            sheet.classList.add('active');
+            if (window.innerWidth < 1024) overlay.classList.add('active');
+        }
+        else {
+            sheet.classList.remove('active');
+            overlay.classList.remove('active');
+        }
     };
     fab.addEventListener('click', () => toggleSheet(true));
     overlay.addEventListener('click', () => toggleSheet(false));
@@ -1913,14 +1952,14 @@ document.addEventListener('DOMContentLoaded', () => {
     loadState();
     renderCategoryTabs();
     renderDrugList();
-    
+
     // Initial Clear Button status if selection empty
-    if(state.selectedDrugIds.size > 0) updatePrescriptionSheet();
+    if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
     else {
-         const closeBtn = document.getElementById('close-sheet');
-         if(closeBtn) {
-             closeBtn.onclick = window.clearAllDrugs;
-             closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-         }
+        const closeBtn = document.getElementById('close-sheet');
+        if (closeBtn) {
+            closeBtn.onclick = window.clearAllDrugs;
+            closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        }
     }
 });
