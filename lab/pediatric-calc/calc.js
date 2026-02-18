@@ -752,14 +752,14 @@ const PEDIATRIC_DRUGS = [
             "isByTime": true,
             "timeMgKg": 10,
             "timesPerDay": 3,
-            "note": "通常1回10mg/kg(33.3mg=0.1g/kg)を3回。"
+            "note": "通常1回10mg/kgを3回。"
         },
         "piSnippet": "通常、小児には1回10mg/kgを1日3回経口投与する。なお、年齢、症状により適宜増減する。",
         "category": "respiratory"
     },
     {
         "id": "yj-2239001Q1166",
-        "name": "ムコソルバンドライシロップ1.5%",
+        "name": "ムコソルバン／アンブロキソール 1.5%",
         "brandName": "ムコソルバン",
         "yjCode": "2239001Q1166",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2239001Q1166",
@@ -1574,7 +1574,7 @@ function calculateDrug(drug, years, months, weight) {
     // Fixed Age / Weight Step
     if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
         const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
-        if (fixed) return { result: fixed.label, detail: (fixed.unit === '包' ? fixed.dose + fixed.unit : fixed.dose + (fixed.unit || '')), isFixed: true, note: dosageConfig.note };
+        if (fixed) return { result: fixed.label, detail: fixed.label, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
         return { error: '該当年齢の用量設定なし' };
     }
     else if (drug.calcType === 'age') {
@@ -1652,7 +1652,7 @@ function calculateDrug(drug, years, months, weight) {
             const last = drug.weightSteps[drug.weightSteps.length - 1];
             if (weight >= last.weightMax) step = last;
         }
-        if (step) return { result: step.label, detail: step.dose + (step.unit || ''), isFixed: true, note: dosageConfig.note };
+        if (step) return { result: step.label, detail: step.label, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
         return { error: '該当体重の用量設定なし' };
     }
 
