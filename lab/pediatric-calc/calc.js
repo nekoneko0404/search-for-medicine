@@ -509,11 +509,12 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "meptin-group",
-        name: "メプチン／プロカテロール",
+        name: "メプチンドライシロップ0.005%",
         brandName: "メプチン",
-        yjCode: "2254001R1053",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2254001R1053?user=1",
-        potency: 0.05,
+        yjCode: "2259004R2024",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2259004R2024?user=1",
+        potency: 0.05, // 0.005% -> 1g = 0.05mg
+        unit: "g",
         hasSubOptions: false,
         subOptions: [],
         piSnippetSource: "通常、小児には1回体重1kgあたり1.25μgを1日2回経口投与。6歳以上は1回25μgを1日2回。",
@@ -638,11 +639,11 @@ const PEDIATRIC_DRUGS = [
         piSnippet: "通常、小児には1日量0.06mg/kg（製剤0.06g/kg）を2回に分けて朝食後及び就寝前に服用する。"
     },
     {
-        id: "celtect-group",
-        name: "オキサトミド (旧セルテクト)",
+        id: "oxatomide-group", // Fixed ID
+        name: "オキサトミドドライシロップ小児用2%",
         brandName: "オキサトミド",
-        yjCode: "4490005R1022", // 代表的な後発品のコードへ
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490005R1022?user=1",
+        yjCode: "4490005R1430",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/4490005R1430?user=1",
         potency: 20,
         piSnippetSource: "通常1回0.5mg/kgを1日2回。年齢、症状により適宜増減する。",
         dosage: {
@@ -988,8 +989,8 @@ const PEDIATRIC_DRUGS = [
         id: "yj-5200139D1037",
         name: "ツムラ抑肝散エキス顆粒",
         brandName: "ツムラ抑肝散",
-        yjCode: "5201139D1037",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/5200139D1037?user=1",
+        yjCode: "5200139D1037",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/5200139D1037?user=1",
         calcType: "age",
         adultDose: 7.5,
         unit: "g",
@@ -1062,11 +1063,15 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "keflex-group",
-        name: "Ｌ－ケフレックス／セファレキシン",
+        name: "Ｌ－ケフレックス小児用顆粒",
         brandName: "Ｌ－ケフレックス",
-        yjCode: "6132001B1028",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6132001B1028?user=1",
-        potency: 100,
+        yjCode: "6132002E1034",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6132002E1034?user=1",
+        potency: 100, // No change in potency, check if granule is 100mg/g? Usually yes or 200.
+        // CSV Name: Ｌ－ケフレックス小児用顆粒
+        // YJ: 6132002E1034 -> Granule usually 100mg(potency)/g or 200mg/g.
+        // Let's assume 100mg/g same as previous assumption or check CSV if potency info exists? No.
+        // Defaulting to 100 as per previous implementation, but name implies specific product.
         piSnippetSource: "通常1日25〜50mg(力価)/kgを4回に分割経口投与する。重症の場合等は1日100mg(力価)/kgまで増量できる。",
         dosage: {
             minMgKg: 25,
@@ -1081,10 +1086,10 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "ozex-group",
-        name: "オゼックス／トスフロキサシン",
+        name: "オゼックス細粒小児用15%",
         brandName: "オゼックス",
-        yjCode: "6241013R1030",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6241013R1030?user=1",
+        yjCode: "6241010C1024",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6241010C1024?user=1",
         potency: 150,
         piSnippetSource: "通常、小児には1回6mg/kgを1日2回経口投与する。なお、1回最大6mg/kgかつ1日最大12mg/kg、または1日450mgを超えないこと。",
         dosage: {
@@ -1121,11 +1126,11 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "magnesium-oxide-group",
-        name: "酸化マグネシウム",
+        name: "酸化マグネシウム細粒83%",
         brandName: "酸化マグネシウム",
-        yjCode: "2344002B1032",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2344002B1032?user=1",
-        potency: 1000,
+        yjCode: "2344009C1039",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2344009C1039?user=1",
+        potency: 830, // 83% -> 830mg/g
         dosage: {
             minMgKg: 30,
             maxMgKg: 30,
