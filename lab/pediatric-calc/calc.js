@@ -1545,50 +1545,34 @@ function calculateDrug(drug, years, months, weight) {
     let potency = drug.potency;
     let unit = drug.unit || 'g';
     let subOptionLabel = '';
-
-    if (drug.hasSubOptions) {
-        if (!opts.subOptionId && drug.subOptions.length > 0) opts.subOptionId = drug.subOptions[0].id;
-        const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
-        if (sub) {
-            potency = sub.potency || potency;
-            unit = sub.unit || unit;
-            subOptionLabel = sub.label;
-        }
-    }
-
     let dosageConfig = drug.dosage;
     let diseaseLabel = '';
 
-    if (drug.diseases) {
-        if (!opts.diseaseId && drug.diseases.length > 0) opts.diseaseId = drug.diseases[0].id;
-        const dis = drug.diseases.find(d => d.id === opts.diseaseId);
-        if (dis) {
-            dosageConfig = dis.dosage;
-            diseaseLabel = dis.label;
-        }
-    }
-
-    if (drug.hasSubOptions) {
-        if (!opts.subOptionId && drug.subOptions.length > 0) {
-            // Auto-select sub-option based on age if possible
-            if (drug.autoSelectByAge && drug.subOptions.length > 0) {
-                const autoSub = drug.subOptions.find(o => age >= (o.ageMin || 0) && age < (o.ageMax || 100));
-                if (autoSub) opts.subOptionId = autoSub.id;
-                else opts.subOptionId = drug.subOptions[0].id;
-            } else {
-                opts.subOptionId = drug.subOptions[0].id;
-            }
+    // --- Step 1: Resolve subOption (potency + optional dosage override) ---
+    if (drug.hasSubOptions && drug.subOptions && drug.subOptions.length > 0) {
+        // Auto-select by age every time (so changing age updates the selection)
+        if (drug.autoSelectByAge) {
+            const autoSub = drug.subOptions.find(o => age >= (o.ageMin || 0) && age < (o.ageMax || 100));
+            opts.subOptionId = autoSub ? autoSub.id : drug.subOptions[0].id;
+        } else if (!opts.subOptionId) {
+            opts.subOptionId = drug.subOptions[0].id;
         }
         const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
         if (sub) {
-            if (sub.dosage) {
-                // Sub-option has its own dosage config (e.g. Tamiflu)
-                dosageConfig = sub.dosage;
-            }
-            // Always update potency and unit from sub-option
             potency = sub.potency || potency;
             unit = sub.unit || unit;
             subOptionLabel = sub.label;
+            if (sub.dosage) dosageConfig = sub.dosage;
+        }
+    }
+
+    // --- Step 2: Resolve disease (dosage override, takes priority over subOption dosage) ---
+    if (drug.diseases && drug.diseases.length > 0) {
+        if (!opts.diseaseId) opts.diseaseId = drug.diseases[0].id;
+        const dis = drug.diseases.find(d => d.id === opts.diseaseId);
+        if (dis && dis.dosage) {
+            dosageConfig = dis.dosage;
+            diseaseLabel = dis.label;
         }
     }
 
@@ -1868,6 +1852,13 @@ window.clearAllDrugs = () => {
     updatePrescriptionSheet();
 };
 
+// Update drug option (sub-option or disease) and re-render
+window.updateDrugOption = (drugId, key, value) => {
+    if (!state.drugOptions[drugId]) state.drugOptions[drugId] = {};
+    state.drugOptions[drugId][key] = value;
+    saveState();
+    updatePrescriptionSheet();
+};
 
 // State
 const state = {
