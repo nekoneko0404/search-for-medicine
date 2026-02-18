@@ -894,6 +894,7 @@ const PEDIATRIC_DRUGS = [
                     "timeMgKg": 0.00125,
                     "unit": "g",
                     "timesPerDay": 2,
+                    "isByTime": true,
                     "note": "通常1回1.25μg/kg(DSとして0.025g/kg)を1日2回。"
                 }
             },
@@ -1465,14 +1466,16 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 7,
                 "dose": 1,
                 "unit": "包",
-                "label": "1包（LD）"
+                "label": "1包（LD）",
+                "display": "1包（LD）"
             },
             {
                 "ageMin": 7,
                 "ageMax": 100,
                 "dose": 2,
                 "unit": "包",
-                "label": "2包（LD）"
+                "label": "2包（LD）",
+                "display": "2包（LD）"
             }
         ],
         "dosage": {
@@ -1624,7 +1627,7 @@ function calculateDrug(drug, years, months, weight) {
             if (fixed.isPerKg && !fixed.display) display += "/kg";
             return { result: fixed.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
         }
-        return { error: '該当年齢の用量設定なし' };
+        return { error: '該当年齢の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
     }
     else if (drug.calcType === 'age') {
         const adultDose = drug.adultDose || 0;
