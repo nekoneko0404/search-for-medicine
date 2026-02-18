@@ -1,5 +1,9 @@
 import { PHARMA_CLASSIFICATION_MAP } from './pharma_classification.js';
 
+/**
+ * PEDIATRIC_CALC_VERSION: 20260218-1145
+ */
+
 const PEDIATRIC_DRUGS = [
     {
         id: "amoxicillin-group",
@@ -1185,6 +1189,14 @@ let selectedDiseaseId = null;
 let currentSearchQuery = '';
 let currentFocusIndex = -1;
 
+function safeSetHidden(id, isHidden) {
+    const el = document.getElementById(id);
+    if (el && el.classList) {
+        if (isHidden) el.classList.add('hidden');
+        else el.classList.remove('hidden');
+    }
+}
+
 function renderDrugCards() {
     const container = document.getElementById('drug-cards-container');
     if (!container) return;
@@ -1226,21 +1238,21 @@ function selectDrug(id, index) {
     if (!drug) return;
 
     if (drug.hasSubOptions) {
-        selectedSubOptionId = drug.subOptions[0].id;
+        selectedSubOptionId = (drug.subOptions && drug.subOptions.length > 0) ? drug.subOptions[0].id : null;
         renderSubOptions(drug);
-        document.getElementById('sub-option-area').classList.remove('hidden');
+        safeSetHidden('sub-option-area', false);
     } else {
         selectedSubOptionId = null;
-        document.getElementById('sub-option-area').classList.add('hidden');
+        safeSetHidden('sub-option-area', true);
     }
 
-    if (drug.diseases) {
+    if (drug.diseases && drug.diseases.length > 0) {
         selectedDiseaseId = drug.diseases[0].id;
         renderDiseaseOptions(drug);
-        document.getElementById('disease-area').classList.remove('hidden');
+        safeSetHidden('disease-area', false);
     } else {
         selectedDiseaseId = null;
-        document.getElementById('disease-area').classList.add('hidden');
+        safeSetHidden('disease-area', true);
     }
 
     const ageEl = document.getElementById('age');
@@ -1248,7 +1260,7 @@ function selectDrug(id, index) {
     const ageGroup = ageEl ? ageEl.closest('.form-group') : null;
     const weightGroup = weightEl ? weightEl.closest('.form-group') : null;
 
-    if (ageGroup && weightGroup) {
+    if (ageGroup && weightGroup && ageGroup.classList && weightGroup.classList) {
         if (drug.calcType === 'age' || drug.calcType === 'fixed-age') {
             ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
             weightGroup.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-50/30');
@@ -1261,13 +1273,9 @@ function selectDrug(id, index) {
         }
     }
 
-    const mainArea = document.getElementById('calc-main-area');
-    const emptyState = document.getElementById('empty-state-side');
-    const initialGuide = document.getElementById('initial-guide');
-
-    if (mainArea) mainArea.classList.remove('hidden');
-    if (emptyState) emptyState.classList.add('hidden');
-    if (initialGuide) initialGuide.classList.add('hidden');
+    safeSetHidden('calc-main-area', false);
+    safeSetHidden('empty-state-side', true);
+    safeSetHidden('initial-guide', true);
 
     renderDrugCards();
     try {
@@ -1298,6 +1306,7 @@ function handleKeyNavigation(e) {
 
 function renderSubOptions(drug) {
     const container = document.getElementById('sub-option-container');
+    if (!container) return;
     container.innerHTML = drug.subOptions.map(opt => `
         <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition ${selectedSubOptionId === opt.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-200'}">
             <input type="radio" name="sub-option" value="${opt.id}" ${selectedSubOptionId === opt.id ? 'checked' : ''} class="w-4 h-4 text-indigo-600">
@@ -1315,6 +1324,7 @@ function renderSubOptions(drug) {
 
 function renderDiseaseOptions(drug) {
     const container = document.getElementById('disease-container');
+    if (!container) return;
     container.innerHTML = drug.diseases.map(dis => `
         <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition ${selectedDiseaseId === dis.id ? 'bg-rose-50 border-rose-200' : 'bg-white border-gray-200'}">
             <input type="radio" name="disease-option" value="${dis.id}" ${selectedDiseaseId === dis.id ? 'checked' : ''} class="w-4 h-4 text-rose-600">
@@ -1335,10 +1345,12 @@ function updateCalculations() {
     const weightInput = document.getElementById('body-weight');
     const piContainer = document.getElementById('pi-container');
     const resultArea = document.getElementById('result-area');
+    if (!ageInput || !weightInput || !piContainer || !resultArea) return;
+
     let drug = PEDIATRIC_DRUGS.find(d => d.id === selectedDrugId);
     if (!drug) return;
-    const age = parseFloat(ageInput.value);
-    const weight = parseFloat(weightInput.value);
+    const age = parseFloat(ageInput.value) || 0;
+    const weight = parseFloat(weightInput.value) || 0;
     const selectedSubOption = drug.hasSubOptions ? drug.subOptions.find(o => o.id === selectedSubOptionId) : null;
     const selectedDisease = drug.diseases ? drug.diseases.find(d => d.id === selectedDiseaseId) : null;
     const currentPi = selectedDisease?.piSnippet || selectedSubOption?.piSnippet || drug.piSnippet;
@@ -1613,8 +1625,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.getElementById('body-weight').addEventListener('input', updateCalculations);
-    document.getElementById('age').addEventListener('input', updateCalculations);
+    const bwEl = document.getElementById('body-weight');
+    if (bwEl) bwEl.addEventListener('input', updateCalculations);
+    const ageEl = document.getElementById('age');
+    if (ageEl) ageEl.addEventListener('input', updateCalculations);
 
     const stdWeightBtn = document.getElementById('calc-std-weight');
     if (stdWeightBtn) stdWeightBtn.addEventListener('click', calcStandardWeight);
