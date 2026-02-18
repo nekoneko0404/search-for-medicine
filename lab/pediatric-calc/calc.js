@@ -585,7 +585,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "yj-2251001D1061",
-        name: "テオドール顆粒20%",
+        name: "テオドール／テオフィリン",
         yjCode: "2251001D1061",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2251001D1061?user=1",
         potency: 200,
@@ -659,7 +659,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "yj-4413004C2022",
-        name: "ゼスラン細粒小児用0.6%",
+        name: "ゼスラン／ニポラジン",
         yjCode: "4413004C2022",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4413004C2022?user=1",
         potency: 6,
@@ -964,7 +964,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "yj-1139010R1020",
-        name: "イーケプラドライシロップ50%",
+        name: "イーケプラ／レベチラセタム",
         yjCode: "1139010R1020",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1139010R1020?user=1",
         potency: 500,
@@ -1277,17 +1277,43 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6132002E1034",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132002E1034?user=1",
         potency: 100,
-        piSnippetSource: "通常1日25〜50mg(力価)/kgを4回に分割経口投与する。重症の場合等は1日100mg(力価)/kgまで増量できる。",
+        piSnippetSource: "通常1日25〜50mg/kgを朝夕2回。重症時は50〜100mg/kg。",
+        diseases: [
+            {
+                id: "keflex-standard",
+                label: "通常 (25-50mg/kg)",
+                dosage: {
+                    minMgKg: 25,
+                    maxMgKg: 50,
+                    timesPerDay: 2,
+                    absoluteMaxMgPerDay: 1000,
+                    note: "1日25〜50mg/kgを2回(朝夕)。成人最大1g/日。"
+                },
+                piSnippet: "通常、幼小児にはセファレキシンとして体重kgあたり1日25〜50mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
+            },
+            {
+                id: "keflex-severe",
+                label: "重症・感受性低 (50-100mg/kg)",
+                dosage: {
+                    minMgKg: 50,
+                    maxMgKg: 100,
+                    timesPerDay: 2,
+                    absoluteMaxMgPerDay: 2000,
+                    note: "1日50〜100mg/kgを2回(朝夕)。成人最大2g/日。"
+                },
+                piSnippet: "重症の場合や分離菌の感受性が比較的低い症例にはセファレキシンとして体重kgあたり1日50〜100mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
+            }
+        ],
         dosage: {
             minMgKg: 25,
             maxMgKg: 50,
             absoluteMaxMgKg: 100,
-            timesPerDay: 4,
-            absoluteMaxMgPerTime: 250,
+            timesPerDay: 2,
+            absoluteMaxMgPerTime: 500,
             absoluteMaxMgPerDay: 1000,
-            note: "通常1日25〜50mg/kgを4回。最大100mg/kg。成人通常1回250mg(1日1g)。"
+            note: "通常1日25〜50mg/kgを2回(朝夕)。重症時50〜100mg/kg。"
         },
-        piSnippet: "通常、小児には1日25〜50mg(力価)/kgを4回に分割し服用する。なお、年齢、体重、症状により適宜増減するが、重症などの場合には1日100mg(力価)/kgまで増量できる。成人通常1回250mg(力価)を1日4回。"
+        piSnippet: "通常、幼小児には1日25〜50mg(力価)/kgを2回に分割して、朝、夕食後に経口投与する。重症時は1日50〜100mg(力価)/kg。"
     },
     {
         id: "ozex-group",
@@ -1296,18 +1322,18 @@ const PEDIATRIC_DRUGS = [
         yjCode: "6241010C1024",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6241010C1024?user=1",
         potency: 150,
-        piSnippetSource: "通常、小児には1回6mg/kgを1日2回経口投与する。なお、1回最大6mg/kgかつ1日最大12mg/kg、または1日450mgを超えないこと。",
+        piSnippetSource: "小児に対してはトスフロキサシントシル酸塩水和物として1回6mg/kgを1日2回経口投与する。ただし、1回180mg、1日360mgを超えないこととする。",
         dosage: {
             minMgKg: 12,
             maxMgKg: 12,
             timeMgKg: 6,
             isByTime: true,
             timesPerDay: 2,
-            absoluteMaxMgPerTime: 225,
-            absoluteMaxMgPerDay: 450,
-            note: "1回6mg/kgを1日2回。1日最大450mgまたは12mg/kg。"
+            absoluteMaxMgPerTime: 180,
+            absoluteMaxMgPerDay: 360,
+            note: "1回6mg/kgを1日2回。1回上限180mg、1日上限360mg。"
         },
-        piSnippet: "通常、小児には1回6mg/kgを1日2回服用する。なお、1回量は6mg/kg、1日量は12mg/kgをそれぞれ超えないものとし、かつ、1日量は450mgを超えないものとする。"
+        piSnippet: "小児に対してはトスフロキサシントシル酸塩水和物として1回6mg/kgを1日2回経口投与する。ただし、1回180mg、1日360mgを超えないこととする。"
     },
     {
         id: "orapenem-group",
