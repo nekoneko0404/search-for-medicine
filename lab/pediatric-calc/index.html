@@ -347,13 +347,17 @@
             flex-direction: column;
         }
 
+        .prescription-sheet.active {
+            transform: translateY(0);
+        }
+
         @media (min-width: 850px) {
             .prescription-sheet {
                 top: var(--header-offset);
                 bottom: 0;
                 left: auto;
                 right: 0;
-                width: 450px;
+                width: var(--panel-width-pc);
                 height: calc(100vh - var(--header-offset));
                 border-radius: 0;
                 border-left: 1px solid #e2e8f0;
@@ -363,10 +367,6 @@
             .prescription-sheet.active {
                 transform: translateX(0);
             }
-        }
-
-        .prescription-sheet.active {
-            transform: translateY(0);
         }
 
         .sheet-handle {
