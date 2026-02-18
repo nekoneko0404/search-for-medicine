@@ -55,13 +55,19 @@
         }
 
         .input-container {
-            display: flex;
-            align-items: center;
-            gap: 0.35rem;
-            /* Slightly tighter gap */
+            display: grid;
+            grid-template-columns: 2fr 1fr 40px;
+            gap: 0.5rem;
             width: 100%;
-            max-width: 700px;
+            max-width: 600px;
             margin: 0 auto;
+        }
+
+        @media (max-width: 600px) {
+            .input-container {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
         }
 
         .input-group-enhanced {
@@ -136,23 +142,11 @@
             transform: scale(1.05);
         }
 
-        /* Age Mode Switch */
+        /* Age & Weight Inputs */
         .age-inputs {
-            display: flex;
-            gap: 0.2rem;
-            flex: 2;
-            /* Take 2/3 of space */
-        }
-
-        .input-container>.input-group-enhanced:last-of-type {
-            flex: 1;
-            /* Weight takes 1/3 of space */
-            min-width: 80px;
-        }
-
-        .input-container>.input-group-enhanced {
-            flex: 1;
-            /* Allow weight input to grow */
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 0.4rem;
         }
 
         .age-input-wrapper {
@@ -172,10 +166,10 @@
             /* Prevent horizontal scroll */
         }
 
-        @media (min-width: 850px) {
+        @media (min-width: 1024px) {
             .main-container.has-sheet {
                 padding-right: 470px;
-                /* Space for fixed sheet on PC/Tablet */
+                /* Offset for sidebar */
             }
         }
 
@@ -362,10 +356,21 @@
                 border-radius: 0;
                 border-left: 1px solid #e2e8f0;
                 transform: translateX(100%);
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
             }
 
             .prescription-sheet.active {
                 transform: translateX(0);
+                translate: 0;
+                /* Clear any legacy translate */
+            }
+        }
+
+        /* Fixed: Prevent mobile active from overriding PC transform */
+        @media (min-width: 1024px) {
+            .prescription-sheet.active {
+                transform: none !important;
+                transform: translateX(0) !important;
             }
         }
 
@@ -585,8 +590,6 @@
             }
 
             .drug-card {
-                flex-direction: row;
-                align-items: center;
                 min-height: auto;
             }
 

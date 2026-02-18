@@ -1766,8 +1766,8 @@ function updatePrescriptionSheet() {
 
     content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
 
-    // Layout check for PC/Tablet
-    if (window.innerWidth >= 850) {
+    // Layout check for Side Panel (PC)
+    if (window.innerWidth >= 1024) {
         if (state.selectedDrugIds.size > 0) {
             document.querySelector('.main-container').classList.add('has-sheet');
             sheet.classList.add('active');
@@ -1940,7 +1940,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleSheet = (show) => {
         if (show) {
             sheet.classList.add('active');
-            if (window.innerWidth < 850) overlay.classList.add('active');
+            if (window.innerWidth < 1024) overlay.classList.add('active');
         }
         else {
             sheet.classList.remove('active');
