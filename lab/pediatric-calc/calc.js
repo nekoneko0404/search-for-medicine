@@ -496,11 +496,24 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6250002D1024",
-        "name": "ゾビラックス／アシクロビル",
+        "name": "ゾビラックス／アシクロビル 200mg",
         "brandName": "ゾビラックス",
         "yjCode": "6250002D1024",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250002D1024",
         "potency": 400,
+        "hasSubOptions": true,
+        "subOptions": [
+            {
+                "id": "acv-200",
+                "label": "200mg錢",
+                "potency": 400
+            },
+            {
+                "id": "acv-400",
+                "label": "400mg錢",
+                "potency": 800
+            }
+        ],
         "diseases": [
             {
                 "id": "chickenpox",
@@ -580,10 +593,13 @@ const PEDIATRIC_DRUGS = [
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250021R1024",
         "potency": 30,
         "hasSubOptions": true,
+        "autoSelectByAge": true,
         "subOptions": [
             {
                 "id": "over1y",
                 "label": "幼小児 (1歳以上)",
+                "ageMin": 1,
+                "ageMax": 100,
                 "potency": 30,
                 "dosage": {
                     "isByTime": true,
@@ -592,11 +608,13 @@ const PEDIATRIC_DRUGS = [
                     "absoluteMaxMgPerTime": 75,
                     "absoluteMaxMgPerDay": 150
                 },
-                "piSnippet": "通常、幼小児には1回2mg/kgを1日2回、5日間服用する。1回最高75mg。"
+                "piSnippet": "通常、幼小児には1回2mg/kgを1日2回、5日間服用する、1回最高75mg。"
             },
             {
                 "id": "under1y",
-                "label": "新生児・乳児",
+                "label": "新生児・乳児 (1歳未満)",
+                "ageMin": 0,
+                "ageMax": 1,
                 "potency": 30,
                 "dosage": {
                     "isByTime": true,
@@ -605,13 +623,13 @@ const PEDIATRIC_DRUGS = [
                     "absoluteMaxMgPerTime": 75,
                     "absoluteMaxMgPerDay": 150
                 },
-                "piSnippet": "通常、新生児・乳児には1回3mg/kgを1日2回、5日間服用する。1回最高75mg。"
+                "piSnippet": "通常、新生児・乳児には1回3mg/kgを1日2回、5日間服用する、1回最高75mg。"
             }
         ],
         "dosage": {
-            "note": "幼小児:1回2mg/kg、新生児・乳児:1回3mg/kg。1日2回。上限75mg/回。"
+            "note": "幼小児:1回2mg/kg、1歳未満:1回3mg/kg、1日2回。上限75mg/回。"
         },
-        "piSnippet": "1回2mg/kg(1歳以上)または3mg/kg(1歳未満)を1日2回。1回最高用量は75mg。",
+        "piSnippet": "1回2mg/kg(1歳以上)または3mg/kg(1歳未満)を1日2回、1回最高用量は75mg。",
         "category": "antiviral"
     },
     {
@@ -1532,10 +1550,9 @@ function calculateDrug(drug, years, months, weight) {
         if (!opts.subOptionId && drug.subOptions.length > 0) opts.subOptionId = drug.subOptions[0].id;
         const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
         if (sub) {
-            potency = sub.potency;
+            potency = sub.potency || potency;
             unit = sub.unit || unit;
             subOptionLabel = sub.label;
-            if (sub.dosage) { /* Keep custom dosage logic if needed */ }
         }
     }
 
@@ -1552,6 +1569,16 @@ function calculateDrug(drug, years, months, weight) {
     }
 
     if (drug.hasSubOptions) {
+        if (!opts.subOptionId && drug.subOptions.length > 0) {
+            // Auto-select sub-option based on age if possible
+            if (drug.autoSelectByAge && drug.subOptions.length > 0) {
+                const autoSub = drug.subOptions.find(o => age >= (o.ageMin || 0) && age < (o.ageMax || 100));
+                if (autoSub) opts.subOptionId = autoSub.id;
+                else opts.subOptionId = drug.subOptions[0].id;
+            } else {
+                opts.subOptionId = drug.subOptions[0].id;
+            }
+        }
         const sub = drug.subOptions.find(o => o.id === opts.subOptionId);
         if (sub) {
             if (sub.dosage) {
@@ -1674,11 +1701,17 @@ function calculateDrug(drug, years, months, weight) {
         mgPerDayMin = tMin * times * weight;
         mgPerDayMax = tMax * times * weight;
 
-        // Apply Time Max
+        // Apply Time Max (per-dose cap)
         if (dosageConfig.absoluteMaxMgPerTime) {
-            const absMax = dosageConfig.absoluteMaxMgPerTime * times;
-            if (mgPerDayMin > absMax) mgPerDayMin = absMax;
-            if (mgPerDayMax > absMax) mgPerDayMax = absMax;
+            const absMaxPerDay = dosageConfig.absoluteMaxMgPerTime * times;
+            if (mgPerDayMin > absMaxPerDay) mgPerDayMin = absMaxPerDay;
+            if (mgPerDayMax > absMaxPerDay) mgPerDayMax = absMaxPerDay;
+        }
+
+        // Fixed dose per time (e.g. Relenza: dosePerTime in mg)
+        if (dosageConfig.dosePerTime && !dosageConfig.timeMgKg) {
+            mgPerDayMin = dosageConfig.dosePerTime * times;
+            mgPerDayMax = dosageConfig.dosePerTime * times;
         }
     } else {
         // Daily dose base
