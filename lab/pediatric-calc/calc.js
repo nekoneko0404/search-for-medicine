@@ -1680,17 +1680,23 @@ function updatePrescriptionSheet() {
     closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
     closeBtn.style.color = '#ef4444';
 
+    const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
+    fabBadge.textContent = validCount;
+
+    const emptyHtml = `
+        <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
+            <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
+            <p>薬剤を選択してください</p>
+        </div>`;
+
     if (state.selectedDrugIds.size === 0) {
+        content.innerHTML = emptyHtml;
         sheet.classList.remove('active');
         document.getElementById('sheet-overlay').classList.remove('active');
         fab.classList.add('hidden');
+        document.querySelector('.main-container').classList.remove('has-sheet');
         return;
     }
-
-    fab.classList.remove('hidden');
-
-    const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
-    fabBadge.textContent = validCount;
 
     const y = state.params.ageYear;
     const m = state.params.ageMonth;
@@ -1758,15 +1764,10 @@ function updatePrescriptionSheet() {
         </div>`;
     }).join('');
 
-    const emptyHtml = `
-        <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
-            <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
-            <p>薬剤を選択してください</p>
-        </div>`;
     content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
 
-    // Layout check for PC
-    if (window.innerWidth >= 1024) {
+    // Layout check for PC/Tablet
+    if (window.innerWidth >= 850) {
         if (state.selectedDrugIds.size > 0) {
             document.querySelector('.main-container').classList.add('has-sheet');
             sheet.classList.add('active');
@@ -1939,7 +1940,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleSheet = (show) => {
         if (show) {
             sheet.classList.add('active');
-            if (window.innerWidth < 1024) overlay.classList.add('active');
+            if (window.innerWidth < 850) overlay.classList.add('active');
         }
         else {
             sheet.classList.remove('active');
