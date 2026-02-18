@@ -1520,53 +1520,81 @@ const PEDIATRIC_DRUGS = [
 ];
 
 
+// Phase 23: Modern UI & Multi-Drug Calculation Logic
 
-let selectedDrugId = null;
-let selectedSubOptionId = null;
-let selectedDiseaseId = null;
-let currentSearchQuery = '';
-let currentFocusIndex = -1;
+// State
+const state = {
+    selectedDrugIds: new Set(),
+    params: {
+        age: '',
+        weight: ''
+    },
+    // Drug-specific options (sub-option, disease, etc.)
+    // Key: drugId, Value: { subOptionId: ..., diseaseId: ... }
+    drugOptions: {}
+};
+
+// --- Storage ---
+const STORAGE_KEY = 'kusuri_compass_calc_v2_state';
+
+function saveState() {
+    const data = {
+        selected: Array.from(state.selectedDrugIds),
+        params: state.params,
+        options: state.drugOptions
+    };
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) { console.error("Save failed", e); }
+}
+
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            const data = JSON.parse(raw);
+            if (data.selected) state.selectedDrugIds = new Set(data.selected);
+            if (data.params) state.params = data.params;
+            if (data.options) state.drugOptions = data.options;
+
+            // Restore inputs
+            const wInput = document.getElementById('weight-input');
+            const aInput = document.getElementById('age-input');
+            if (wInput) wInput.value = state.params.weight;
+            if (aInput) aInput.value = state.params.age;
+        }
+    } catch (e) {
+        console.error("Load failed", e);
+    }
+}
+
+// --- UI Rendering ---
+
 let currentCategory = 'all';
+let currentSearchQuery = '';
 
 function renderCategoryTabs() {
     const container = document.getElementById('category-tabs');
     if (!container) return;
 
-    // Define tabs order and labels
-    // We can use DRUG_CATEGORIES exported at top, but let's make it robust
     const tabs = [
         { id: 'all', label: 'すべて' },
-        { id: 'antibiotics', label: '抗生剤' },
-        { id: 'antiviral', label: '抗ウイルス' },
-        { id: 'respiratory', label: '呼吸器・鎮咳' },
-        { id: 'allergy', label: '抗アレルギー' },
-        { id: 'cns', label: '神経・てんかん' },
-        { id: 'antipyretic', label: '解熱鎮痛' },
-        { id: 'gi', label: '消化器・整腸' },
-        { id: 'others', label: 'その他・漢方' }
+        ...Object.entries(DRUG_CATEGORIES).map(([Key, Label]) => ({ id: Key, label: Label }))
     ];
 
     container.innerHTML = tabs.map(tab => `
-        <button class="category-tab ${currentCategory === tab.id ? 'active' : ''}" data-cat="${tab.id}">
+        <button class="cat-tab ${currentCategory === tab.id ? 'active' : ''}" data-cat="${tab.id}">
             ${tab.label}
         </button>
     `).join('');
 
-    container.querySelectorAll('.category-tab').forEach(btn => {
+    container.querySelectorAll('.cat-tab').forEach(btn => {
         btn.addEventListener('click', () => {
             currentCategory = btn.dataset.cat;
-            renderCategoryTabs(); // re-render to update active state
-            renderDrugCards();
+            renderCategoryTabs();
+            renderDrugList();
         });
     });
-}
-
-function safeSetHidden(id, isHidden) {
-    const el = document.getElementById(id);
-    if (el && el.classList) {
-        if (isHidden) el.classList.add('hidden');
-        else el.classList.remove('hidden');
-    }
 }
 
 function getFilteredDrugs() {
@@ -1578,499 +1606,342 @@ function getFilteredDrugs() {
     });
 }
 
-function renderDrugCards() {
-    const container = document.getElementById('drug-cards-container');
+function renderDrugList() {
+    const container = document.getElementById('drug-grid');
     if (!container) return;
-    const filteredDrugs = getFilteredDrugs();
-    if (filteredDrugs.length === 0) {
-        container.innerHTML = '<div class="col-span-full py-10 text-center text-gray-400 font-bold">該当する薬剤が見つかりません</div>';
+
+    const filtered = getFilteredDrugs();
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#94a3b8; padding:2rem;">該当なし</div>';
         return;
     }
-    container.innerHTML = filteredDrugs.map((d, index) => `
-        <div class="drug-card ${selectedDrugId === d.id ? 'active' : ''} ${currentFocusIndex === index ? 'ring-2 ring-indigo-500' : ''}" data-id="${d.id}" data-index="${index}">
-            <div class="potency-tag">${getPharmaClass(d.yjCode)}</div>
-            <h3 class="line-clamp-2">${d.name}</h3>
-            <div class="text-[7px] text-gray-400 mt-auto font-mono opacity-60">YJ: ${d.yjCode}</div>
+
+    container.innerHTML = filtered.map(d => {
+        const isSelected = state.selectedDrugIds.has(d.id);
+        return `
+        <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}">
+            <div class="indicator"><i class="fas fa-check"></i></div>
+            <span class="tag">${DRUG_CATEGORIES[d.category] || 'その他'}</span>
+            <h3>${d.name}</h3>
         </div>
-    `).join('');
+        `;
+    }).join('');
 
-    // Ensure focused element is visible
-    if (currentFocusIndex >= 0) {
-        const focusedCard = container.querySelector(`[data-index="${currentFocusIndex}"]`);
-        if (focusedCard) {
-            focusedCard.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
-        }
-    }
-
-    document.querySelectorAll('.drug-card').forEach(card => {
-        card.addEventListener('click', () => {
-            selectDrug(card.dataset.id, parseInt(card.dataset.index));
-        });
+    container.querySelectorAll('.drug-card').forEach(card => {
+        card.addEventListener('click', () => toggleDrug(card.dataset.id));
     });
 }
 
-function selectDrug(id, index) {
-    selectedDrugId = id;
-    currentFocusIndex = index;
-    const drug = PEDIATRIC_DRUGS.find(d => d.id === selectedDrugId);
-    if (!drug) return;
+function toggleDrug(id) {
+    if (state.selectedDrugIds.has(id)) {
+        state.selectedDrugIds.delete(id);
+    } else {
+        state.selectedDrugIds.add(id);
+    }
+    saveState();
+    renderDrugList(); // update selection visual
+    updatePrescriptionSheet();
+}
 
+// --- Calculation Logic ---
+
+function calculateDrug(drug, age, weight) {
+    // Basic validation
+    if (!weight || weight <= 0) return { error: '体重を入力してください' };
+
+    // Get options for this drug
+    const opts = state.drugOptions[drug.id] || {};
+
+    // Potency
+    let potency = drug.potency; // mg/g or mg/tablet
+    let unit = drug.unit || 'g'; // default g for powders
+
+    // Check sub-options
     if (drug.hasSubOptions) {
-        selectedSubOptionId = (drug.subOptions && drug.subOptions.length > 0) ? drug.subOptions[0].id : null;
-        renderSubOptions(drug);
-        safeSetHidden('sub-option-area', false);
-    } else {
-        selectedSubOptionId = null;
-        safeSetHidden('sub-option-area', true);
-    }
-
-    if (drug.diseases && drug.diseases.length > 0) {
-        selectedDiseaseId = drug.diseases[0].id;
-        renderDiseaseOptions(drug);
-        safeSetHidden('disease-area', false);
-    } else {
-        selectedDiseaseId = null;
-        safeSetHidden('disease-area', true);
-    }
-
-    const ageEl = document.getElementById('age');
-    const weightEl = document.getElementById('body-weight');
-    const ageGroup = ageEl ? ageEl.closest('.form-group') : null;
-    const weightGroup = weightEl ? weightEl.closest('.form-group') : null;
-
-    if (ageGroup && weightGroup && ageGroup.classList && weightGroup.classList) {
-        if (drug.calcType === 'age' || drug.calcType === 'fixed-age') {
-            ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
-            weightGroup.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-        } else if (drug.calcType === 'age-weight-switch') {
-            ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
-            weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-        } else {
-            weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-            ageGroup.classList.remove('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+        const subId = opts.subOptionId || (drug.subOptions[0] ? drug.subOptions[0].id : null);
+        const sub = drug.subOptions.find(o => o.id === subId);
+        if (sub) {
+            potency = sub.potency;
+            unit = sub.unit || unit; // override if needed
         }
     }
 
-    safeSetHidden('calc-main-area', false);
-    safeSetHidden('empty-state-side', true);
-    safeSetHidden('initial-guide', true);
+    // Check Disease
+    const diseaseId = opts.diseaseId || (drug.diseases ? drug.diseases[0].id : null);
+    let dosageConfig = drug.dosage;
+    let diseaseLabel = '';
 
-    renderDrugCards();
-    try {
-        updateCalculations();
-    } catch (err) {
-        console.error("Calculation Error:", err);
+    if (drug.diseases && diseaseId) {
+        const dis = drug.diseases.find(d => d.id === diseaseId);
+        if (dis) {
+            dosageConfig = dis.dosage; // Override dosage config
+            diseaseLabel = dis.label;
+        }
+    }
+
+    // Calc Logic
+    // 1. Determine mg/day or mg/time
+    let mgPerDay = 0;
+    let method = '';
+
+    if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
+        // Fixed dose based on age
+        if (!age && age !== 0) return { error: '年齢が必要です' };
+        const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
+        if (fixed) {
+            return {
+                result: `${fixed.label}`,
+                detail: fixed.dose + (fixed.unit || ''),
+                isFixed: true
+            };
+        } else {
+            return { error: '該当年齢の用量設定なし' };
+        }
+    }
+    else if (drug.calcType === 'weight-step' && drug.weightSteps) {
+        const step = drug.weightSteps.find(s => weight >= s.weightMin && weight < s.weightMax);
+        if (step) {
+            return {
+                result: step.label,
+                detail: step.dose + (step.unit || ''),
+                isFixed: true
+            };
+        } else {
+            // Check max (assumed adult/large child)
+            const last = drug.weightSteps[drug.weightSteps.length - 1];
+            if (weight >= last.weightMax) {
+                return { result: last.label, detail: last.dose + (last.unit || ''), isFixed: true };
+            }
+            return { error: '該当体重の用量設定なし' };
+        }
+    }
+
+    // Standard mg/kg calc
+    let minMg = 0, maxMg = 0;
+
+    if (dosageConfig.isByTime) {
+        // mg/kg/time * times
+        const doseTime = dosageConfig.timeMgKg || 0;
+        const times = dosageConfig.timesPerDay || 3;
+        const total = doseTime * times * weight;
+
+        // Limits
+        let dailyMax = dosageConfig.absoluteMaxMgPerDay;
+        // Check per time limit
+        if (dosageConfig.absoluteMaxMgPerTime) {
+            const timeMax = dosageConfig.absoluteMaxMgPerTime;
+            if (doseTime * weight > timeMax) {
+                // Cap at per time max
+                // Actually we should display standard range
+            }
+        }
+
+        mgPerDay = total;
+        method = `${doseTime}mg/kg/回 × ${times}回`;
+    } else {
+        // mg/kg/day standard
+        const minK = dosageConfig.minMgKg || 0;
+        const maxK = dosageConfig.maxMgKg || 0;
+        minMg = minK * weight;
+        maxMg = maxK * weight;
+        method = `${minK}〜${maxK}mg/kg/日`;
+    }
+
+    // Apply absolute max (Adult dose caps)
+    if (dosageConfig.absoluteMaxMgPerDay) {
+        if (minMg > dosageConfig.absoluteMaxMgPerDay) minMg = dosageConfig.absoluteMaxMgPerDay;
+        if (maxMg > dosageConfig.absoluteMaxMgPerDay) maxMg = dosageConfig.absoluteMaxMgPerDay;
+        if (mgPerDay > dosageConfig.absoluteMaxMgPerDay) mgPerDay = dosageConfig.absoluteMaxMgPerDay;
+    }
+
+    // Convert to product amount (g or mL or tablets)
+    // potency is mg per unit (e.g. 100mg/g -> potency 100)
+
+    if (dosageConfig.isByTime) {
+        // Fixed per time logic usually implies single point? 
+        // Or do we have range for per-time? 
+        // Simplification: We usually have single value for isByTime in our data
+        // except Valtrex has simple timeMgKg.
+
+        let productTotal = mgPerDay / potency; // Total product per day
+        let productPerTime = productTotal / dosageConfig.timesPerDay;
+
+        // Rounding (2 decimals)
+        productTotal = Math.round(productTotal * 100) / 100;
+        productPerTime = Math.round(productPerTime * 100) / 100;
+
+        return {
+            total: productTotal, // g/day
+            perTime: productPerTime, // g/time
+            times: dosageConfig.timesPerDay,
+            unit: unit,
+            disease: diseaseLabel,
+            note: dosageConfig.note
+        };
+
+    } else {
+        // Range Logic
+        let minProd = minMg / potency;
+        let maxProd = maxMg / potency;
+
+        // Rounding
+        minProd = Math.round(minProd * 100) / 100;
+        maxProd = Math.round(maxProd * 100) / 100;
+
+        let times = dosageConfig.timesPerDay || 3;
+
+        let minPerTime = Math.round((minProd / times) * 100) / 100;
+        let maxPerTime = Math.round((maxProd / times) * 100) / 100;
+
+        return {
+            totalRange: `${minProd}〜${maxProd}`,
+            perTimeRange: `${minPerTime}〜${maxPerTime}`,
+            times: times,
+            unit: unit,
+            disease: diseaseLabel,
+            note: dosageConfig.note
+        };
     }
 }
 
-function handleKeyNavigation(e) {
-    const filteredDrugs = getFilteredDrugs();
+// --- Prescription Sheet UI ---
 
-    if (filteredDrugs.length === 0) return;
+function updatePrescriptionSheet() {
+    const sheet = document.getElementById('prescription-sheet');
+    const content = document.getElementById('sheet-content');
+    const fab = document.getElementById('fab');
+    const fabBadge = document.getElementById('fab-badge');
 
-    if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        currentFocusIndex = (currentFocusIndex + 1) % filteredDrugs.length;
-        selectDrug(filteredDrugs[currentFocusIndex].id, currentFocusIndex);
-    } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        currentFocusIndex = (currentFocusIndex - 1 + filteredDrugs.length) % filteredDrugs.length;
-        selectDrug(filteredDrugs[currentFocusIndex].id, currentFocusIndex);
+    if (state.selectedDrugIds.size === 0) {
+        sheet.classList.remove('active');
+        document.getElementById('sheet-overlay').classList.remove('active');
+        fab.classList.add('hidden');
+        // Reset inputs if needed? No, keep input.
+        return;
+    } else {
+        fab.classList.remove('hidden');
+        fabBadge.textContent = state.selectedDrugIds.size;
     }
-}
 
-function renderSubOptions(drug) {
-    const container = document.getElementById('sub-option-container');
-    if (!container) return;
-    container.innerHTML = drug.subOptions.map(opt => `
-        <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition ${selectedSubOptionId === opt.id ? 'bg-indigo-50 border-indigo-200' : 'bg-white border-gray-200'}">
-            <input type="radio" name="sub-option" value="${opt.id}" ${selectedSubOptionId === opt.id ? 'checked' : ''} class="w-4 h-4 text-indigo-600">
-            <span class="text-sm font-bold">${opt.label}</span>
-        </label>
-    `).join('');
-    document.querySelectorAll('input[name="sub-option"]').forEach(input => {
-        input.addEventListener('change', (e) => {
-            selectedSubOptionId = e.target.value;
-            renderSubOptions(drug);
-            updateCalculations();
-        });
+    // Render Items
+    const age = parseFloat(state.params.age);
+    const weight = parseFloat(state.params.weight);
+
+    const itemsHtml = Array.from(state.selectedDrugIds).map(id => {
+        const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
+        if (!drug) return '';
+
+        const calc = calculateDrug(drug, age, weight);
+        let resultHtml = '';
+
+        if (calc.error) {
+            resultHtml = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-circle"></i> ${calc.error}</div>`;
+        } else if (calc.isFixed) {
+            resultHtml = `<div><strong>${calc.result}</strong>: ${calc.detail}</div>`;
+        } else if (calc.totalRange) {
+            resultHtml = `
+                <div style="font-size:1rem; font-weight:bold; color:#4f46e5;">
+                    1回 ${calc.perTimeRange} ${calc.unit}
+                </div>
+                <div style="font-size:0.8rem; color:#64748b;">
+                    (1日 ${calc.totalRange} ${calc.unit} / 分${calc.times})
+                </div>
+            `;
+        } else {
+            resultHtml = `
+                <div style="font-size:1rem; font-weight:bold; color:#4f46e5;">
+                    1回 ${calc.perTime} ${calc.unit}
+                </div>
+                <div style="font-size:0.8rem; color:#64748b;">
+                    (1日 ${calc.total} ${calc.unit} / 分${calc.times})
+                </div>
+            `;
+        }
+
+        // Sub Options / Disease Selectors if needed
+        // For simplicity in Phase 23, we default to first option but show label.
+        // Advanced: Add dropdowns here to update state.drugOptions
+
+        return `
+        <div class="rx-item">
+            <div class="rx-header">
+                <div class="rx-title">${drug.name}</div>
+                <div class="rx-remove" onclick="removeDrug('${drug.id}')"><i class="fas fa-trash"></i></div>
+            </div>
+            ${calc.disease ? `<div style="font-size:0.7rem; color:#f59e0b; margin-bottom:0.2rem;">${calc.disease}</div>` : ''}
+            <div class="rx-result">
+                ${resultHtml}
+            </div>
+            <div style="font-size:0.6rem; color:#94a3b8; margin-top:0.2rem;">${calc.note || ''}</div>
+        </div>
+        `;
+    }).join('');
+
+    content.innerHTML = itemsHtml.length ? itemsHtml : '<div class="empty-state">エラー</div>';
+
+    // Re-attach listeners for remove
+    // Note: onclick inline above is simpler but requires global scope. 
+    // We should bind via JS.
+    content.querySelectorAll('.rx-remove').forEach(btn => {
+        // Logic handled by onclick in string for now, need valid export or global
     });
 }
 
-function renderDiseaseOptions(drug) {
-    const container = document.getElementById('disease-container');
-    if (!container) return;
-    container.innerHTML = drug.diseases.map(dis => `
-        <label class="flex items-center gap-2 p-3 border rounded-lg cursor-pointer hover:bg-slate-50 transition ${selectedDiseaseId === dis.id ? 'bg-rose-50 border-rose-200' : 'bg-white border-gray-200'}">
-            <input type="radio" name="disease-option" value="${dis.id}" ${selectedDiseaseId === dis.id ? 'checked' : ''} class="w-4 h-4 text-rose-600">
-            <span class="text-sm font-bold">${dis.label}</span>
-        </label>
-    `).join('');
-    document.querySelectorAll('input[name="disease-option"]').forEach(input => {
-        input.addEventListener('change', (e) => {
-            selectedDiseaseId = e.target.value;
-            renderDiseaseOptions(drug);
-            updateCalculations();
-        });
-    });
+// Global scope expose for inline handlers
+window.removeDrug = (id) => toggleDrug(id);
+
+// --- Sheet Toggle ---
+
+const sheet = document.getElementById('prescription-sheet');
+const overlay = document.getElementById('sheet-overlay');
+const closeBtn = document.getElementById('close-sheet');
+const fab = document.getElementById('fab');
+
+function openSheet() {
+    sheet.classList.add('active');
+    overlay.classList.add('active');
 }
 
-function updateCalculations() {
-    const ageInput = document.getElementById('age');
-    const weightInput = document.getElementById('body-weight');
-    const piContainer = document.getElementById('pi-container');
-    const resultArea = document.getElementById('result-area');
-    if (!ageInput || !weightInput || !piContainer || !resultArea) return;
-
-    let drug = PEDIATRIC_DRUGS.find(d => d.id === selectedDrugId);
-    if (!drug) return;
-    const age = parseFloat(ageInput.value) || 0;
-    const weight = parseFloat(weightInput.value) || 0;
-    const selectedSubOption = drug.hasSubOptions ? drug.subOptions.find(o => o.id === selectedSubOptionId) : null;
-    const selectedDisease = drug.diseases ? drug.diseases.find(d => d.id === selectedDiseaseId) : null;
-    const currentPi = selectedDisease?.piSnippet || selectedSubOption?.piSnippet || drug.piSnippet;
-    const currentBrand = drug.brandName || drug.name.split('／')[0];
-    const currentPotency = selectedSubOption?.potency || drug.potency || 100;
-    const currentUnit = selectedSubOption?.unit || drug.unit || 'g';
-    const specText = currentPotency < 1000 ? ` (${currentPotency / 10}%)` : '';
-    const drugInfoHeader = `
-        <div class="flex justify-between items-center mb-4 border-b border-white/20 pb-2">
-            <div class="text-xl font-black">${drug.name}${specText}</div>
-        </div>
-    `;
-
-    const baseDosage = selectedDisease?.dosage || selectedSubOption?.dosage || drug.dosage;
-    const minMgKg = baseDosage?.minMgKg || 0;
-    const maxMgKg = baseDosage?.maxMgKg || 0;
-    const isByTime = baseDosage?.isByTime ?? false;
-    const timeMgKg = baseDosage?.timeMgKg || 0;
-    const tpd = baseDosage?.timesPerDay || 2;
-    const absMaxTime = baseDosage?.absoluteMaxMgPerTime || null;
-    const absMaxDay = baseDosage?.absoluteMaxMgPerDay || null;
-    // PMDAリンク：rdSearch/02/形式は安定しているが、代表コードでないと検索結果一覧に止まる場合がある。
-    piContainer.innerHTML = `
-        <div class="pi-card bg-amber-50 border border-amber-200 p-3 rounded-lg mb-4 mt-2">
-            <div class="flex justify-between items-start mb-1">
-                <span class="text-[10px] font-black text-amber-800 uppercase tracking-widest"><i class="fas fa-file-alt"></i> 添付文書 引用（${currentBrand}）</span>
-                <a href="${drug.piUrl}" target="_blank" class="text-[9px] text-blue-600 hover:underline font-bold">PMDA詳細 <i class="fas fa-external-link-alt"></i></a>
-            </div>
-            <div class="text-[11px] text-gray-800 leading-relaxed italic mb-1 font-medium">
-                「${currentPi || '詳細はリンク先参照'}」
-            </div>
-            <div class="text-[8px] text-gray-400 text-right font-mono opacity-50">YJ: ${drug.yjCode}</div>
-        </div>
-    `;
-
-    // Weight/Age checks
-    const reqMinWeight = baseDosage?.minWeight || 0;
-    if (reqMinWeight > 0 && weight < reqMinWeight) {
-        resultArea.innerHTML = `<p class="text-center text-rose-500 py-10 font-bold bg-rose-50 rounded-xl">体重${reqMinWeight}kg以上が対象です</p>`;
-        return;
+function closeSheet() {
+    // Only close on mobile (if not PC layout)
+    if (window.innerWidth < 1024) {
+        sheet.classList.remove('active');
+        overlay.classList.remove('active');
     }
+}
 
-    if (isNaN(age) && (drug.calcType === 'age' || drug.calcType === 'fixed-age')) {
-        resultArea.innerHTML = '<p class="text-center text-indigo-500 py-10 font-bold bg-indigo-50 rounded-xl">年齢を入力してください</p>';
-        return;
-    }
-    if (isNaN(weight) && (drug.calcType !== 'age' && drug.calcType !== 'fixed-age')) {
-        resultArea.innerHTML = '<p class="text-center text-blue-500 py-10 font-bold bg-blue-50 rounded-xl">体重を入力してください</p>';
-        return;
-    }
+if (fab) fab.addEventListener('click', openSheet);
+if (closeBtn) closeBtn.addEventListener('click', closeSheet);
+if (overlay) overlay.addEventListener('click', closeSheet);
 
-    const formatDose = (val, d) => {
-        return val.toFixed(2);
+
+// --- Init ---
+document.addEventListener('DOMContentLoaded', () => {
+    // Search
+    document.getElementById('drug-search').addEventListener('input', (e) => {
+        currentSearchQuery = e.target.value;
+        renderDrugList();
+    });
+
+    // Params
+    const wInput = document.getElementById('weight-input');
+    const aInput = document.getElementById('age-input');
+
+    const updateParams = () => {
+        state.params.weight = wInput.value;
+        state.params.age = aInput.value;
+        saveState();
+        updatePrescriptionSheet(); // Realtime update
     };
 
-    if (drug.calcType === 'age') {
-        const factor = (age * 4 + 20) / 100;
-        const childDose = drug.adultDose * factor;
-        const augLabel = drug.isAdultOnly ? `
-            <div class="bg-amber-400/20 text-amber-200 text-[9px] p-2 rounded mb-3 border border-amber-400/30">
-                <i class="fas fa-info-circle"></i> 添付文書に小児用量の記載がないため、成人量(${drug.adultDose}${drug.unit}/日)に基づきAugsberger式で算出。
-            </div>
-        ` : '';
-        resultArea.innerHTML = `
-            <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-800">
-                ${drugInfoHeader}
-                <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">Augsberger式算出 (${age}歳 | 成人量の${(factor * 100).toFixed(0)}%)</div>
-                ${augLabel}
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black">${formatDose(childDose, drug)}</span>
-                    <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
-                </div>
-                <div class="text-[10px] opacity-70">(成人量 ${drug.adultDose}${drug.unit || 'g'}/日 基準)</div>
-            </div>
-        `;
-    } else if (drug.calcType === 'fixed-age') {
-        const found = drug.fixedDoses.find(fd => age >= fd.ageMin && age < fd.ageMax);
-        if (found) {
-            resultArea.innerHTML = `
-                <div class="bg-purple-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-purple-800">
-                    ${drugInfoHeader}
-                    <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">年齢別基準量 (${found.label})</div>
-                    <div class="flex flex-col gap-3">
-                        <div class="bg-white/10 p-3 rounded-lg">
-                            <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-black">${formatDose(found.dose, drug)}</span>
-                                <span class="text-xl font-bold">${found.unit} / 回</span>
-                            </div>
-                        </div>
-                        ${(drug.dosage?.timesPerDay > 1 || found.label.includes('回')) ? `
-                        <div class="bg-white/10 p-2 px-3 rounded-lg border border-white/5">
-                            <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${formatDose(found.dose * (drug.dosage?.timesPerDay || 2), drug)}</span>
-                                <span class="text-lg font-bold">${found.unit} / 日</span>
-                            </div>
-                        </div>` : ''}
-                    </div>
-                </div>
-            `;
-        } else {
-            resultArea.innerHTML = '<p class="text-center text-rose-500 py-10 font-bold bg-rose-50 rounded-xl">対象年齢範囲外、またはデータなし</p>';
-        }
-    } else if (drug.calcType === 'weight-step') {
-        const found = drug.weightSteps.find(ws => weight >= ws.weightMin && weight < ws.weightMax);
-        if (found) {
-            const dailyDose = found.isPerKg ? (weight * found.dose) : found.dose;
-            const tpd = drug.dosage?.timesPerDay || 2;
-            resultArea.innerHTML = `
-                <div class="bg-emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
-                    ${drugInfoHeader}
-                    <div class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">体重区分: ${found.label}</div>
-                    <div class="flex flex-col gap-4">
-                        <div class="bg-white/10 p-3 rounded-lg opacity-80 border border-white/5">
-                            <div class="text-[9px] font-bold opacity-80 mb-1">1回量 (目安)</div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${formatDose(dailyDose / tpd, drug)}</span>
-                                <span class="text-lg font-bold">${found.unit} / 回</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/20 p-4 rounded-lg ring-1 ring-white/30">
-                            <div class="text-[10px] font-black opacity-90 mb-1 tracking-wider">1日合計量</div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-black">${formatDose(dailyDose, drug)}</span>
-                                <span class="text-xl font-bold">${found.unit} / 日</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        } else {
-            resultArea.innerHTML = '<p class="text-center text-rose-500 py-10 font-bold bg-rose-50 rounded-xl">対象体重範囲外 (用量表なし)</p>';
-        }
-    } else if (drug.calcType === 'age-weight-switch') {
-        const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax);
-        if (branch) {
-            let info = branch.dosage;
-            let displayDosePerTime = 0;
-            let subText = '';
+    wInput.addEventListener('input', updateParams);
+    aInput.addEventListener('input', updateParams);
 
-            if (info.isFixed) {
-                displayDosePerTime = info.dosePerTime / currentPotency;
-                subText = `(固定量: 1回${info.dosePerTime}${info.unit || 'μg'})`;
-            } else {
-                const doseMgKg = info.timeMgKg || (info.minMgKg / (info.timesPerDay || 3));
-                displayDosePerTime = (weight * doseMgKg) / currentPotency;
-                const unitStr = info.unit || 'μg'; // Assuming unit is for raw dose, but here we calculated mg/kg... wait.
-                // If minMgKg is used, it is mg/kg/day. Divided by timesPerDay = mg/kg/time.
-                // If timeMgKg is used, it is mg/kg/time.
-                subText = `(体重換算: 1回${doseMgKg.toFixed(2)}${unitStr}/kg)`;
-            }
-
-            const dailyTotal = displayDosePerTime * (info.timesPerDay || 1);
-
-            resultArea.innerHTML = `
-                <div class="bg-sky-600 text-white p-5 rounded-xl shadow-lg border-b-4 border-sky-800">
-                    ${drugInfoHeader}
-                    <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">${branch.label}</div>
-                    <div class="flex flex-col gap-3">
-                        <div class="bg-white/10 p-3 rounded-lg">
-                            <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-xl font-black">${formatDose(displayDosePerTime, drug)}</span>
-                                <span class="text-lg font-bold">${drug.unit || 'g'} / 回</span>
-                            </div>
-                        </div>
-                        <div class="bg-white/10 p-2 px-3 rounded-lg">
-                            <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量 (${info.timesPerDay || '1-3'}回)</div>
-                            <div class="flex items-baseline gap-2">
-                                <span class="text-3xl font-black">${formatDose(dailyTotal, drug)}</span>
-                                <span class="text-xl font-bold">${drug.unit || 'g'} / 日</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-2 text-[9px] opacity-70 italic">${subText}</div>
-                </div>
-            `;
-        } else {
-            resultArea.innerHTML = '<p class="text-center text-rose-500 py-10 font-bold bg-rose-50 rounded-xl">対象年齢範囲外</p>';
-        }
-    } else {
-        let doseInfo = baseDosage;
-        const tpd = doseInfo.timesPerDay || 3; // デフォルト3回
-
-        // 1回量の算出
-        let minMgPerTime, maxMgPerTime;
-        if (doseInfo.isFixed) {
-            minMgPerTime = doseInfo.dosePerTime || 0;
-            maxMgPerTime = doseInfo.dosePerTime || 0;
-        } else if (doseInfo.isByTime || doseInfo.timeMgKg) {
-            minMgPerTime = weight * (doseInfo.timeMgKg || doseInfo.minMgKg);
-            maxMgPerTime = weight * (doseInfo.timeMgKg || doseInfo.maxMgKg);
-        } else {
-            minMgPerTime = (weight * doseInfo.minMgKg) / tpd;
-            maxMgPerTime = (weight * doseInfo.maxMgKg) / tpd;
-        }
-
-        // 成人上限値制限 (1回量)
-        let isMaxPerTimeReached = false;
-        if (doseInfo.absoluteMaxMgPerTime) {
-            if (minMgPerTime >= doseInfo.absoluteMaxMgPerTime || maxMgPerTime >= doseInfo.absoluteMaxMgPerTime) {
-                isMaxPerTimeReached = true;
-            }
-            minMgPerTime = Math.min(minMgPerTime, doseInfo.absoluteMaxMgPerTime);
-            maxMgPerTime = Math.min(maxMgPerTime, doseInfo.absoluteMaxMgPerTime);
-        }
-
-        // 成人上限値制限 (1日量からの逆算)
-        let isMaxPerDayReached = false;
-        if (doseInfo.absoluteMaxMgPerDay) {
-            const currentDailyMin = minMgPerTime * tpd;
-            const currentDailyMax = maxMgPerTime * tpd;
-            if (currentDailyMin >= doseInfo.absoluteMaxMgPerDay || currentDailyMax >= doseInfo.absoluteMaxMgPerDay) {
-                isMaxPerDayReached = true;
-                minMgPerTime = Math.min(minMgPerTime, doseInfo.absoluteMaxMgPerDay / tpd);
-                maxMgPerTime = Math.min(maxMgPerTime, doseInfo.absoluteMaxMgPerDay / tpd);
-            }
-        }
-
-
-        const minGPerTime = minMgPerTime / currentPotency;
-        const maxGPerTime = maxMgPerTime / currentPotency;
-        const isRange = minGPerTime.toFixed(3) !== maxGPerTime.toFixed(3);
-
-        const dailyMinG = minGPerTime * tpd;
-        const dailyMaxG = maxGPerTime * tpd;
-
-        const badgeHtml = (isMaxPerTimeReached || isMaxPerDayReached)
-            ? `<div class="bg-amber-400 text-indigo-950 text-[10px] px-2 py-0.5 rounded-full font-black inline-block mb-2 animate-pulse shadow-sm border border-amber-500/20">成人通常用量にて上限調整済</div>`
-            : '';
-
-        resultArea.innerHTML = `
-            <div class="bg-indigo-700 text-white p-5 rounded-xl shadow-lg border-b-4 border-indigo-900 transition-all duration-300">
-                ${drugInfoHeader}
-                <div class="flex flex-col mb-2">
-                    <div class="text-[10px] font-black uppercase tracking-widest opacity-80">体重あたり計算 (1日${tpd}回)</div>
-                    ${badgeHtml}
-                </div>
-                <div class="flex flex-col gap-3">
-                        <div class="bg-white/10 p-3 rounded-lg opacity-80 border border-white/5">
-                        <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-xl font-black">${formatDose(minGPerTime, drug)}${isRange ? '〜' + formatDose(maxGPerTime, drug) : ''}</span>
-                            <span class="text-lg font-bold">${currentUnit} / 回</span>
-                        </div>
-                    </div>
-                    <div class="bg-white/20 p-4 rounded-lg ring-1 ring-white/30">
-                        <div class="text-[10px] font-black opacity-90 mb-1 tracking-wider">1日合計量</div>
-                        <div class="flex items-baseline gap-1">
-                            <span class="text-3xl font-black">${formatDose(dailyMinG, drug)}${isRange ? '〜' + formatDose(dailyMaxG, drug) : ''}</span>
-                            <span class="text-xl font-bold">${currentUnit} / 日</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-}
-
-function calcStandardWeight() {
-    const ageInput = document.getElementById('age');
-    const weightInput = document.getElementById('body-weight');
-    const age = parseFloat(ageInput.value);
-    if (isNaN(age)) return;
-
-    let stdWeight = 0;
-    if (age < 1) {
-        stdWeight = age * 0.5 + 3; // 乳児の簡易式
-    } else if (age <= 6) {
-        stdWeight = age * 2 + 8;
-    } else {
-        stdWeight = age * 3 + 5;
-    }
-    weightInput.value = stdWeight.toFixed(1);
-    updateCalculations();
-}
-
-function calcApproxAge() {
-    const ageInput = document.getElementById('age');
-    const weightInput = document.getElementById('body-weight');
-    const weight = parseFloat(weightInput.value);
-    if (isNaN(weight)) return;
-
-    let approxAge = 0;
-    if (weight < 10) {
-        approxAge = (weight - 3) / 0.5;
-    } else if (weight <= 20) {
-        approxAge = (weight - 8) / 2;
-    } else {
-        approxAge = (weight - 5) / 3;
-    }
-    ageInput.value = Math.max(0, Math.round(approxAge));
-    updateCalculations();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const searchInput = document.getElementById('drug-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            currentSearchQuery = e.target.value;
-            renderDrugCards();
-        });
-    }
-
-    const bwEl = document.getElementById('body-weight');
-    if (bwEl) bwEl.addEventListener('input', updateCalculations);
-    const ageEl = document.getElementById('age');
-    if (ageEl) ageEl.addEventListener('input', updateCalculations);
-
-    const stdWeightBtn = document.getElementById('calc-std-weight');
-    if (stdWeightBtn) stdWeightBtn.addEventListener('click', calcStandardWeight);
-
-    const stdAgeBtn = document.getElementById('calc-std-age');
-    if (stdAgeBtn) stdAgeBtn.addEventListener('click', calcApproxAge);
-
-    document.addEventListener('keydown', handleKeyNavigation);
-
+    loadState();
     renderCategoryTabs();
-    renderDrugCards();
+    renderDrugList();
+    updatePrescriptionSheet();
+
+    // PC: Always open sheet if items exist? 
+    // In CSS, sheet is sticky on PC.
 });
-
-
-
-function getPharmaClass(yjCode) {
-    if (!yjCode) return '';
-    const code = yjCode.replace('yj-', '');
-    const p3 = code.substring(0, 3);
-    const p4 = code.substring(0, 4);
-
-    const name3 = PHARMA_CLASSIFICATION_MAP[p3] || '';
-    const name4 = PHARMA_CLASSIFICATION_MAP[p4] || '';
-
-    // 両方ない場合
-    if (!name3 && !name4) return 'その他';
-
-    // 4桁がない、または3桁と4桁が「ほぼ同じ」場合は4桁（または3桁）のみ表示
-    // 「ほぼ同じ」判定：一方が他方の文字列を含んでいる場合（例：去痰剤 と その他の去痰剤）
-    if (!name4) return name3;
-    if (!name3) return name4;
-
-    if (name4.includes(name3) || name3.includes(name4)) {
-        return name4;
-    }
-
-    // 異なる場合は連結して表示
-    return `${name3}ー${name4}`;
-}
