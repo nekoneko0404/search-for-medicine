@@ -50,7 +50,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6131008C1033",
-        "name": "ユナシン／スルタミシリン",
+        "name": "ユナシン細粒10%",
         "brandName": "ユナシン",
         "yjCode": "6131008C1033",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6131008C1033",
@@ -125,7 +125,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132005C1053",
-        "name": "ケフラール／セファクロル",
+        "name": "ケフラール細粒25%",
         "brandName": "ケフラール",
         "yjCode": "6132005C1053",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132005C1053",
@@ -143,7 +143,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132009C2023",
-        "name": "トミロン／セフテラム",
+        "name": "トミロン細粒10%",
         "brandName": "トミロン",
         "yjCode": "6132009C2023",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132009C2023",
@@ -160,7 +160,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132011R1078",
-        "name": "バナン／セフポドキシム",
+        "name": "バナンドライシロップ10%",
         "brandName": "バナン",
         "yjCode": "6132011R1078",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132011R1078",
@@ -177,7 +177,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132013C1031",
-        "name": "セフゾン／セフジニル",
+        "name": "セフゾン細粒10%",
         "brandName": "セフゾン",
         "yjCode": "6132013C1031",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132013C1031",
@@ -194,7 +194,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132015C1103",
-        "name": "メイアクト／セフジトレン",
+        "name": "メイアクト細粒10%",
         "brandName": "メイアクト",
         "yjCode": "6132015C1103",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132015C1103",
@@ -212,7 +212,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132016C1027",
-        "name": "フロモックス／セフカペン",
+        "name": "フロモックス細粒10%",
         "brandName": "フロモックス",
         "yjCode": "6132016C1027",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132016C1027",
@@ -232,7 +232,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "keflex-group",
-        "name": "Ｌ－ケフレックス／セファレキシン",
+        "name": "Ｌ－ケフレックス細粒10%",
         "brandName": "Ｌ－ケフレックス",
         "yjCode": "6132002E1034",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132002E1034",
@@ -309,7 +309,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6139001R1032",
-        "name": "ファロム／ファロペネム",
+        "name": "ファロム細粒10%",
         "brandName": "ファロム",
         "yjCode": "6139001R1032",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6139001R1032",
@@ -330,7 +330,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "orapenem-group",
-        "name": "オラペネム／テビペネム",
+        "name": "オラペネム細粒10%",
         "brandName": "オラペネム",
         "yjCode": "6139002C1026",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6139002C1026",
@@ -382,7 +382,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "clarith-group",
-        "name": "クラリス／クラリスロマイシン",
+        "name": "クラリスDS10%",
         "brandName": "クラリス",
         "yjCode": "6149003R1143",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6149003R1143",
@@ -457,7 +457,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6152005D1094",
-        "name": "ミノマイシン／ミノサイクリン",
+        "name": "ミノマイシン顆粒2%",
         "brandName": "ミノマイシン",
         "yjCode": "6152005D1094",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6152005D1094",
@@ -475,7 +475,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "ozex-group",
-        "name": "オゼックス／トスフロキサシン",
+        "name": "オゼックス細粒15%",
         "brandName": "オゼックス",
         "yjCode": "6241010C1024",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6241010C1024",
@@ -496,7 +496,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6250002D1024",
-        "name": "ゾビラックス題粒40%",
+        "name": "ゾビラックス顆粒40%",
         "brandName": "ゾビラックス",
         "yjCode": "6250002D1024",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250002D1024",
@@ -634,28 +634,28 @@ const PEDIATRIC_DRUGS = [
                 "weightMax": 10,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "10kg未満: 0.5g（1包）"
+                "label": "0.5g（1包）"
             },
             {
                 "weightMin": 10,
                 "weightMax": 20,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "10〜20kg未満: 0.5g（1包）"
+                "label": "0.5g（1包）"
             },
             {
                 "weightMin": 20,
                 "weightMax": 40,
                 "dose": 1,
                 "unit": "g",
-                "label": "20〜40kg未満: 1.0g（2包）"
+                "label": "1.0g（2包）"
             },
             {
                 "weightMin": 40,
                 "weightMax": 1000,
                 "dose": 2,
                 "unit": "g",
-                "label": "40kg以上: 2.0g（4包）"
+                "label": "2.0g（4包）"
             }
         ],
         "dosage": {
@@ -1421,14 +1421,14 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 7,
                 "dose": 1,
                 "unit": "包",
-                "label": "2〜7歳未満: 1包（LD）"
+                "label": "1包（LD）"
             },
             {
                 "ageMin": 7,
                 "ageMax": 100,
                 "dose": 2,
                 "unit": "包",
-                "label": "7歳以上: 2包（LD）"
+                "label": "2包（LD）"
             }
         ],
         "dosage": {

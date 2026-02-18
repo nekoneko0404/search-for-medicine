@@ -180,6 +180,13 @@
             min-width: 0;
         }
 
+        /* スマホ時: 処方設計を上に表示 */
+        @media (max-width: 767px) {
+            .prescription-sheet {
+                order: -1;
+            }
+        }
+
         /* Search & Filter */
         .search-area {
             margin-bottom: 1.5rem;
