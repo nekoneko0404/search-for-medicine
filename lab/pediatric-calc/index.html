@@ -52,17 +52,17 @@
 
         .input-container {
             display: grid;
-            grid-template-columns: 2fr 1fr 40px;
+            grid-template-columns: 2fr 1fr 44px;
             gap: 0.5rem;
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        @media (max-width: 480px) {
+        @media (max-width: 600px) {
             .input-container {
-                grid-template-columns: 1fr 40px;
-                gap: 0.5rem;
+                grid-template-columns: repeat(3, 1fr) 48px;
+                gap: 0.3rem;
             }
         }
 
@@ -142,8 +142,14 @@
         /* Age Inputs */
         .age-inputs {
             display: grid;
-            grid-template-columns: 1fr 1.2fr;
+            grid-template-columns: 1fr 1fr;
             gap: 0.4rem;
+        }
+
+        @media (max-width: 600px) {
+            .age-inputs {
+                grid-column: span 2;
+            }
         }
 
         /* =============================================
