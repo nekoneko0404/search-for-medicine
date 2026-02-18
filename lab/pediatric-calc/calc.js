@@ -1626,7 +1626,6 @@ function calculateDrug(drug, years, months, weight) {
             || drug.ageBranches[drug.ageBranches.length - 1];
         const branchDosage = branch.dosage;
         const times = branchDosage.timesPerDay || 3;
-        const times = branchDosage.timesPerDay || 3;
         let minMgPerDay = 0;
         let maxMgPerDay = 0;
         if (branchDosage.isByTime && branchDosage.timeMgKg) {
