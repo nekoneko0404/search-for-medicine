@@ -645,16 +645,11 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "cetirizine-group",
-        name: "ジルテック・セチリジン／セチリジン",
+        name: "ジルテック／セチリジン",
         brandName: "ジルテック",
         yjCode: "4490020R1027",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490020R1027?user=1",
         potency: 12.5,
-        hasSubOptions: true,
-        subOptions: [
-            { id: "zyrtec-ds", label: "ジルテックドライシロップ1.25%", potency: 12.5, unit: "g" },
-            { id: "cetirizine-ds", label: "セチリジン塩酸塩DS1.25%「タカタ」", potency: 12.5, unit: "g" }
-        ],
         calcType: "fixed-age",
         fixedDoses: [
             { ageMin: 2, ageMax: 7, dose: 0.2, unit: "g", label: "2-7歳未満" },
@@ -1032,6 +1027,7 @@ const PEDIATRIC_DRUGS = [
 let selectedDrugId = null;
 let selectedSubOptionId = null;
 let currentSearchQuery = '';
+let currentFocusIndex = -1;
 
 function renderDrugCards() {
     const container = document.getElementById('drug-cards-container');
@@ -1044,42 +1040,76 @@ function renderDrugCards() {
         container.innerHTML = '<div class="col-span-full py-10 text-center text-gray-400 font-bold">該当する薬剤が見つかりません</div>';
         return;
     }
-    container.innerHTML = filteredDrugs.map(d => `
-        <div class="drug-card ${selectedDrugId === d.id ? 'active' : ''}" data-id="${d.id}">
+    container.innerHTML = filteredDrugs.map((d, index) => `
+        <div class="drug-card ${selectedDrugId === d.id ? 'active' : ''} ${currentFocusIndex === index ? 'ring-2 ring-indigo-500' : ''}" data-id="${d.id}" data-index="${index}">
             <div class="potency-tag">${getPharmaClass(d.yjCode)}</div>
             <h3 class="line-clamp-2">${d.name}</h3>
             <div class="text-[7px] text-gray-400 mt-auto font-mono opacity-60">YJ: ${d.yjCode}</div>
         </div>
     `).join('');
+
+    // Ensure focused element is visible
+    if (currentFocusIndex >= 0) {
+        const focusedCard = container.querySelector(`[data-index="${currentFocusIndex}"]`);
+        if (focusedCard) {
+            focusedCard.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+        }
+    }
+
     document.querySelectorAll('.drug-card').forEach(card => {
         card.addEventListener('click', () => {
-            selectedDrugId = card.dataset.id;
-            const drug = PEDIATRIC_DRUGS.find(d => d.id === selectedDrugId);
-            if (drug.hasSubOptions) {
-                selectedSubOptionId = drug.subOptions[0].id;
-                renderSubOptions(drug);
-                document.getElementById('sub-option-area').classList.remove('hidden');
-            } else {
-                selectedSubOptionId = null;
-                document.getElementById('sub-option-area').classList.add('hidden');
-            }
-            const ageGroup = document.getElementById('age').closest('.form-group');
-            const weightGroup = document.getElementById('body-weight').closest('.form-group');
-            if (drug.calcType === 'age' || drug.calcType === 'fixed-age') {
-                ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
-                weightGroup.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-            } else {
-                weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-                ageGroup.classList.remove('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
-            }
-            document.getElementById('calc-main-area').classList.remove('hidden');
-            document.getElementById('empty-state-side').classList.add('hidden');
-            document.getElementById('initial-guide').classList.add('hidden');
-            renderDrugCards();
-            updateCalculations();
-            updateCalculations();
+            selectDrug(card.dataset.id, parseInt(card.dataset.index));
         });
     });
+}
+
+function selectDrug(id, index) {
+    selectedDrugId = id;
+    currentFocusIndex = index;
+    const drug = PEDIATRIC_DRUGS.find(d => d.id === selectedDrugId);
+    if (!drug) return;
+
+    if (drug.hasSubOptions) {
+        selectedSubOptionId = drug.subOptions[0].id;
+        renderSubOptions(drug);
+        document.getElementById('sub-option-area').classList.remove('hidden');
+    } else {
+        selectedSubOptionId = null;
+        document.getElementById('sub-option-area').classList.add('hidden');
+    }
+    const ageGroup = document.getElementById('age').closest('.form-group');
+    const weightGroup = document.getElementById('body-weight').closest('.form-group');
+    if (drug.calcType === 'age' || drug.calcType === 'fixed-age') {
+        ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+        weightGroup.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-50/30');
+    } else {
+        weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
+        ageGroup.classList.remove('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+    }
+    document.getElementById('calc-main-area').classList.remove('hidden');
+    document.getElementById('empty-state-side').classList.add('hidden');
+    document.getElementById('initial-guide').classList.add('hidden');
+    renderDrugCards();
+    updateCalculations();
+}
+
+function handleKeyNavigation(e) {
+    const query = currentSearchQuery.toLowerCase();
+    const filteredDrugs = PEDIATRIC_DRUGS.filter(d =>
+        d.name.toLowerCase().includes(query) || d.yjCode.toLowerCase().includes(query)
+    );
+
+    if (filteredDrugs.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        currentFocusIndex = (currentFocusIndex + 1) % filteredDrugs.length;
+        selectDrug(filteredDrugs[currentFocusIndex].id, currentFocusIndex);
+    } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        currentFocusIndex = (currentFocusIndex - 1 + filteredDrugs.length) % filteredDrugs.length;
+        selectDrug(filteredDrugs[currentFocusIndex].id, currentFocusIndex);
+    }
 }
 
 function renderSubOptions(drug) {
@@ -1379,6 +1409,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const stdAgeBtn = document.getElementById('calc-std-age');
     if (stdAgeBtn) stdAgeBtn.addEventListener('click', calcApproxAge);
+
+    document.addEventListener('keydown', handleKeyNavigation);
 
     renderDrugCards();
 });

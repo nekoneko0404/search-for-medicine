@@ -46,9 +46,11 @@ try {
         console.log('PASS: Tomiron refined to single spec (20%)');
     }
 
-    const valtrex = drugs.find(d => d.id === 'valaciclovir-group');
-    if (valtrex && !valtrex.hasSubOptions) {
-        console.log('PASS: Valtrex refined to single spec (Granule only)');
+    const cetirizine = drugs.find(d => d.id === 'cetirizine-group');
+    if (cetirizine && !cetirizine.hasSubOptions) {
+        console.log('PASS: Cetirizine consolidated into single entry');
+    } else {
+        console.error('FAIL: Cetirizine NOT consolidated as expected');
     }
 
     console.log('Data integrity check complete.');
