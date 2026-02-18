@@ -15,72 +15,141 @@
     <link rel="stylesheet" href="../../css/v2-shared.css">
     <link rel="stylesheet" href="../../css/v2.css">
     <style>
-        /* Phase 23: Mobile First Modern UI */
+        /* Phase 23/24: Mobile First Modern UI */
         :root {
             --header-offset: 80px;
             --fab-size: 56px;
             --sheet-height-mobile: 85vh;
-            --panel-width-pc: 400px;
+            --panel-width-pc: 450px;
             --primary-color: #4f46e5;
-            --bg-glass: rgba(255, 255, 255, 0.85);
+            --accent-color: #f59e0b;
+            --bg-glass: rgba(255, 255, 255, 0.95);
         }
 
         body {
-            background-color: #f8fafc;
+            background-color: #f1f5f9;
         }
 
-        /* Patient Info Bar (Sticky under header) */
+        /* Patient Info Bar (Enhanced visibility) */
         .patient-info-bar {
             position: sticky;
             top: var(--header-offset);
             z-index: 90;
-            background: var(--bg-glass);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid #e2e8f0;
+            background: #ffffff;
+            border-bottom: 2px solid #4f46e5;
+            /* Strong border */
             padding: 1rem 5%;
             display: flex;
+            flex-direction: column;
             gap: 1rem;
-            align-items: center;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s ease;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
-        .input-group {
+        @media (min-width: 768px) {
+            .patient-info-bar {
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                gap: 2rem;
+            }
+        }
+
+        .input-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .input-group-enhanced {
             position: relative;
             flex: 1;
-            max-width: 200px;
+            display: flex;
+            align-items: stretch;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            transition: all 0.2s;
+            overflow: hidden;
         }
 
-        .input-group input {
-            width: 100%;
-            padding: 0.6rem 0.8rem 0.6rem 2.5rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 99px;
-            font-size: 1rem;
+        .input-group-enhanced:focus-within {
+            border-color: var(--primary-color);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+        }
+
+        .input-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            color: #64748b;
+            background: #e2e8f0;
+        }
+
+        .input-group-enhanced input {
+            flex: 1;
+            border: none;
+            padding: 0.8rem 0.5rem;
+            font-size: 1.1rem;
             font-weight: 700;
             color: #1e293b;
-            background: white;
+            background: transparent;
+            min-width: 0;
+            text-align: center;
+        }
+
+        .input-group-enhanced input:focus {
+            outline: none;
+        }
+
+        .input-unit {
+            display: flex;
+            align-items: center;
+            padding-right: 1rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #64748b;
+            white-space: nowrap;
+        }
+
+        .helper-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.3);
             transition: all 0.2s;
         }
 
-        .input-group i {
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
+        .helper-btn:hover {
+            transform: scale(1.05);
         }
 
-        .input-group input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        /* Age Mode Switch */
+        .age-inputs {
+            display: flex;
+            gap: 0.2rem;
+            flex: 1;
+        }
+
+        .age-input-wrapper {
+            position: relative;
+            flex: 1;
         }
 
         /* Main Container */
         .main-container {
             padding: 1rem 5% 6rem;
-            /* Bottom padding for FAB */
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
@@ -88,18 +157,40 @@
             transition: all 0.3s;
         }
 
-        /* Search & Filter */
+        /* Search & Filter - Clean Blue Style */
         .search-area {
+            margin-bottom: 1.5rem;
+        }
+
+        .search-box {
+            position: relative;
             margin-bottom: 1rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 2.8rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .category-tabs {
             display: flex;
             gap: 0.5rem;
             overflow-x: auto;
-            padding: 0.5rem 0;
+            padding: 0.2rem 0.2rem 1rem;
             scrollbar-width: none;
-            -webkit-overflow-scrolling: touch;
         }
 
         .category-tabs::-webkit-scrollbar {
@@ -110,13 +201,14 @@
             white-space: nowrap;
             padding: 0.5rem 1rem;
             border-radius: 99px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
             background: white;
             border: 1px solid #e2e8f0;
             color: #64748b;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
         .cat-tab.active {
@@ -138,27 +230,25 @@
             border-radius: 1rem;
             padding: 1rem;
             border: 2px solid transparent;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            /* very subtle */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
-            height: 100%;
+            justify-content: space-between;
+            min-height: 100px;
         }
 
         .drug-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
         }
 
         .drug-card.selected {
             border-color: var(--primary-color);
             background: #eef2ff;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.15);
         }
 
         .drug-card .indicator {
@@ -173,35 +263,36 @@
             align-items: center;
             justify-content: center;
             color: white;
-            transition: all 0.2s;
             transform: scale(0.8);
             opacity: 0;
+            transition: all 0.2s;
         }
 
         .drug-card.selected .indicator {
-            background: var(--primary-color);
             transform: scale(1);
             opacity: 1;
+            background: var(--primary-color);
         }
 
         .drug-card h3 {
             margin: 0;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 700;
+            color: #1e293b;
             line-height: 1.4;
-            color: #0f172a;
         }
 
         .drug-card .tag {
             font-size: 0.65rem;
             color: #64748b;
             background: #f1f5f9;
-            padding: 2px 6px;
+            padding: 2px 8px;
             border-radius: 4px;
             align-self: flex-start;
+            margin-bottom: 0.5rem;
         }
 
-        /* Bottom Sheet / Panel */
+        /* Prescription Sheet */
         .sheet-overlay {
             position: fixed;
             inset: 0;
@@ -226,7 +317,7 @@
             background: white;
             z-index: 101;
             border-radius: 1.5rem 1.5rem 0 0;
-            box-shadow: 0 -10px 25px -5px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
             transform: translateY(100%);
             transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
@@ -240,7 +331,7 @@
         .sheet-handle {
             width: 40px;
             height: 4px;
-            background: #e2e8f0;
+            background: #cbd5e1;
             border-radius: 2px;
             margin: 0.75rem auto;
         }
@@ -257,6 +348,112 @@
             flex: 1;
             overflow-y: auto;
             padding: 1.5rem;
+            background: #f8fafc;
+        }
+
+        /* Rx Item Styles */
+        .rx-item {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        .rx-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .rx-title {
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .rx-remove {
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .rx-remove:hover {
+            color: #ef4444;
+        }
+
+        .rx-config {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .rx-select {
+            padding: 0.3rem 0.5rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: #f8fafc;
+            color: #334155;
+            max-width: 100%;
+        }
+
+        .rx-result-box {
+            background: #eef2ff;
+            border-radius: 8px;
+            padding: 0.75rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: bold;
+        }
+
+        .result-val {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .result-sub {
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        .rx-meta {
+            margin-top: 0.75rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #f1f5f9;
+            font-size: 0.75rem;
+            color: #64748b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pmda-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: white;
+            background: #334155;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.7rem;
         }
 
         /* FAB */
@@ -273,31 +470,14 @@
             align-items: center;
             justify-content: center;
             font-size: 1.25rem;
-            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
             cursor: pointer;
             z-index: 95;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         .fab:hover {
-            transform: scale(1.1) rotate(90deg);
-        }
-
-        .fab .count-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ef4444;
-            color: white;
-            font-size: 0.75rem;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            border: 2px solid white;
+            transform: scale(1.1);
         }
 
         .fab.hidden {
@@ -305,56 +485,24 @@
             pointer-events: none;
         }
 
-        /* Prescription Items in Sheet */
-        .rx-item {
-            border-bottom: 1px solid #f1f5f9;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .rx-item:last-child {
-            border-bottom: none;
-        }
-
-        .rx-header {
+        .fab-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: #ef4444;
+            color: white;
+            font-size: 0.7rem;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 2px solid white;
             display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 0.5rem;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
         }
 
-        .rx-title {
-            font-weight: 800;
-            color: #1e293b;
-            font-size: 1rem;
-        }
-
-        .rx-remove {
-            color: #94a3b8;
-            cursor: pointer;
-            padding: 0.25rem;
-        }
-
-        .rx-remove:hover {
-            color: #ef4444;
-        }
-
-        .rx-result {
-            background: #f8fafc;
-            border-radius: 8px;
-            padding: 0.75rem;
-            font-family: monospace;
-            font-size: 0.9rem;
-            color: #334155;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: #94a3b8;
-            padding: 2rem;
-        }
-
-        /* Desktop Layout Override */
+        /* PC Layout Override */
         @media (min-width: 1024px) {
             .main-container {
                 grid-template-columns: 1fr var(--panel-width-pc);
@@ -366,21 +514,13 @@
                 display: none;
             }
 
-            /* No overlay on PC */
-
             .prescription-sheet {
                 position: sticky;
-                /* Sticky in grid column */
-                top: calc(var(--header-offset) + 80px);
-                /* Adjust based on info bar */
-                bottom: auto;
-                left: auto;
-                right: auto;
-                height: calc(100vh - var(--header-offset) - 100px);
+                top: calc(var(--header-offset) + 100px);
+                height: calc(100vh - var(--header-offset) - 120px);
                 transform: none;
-                /* Always visible */
-                border-radius: 1.5rem;
                 border: 1px solid #e2e8f0;
+                border-radius: 1.5rem;
                 box-shadow: none;
                 z-index: 10;
             }
@@ -392,8 +532,6 @@
             .fab {
                 display: none;
             }
-
-            /* Hide FAB on PC */
         }
 
         @media (max-width: 640px) {
@@ -405,25 +543,28 @@
                 grid-template-columns: 1fr;
             }
 
-            /* List view on mobile */
             .drug-card {
                 flex-direction: row;
                 align-items: center;
+                min-height: auto;
             }
 
-            .drug-card .indicator {
-                position: relative;
-                top: auto;
-                right: auto;
-                transform: none;
-                margin-left: auto;
-                width: 20px;
-                height: 20px;
-                font-size: 10px;
+            .drug-card h3 {
+                font-size: 1rem;
             }
 
-            .drug-card.selected .indicator {
-                transform: none;
+            .rx-config {
+                flex-direction: column;
+            }
+
+            .input-container {
+                flex-direction: column;
+            }
+
+            .helper-btn {
+                width: 100%;
+                border-radius: 12px;
+                height: 36px;
             }
         }
     </style>
@@ -432,64 +573,78 @@
 <body>
     <main-header base-dir="../../" active-page=""></main-header>
 
-    <!-- Patient Info Bar -->
+    <!-- Patient Info Bar (Highlighted) -->
     <div class="patient-info-bar">
-        <div class="input-group">
-            <i class="fas fa-weight-scale"></i>
-            <input type="number" id="weight-input" placeholder="体重 (kg)" step="0.1" inputmode="decimal">
-        </div>
-        <div class="input-group">
-            <i class="fas fa-cake-candles"></i>
-            <input type="number" id="age-input" placeholder="年齢 (歳)" inputmode="numeric">
+        <div class="input-container">
+            <!-- Age Inputs -->
+            <div class="age-inputs">
+                <div class="input-group-enhanced">
+                    <div class="input-icon"><i class="fas fa-cake-candles"></i></div>
+                    <input type="number" id="age-input" placeholder="0" inputmode="numeric" min="0">
+                    <div class="input-unit">歳</div>
+                </div>
+                <div class="input-group-enhanced">
+                    <input type="number" id="month-input" placeholder="0" inputmode="numeric" min="0" max="11">
+                    <div class="input-unit">ヶ月</div>
+                </div>
+            </div>
+
+            <!-- Weight Input -->
+            <div class="input-group-enhanced">
+                <div class="input-icon"><i class="fas fa-weight-scale"></i></div>
+                <input type="number" id="weight-input" placeholder="0.0" step="0.1" inputmode="decimal">
+                <div class="input-unit">kg</div>
+            </div>
+
+            <!-- Auto Weight Button -->
+            <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力">
+                <i class="fas fa-magic"></i>
+            </button>
         </div>
     </div>
 
     <!-- Main Content -->
     <div class="main-container">
-        <!-- Left: Library -->
+        <!-- Library Area -->
         <div class="library-area">
             <div class="search-area">
-                <div class="input-group" style="max-width: 100%; margin-bottom: 1rem;">
+                <div class="search-box">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="drug-search" placeholder="薬剤名またはYJコードで検索...">
+                    <input type="text" id="drug-search" placeholder="薬剤名・YJコードで検索...">
                 </div>
-                <!-- Categories -->
-                <div class="category-tabs" id="category-tabs">
-                    <!-- Populated by JS -->
-                </div>
+                <div class="category-tabs" id="category-tabs"></div>
             </div>
 
-            <!-- Drug Grid -->
-            <div id="drug-grid" class="drug-grid">
-                <!-- Populated by JS -->
-            </div>
+            <div id="drug-grid" class="drug-grid"></div>
         </div>
 
-        <!-- Right: Prescription Sheet (Bottom Sheet on Mobile) -->
+        <!-- Prescription Sheet -->
         <div class="sheet-overlay" id="sheet-overlay"></div>
         <div class="prescription-sheet" id="prescription-sheet">
             <div class="sheet-handle"></div>
             <div class="sheet-header">
-                <h2 style="font-size: 1.1rem; font-weight: 800; margin:0;">処方設計</h2>
-                <button id="close-sheet"
-                    style="border:none; background:none; color:#64748b; font-size:1.2rem; cursor:pointer;">
+                <div style="font-weight:800; font-size:1.1rem; color:#1e293b;">
+                    <i class="fas fa-file-prescription"
+                        style="color:var(--primary-color); margin-right:0.5rem;"></i>処方設計
+                </div>
+                <button id="close-sheet" style="border:none; bg:none; font-size:1.2rem; color:#94a3b8; cursor:pointer;"
+                    onclick="closeSheet()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="sheet-content" id="sheet-content">
-                <div class="empty-state">
-                    <i class="fas fa-prescription-bottle-medical"
-                        style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
+                    <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
                     <p>薬剤を選択してください</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Mobile FAB -->
-    <div class="fab" id="fab">
+    <!-- FAB -->
+    <div class="fab hidden" id="fab">
         <i class="fas fa-calculator"></i>
-        <div class="count-badge" id="fab-badge">0</div>
+        <div class="fab-badge" id="fab-badge">0</div>
     </div>
 
     <!-- Scripts -->
