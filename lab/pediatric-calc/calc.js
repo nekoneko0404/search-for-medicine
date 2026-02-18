@@ -2079,10 +2079,52 @@ function renderCategoryTabs() {
     });
 }
 
+function normalizeText(text) {
+    if (!text) return '';
+    let t = text.trim();
+    // Full-width Alphanumeric to Half-width
+    t = t.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+    // Half-width Katakana to Full-width Katakana
+    const kanaMap = {
+        'ｶﾞ': 'ガ', 'ｷﾞ': 'ギ', 'ｸﾞ': 'グ', 'ｹﾞ': 'ゲ', 'ｺﾞ': 'ゴ',
+        'ｻﾞ': 'ザ', 'ｼﾞ': 'ジ', 'ｽﾞ': 'ズ', 'ｾﾞ': 'ゼ', 'ｿﾞ': 'ゾ',
+        'ﾀﾞ': 'ダ', 'ﾁﾞ': 'ヂ', 'ﾂﾞ': 'ヅ', 'ﾃﾞ': 'デ', 'ﾄﾞ': 'ド',
+        'ﾊﾞ': 'バ', 'ﾋﾞ': 'ビ', 'ﾌﾞ': 'ブ', 'ﾍﾞ': 'ベ', 'ﾎﾞ': 'ボ',
+        'ﾊﾟ': 'パ', 'ﾋﾟ': 'ピ', 'ﾌﾟ': 'プ', 'ﾍﾟ': 'ペ', 'ﾎﾟ': 'ポ',
+        'ｳﾞ': 'ヴ', 'ﾜﾞ': 'ヷ', 'ｦﾞ': 'ヺ',
+        'ｱ': 'ア', 'ｲ': 'イ', 'ｳ': 'ウ', 'ｴ': 'エ', 'ｵ': 'オ',
+        'ｶ': 'カ', 'ｷ': 'キ', 'ｸ': 'ク', 'ｹ': 'ケ', 'ｺ': 'コ',
+        'ｻ': 'サ', 'ｼ': 'シ', 'ｽ': 'ス', 'ｾ': 'セ', 'ｿ': 'ソ',
+        'ﾀ': 'タ', 'ﾁ': 'チ', 'ﾂ': 'ツ', 'ﾃ': 'テ', 'ﾄ': 'ト',
+        'ﾅ': 'ナ', 'ﾆ': 'ニ', 'ﾇ': 'ヌ', 'ﾈ': 'ネ', 'ﾉ': 'ノ',
+        'ﾊ': 'ハ', 'ﾋ': 'ヒ', 'ﾌ': 'フ', 'ﾍ': 'ヘ', 'ﾎ': 'ホ',
+        'ﾏ': 'マ', 'ﾐ': 'ミ', 'ﾑ': 'ム', 'ﾒ': 'メ', 'ﾓ': 'モ',
+        'ﾔ': 'ヤ', 'ﾕ': 'ユ', 'ﾖ': 'ヨ',
+        'ﾗ': 'ラ', 'ﾘ': 'リ', 'ﾙ': 'ル', 'ﾚ': 'レ', 'ﾛ': 'ロ',
+        'ﾜ': 'ワ', 'ｦ': 'ヲ', 'ﾝ': 'ン',
+        'ｧ': 'ァ', 'ｨ': 'ィ', 'ｩ': 'ゥ', 'ｪ': 'ェ', 'ｫ': 'ォ',
+        'ｯ': 'ッ', 'ｬ': 'ャ', 'ｭ': 'ュ', 'ｮ': 'ョ',
+        'ｰ': 'ー', '｡': '。', '｢': '「', '｣': '」', '､': '、', '･': '・'
+    };
+    const reg = new RegExp('(' + Object.keys(kanaMap).join('|') + ')', 'g');
+    t = t.replace(reg, function (match) {
+        return kanaMap[match];
+    });
+    // Hiragana to Katakana
+    t = t.replace(/[\u3041-\u3096]/g, function (ch) {
+        return String.fromCharCode(ch.charCodeAt(0) + 0x60);
+    });
+    return t.toLowerCase();
+}
+
 function getFilteredDrugs() {
-    const query = currentSearchQuery.toLowerCase();
+    const query = normalizeText(currentSearchQuery);
     return PEDIATRIC_DRUGS.filter(d => {
-        const matchesSearch = d.name.toLowerCase().includes(query) || d.yjCode.toLowerCase().includes(query);
+        const name = normalizeText(d.name);
+        const yj = normalizeText(d.yjCode);
+        const matchesSearch = name.includes(query) || yj.includes(query);
         const matchesCategory = currentCategory === 'all' || d.category === currentCategory;
         return matchesSearch && matchesCategory;
     });
@@ -2142,50 +2184,26 @@ document.addEventListener('DOMContentLoaded', () => {
         updateParams();
     });
 
-    document.getElementById('drug-search').addEventListener('input', (e) => {
+    const searchInput = document.getElementById('drug-search');
+    searchInput.addEventListener('input', (e) => {
         currentSearchQuery = e.target.value;
         renderDrugList();
     });
 
     loadState();
     renderCategoryTabs();
-    renderDrugList();
 
-    if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
-    else {
-        const closeBtn = document.getElementById('close-sheet');
-        if (closeBtn) {
-            closeBtn.onclick = window.clearAllDrugs;
-            closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        }
+    // Check query params for auto-search
+    const urlParams = new URLSearchParams(window.location.search);
+    const yjQuery = urlParams.get('yj');
+    if (yjQuery) {
+        currentSearchQuery = yjQuery;
+        searchInput.value = yjQuery;
+        // Auto switch to all category if searching
+        currentCategory = 'all';
+        renderCategoryTabs(); // To update active tab
     }
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-    const updateParams = () => {
-        state.params.ageYear = document.getElementById('age-input').value;
-        state.params.ageMonth = document.getElementById('month-input').value;
-        state.params.weight = document.getElementById('weight-input').value;
-        saveState();
-        updatePrescriptionSheet();
-    };
-    document.getElementById('age-input').addEventListener('input', updateParams);
-    document.getElementById('month-input').addEventListener('input', updateParams);
-    document.getElementById('weight-input').addEventListener('input', updateParams);
-
-    document.getElementById('auto-weight-btn').addEventListener('click', () => {
-        const w = getStandardWeight(document.getElementById('age-input').value, document.getElementById('month-input').value);
-        document.getElementById('weight-input').value = w;
-        updateParams();
-    });
-
-    document.getElementById('drug-search').addEventListener('input', (e) => {
-        currentSearchQuery = e.target.value;
-        renderDrugList();
-    });
-
-    loadState();
-    renderCategoryTabs();
     renderDrugList();
 
     if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
