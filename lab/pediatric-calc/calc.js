@@ -70,7 +70,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "yj-6132009C2023",
-        name: "トミロン細粒小児用20%",
+        name: "トミロン／セフテラム",
         brandName: "トミロン",
         yjCode: "6132009C2023",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132009C2023?user=1",
@@ -438,8 +438,8 @@ const PEDIATRIC_DRUGS = [
                 piSnippet: "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回最大用量は1000mgを超えないこと。"
             },
             {
-                id: "val-hsv-init",
-                label: "単純ヘルペス(初回)",
+                id: "hsv",
+                label: "単純ヘルペス",
                 dosage: {
                     timeMgKg: 25,
                     timesPerDay: 2,
@@ -447,17 +447,6 @@ const PEDIATRIC_DRUGS = [
                     note: "1回25mg/kgを1日2回。上限500mg/回。"
                 },
                 piSnippet: "通常、小児には1回25mg/kgを1日2回服用する。ただし、1回最大用量は500mgを超えないこと。"
-            },
-            {
-                id: "val-hsv-prev",
-                label: "性器ヘルペス再発抑制",
-                dosage: {
-                    timeMgKg: 25,
-                    timesPerDay: 1,
-                    absoluteMaxMgPerTime: 500,
-                    note: "1回25mg/kgを1日1回。上限500mg/回。"
-                },
-                piSnippet: "通常、小児には1回25mg/kgを1日1回服用する。ただし、1回最大用量は500mgを超えないこと。"
             }
         ],
         dosage: {
@@ -737,7 +726,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "yj-4490003R1228",
-        name: "ザジテンドライシロップ0.1%",
+        name: "ザジテン／ケトチフェン",
         yjCode: "4490003R1228",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490003R1228?user=1",
         potency: 1,
@@ -1283,7 +1272,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "keflex-group",
-        name: "Ｌ－ケフレックス小児用顆粒",
+        name: "Ｌ－ケフレックス／セファレキシン",
         brandName: "Ｌ－ケフレックス",
         yjCode: "6132002E1034",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132002E1034?user=1",
@@ -1302,7 +1291,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "ozex-group",
-        name: "オゼックス細粒小児用15%",
+        name: "オゼックス／トスフロキサシン",
         brandName: "オゼックス",
         yjCode: "6241010C1024",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6241010C1024?user=1",
@@ -1322,7 +1311,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "orapenem-group",
-        name: "オラペネム／テビペネム　ピボキシル",
+        name: "オラペネム／テビペネム",
         brandName: "オラペネム",
         yjCode: "6139002C1026",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6139002C1026?user=1",
