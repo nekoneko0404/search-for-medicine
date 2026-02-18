@@ -139,7 +139,13 @@
         .age-inputs {
             display: flex;
             gap: 0.2rem;
+            flex: 0 0 45%;
+            /* Fixed width ratio for age inputs */
+        }
+
+        .input-container>.input-group-enhanced {
             flex: 1;
+            /* Allow weight input to grow */
         }
 
         .age-input-wrapper {
