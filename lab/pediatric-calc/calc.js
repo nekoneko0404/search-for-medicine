@@ -784,7 +784,8 @@ const PEDIATRIC_DRUGS = [
             "isByTime": true,
             "timeMgKg": 10,
             "timesPerDay": 3,
-            "note": "通常1回10mg/kgを3回。"
+            "absoluteMaxMgPerDay": 1500,
+            "note": "通常1回10mg/kgを3回。1日最大1500mg(成人量)。"
         },
         "piSnippet": "通常、小児には1回10mg/kgを1日3回経口投与する。なお、年齢、症状により適宜増減する。",
         "category": "respiratory"
@@ -836,8 +837,8 @@ const PEDIATRIC_DRUGS = [
             "isByTime": true,
             "timeMgKg": 0.33,
             "timesPerDay": 3,
-            "absoluteMaxMgPerDay": 90,
-            "note": "通常1日1mg/kgを3回(目安)。1歳未満5-20mg, 1-3歳10-25mg, 3-6歳15-40mg。"
+            "absoluteMaxMgPerDay": 120,
+            "note": "通常1日1mg/kgを3回(目安)。上限120mg(成人量)。"
         },
         "piSnippet": "通常、小児には1日1歳未満5〜20mg、1歳以上3歳未満10〜25mg、3歳以上6歳未満15〜40mgを3回に分割経口投与する。なお、年齢、症状により適宜増減する。",
         "category": "respiratory"
@@ -1232,21 +1233,24 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 1,
                 "dose": 2.5,
                 "unit": "mL",
-                "label": "6ヶ月以上1歳未満 (1日1回)"
+                "label": "6ヶ月以上1歳未満 (1日1回)",
+                "display": "1回2.5mL (1日2.5mL)"
             },
             {
                 "ageMin": 1,
                 "ageMax": 7,
                 "dose": 2.5,
                 "unit": "mL",
-                "label": "1歳以上7歳未満 (1日2回)"
+                "label": "1歳以上7歳未満 (1日2回)",
+                "display": "1回2.5mL (1日5mL)"
             },
             {
                 "ageMin": 7,
                 "ageMax": 15,
                 "dose": 5,
                 "unit": "mL",
-                "label": "7歳以上15歳未満 (1日2回)"
+                "label": "7歳以上15歳未満 (1日2回)",
+                "display": "1回5mL (1日10mL)"
             }
         ],
         "piSnippetSource": "6ヶ月以上1歳未満:1回2.5mL(1日1回)。1歳以上7歳未満:1回2.5mL(1日2回)。7歳以上15歳未満:1回5mL(1日2回)。",
@@ -1258,7 +1262,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-1139010R1020",
-        "name": "イーケプラ／レベチラセタム",
+        "name": "イーケプラ／レベチラセタム 50%",
         "yjCode": "1139010R1020",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/1139010R1020",
         "potency": 500,
