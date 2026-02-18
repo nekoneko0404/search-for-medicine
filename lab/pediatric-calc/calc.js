@@ -496,24 +496,11 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6250002D1024",
-        "name": "ゾビラックス／アシクロビル 200mg",
+        "name": "ゾビラックス題粒40%",
         "brandName": "ゾビラックス",
         "yjCode": "6250002D1024",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250002D1024",
         "potency": 400,
-        "hasSubOptions": true,
-        "subOptions": [
-            {
-                "id": "acv-200",
-                "label": "200mg錢",
-                "potency": 400
-            },
-            {
-                "id": "acv-400",
-                "label": "400mg錢",
-                "potency": 800
-            }
-        ],
         "diseases": [
             {
                 "id": "chickenpox",
@@ -548,7 +535,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6250019D1020",
-        "name": "バルトレックス／バラシクロビル",
+        "name": "バルトレックス顆粒50%",
         "brandName": "バルトレックス",
         "yjCode": "6250019D1020",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250019D1020",
@@ -647,28 +634,28 @@ const PEDIATRIC_DRUGS = [
                 "weightMax": 10,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "10kg未満: 10mg (0.5g)"
+                "label": "10kg未満: 0.5g（1包）"
             },
             {
                 "weightMin": 10,
                 "weightMax": 20,
                 "dose": 0.5,
                 "unit": "g",
-                "label": "10〜20kg未満: 10mg (0.5g)"
+                "label": "10〜20kg未満: 0.5g（1包）"
             },
             {
                 "weightMin": 20,
                 "weightMax": 40,
                 "dose": 1,
                 "unit": "g",
-                "label": "20〜40kg未満: 20mg (1.0g)"
+                "label": "20〜40kg未満: 1.0g（2包）"
             },
             {
                 "weightMin": 40,
                 "weightMax": 1000,
                 "dose": 2,
                 "unit": "g",
-                "label": "40kg以上: 40mg (2.0g)"
+                "label": "40kg以上: 2.0g（4包）"
             }
         ],
         "dosage": {
@@ -772,7 +759,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-2239001Q1166",
-        "name": "ムコソルバン／アンブロキソール",
+        "name": "ムコソルバンドライシロップ1.5%",
         "brandName": "ムコソルバン",
         "yjCode": "2239001Q1166",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2239001Q1166",
@@ -1061,7 +1048,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4490023R2027",
-        "name": "フェキソフェナジン (旧アレグラ)",
+        "name": "フェキソフェナジンDS5% (旧アレグラ)",
         "brandName": "フェキソフェナジン",
         "yjCode": "4490023R2035",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490023R2035",
@@ -1090,6 +1077,10 @@ const PEDIATRIC_DRUGS = [
                 "label": "12歳以上 (1回60mg)"
             }
         ],
+        "dosage": {
+            "timesPerDay": 2,
+            "note": "6ヶ月-2歳未満:1回15mg(0.3g)、2-12歳:1回30mg(0.6g)、2回。"
+        },
         "piSnippet": "通常、小児には1回量として（6ヶ月-2歳:15mg、2-12歳:30mg、12歳以上:60mg）を1日2回経口投与する。",
         "category": "allergy"
     },
@@ -1152,7 +1143,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4490027R1029",
-        "name": "クラリチン／ロラタジン",
+        "name": "クラリチンDS1%",
         "brandName": "クラリチン",
         "yjCode": "4490027R1029",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4490027R1029",
@@ -1175,6 +1166,10 @@ const PEDIATRIC_DRUGS = [
                 "label": "7歳以上"
             }
         ],
+        "dosage": {
+            "timesPerDay": 1,
+            "note": "3-7歳未満:1回0.5g、7歳以上:1回1.0gを1日1回。"
+        },
         "piSnippet": "3歳以上7歳未満：1回0.5gを1日1回。7歳以上：1回1.0gを1日1回。",
         "category": "allergy"
     },
@@ -1426,14 +1421,14 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 7,
                 "dose": 1,
                 "unit": "包",
-                "label": "2〜7歳未満: 初回1包 (LD)"
+                "label": "2〜7歳未満: 1包（LD）"
             },
             {
                 "ageMin": 7,
                 "ageMax": 100,
                 "dose": 2,
                 "unit": "包",
-                "label": "7歳以上: 初回2包 (LD)"
+                "label": "7歳以上: 2包（LD）"
             }
         ],
         "dosage": {
