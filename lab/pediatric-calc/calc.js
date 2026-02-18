@@ -1614,7 +1614,7 @@ function calculateDrug(drug, years, months, weight) {
         unit = sub.unit || unit;
         subOptionLabel = sub.label;
         if (sub.dosage) {
-            const parentNote = dosageConfig.note;
+            const parentNote = dosageConfig ? dosageConfig.note : undefined;
             dosageConfig = sub.dosage;
             if (!dosageConfig.note) dosageConfig.note = parentNote;
         }
@@ -1626,7 +1626,7 @@ function calculateDrug(drug, years, months, weight) {
         if (!opts.diseaseId) opts.diseaseId = drug.diseases[0].id;
         const dis = drug.diseases.find(d => d.id === opts.diseaseId);
         if (dis && dis.dosage) {
-            const parentNote = dosageConfig.note;
+            const parentNote = dosageConfig ? dosageConfig.note : undefined;
             dosageConfig = dis.dosage;
             if (!dosageConfig.note) dosageConfig.note = parentNote;
             diseaseLabel = dis.label;
