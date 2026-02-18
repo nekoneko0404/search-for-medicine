@@ -351,11 +351,11 @@ const PEDIATRIC_DRUGS = [
         piSnippet: "通常、小児には1回20mg/kgを1日4回服用する。疾患により1回量上限（200mg/800mg）が異なります。"
     },
     {
-        id: "valaciclovir-group",
+        id: "yj-6250019D1020",
         name: "バルトレックス／バラシクロビル",
         brandName: "バルトレックス",
-        yjCode: "6250003C1023",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250003C1023?user=1",
+        yjCode: "6250019D1020",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250019D1020?user=1",
         potency: 500,
         diseases: [
             {
@@ -1004,8 +1004,8 @@ const PEDIATRIC_DRUGS = [
         id: "zofluza-group",
         name: "ゾフルーザ顆粒2%",
         brandName: "ゾフルーザ",
-        yjCode: "6250025R1020",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250025R1020?user=1",
+        yjCode: "6250047D1021",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/6250047D1021?user=1",
         potency: 10, // 20mg/g -> 2% -> 1g = 20mg. DS/Powder usually base on mg/g. 10mg/cap equivalent? Wait. 1g=20mg.
         unit: "g",
         calcType: "weight-step",
@@ -1139,8 +1139,8 @@ const PEDIATRIC_DRUGS = [
         id: "movicol-group",
         name: "モビコールHD／LD",
         brandName: "モビコール",
-        yjCode: "2359005B1021",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2359005B1021?user=1",
+        yjCode: "2359110B1037",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/2359110B1037?user=1",
         potency: 1,
         unit: "包",
         calcType: "fixed-age",
@@ -1159,8 +1159,8 @@ const PEDIATRIC_DRUGS = [
         id: "transamin-group",
         name: "トランサミン散50%",
         brandName: "トランサミン",
-        yjCode: "3327002B2039",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/3327002B2039?user=1",
+        yjCode: "3327002B1027",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/3327002B1027?user=1",
         potency: 500,
         dosage: {
             minMgKg: 30,
@@ -1175,8 +1175,8 @@ const PEDIATRIC_DRUGS = [
         id: "melatobel-group",
         name: "メラトベル顆粒0.2%小児用",
         brandName: "メラトベル",
-        yjCode: "1190013D1020",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/1190013D1020?user=1",
+        yjCode: "1190028D1026",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/01/1190028D1026?user=1",
         potency: 2,
         calcType: "fixed-age",
         fixedDoses: [
