@@ -1,3 +1,5 @@
+import { PHARMA_CLASSIFICATION_MAP } from './pharma_classification.js';
+
 const PEDIATRIC_DRUGS = [
     {
         id: "amoxicillin-group",
@@ -121,7 +123,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "yj-6132016C1027",
-        name: "フロモックス／フロモキセフ",
+        name: "フロモックス／セフカペン",
         brandName: "フロモックス",
         yjCode: "6132016C1027",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132016C1027?user=1",
@@ -1175,9 +1177,7 @@ const PEDIATRIC_DRUGS = [
     }
 ];
 
-// ※ 実際の実装では上記のリストが75種類以上展開されますが、
-// 引用メッセージの可読性のため主要な構造を示すのみに留めています。
-// JavaScriptコードの後半部分は変更ありません。
+
 
 let selectedDrugId = null;
 let selectedSubOptionId = null;
@@ -1243,23 +1243,38 @@ function selectDrug(id, index) {
         document.getElementById('disease-area').classList.add('hidden');
     }
 
-    const ageGroup = document.getElementById('age').closest('.form-group');
-    const weightGroup = document.getElementById('body-weight').closest('.form-group');
-    if (drug.calcType === 'age' || drug.calcType === 'fixed-age') {
-        ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
-        weightGroup.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-    } else if (drug.calcType === 'age-weight-switch') {
-        ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
-        weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-    } else {
-        weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
-        ageGroup.classList.remove('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+    const ageEl = document.getElementById('age');
+    const weightEl = document.getElementById('body-weight');
+    const ageGroup = ageEl ? ageEl.closest('.form-group') : null;
+    const weightGroup = weightEl ? weightEl.closest('.form-group') : null;
+
+    if (ageGroup && weightGroup) {
+        if (drug.calcType === 'age' || drug.calcType === 'fixed-age') {
+            ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+            weightGroup.classList.remove('ring-2', 'ring-blue-400', 'bg-blue-50/30');
+        } else if (drug.calcType === 'age-weight-switch') {
+            ageGroup.classList.add('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+            weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
+        } else {
+            weightGroup.classList.add('ring-2', 'ring-blue-400', 'bg-blue-50/30');
+            ageGroup.classList.remove('ring-2', 'ring-indigo-400', 'bg-indigo-50/30');
+        }
     }
-    document.getElementById('calc-main-area').classList.remove('hidden');
-    document.getElementById('empty-state-side').classList.add('hidden');
-    document.getElementById('initial-guide').classList.add('hidden');
+
+    const mainArea = document.getElementById('calc-main-area');
+    const emptyState = document.getElementById('empty-state-side');
+    const initialGuide = document.getElementById('initial-guide');
+
+    if (mainArea) mainArea.classList.remove('hidden');
+    if (emptyState) emptyState.classList.add('hidden');
+    if (initialGuide) initialGuide.classList.add('hidden');
+
     renderDrugCards();
-    updateCalculations();
+    try {
+        updateCalculations();
+    } catch (err) {
+        console.error("Calculation Error:", err);
+    }
 }
 
 function handleKeyNavigation(e) {
@@ -1613,7 +1628,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-import { PHARMA_CLASSIFICATION_MAP } from './pharma_classification.js';
 
 function getPharmaClass(yjCode) {
     if (!yjCode) return '';
