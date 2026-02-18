@@ -911,9 +911,9 @@ const PEDIATRIC_DRUGS = [
                 "label": "6歳以上: 固定量 (1回25μg)",
                 "dosage": {
                     "isFixed": true,
+                    "dosePerTimeMg": 0.025,
                     "dosePerTime": 0.5,
                     "unit": "g",
-                    "timesPerDay": 2,
                     "timesPerDay": 2
                 }
             }
@@ -1711,9 +1711,16 @@ function calculateDrug(drug, years, months, weight) {
 
         // Check for fixed dose in branch
         if (branchDosage.isFixed) {
+            let detailStr = '';
+            if (branchDosage.dosePerTimeMg && potency) {
+                const amount = Math.round((branchDosage.dosePerTimeMg / potency) * 100) / 100;
+                detailStr = `${amount}${branchDosage.unit || unit}`;
+            } else {
+                detailStr = `${branchDosage.dosePerTime}${branchDosage.unit || unit}`;
+            }
             return {
                 result: branch.label,
-                detail: `${branchDosage.dosePerTime}${branchDosage.unit || unit}`,
+                detail: detailStr,
                 isFixed: true,
                 times: times,
                 unit: branchDosage.unit || unit,
