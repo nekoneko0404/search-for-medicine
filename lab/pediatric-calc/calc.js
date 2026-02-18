@@ -874,13 +874,19 @@ const PEDIATRIC_DRUGS = [
                 "id": "meptin-0005",
                 "label": "メプチンドライシロップ0.005%",
                 "potency": 0.05,
-                "unit": "g"
+                "unit": "g",
+                "dosage": {
+                    "note": "【0.005%】通常1回1.25μg/kg(DSとして0.025g/kg)を1日2回。"
+                }
             },
             {
                 "id": "procaterol-001",
                 "label": "プロカテロール塩酸塩DS0.01%「タカタ」",
                 "potency": 0.1,
-                "unit": "g"
+                "unit": "g",
+                "dosage": {
+                    "note": "【0.01%】通常1回1.25μg/kg(DSとして0.0125g/kg)を1日2回。"
+                }
             }
         ],
         "piSnippetSource": "通常、小児には1回体重1kgあたり1.25μgを1日2回経口投与。6歳以上は1回25μgを1日2回。",
@@ -908,7 +914,7 @@ const PEDIATRIC_DRUGS = [
                     "dosePerTime": 0.5,
                     "unit": "g",
                     "timesPerDay": 2,
-                    "note": "通常1回25μg(DSとして0.5g)を1日2回。"
+                    "timesPerDay": 2
                 }
             }
         ],
@@ -1234,7 +1240,7 @@ const PEDIATRIC_DRUGS = [
                 "dose": 2.5,
                 "unit": "mL",
                 "label": "6ヶ月以上1歳未満 (1日1回)",
-                "display": "1回2.5mL (1日2.5mL)"
+                "times": 1
             },
             {
                 "ageMin": 1,
@@ -1242,7 +1248,7 @@ const PEDIATRIC_DRUGS = [
                 "dose": 2.5,
                 "unit": "mL",
                 "label": "1歳以上7歳未満 (1日2回)",
-                "display": "1回2.5mL (1日5mL)"
+                "times": 2
             },
             {
                 "ageMin": 7,
@@ -1250,7 +1256,7 @@ const PEDIATRIC_DRUGS = [
                 "dose": 5,
                 "unit": "mL",
                 "label": "7歳以上15歳未満 (1日2回)",
-                "display": "1回5mL (1日10mL)"
+                "times": 2
             }
         ],
         "piSnippetSource": "6ヶ月以上1歳未満:1回2.5mL(1日1回)。1歳以上7歳未満:1回2.5mL(1日2回)。7歳以上15歳未満:1回5mL(1日2回)。",
@@ -1607,7 +1613,11 @@ function calculateDrug(drug, years, months, weight) {
         potency = sub.potency || potency;
         unit = sub.unit || unit;
         subOptionLabel = sub.label;
-        if (sub.dosage) dosageConfig = sub.dosage;
+        if (sub.dosage) {
+            const parentNote = dosageConfig.note;
+            dosageConfig = sub.dosage;
+            if (!dosageConfig.note) dosageConfig.note = parentNote;
+        }
         if (sub.piSnippet) drug.tempPiSnippet = sub.piSnippet; // Override snippet
     }
 
@@ -1616,7 +1626,9 @@ function calculateDrug(drug, years, months, weight) {
         if (!opts.diseaseId) opts.diseaseId = drug.diseases[0].id;
         const dis = drug.diseases.find(d => d.id === opts.diseaseId);
         if (dis && dis.dosage) {
+            const parentNote = dosageConfig.note;
             dosageConfig = dis.dosage;
+            if (!dosageConfig.note) dosageConfig.note = parentNote;
             diseaseLabel = dis.label;
             if (dis.piSnippet) drug.tempPiSnippet = dis.piSnippet; // Override snippet
         }
@@ -1629,7 +1641,28 @@ function calculateDrug(drug, years, months, weight) {
             let display = fixed.display || `${fixed.dose}${fixed.unit}`;
             // If isPerKg
             if (fixed.isPerKg && !fixed.display) display += "/kg";
-            return { result: fixed.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
+
+            // If fixed dose has times, calculate total daily dose for display
+            let totalStr = '', timeStr = '';
+            let times = fixed.times || (dosageConfig ? dosageConfig.timesPerDay : 0);
+            if (times && fixed.dose) {
+                const total = fixed.dose * times;
+                totalStr = `${total}`;
+                timeStr = `${fixed.dose}`;
+            }
+
+            return {
+                result: fixed.label,
+                detail: display,
+                isFixed: true,
+                note: dosageConfig ? dosageConfig.note : '',
+                totalRange: totalStr,
+                perTimeRange: timeStr,
+                times: times,
+                unit: fixed.unit || unit,
+                piUrl: drug.piUrl,
+                piSnippet: drug.piSnippet
+            };
         }
         return { error: '該当年齢の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
     }
@@ -1884,7 +1917,7 @@ function updatePrescriptionSheet() {
         let resultMain = '';
         if (calc.error) {
             resultMain = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> ${calc.error}</div>`;
-        } else if (calc.isFixed) {
+        } else if (calc.isFixed && !calc.totalRange) {
             resultMain = `
                 <div class="result-row">
                     <span class="result-label">固定用量</span>
