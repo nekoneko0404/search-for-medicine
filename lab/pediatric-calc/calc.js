@@ -365,14 +365,20 @@ const PEDIATRIC_DRUGS = [
                 piSnippet: "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回最大用量は1000mgを超えないこと。"
             },
             {
-                id: "val-hsv",
+                id: "val-hsv-init",
+                label: "単純ヘルペス(初回)",
+                dosage: { isByTime: false, minMgKg: 0, maxMgKg: 0, absoluteMaxMgPerTime: 500, absoluteMaxMgPerDay: 1000, timesPerDay: 2 },
+                piSnippet: "通常、体重40kg以上の小児には1回500mgを1日2回服用する。"
+            },
+            {
+                id: "val-hsv-prev",
                 label: "性器ヘルペス再発抑制",
                 dosage: { isByTime: false, minMgKg: 0, maxMgKg: 0, absoluteMaxMgPerDay: 500, timesPerDay: 1 },
                 piSnippet: "通常、体重40kg以上の小児には1回500mgを1日1回服用する。"
             }
         ],
         dosage: {
-            note: "通常1回25mg/kgを1日3回。上限1000mg/回。性器ヘルペス再発抑制(40kg以上)は1日500mgを1回。"
+            note: "通常1回25mg/kgを1日3回。上限1000mg/回。40kg以上の単純ヘルペスは1回500mgを1日2回。"
         },
         piSnippet: "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回量として1000mgを超えないこと。"
     },
@@ -683,6 +689,7 @@ const PEDIATRIC_DRUGS = [
         ],
         piSnippetSource: "2歳以上7歳未満：1回0.2gを1日2回。7歳以上15歳未満：1回0.4gを1日2回。",
         dosage: {
+            timesPerDay: 2,
             note: "2-7歳未満:1回0.2g、7-15歳未満:1回0.4gを1日2回。"
         },
         piSnippet: "通常、2歳以上7歳未満：1回0.2g、7歳以上15歳未満：1回0.4gを1日2回。"
@@ -717,13 +724,14 @@ const PEDIATRIC_DRUGS = [
         ],
         piSnippetSource: "通常、7歳以上の小児には1回5mg(1g)、2歳以上7歳未満の小児には1回2.5mg(0.5g)を1日2回、朝及び就寝前に経口投与する。",
         dosage: {
+            timesPerDay: 2,
             note: "2〜7歳未満:1回0.5g、7歳以上:1回1gを1日2回。"
         },
         piSnippet: "通常、2〜7歳未満：1回2.5mg(0.5g)、7歳以上：1回5mg(1g)を朝・就寝前の1日2回服用する。"
     },
     {
         id: "montelukast-group",
-        name: "キプレス／モンテルカスト (シングレア中止)",
+        name: "キプレス／モンテルカスト",
         brandName: "キプレス",
         yjCode: "4490026C1021",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/4490026C1021?user=1",
@@ -1018,7 +1026,7 @@ const PEDIATRIC_DRUGS = [
         name: "イナビル吸入粉末剤20mg",
         brandName: "イナビル",
         yjCode: "6250022G1022",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250022G1022?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/6250022G1022_1_01?user=1",
         potency: 1, // Unit per container
         unit: "容器",
         calcType: "fixed-age",
@@ -1037,7 +1045,7 @@ const PEDIATRIC_DRUGS = [
         name: "リレンザカプセル5mg (吸入用)",
         brandName: "リレンザ",
         yjCode: "6250019G1022",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6250019G1022?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/6250019G1022_1_01?user=1",
         potency: 5,
         unit: "ブリスター",
         dosage: {
@@ -1054,8 +1062,8 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "keflex-group",
-        name: "ケフレックス／セファレキシン",
-        brandName: "ケフレックス",
+        name: "Ｌ－ケフレックス／セファレキシン",
+        brandName: "Ｌ－ケフレックス",
         yjCode: "6132001B1028",
         piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6132001B1028?user=1",
         potency: 100,
@@ -1065,10 +1073,11 @@ const PEDIATRIC_DRUGS = [
             maxMgKg: 50,
             absoluteMaxMgKg: 100,
             timesPerDay: 4,
-            absoluteMaxMgPerDay: 4000,
-            note: "通常1日25〜50mg/kgを4回。最大100mg/kg。成人最大4g/日。"
+            absoluteMaxMgPerTime: 250,
+            absoluteMaxMgPerDay: 1000,
+            note: "通常1日25〜50mg/kgを4回。最大100mg/kg。成人通常1回250mg(1日1g)。"
         },
-        piSnippet: "通常、小児には1日25〜50mg(力価)/kgを4回に分割し服用する。なお、年齢、体重、症状により適宜増減するが、重症などの場合には1日100mg(力価)/kgまで増量できる。"
+        piSnippet: "通常、小児には1日25〜50mg(力価)/kgを4回に分割し服用する。なお、年齢、体重、症状により適宜増減するが、重症などの場合には1日100mg(力価)/kgまで増量できる。成人通常1回250mg(力価)を1日4回。"
     },
     {
         id: "ozex-group",
@@ -1092,30 +1101,30 @@ const PEDIATRIC_DRUGS = [
     },
     {
         id: "orapenem-group",
-        name: "オラペネム／ファロペネム",
+        name: "オラペネム／テビペネム　ピボキシル",
         brandName: "オラペネム",
-        yjCode: "6139001R2020",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/6139001R2020?user=1",
+        yjCode: "6139002C1026",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/6139002C1026_1?user=1",
         potency: 100,
-        piSnippetSource: "通常1回5mg/kgを3回。最大1回10mg/kg。年齢、体重、症状により適宜増減する。",
+        piSnippetSource: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。",
         dosage: {
-            minMgKg: 15,
-            maxMgKg: 30,
+            minMgKg: 8,
+            maxMgKg: 12,
             isByTime: true,
-            timeMgKg: 5,
-            timesPerDay: 3,
-            absoluteMaxMgPerTime: 300,
-            absoluteMaxMgPerDay: 900,
-            note: "通常1回5mg/kgを3回。最大1回10mg/kg。上限900mg(300mg×3)/日。"
+            timeMgKg: 4,
+            timesPerDay: 2,
+            absoluteMaxMgPerTime: 250,
+            absoluteMaxMgPerDay: 500,
+            note: "通常1回4mg/kgを1日2回。必要に応じて1回6mg/kgまで。成人最大250mg/回。"
         },
-        piSnippet: "通常1回5mg(力価)/kgを1日3回経口投与する。なお、年齢、体重、症状により適宜増減するが、増量は1回10mg(力価)/kgまでとする。"
+        piSnippet: "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。"
     },
     {
         id: "magnesium-oxide-group",
         name: "酸化マグネシウム",
         brandName: "酸化マグネシウム",
         yjCode: "2344002B1032",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2344002B1032?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/2344002B1032_1_10?user=1",
         potency: 1000,
         dosage: {
             minMgKg: 30,
@@ -1131,7 +1140,7 @@ const PEDIATRIC_DRUGS = [
         name: "モビコールHD／LD",
         brandName: "モビコール",
         yjCode: "2359005B1021",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/2359005B1021?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/2359005B1021_1_06?user=1",
         potency: 1,
         unit: "包",
         calcType: "fixed-age",
@@ -1151,7 +1160,7 @@ const PEDIATRIC_DRUGS = [
         name: "トランサミン散50%",
         brandName: "トランサミン",
         yjCode: "3327002B2039",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/3327002B2039?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/3327002B2039_2_10?user=1",
         potency: 500,
         dosage: {
             minMgKg: 30,
@@ -1167,7 +1176,7 @@ const PEDIATRIC_DRUGS = [
         name: "メラトベル顆粒0.2%小児用",
         brandName: "メラトベル",
         yjCode: "1190013D1020",
-        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdSearch/02/1190013D1020?user=1",
+        piUrl: "https://www.pmda.go.jp/PmdaSearch/rdDetail/iyaku/1190013D1020_1_04?user=1",
         potency: 2,
         calcType: "fixed-age",
         fixedDoses: [
@@ -1357,6 +1366,12 @@ function updateCalculations() {
     const currentBrand = drug.brandName || drug.name.split('／')[0];
     const currentPotency = selectedSubOption?.potency || drug.potency || 100;
     const currentUnit = selectedSubOption?.unit || drug.unit || 'g';
+    const specText = currentPotency < 1000 ? ` (${currentPotency / 10}%)` : '';
+    const drugInfoHeader = `
+        <div class="flex justify-between items-center mb-4 border-b border-white/20 pb-2">
+            <div class="text-xl font-black">${drug.name}${specText}</div>
+        </div>
+    `;
 
     const baseDosage = selectedDisease?.dosage || selectedSubOption?.dosage || drug.dosage;
     const minMgKg = baseDosage?.minMgKg || 0;
@@ -1403,7 +1418,7 @@ function updateCalculations() {
         ` : '';
         resultArea.innerHTML = `
             <div class="bg-indigo-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-indigo-800">
-                <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}${drug.potency < 1000 ? ' (' + (drug.potency / 10) + '%)' : ''}</div>
+                ${drugInfoHeader}
                 <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">Augsberger式算出 (${age}歳 | 成人量の${(factor * 100).toFixed(0)}%)</div>
                 ${augLabel}
                 <div class="flex items-baseline gap-2">
@@ -1418,10 +1433,24 @@ function updateCalculations() {
         if (found) {
             resultArea.innerHTML = `
                 <div class="bg-purple-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-purple-800">
+                    ${drugInfoHeader}
                     <div class="text-xs font-bold uppercase tracking-widest mb-1 opacity-80">年齢別基準量 (${found.label})</div>
-                    <div class="flex items-baseline gap-2">
-                        <span class="text-3xl font-black">${formatDose(found.dose, drug)}</span>
-                        <span class="text-xl font-bold">${found.unit} / 回</span>
+                    <div class="flex flex-col gap-3">
+                        <div class="bg-white/10 p-3 rounded-lg">
+                            <div class="text-[9px] font-bold opacity-80 mb-1">1回量</div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-3xl font-black">${formatDose(found.dose, drug)}</span>
+                                <span class="text-xl font-bold">${found.unit} / 回</span>
+                            </div>
+                        </div>
+                        ${(drug.dosage?.timesPerDay > 1 || found.label.includes('回')) ? `
+                        <div class="bg-white/10 p-2 px-3 rounded-lg border border-white/5">
+                            <div class="text-[9px] font-bold opacity-80 mb-1">1日合計量</div>
+                            <div class="flex items-baseline gap-2">
+                                <span class="text-xl font-black">${formatDose(found.dose * (drug.dosage?.timesPerDay || 2), drug)}</span>
+                                <span class="text-lg font-bold">${found.unit} / 日</span>
+                            </div>
+                        </div>` : ''}
                     </div>
                 </div>
             `;
@@ -1434,8 +1463,8 @@ function updateCalculations() {
             const dailyDose = found.isPerKg ? (weight * found.dose) : found.dose;
             const tpd = drug.dosage?.timesPerDay || 2;
             resultArea.innerHTML = `
-                <div class="bg-emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
-                    <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}${drug.potency < 1000 ? ' (' + (drug.potency / 10) + '%)' : ''}</div>
+                <div class="emerald-600 text-white p-6 rounded-xl shadow-lg border-b-4 border-emerald-800">
+                    ${drugInfoHeader}
                     <div class="text-xs font-bold uppercase tracking-widest mb-3 opacity-80">体重区分: ${found.label}</div>
                     <div class="flex flex-col gap-4">
                         <div class="bg-white/10 p-3 rounded-lg opacity-80 border border-white/5">
@@ -1477,7 +1506,7 @@ function updateCalculations() {
 
             resultArea.innerHTML = `
                 <div class="bg-sky-600 text-white p-5 rounded-xl shadow-lg border-b-4 border-sky-800">
-                    <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}${drug.potency < 1000 ? ' (' + (drug.potency / 10) + '%)' : ''}</div>
+                    ${drugInfoHeader}
                     <div class="text-[10px] font-black uppercase tracking-widest mb-1 opacity-80">${branch.label}</div>
                     <div class="flex flex-col gap-3">
                         <div class="bg-white/10 p-3 rounded-lg">
@@ -1554,7 +1583,7 @@ function updateCalculations() {
 
         resultArea.innerHTML = `
             <div class="bg-indigo-700 text-white p-5 rounded-xl shadow-lg border-b-4 border-indigo-900 transition-all duration-300">
-                <div class="text-xl font-black mb-4 border-b border-white/20 pb-2">${drug.name}${drug.hasSubOptions ? ' (' + (selectedSubOption?.label.split(' ')[0] || '') + ')' : (drug.potency < 1000 ? ' (' + (drug.potency / 10) + '%)' : '')}</div>
+                ${drugInfoHeader}
                 <div class="flex flex-col mb-2">
                     <div class="text-[10px] font-black uppercase tracking-widest opacity-80">体重あたり計算 (1日${tpd}回)</div>
                     ${badgeHtml}
