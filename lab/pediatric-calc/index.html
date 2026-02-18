@@ -151,12 +151,12 @@
            >= 768px: 2 columns side by side
            ============================================= */
         .main-container {
-            padding: 1rem 2% 2rem;
-            max-width: 1400px;
+            padding: 1rem 3% 2rem;
+            max-width: 1440px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         @media (min-width: 768px) {
@@ -164,7 +164,7 @@
                 grid-template-columns: 1fr 380px;
                 align-items: start;
                 gap: 1.5rem;
-                padding: 1.5rem 2% 2rem;
+                padding: 1.5rem 4% 2rem;
             }
         }
 
@@ -239,13 +239,19 @@
         /* Drug Grid */
         .drug-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 0.75rem;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1rem;
         }
 
         @media (max-width: 767px) {
+            .main-container {
+                padding: 0.75rem;
+                gap: 1rem;
+            }
+
             .drug-grid {
                 grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
             }
         }
 

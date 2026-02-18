@@ -1408,28 +1408,21 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 7,
                 "dose": 1,
                 "unit": "包",
-                "label": "2〜7歳未満: 初回1包(LD) / 0.5包(HD)"
+                "label": "2〜7歳未満: 初回1包 (LD)"
             },
             {
                 "ageMin": 7,
-                "ageMax": 12,
-                "dose": 2,
-                "unit": "包",
-                "label": "7〜12歳未満: 初回2包(LD) / 1包(HD)"
-            },
-            {
-                "ageMin": 12,
                 "ageMax": 100,
                 "dose": 2,
                 "unit": "包",
-                "label": "12歳以上: 初回2包(LD) / 1包(HD)"
+                "label": "7歳以上: 初回2包 (LD)"
             }
         ],
         "dosage": {
             "timesPerDay": 1,
-            "note": "初回量：2-7歳未満1包(LD)、7歳以上2包(LD)。HDはLDの2倍量(LD2包=HD1包)。"
+            "note": "初回量：2-7歳未満1包(LD)、7歳以上2包(LD)。HDはLD2包分に相当します。"
         },
-        "piSnippet": "2歳以上7歳未満：初回1包(LD)。7歳以上：初回2包(LD)。HD製剤はLDの2倍量。",
+        "piSnippet": "2歳以上7歳未満：初回1包(LD)。7歳以上：初回2包(LD)。HD製剤はLDの2倍量（LD2包=HD1包）。",
         "category": "gi"
     },
     {
@@ -1568,9 +1561,44 @@ function calculateDrug(drug, years, months, weight) {
     // Fixed Age / Weight Step
     if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
         const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
-        if (fixed) return { result: fixed.label, detail: fixed.dose + (fixed.unit || ''), isFixed: true, note: dosageConfig.note };
-        // Fallback for out of range?
+        if (fixed) return { result: fixed.label, detail: (fixed.unit === '包' ? fixed.dose + fixed.unit : fixed.dose + (fixed.unit || '')), isFixed: true, note: dosageConfig.note };
         return { error: '該当年齢の用量設定なし' };
+    }
+    else if (drug.calcType === 'age') {
+        const adultDose = drug.adultDose || 0;
+        let resultDose = 0;
+        let method = '';
+        const times = dosageConfig.timesPerDay || 3;
+
+        if (drug.isKampo) {
+            // Standard Kampo age ratios
+            if (age < 1) resultDose = adultDose * 0.25;
+            else if (age < 4) resultDose = adultDose * 0.33;
+            else if (age < 7) resultDose = adultDose * 0.5;
+            else if (age < 15) resultDose = adultDose * 0.66;
+            else resultDose = adultDose;
+            method = ' (年齢区分による段階計算)';
+        } else {
+            // Augsberger formula: adult * (4*age + 20) / 100
+            resultDose = adultDose * (4 * age + 20) / 100;
+            method = ' (Augsberger式による算出)';
+        }
+
+        const round = (n) => Math.round(n * 100) / 100;
+        const total = round(resultDose);
+        const perTime = round(total / times);
+
+        return {
+            totalRange: `${total}`,
+            perTimeRange: `${perTime}`,
+            times: times,
+            unit: unit,
+            disease: diseaseLabel,
+            subOption: subOptionLabel,
+            note: (dosageConfig.note || '') + method,
+            piUrl: drug.piUrl,
+            piSnippet: drug.piSnippet
+        };
     }
     else if (drug.calcType === 'weight-step' && drug.weightSteps) {
         let step = drug.weightSteps.find(s => weight >= s.weightMin && weight < s.weightMax);
