@@ -345,34 +345,7 @@
             transform: translateY(0);
         }
 
-        @media (min-width: 850px) {
-            .prescription-sheet {
-                top: var(--header-offset);
-                bottom: 0;
-                left: auto;
-                right: 0;
-                width: var(--panel-width-pc);
-                height: calc(100vh - var(--header-offset));
-                border-radius: 0;
-                border-left: 1px solid #e2e8f0;
-                transform: translateX(100%);
-                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
-            }
 
-            .prescription-sheet.active {
-                transform: translateX(0);
-                translate: 0;
-                /* Clear any legacy translate */
-            }
-        }
-
-        /* Fixed: Prevent mobile active from overriding PC transform */
-        @media (min-width: 1024px) {
-            .prescription-sheet.active {
-                transform: none !important;
-                transform: translateX(0) !important;
-            }
-        }
 
         .sheet-handle {
             width: 40px;
@@ -548,27 +521,40 @@
             font-weight: bold;
         }
 
-        /* PC Layout Override */
+        /* PC Layout: Sidebar mode */
         @media (min-width: 1024px) {
             .main-container {
-                grid-template-columns: 1fr var(--panel-width-pc);
-                gap: 2rem;
+                /* No grid columns here - sidebar is fixed, not in flow */
+                padding-right: 470px;
+                /* Reserve space for fixed sidebar */
                 padding-bottom: 2rem;
             }
 
+            .main-container.has-sheet {
+                padding-right: 470px;
+            }
+
             .sheet-overlay {
-                display: none;
+                display: none !important;
             }
 
             .prescription-sheet {
-                position: sticky;
-                top: calc(var(--header-offset) + 100px);
-                height: calc(100vh - var(--header-offset) - 120px);
-                transform: none;
-                border: 1px solid #e2e8f0;
-                border-radius: 1.5rem;
-                box-shadow: none;
-                z-index: 10;
+                position: fixed !important;
+                top: var(--header-offset);
+                bottom: 0;
+                left: auto;
+                right: 0;
+                width: var(--panel-width-pc);
+                height: calc(100vh - var(--header-offset));
+                border-radius: 0;
+                border-left: 1px solid #e2e8f0;
+                box-shadow: -5px 0 15px rgba(0, 0, 0, 0.05);
+                transform: translateX(100%);
+                z-index: 200;
+            }
+
+            .prescription-sheet.active {
+                transform: translateX(0) !important;
             }
 
             .sheet-handle {
@@ -599,16 +585,6 @@
 
             .rx-config {
                 flex-direction: column;
-            }
-
-            .input-container {
-                flex-direction: column;
-            }
-
-            .helper-btn {
-                width: 100%;
-                border-radius: 12px;
-                height: 36px;
             }
         }
     </style>
