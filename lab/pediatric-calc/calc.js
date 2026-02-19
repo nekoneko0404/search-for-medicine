@@ -164,9 +164,9 @@ const PEDIATRIC_DRUGS = [
             "maxMgKg": 120,
             "timesPerDay": 3,
             "absoluteMaxMgPerDay": 3000,
-            "note": "通常1日40〜120mg/kgを3回。1日最大3g(3000mg)。"
+            "note": "通常1日40〜120mg/kgを3回。1日最大3000mg。"
         },
-        "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3g(3000mg)。",
+        "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3000mg。",
         "category": "abx"
     },
     {
@@ -1618,7 +1618,7 @@ const PEDIATRIC_DRUGS = [
             "note": "通常1日3〜6mg/kg(0.15〜0.3mL/kg)を3回。最大15mL/日。"
         },
         "piSnippet": "通常、1日3〜6mg/kg(シロップ0.15〜0.3mL/kg)を3回に分けて服用する。最大15mL。",
-        "category": "other"
+        "category": "others"
     },
     {
         "id": "transamin-group",
