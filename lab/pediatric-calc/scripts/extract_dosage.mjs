@@ -26,7 +26,7 @@ if (!fs.existsSync(outputDir)) {
 const DIRECTORY_KEYWORD_MAPPING = {
     "6135001R2110": ["ホスミシンドライシロップ"],
     "6250022G1022": ["イナビル吸入粉末剤"],
-    "6149003R1143": ["クラリスドライシロップ", "小児用"],
+    "6149003R1143": ["クラリスドライシロップ"],
     "6149002R1033": ["エリスロシンドライシロップW"],
     "6250017G1029": ["リレンザ"],
     "6250047F1022": ["ゾフルーザ顆粒", "ゾフルーザ"],
@@ -37,7 +37,26 @@ const DIRECTORY_KEYWORD_MAPPING = {
     "3222012Q1030": ["インクレミンシロップ"],
     "6131001C1210": ["サワシリン細粒"],
     "6250019D1020": ["バルトレックス顆粒５０％"],
-    "6250021R1024": ["タミフルドライシロップ３％"]
+    "6250021R1024": ["タミフルドライシロップ３％"],
+    "6131008C1033": ["ユナシン細粒"],
+    "6149004C1030": ["ジスロマック細粒"],
+    "2251001D1061": ["テオドール顆粒"],
+    "4419005B1045": ["ペリアクチン散"],
+    "4490003R1228": ["ザジテンドライシロップ"],
+    "4490023R2035": ["フェキソフェナジン塩酸塩ＤＳ"],
+    "4490025D1022": ["アレロック顆粒"],
+    "4490026C1021": ["キプレス細粒"],
+    "1141007C1075": ["カロナール細粒"],
+    "2239001Q1166": ["小児用ムコソルバンＤＳ"],
+    "4490017R1033": ["オノンドライシロップ１０％"],
+    "2259002R1061": ["ホクナリンドライシロップ０．１％小児用"],
+    "2239001R1072": ["小児用ムコソルバンＤＳ１．５％"],
+    "2223001B1210": ["メジコン散１０％"],
+    "6241010C1024": ["オゼックス細粒小児用１５％"],
+    "6152005D1094": ["ミノマイシン顆粒２％"],
+    "6132002E1034": ["Ｌ-ケフレックス小児用顆粒"],
+    "6132013C1031": ["セフゾン細粒小児用１０％"],
+    "6132005C1053": ["ケフラール細粒小児用１００ｍｇ"]
 };
 
 function loadDrugsFromCalcJs() {
@@ -139,9 +158,24 @@ function parseDoseAdmin(xmlContent, code) {
 
     // Extract Brand Name
     let brandNameSource = '';
-    const brandNameEl = $('ApprovalBrandName Lang, BrandName Lang').first();
-    if (brandNameEl.length > 0) {
-        brandNameSource = brandNameEl.text().trim();
+
+    // Match by YJ code if possible
+    $('DetailBrandName').each((i, el) => {
+        const yjCodes = $(el).find('YJCode').map((j, c) => $(c).text().trim()).get();
+        if (yjCodes.includes(code)) {
+            const name = $(el).find('ApprovalBrandName Lang').first().text().trim();
+            if (name) {
+                brandNameSource = name;
+                return false;
+            }
+        }
+    });
+
+    if (!brandNameSource) {
+        const brandNameEl = $('ApprovalBrandName Lang, BrandName Lang').first();
+        if (brandNameEl.length > 0) {
+            brandNameSource = brandNameEl.text().trim();
+        }
     }
 
     function processTable(tblBlock) {
