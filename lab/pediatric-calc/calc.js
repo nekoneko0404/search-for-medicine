@@ -153,6 +153,23 @@ const PEDIATRIC_DRUGS = [
         "category": "antibiotics"
     },
     {
+        "id": "yj-6132003C1041",
+        "name": "ホスミシン／ホスホマイシン 20%顆粒",
+        "yjCode": "6132003C1041",
+        "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132003C1041",
+        "potency": 200,
+        "piSnippetSource": "小児：1回10〜30mg/kg(力価)を3〜4回。年齢、症状に応じ適宜増減。",
+        "dosage": {
+            "minMgKg": 40,
+            "maxMgKg": 120,
+            "timesPerDay": 3,
+            "absoluteMaxMgPerDay": 3000,
+            "note": "通常1日40〜120mg/kgを3回。1日最大3g(3000mg)。"
+        },
+        "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3g(3000mg)。",
+        "category": "abx"
+    },
+    {
         "id": "yj-6132005C1053",
         "name": "ケフラール／セファクロル 10%",
         "brandName": "ケフラール",
@@ -1541,13 +1558,13 @@ const PEDIATRIC_DRUGS = [
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2344009C1039",
         "potency": 830,
         "dosage": {
-            "minMgKg": 30,
-            "maxMgKg": 30,
+            "minMgKg": 25,
+            "maxMgKg": 50,
             "timesPerDay": 3,
-            "absoluteMaxMgPerDay": 2000,
-            "note": "通常1日30mg/kgを3回に分けて食後。成人最大1日2g。"
+            "absoluteMaxMgPerDay": 1000,
+            "note": "通常1日25-50mg/kg(力価)を3〜4回。成人最大1000mg/日。"
         },
-        "piSnippet": "通常、小児には1日量0.03g/kg(30mg/kg)を3回に分割して食後服用する。成人最大1日2g。",
+        "piSnippet": "通常、1日25-50mg/kg(力価)を3〜4回に分けて服用する。成人最大1000mg/日。",
         "category": "gi"
     },
     {
@@ -1590,17 +1607,18 @@ const PEDIATRIC_DRUGS = [
         "brandName": "インクレミン",
         "yjCode": "3222012Q1030",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/3222012Q1030",
-        "potency": 6,
+        "potency": 20,
         "unit": "mL",
-        "piSnippetSource": "通常、小児には1日0.1〜0.3mL/kg（鉄として2〜6mg/kg）を3回に分けて食後に経口投与する。",
+        "piSnippetSource": "鉄として、小児には1回1〜2mg（シロップ剤として0.05〜0.1mL）/kgを1日3回、食後に経口投与する。年齢、症状により適宜増減する。",
         "dosage": {
-            "minMgKg": 2,
+            "minMgKg": 3,
             "maxMgKg": 6,
             "timesPerDay": 3,
-            "note": "1日0.1〜0.3mL/kg(鉄として2〜6mg/kg)を3回。食後。"
+            "absoluteMaxMgPerDay": 300,
+            "note": "通常1日3〜6mg/kg(0.15〜0.3mL/kg)を3回。最大15mL/日。"
         },
-        "piSnippet": "通常、小児には1日鉄として2〜6mg/kg（本剤0.1〜0.3mL/kg）を3回に分けて服用する。",
-        "category": "others"
+        "piSnippet": "通常、1日3〜6mg/kg(シロップ0.15〜0.3mL/kg)を3回に分けて服用する。最大15mL。",
+        "category": "other"
     },
     {
         "id": "transamin-group",
@@ -1610,13 +1628,13 @@ const PEDIATRIC_DRUGS = [
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/3327002B1027",
         "potency": 500,
         "dosage": {
-            "minMgKg": 30,
-            "maxMgKg": 50,
+            "minMgKg": 25,
+            "maxMgKg": 100,
             "timesPerDay": 3,
             "absoluteMaxMgPerDay": 2000,
-            "note": "通常1日30〜50mg/kgを3〜4回。成人最大1日2g。"
+            "note": "通常1日25〜100mg/kgを3〜4回。1日最大2000mg。"
         },
-        "piSnippet": "通常、小児にはトラネキサム酸として1日30〜50mg/kgを3〜4回に分割して服用する。",
+        "piSnippet": "通常、1日20〜50mg/kgを3〜4回に分けて服用する。1日最大2000mg。",
         "category": "respiratory"
     },
     {
@@ -1739,134 +1757,99 @@ function calculateDrug(drug, years, months, weight) {
                 if (dis.piSnippet) drug.tempPiSnippet = dis.piSnippet; // Override snippet
             }
         }
+    }
 
-        // Fixed Age / Weight Step
-        if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
-            const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
-            if (fixed) {
-                let display = fixed.display || `${fixed.dose}${fixed.unit}`;
-                // If isPerKg
-                if (fixed.isPerKg && !fixed.display) display += "/kg";
+    // Fixed Age / Weight Step
+    if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
+        const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
+        if (fixed) {
+            let display = fixed.display || `${fixed.dose}${fixed.unit}`;
+            // If isPerKg
+            if (fixed.isPerKg && !fixed.display) display += "/kg";
 
-                // If fixed dose has times, calculate total daily dose for display
-                let totalStr = '', timeStr = '';
-                let times = fixed.times || (dosageConfig ? dosageConfig.timesPerDay : 0);
-                if (times > 0 && fixed.dose) {
-                    const total = fixed.dose * times;
-                    totalStr = `${total}`;
-                    timeStr = `${fixed.dose}`;
-                }
-
-                return {
-                    result: fixed.label,
-                    detail: display,
-                    isFixed: true,
-                    isSingleDose: dosageConfig ? dosageConfig.isSingleDose : false,
-                    note: dosageConfig ? dosageConfig.note : '',
-                    totalRange: totalStr,
-                    perTimeRange: timeStr,
-                    times: times,
-                    unit: fixed.unit || unit,
-                    piUrl: drug.piUrl,
-                    piSnippet: drug.tempPiSnippet || drug.piSnippet
-                };
+            // If fixed dose has times, calculate total daily dose for display
+            let totalStr = '', timeStr = '';
+            let times = fixed.times || (dosageConfig ? dosageConfig.timesPerDay : 0);
+            if (times > 0 && fixed.dose) {
+                const total = fixed.dose * times;
+                totalStr = `${total}`;
+                timeStr = `${fixed.dose}`;
             }
-            return { error: '該当年齢の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
-        }
-        else if (drug.calcType === 'age') {
-            const adultDose = drug.adultDose || 0;
-            let resultDose = 0;
-            let method = '';
-            const times = dosageConfig.timesPerDay || 3;
-
-            if (drug.isKampo) {
-                // Standard Kampo age ratios
-                if (age < 1) resultDose = adultDose * 0.25;
-                else if (age < 4) resultDose = adultDose * 0.33;
-                else if (age < 7) resultDose = adultDose * 0.5;
-                else if (age < 15) resultDose = adultDose * 0.66;
-                else resultDose = adultDose;
-                method = ' (年齢区分による段階計算)';
-            } else {
-                // Augsberger formula: adult * (4*age + 20) / 100
-                resultDose = adultDose * (4 * age + 20) / 100;
-                method = ' (Augsberger式による算出)';
-            }
-
-            const round = (n) => Math.round(n * 100) / 100;
-            const total = round(resultDose);
-            const perTime = round(total / times);
 
             return {
-                totalRange: `${total}`,
-                perTimeRange: `${perTime}`,
+                result: fixed.label,
+                detail: display,
+                isFixed: true,
+                isSingleDose: dosageConfig ? dosageConfig.isSingleDose : false,
+                note: dosageConfig ? dosageConfig.note : '',
+                totalRange: totalStr,
+                perTimeRange: timeStr,
                 times: times,
-                unit: unit,
-                disease: diseaseLabel,
-                subOption: subOptionLabel,
-                note: (dosageConfig.note || '') + method,
+                unit: fixed.unit || unit,
                 piUrl: drug.piUrl,
                 piSnippet: drug.tempPiSnippet || drug.piSnippet
             };
         }
-        else if (drug.calcType === 'age-weight-switch' && drug.ageBranches) {
-            // Find the appropriate age branch
-            const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax)
-                || drug.ageBranches[drug.ageBranches.length - 1];
-            const branchDosage = branch.dosage;
-            const times = (dosageConfig && dosageConfig.timesPerDay) || branchDosage.timesPerDay || 3;
+        return { error: '該当年齢の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
+    }
+    else if (drug.calcType === 'age') {
+        const adultDose = drug.adultDose || 0;
+        let resultDose = 0;
+        let method = '';
+        const times = dosageConfig.timesPerDay || 3;
 
-            // Check for fixed dose in branch
-            if (branchDosage.isFixed) {
-                let detailStr = '';
-                if (branchDosage.dosePerTimeMg && potency) {
-                    const amount = Math.round((branchDosage.dosePerTimeMg / potency) * 100) / 100;
-                    detailStr = `${amount}${branchDosage.unit || unit}`;
-                } else {
-                    detailStr = `${branchDosage.dosePerTime}${branchDosage.unit || unit}`;
-                }
-                return {
-                    result: branch.label,
-                    detail: detailStr,
-                    isFixed: true,
-                    times: times,
-                    unit: branchDosage.unit || unit,
-                    disease: branch.label,
-                    subOption: subOptionLabel,
-                    note: branchDosage.note,
-                    piUrl: drug.piUrl,
-                    piSnippet: drug.tempPiSnippet || drug.piSnippet
-                };
-            }
+        if (drug.isKampo) {
+            // Standard Kampo age ratios
+            if (age < 1) resultDose = adultDose * 0.25;
+            else if (age < 4) resultDose = adultDose * 0.33;
+            else if (age < 7) resultDose = adultDose * 0.5;
+            else if (age < 15) resultDose = adultDose * 0.66;
+            else resultDose = adultDose;
+            method = ' (年齢区分による段階計算)';
+        } else {
+            // Augsberger formula: adult * (4*age + 20) / 100
+            resultDose = adultDose * (4 * age + 20) / 100;
+            method = ' (Augsberger式による算出)';
+        }
 
-            let minMgPerDay = 0;
-            let maxMgPerDay = 0;
-            if (branchDosage.isByTime && branchDosage.timeMgKg) {
-                minMgPerDay = branchDosage.timeMgKg * times * weight;
-                maxMgPerDay = minMgPerDay;
+        const round = (n) => Math.round(n * 100) / 100;
+        const total = round(resultDose);
+        const perTime = round(total / times);
+
+        return {
+            totalRange: `${total}`,
+            perTimeRange: `${perTime}`,
+            times: times,
+            unit: unit,
+            disease: diseaseLabel,
+            subOption: subOptionLabel,
+            note: (dosageConfig.note || '') + method,
+            piUrl: drug.piUrl,
+            piSnippet: drug.tempPiSnippet || drug.piSnippet
+        };
+    }
+    else if (drug.calcType === 'age-weight-switch' && drug.ageBranches) {
+        // Find the appropriate age branch
+        const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax)
+            || drug.ageBranches[drug.ageBranches.length - 1];
+        const branchDosage = branch.dosage;
+        const times = (dosageConfig && dosageConfig.timesPerDay) || branchDosage.timesPerDay || 3;
+
+        // Check for fixed dose in branch
+        if (branchDosage.isFixed) {
+            let detailStr = '';
+            if (branchDosage.dosePerTimeMg && potency) {
+                const amount = Math.round((branchDosage.dosePerTimeMg / potency) * 100) / 100;
+                detailStr = `${amount}${branchDosage.unit || unit}`;
             } else {
-                minMgPerDay = (branchDosage.minMgKg || 0) * weight;
-                maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
+                detailStr = `${branchDosage.dosePerTime}${branchDosage.unit || unit}`;
             }
-            const roundMg = (n) => Math.round(n * 10000) / 10000;
-            const roundProduct = (n) => Math.round(n * 1000) / 1000;
-            let dayMin = roundMg(minMgPerDay);
-            let dayMax = roundMg(maxMgPerDay);
-            if (branchDosage.absoluteMaxMgPerDay) {
-                if (dayMin > branchDosage.absoluteMaxMgPerDay) dayMin = branchDosage.absoluteMaxMgPerDay;
-                if (dayMax > branchDosage.absoluteMaxMgPerDay) dayMax = branchDosage.absoluteMaxMgPerDay;
-            }
-            const totalMin = roundProduct(dayMin / potency);
-            const totalMax = roundProduct(dayMax / potency);
-            const timeMin = roundProduct(totalMin / times);
-            const timeMax = roundProduct(totalMax / times);
-            const totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
-            const timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
             return {
-                totalRange: totalStr,
-                perTimeRange: timeStr,
+                result: branch.label,
+                detail: detailStr,
+                isFixed: true,
                 times: times,
-                unit: unit,
+                unit: branchDosage.unit || unit,
                 disease: branch.label,
                 subOption: subOptionLabel,
                 note: branchDosage.note,
@@ -1874,62 +1857,86 @@ function calculateDrug(drug, years, months, weight) {
                 piSnippet: drug.tempPiSnippet || drug.piSnippet
             };
         }
-        else if (drug.calcType === 'weight-step' && drug.weightSteps) {
-            let step = drug.weightSteps.find(s => weight >= s.weightMin && weight < s.weightMax);
-            if (!step) {
-                const last = drug.weightSteps[drug.weightSteps.length - 1];
-                if (weight >= last.weightMax) step = last;
+
+        let minMgPerDay = 0;
+        let maxMgPerDay = 0;
+        if (branchDosage.isByTime && branchDosage.timeMgKg) {
+            minMgPerDay = branchDosage.timeMgKg * times * weight;
+            maxMgPerDay = minMgPerDay;
+        } else {
+            minMgPerDay = (branchDosage.minMgKg || 0) * weight;
+            maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
+        }
+        const roundMg = (n) => Math.round(n * 10000) / 10000;
+        const roundProduct = (n) => Math.round(n * 1000) / 1000;
+        let dayMin = roundMg(minMgPerDay);
+        let dayMax = roundMg(maxMgPerDay);
+        if (branchDosage.absoluteMaxMgPerDay) {
+            if (dayMin > branchDosage.absoluteMaxMgPerDay) dayMin = branchDosage.absoluteMaxMgPerDay;
+            if (dayMax > branchDosage.absoluteMaxMgPerDay) dayMax = branchDosage.absoluteMaxMgPerDay;
+        }
+        const totalMin = roundProduct(dayMin / potency);
+        const totalMax = roundProduct(dayMax / potency);
+        const timeMin = roundProduct(totalMin / times);
+        const timeMax = roundProduct(totalMax / times);
+        const totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
+        const timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
+        return {
+            totalRange: totalStr,
+            perTimeRange: timeStr,
+            times: times,
+            unit: unit,
+            disease: branch.label,
+            subOption: subOptionLabel,
+            note: branchDosage.note,
+            piUrl: drug.piUrl,
+            piSnippet: drug.tempPiSnippet || drug.piSnippet
+        };
+    }
+    else if (drug.calcType === 'weight-step' && drug.weightSteps) {
+        let step = drug.weightSteps.find(s => weight >= s.weightMin && weight < s.weightMax);
+        if (!step) {
+            const last = drug.weightSteps[drug.weightSteps.length - 1];
+            if (weight >= last.weightMax) step = last;
+        }
+        if (step) {
+            let display = step.display || `${step.dose}${step.unit}`;
+            // If isPerKg
+            if (step.isPerKg && !step.display) display += "/kg";
+
+            // Support Daily/PerTime split if timesPerDay is set (e.g. Clavamox)
+            let totalStr = '', timeStr = '';
+            const times = (dosageConfig && dosageConfig.timesPerDay) || 1;
+            const isSingleDose = dosageConfig && dosageConfig.isSingleDose;
+
+            // NEW Check: Is it Per Kg (Zithromac < 15kg) OR (Fixed Dose with times > 1)
+            let total = 0;
+            let shouldCalculate = false;
+
+            if (step.isPerKg) {
+                total = step.dose * weight;
+                shouldCalculate = true;
+            } else if (times > 1 && step.dose && !isSingleDose) {
+                total = step.dose;
+                shouldCalculate = true;
             }
-            if (step) {
-                let display = step.display || `${step.dose}${step.unit}`;
-                // If isPerKg
-                if (step.isPerKg && !step.display) display += "/kg";
 
-                // Support Daily/PerTime split if timesPerDay is set (e.g. Clavamox)
-                let totalStr = '', timeStr = '';
-                const times = (dosageConfig && dosageConfig.timesPerDay) || 1;
-                const isSingleDose = dosageConfig && dosageConfig.isSingleDose;
+            if (shouldCalculate) {
+                const roundProduct = (n) => Math.round(n * 1000) / 1000;
+                total = roundProduct(total);
 
-                // NEW Check: Is it Per Kg (Zithromac < 15kg) OR (Fixed Dose with times > 1)
-                let total = 0;
-                let shouldCalculate = false;
-
-                if (step.isPerKg) {
-                    total = step.dose * weight;
-                    shouldCalculate = true;
-                } else if (times > 1 && step.dose && !isSingleDose) {
-                    total = step.dose;
-                    shouldCalculate = true;
-                }
-
-                if (shouldCalculate) {
-                    const roundProduct = (n) => Math.round(n * 1000) / 1000;
-                    total = roundProduct(total);
-
-                    const perTime = roundProduct(total / times);
-                    totalStr = `${total}`;
-                    timeStr = `${perTime}`;
-
-                    return {
-                        result: step.label,
-                        detail: display,
-                        totalRange: totalStr,
-                        perTimeRange: timeStr,
-                        times: times,
-                        unit: step.unit || unit,
-                        isFixed: !step.isPerKg, // If calculated per kg, treat as standard calc result
-                        isSingleDose: isSingleDose,
-                        hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
-                        note: dosageConfig ? dosageConfig.note : '',
-                        piUrl: drug.piUrl,
-                        piSnippet: drug.tempPiSnippet || drug.piSnippet
-                    };
-                }
+                const perTime = roundProduct(total / times);
+                totalStr = `${total}`;
+                timeStr = `${perTime}`;
 
                 return {
                     result: step.label,
                     detail: display,
-                    isFixed: true,
+                    totalRange: totalStr,
+                    perTimeRange: timeStr,
+                    times: times,
+                    unit: step.unit || unit,
+                    isFixed: !step.isPerKg, // If calculated per kg, treat as standard calc result
                     isSingleDose: isSingleDose,
                     hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                     note: dosageConfig ? dosageConfig.note : '',
@@ -1937,166 +1944,178 @@ function calculateDrug(drug, years, months, weight) {
                     piSnippet: drug.tempPiSnippet || drug.piSnippet
                 };
             }
-            return { error: '該当体重の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
+
+            return {
+                result: step.label,
+                detail: display,
+                isFixed: true,
+                isSingleDose: isSingleDose,
+                hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
+                note: dosageConfig ? dosageConfig.note : '',
+                piUrl: drug.piUrl,
+                piSnippet: drug.tempPiSnippet || drug.piSnippet
+            };
         }
-
-        // Standard Calc
-        let minMg = 0, maxMg = 0, mgPerDayMin = 0, mgPerDayMax = 0;
-        const times = dosageConfig.timesPerDay || 3;
-
-        if (dosageConfig.isByTime) {
-            // Support Range for Time dose (e.g. Calonal 10-15mg/kg)
-            let tMin = dosageConfig.timeMgKg;
-            let tMax = dosageConfig.timeMgKg;
-
-            // Explicit range overrides single value
-            if (dosageConfig.minTimeMgKg) tMin = dosageConfig.minTimeMgKg;
-            if (dosageConfig.maxTimeMgKg) tMax = dosageConfig.maxTimeMgKg;
-
-            if ((tMin === undefined || tMin === null) && (tMax === undefined || tMax === null)) {
-                // Fallback if data is missing (should not happen if audited)
-                tMin = tMax = 0;
-            } else {
-                if (tMin === undefined) tMin = tMax;
-                if (tMax === undefined) tMax = tMin;
-            }
-
-            mgPerDayMin = tMin * times * weight;
-            mgPerDayMax = tMax * times * weight;
-
-            // Apply Time Max (per-dose cap)
-            if (dosageConfig.absoluteMaxMgPerTime) {
-                const absMaxPerDay = dosageConfig.absoluteMaxMgPerTime * times;
-                if (mgPerDayMin > absMaxPerDay) mgPerDayMin = absMaxPerDay;
-                if (mgPerDayMax > absMaxPerDay) mgPerDayMax = absMaxPerDay;
-            }
-
-            // Fixed dose per time (e.g. Relenza: dosePerTime in mg)
-            if (dosageConfig.dosePerTime && !dosageConfig.timeMgKg) {
-                mgPerDayMin = dosageConfig.dosePerTime * times;
-                mgPerDayMax = dosageConfig.dosePerTime * times;
-            }
-        } else {
-            // Daily dose base
-            minMg = (dosageConfig.minMgKg || 0) * weight;
-            maxMg = (dosageConfig.maxMgKg || 0) * weight;
-
-            mgPerDayMin = minMg;
-            mgPerDayMax = maxMg;
-        }
-
-        // Apply Day Max
-        if (dosageConfig.absoluteMaxMgPerDay) {
-            if (mgPerDayMin > dosageConfig.absoluteMaxMgPerDay) mgPerDayMin = dosageConfig.absoluteMaxMgPerDay;
-            if (mgPerDayMax > dosageConfig.absoluteMaxMgPerDay) mgPerDayMax = dosageConfig.absoluteMaxMgPerDay;
-        }
-
-        // Convert to Product Amount
-        const roundProduct = (n) => Math.round(n * 10000) / 10000; // Using high precision for intermediate calculation
-        const roundDisplay = (n) => Math.round(n * 1000) / 1000; // 3 places for display
-
-        let totalMin = roundProduct(mgPerDayMin / potency);
-        let totalMax = roundProduct(mgPerDayMax / potency);
-
-        let timeMin = roundDisplay(totalMin / times);
-        let timeMax = roundDisplay(totalMax / times);
-
-        totalMin = roundDisplay(totalMin);
-        totalMax = roundDisplay(totalMax);
-
-        // If max < min due to caps, clamp
-        if (totalMax < totalMin) totalMax = totalMin;
-        if (timeMax < timeMin) timeMax = timeMin;
-
-        let totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
-        let timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
-
-        return {
-            totalRange: totalStr,
-            perTimeRange: timeStr,
-            times: times,
-            unit: unit,
-            disease: diseaseLabel,
-            subOption: subOptionLabel,
-            note: dosageConfig.note,
-            piUrl: drug.piUrl,
-            piSnippet: drug.tempPiSnippet || drug.piSnippet
-        };
+        return { error: '該当体重の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
     }
 
-    // Logic for Clearing
-    window.clearAllDrugs = () => {
-        state.selectedDrugIds.clear();
-        state.drugOptions = {};
-        saveState();
-        renderDrugList();
-        updatePrescriptionSheet();
+    // Standard Calc
+    let minMg = 0, maxMg = 0, mgPerDayMin = 0, mgPerDayMax = 0;
+    const times = dosageConfig.timesPerDay || 3;
+
+    if (dosageConfig.isByTime) {
+        // Support Range for Time dose (e.g. Calonal 10-15mg/kg)
+        let tMin = dosageConfig.timeMgKg;
+        let tMax = dosageConfig.timeMgKg;
+
+        // Explicit range overrides single value
+        if (dosageConfig.minTimeMgKg) tMin = dosageConfig.minTimeMgKg;
+        if (dosageConfig.maxTimeMgKg) tMax = dosageConfig.maxTimeMgKg;
+
+        if ((tMin === undefined || tMin === null) && (tMax === undefined || tMax === null)) {
+            // Fallback if data is missing (should not happen if audited)
+            tMin = tMax = 0;
+        } else {
+            if (tMin === undefined) tMin = tMax;
+            if (tMax === undefined) tMax = tMin;
+        }
+
+        mgPerDayMin = tMin * times * weight;
+        mgPerDayMax = tMax * times * weight;
+
+        // Apply Time Max (per-dose cap)
+        if (dosageConfig.absoluteMaxMgPerTime) {
+            const absMaxPerDay = dosageConfig.absoluteMaxMgPerTime * times;
+            if (mgPerDayMin > absMaxPerDay) mgPerDayMin = absMaxPerDay;
+            if (mgPerDayMax > absMaxPerDay) mgPerDayMax = absMaxPerDay;
+        }
+
+        // Fixed dose per time (e.g. Relenza: dosePerTime in mg)
+        if (dosageConfig.dosePerTime && !dosageConfig.timeMgKg) {
+            mgPerDayMin = dosageConfig.dosePerTime * times;
+            mgPerDayMax = dosageConfig.dosePerTime * times;
+        }
+    } else {
+        // Daily dose base
+        minMg = (dosageConfig.minMgKg || 0) * weight;
+        maxMg = (dosageConfig.maxMgKg || 0) * weight;
+
+        mgPerDayMin = minMg;
+        mgPerDayMax = maxMg;
+    }
+
+    // Apply Day Max
+    if (dosageConfig.absoluteMaxMgPerDay) {
+        if (mgPerDayMin > dosageConfig.absoluteMaxMgPerDay) mgPerDayMin = dosageConfig.absoluteMaxMgPerDay;
+        if (mgPerDayMax > dosageConfig.absoluteMaxMgPerDay) mgPerDayMax = dosageConfig.absoluteMaxMgPerDay;
+    }
+
+    // Convert to Product Amount
+    const roundProduct = (n) => Math.round(n * 10000) / 10000; // Using high precision for intermediate calculation
+    const roundDisplay = (n) => Math.round(n * 1000) / 1000; // 3 places for display
+
+    let totalMin = roundProduct(mgPerDayMin / potency);
+    let totalMax = roundProduct(mgPerDayMax / potency);
+
+    let timeMin = roundDisplay(totalMin / times);
+    let timeMax = roundDisplay(totalMax / times);
+
+    totalMin = roundDisplay(totalMin);
+    totalMax = roundDisplay(totalMax);
+
+    // If max < min due to caps, clamp
+    if (totalMax < totalMin) totalMax = totalMin;
+    if (timeMax < timeMin) timeMax = timeMin;
+
+    let totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
+    let timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
+
+    return {
+        totalRange: totalStr,
+        perTimeRange: timeStr,
+        times: times,
+        unit: unit,
+        disease: diseaseLabel,
+        subOption: subOptionLabel,
+        note: dosageConfig.note,
+        piUrl: drug.piUrl,
+        piSnippet: drug.tempPiSnippet || drug.piSnippet
     };
+}
 
-    function updatePrescriptionSheet() {
-        const sheet = document.getElementById('prescription-sheet');
-        const content = document.getElementById('sheet-content');
-        const closeBtn = document.getElementById('close-sheet');
+// Logic for Clearing
+window.clearAllDrugs = () => {
+    state.selectedDrugIds.clear();
+    state.drugOptions = {};
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+};
 
-        // Update Close Button to Delete
-        closeBtn.onclick = window.clearAllDrugs;
-        closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        closeBtn.style.color = '#ef4444';
+function updatePrescriptionSheet() {
+    const sheet = document.getElementById('prescription-sheet');
+    const content = document.getElementById('sheet-content');
+    const closeBtn = document.getElementById('close-sheet');
 
-        const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
+    // Update Close Button to Delete
+    closeBtn.onclick = window.clearAllDrugs;
+    closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    closeBtn.style.color = '#ef4444';
 
-        const emptyHtml = `
+    const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
+
+    const emptyHtml = `
         <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
             <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
             <p>薬剤を選択してください</p>
         </div>`;
 
-        if (state.selectedDrugIds.size === 0) {
-            content.innerHTML = emptyHtml;
-            return;
+    if (state.selectedDrugIds.size === 0) {
+        content.innerHTML = emptyHtml;
+        return;
+    }
+
+    const y = state.params.ageYear;
+    const m = state.params.ageMonth;
+    const w = parseFloat(state.params.weight);
+
+    const itemsHtml = Array.from(state.selectedDrugIds).reverse().map(id => {
+        const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
+        if (!drug) return '';
+
+        if (!state.drugOptions[id]) state.drugOptions[id] = {};
+        const opts = state.drugOptions[id];
+
+        const calc = calculateDrug(drug, y, m, w);
+
+        // Selectors
+        let selectorsHtml = '';
+        if (drug.hasSubOptions) {
+            const options = drug.subOptions.map(o =>
+                `<option value="${o.id}" ${opts.subOptionId === o.id ? 'selected' : ''}>${o.label}</option>`
+            ).join('');
+            selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'subOptionId', this.value)">${options}</select>`;
+        }
+        if (drug.diseases) {
+            const options = drug.diseases.map(d =>
+                `<option value="${d.id}" ${opts.diseaseId === d.id ? 'selected' : ''}>${d.label}</option>`
+            ).join('');
+            selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'diseaseId', this.value)">${options}</select>`;
         }
 
-        const y = state.params.ageYear;
-        const m = state.params.ageMonth;
-        const w = parseFloat(state.params.weight);
-
-        const itemsHtml = Array.from(state.selectedDrugIds).reverse().map(id => {
-            const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
-            if (!drug) return '';
-
-            if (!state.drugOptions[id]) state.drugOptions[id] = {};
-            const opts = state.drugOptions[id];
-
-            const calc = calculateDrug(drug, y, m, w);
-
-            // Selectors
-            let selectorsHtml = '';
-            if (drug.hasSubOptions) {
-                const options = drug.subOptions.map(o =>
-                    `<option value="${o.id}" ${opts.subOptionId === o.id ? 'selected' : ''}>${o.label}</option>`
-                ).join('');
-                selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'subOptionId', this.value)">${options}</select>`;
-            }
-            if (drug.diseases) {
-                const options = drug.diseases.map(d =>
-                    `<option value="${d.id}" ${opts.diseaseId === d.id ? 'selected' : ''}>${d.label}</option>`
-                ).join('');
-                selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'diseaseId', this.value)">${options}</select>`;
-            }
-
-            let resultMain = '';
-            if (calc.error) {
-                resultMain = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> ${calc.error}</div>`;
-            } else if (calc.isFixed && !calc.totalRange) {
-                const label = calc.isSingleDose ? '単回投与' : '固定用量';
-                resultMain = `
+        let resultMain = '';
+        if (calc.error) {
+            resultMain = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> ${calc.error}</div>`;
+        } else if (calc.isFixed && !calc.totalRange) {
+            const label = calc.isSingleDose ? '単回投与' : '固定用量';
+            resultMain = `
                 <div class="result-row">
                     <span class="result-label">${label}</span>
                     <span class="result-val">${calc.detail}</span>
                 </div>`;
-            } else {
-                // Daily First
-                resultMain = `
+        } else {
+            // Daily First
+            resultMain = `
                 <div class="result-row" style="border-bottom:1px dashed #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem; align-items: baseline;">
                     <span class="result-label">1日量</span>
                     <span class="result-val" style="font-size: clamp(1.1rem, 6vw, 1.4rem); color:#0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${calc.totalRange} <span style="font-size:0.9rem;color:#64748b;font-weight:normal;">${calc.unit}</span></span>
@@ -2106,19 +2125,19 @@ function calculateDrug(drug, years, months, weight) {
                     <span class="result-label">1回量</span>
                     <span class="result-sub" style="font-weight:bold; color:#475569;">${calc.perTimeRange} ${calc.unit} / 分${calc.times}</span>
                 </div>` : ''}`;
-            }
+        }
 
-            let displayName = drug.name;
-            if (drug.hasSubOptions && opts.subOptionId) {
-                const subOpt = drug.subOptions.find(o => o.id === opts.subOptionId);
-                if (subOpt) {
-                    // Remove "(規格選択)" and append or replace with subOpt.label
-                    // User requirement: Replace "(規格選択)" with "○％" (or the label)
-                    displayName = displayName.replace('(規格選択)', subOpt.label);
-                }
+        let displayName = drug.name;
+        if (drug.hasSubOptions && opts.subOptionId) {
+            const subOpt = drug.subOptions.find(o => o.id === opts.subOptionId);
+            if (subOpt) {
+                // Remove "(規格選択)" and append or replace with subOpt.label
+                // User requirement: Replace "(規格選択)" with "○％" (or the label)
+                displayName = displayName.replace('(規格選択)', subOpt.label);
             }
+        }
 
-            return `
+        return `
         <div class="rx-item" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative;">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0;">
@@ -2135,184 +2154,184 @@ function calculateDrug(drug, years, months, weight) {
             </div>
             ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding:1px 3px; font-size:0.55rem; line-height:1.1; white-space:nowrap; text-align:center; height:auto; border: 1px solid #e2e8f0; background: #f8fafc; z-index: 10;">添付<br>文書</button>` : ''}
         </div>`;
-        }).join('');
+    }).join('');
 
-        content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
+    content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
+}
+
+
+// Logic for Clearing
+window.clearAllDrugs = () => {
+    state.selectedDrugIds.clear();
+    state.drugOptions = {};
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+};
+
+// Logic for Removing Single Drug
+window.removeDrug = (id) => {
+    state.selectedDrugIds.delete(id);
+    if (state.drugOptions[id]) delete state.drugOptions[id];
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+};
+
+// Update drug option (sub-option or disease) and re-render
+window.updateDrugOption = (drugId, key, value) => {
+    if (!state.drugOptions[drugId]) state.drugOptions[drugId] = {};
+    state.drugOptions[drugId][key] = value;
+    saveState();
+    updatePrescriptionSheet();
+};
+
+// State
+const state = {
+    selectedDrugIds: new Set(),
+    params: { ageYear: '', ageMonth: '', weight: '' },
+    drugOptions: {}
+};
+const STORAGE_KEY = 'kusuri_compass_calc_v25_state';
+
+const STANDARD_WEIGHTS = [{ "age": 0, "month": 0, "w": 3 }, { "age": 0, "month": 1, "w": 4.2 }, { "age": 0, "month": 2, "w": 5.3 }, { "age": 0, "month": 3, "w": 6.2 }, { "age": 0, "month": 4, "w": 6.9 }, { "age": 0, "month": 5, "w": 7.5 }, { "age": 0, "month": 6, "w": 7.9 }, { "age": 0, "month": 7, "w": 8.3 }, { "age": 0, "month": 8, "w": 8.6 }, { "age": 0, "month": 9, "w": 8.9 }, { "age": 0, "month": 10, "w": 9.2 }, { "age": 0, "month": 11, "w": 9.4 }, { "age": 1, "month": 0, "w": 9.6 }, { "age": 1, "month": 6, "w": 10.7 }, { "age": 2, "month": 0, "w": 12 }, { "age": 3, "month": 0, "w": 14 }, { "age": 4, "month": 0, "w": 16 }, { "age": 5, "month": 0, "w": 18.5 }, { "age": 6, "month": 0, "w": 21 }, { "age": 7, "month": 0, "w": 24 }, { "age": 8, "month": 0, "w": 27 }, { "age": 9, "month": 0, "w": 30.5 }, { "age": 10, "month": 0, "w": 34 }, { "age": 11, "month": 0, "w": 38 }, { "age": 12, "month": 0, "w": 43 }, { "age": 13, "month": 0, "w": 49 }, { "age": 14, "month": 0, "w": 54 }, { "age": 15, "month": 0, "w": 58 }];
+
+function getStandardWeight(years, months) {
+    const y = parseInt(years) || 0;
+    const m = parseInt(months) || 0;
+    const exact = STANDARD_WEIGHTS.find(d => d.age === y && d.month === m);
+    if (exact) return exact.w;
+    const sorted = [...STANDARD_WEIGHTS].sort((a, b) => (a.age * 12 + a.month) - (b.age * 12 + b.month));
+    const targetMonths = y * 12 + m;
+    let closest = sorted[0];
+    for (let d of sorted) {
+        if (d.age * 12 + d.month <= targetMonths) closest = d; else break;
     }
+    return closest.w;
+}
 
-
-    // Logic for Clearing
-    window.clearAllDrugs = () => {
-        state.selectedDrugIds.clear();
-        state.drugOptions = {};
-        saveState();
-        renderDrugList();
-        updatePrescriptionSheet();
+function saveState() {
+    const data = {
+        selected: Array.from(state.selectedDrugIds),
+        options: state.drugOptions
     };
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { }
+}
 
-    // Logic for Removing Single Drug
-    window.removeDrug = (id) => {
-        state.selectedDrugIds.delete(id);
-        if (state.drugOptions[id]) delete state.drugOptions[id];
-        saveState();
-        renderDrugList();
-        updatePrescriptionSheet();
-    };
-
-    // Update drug option (sub-option or disease) and re-render
-    window.updateDrugOption = (drugId, key, value) => {
-        if (!state.drugOptions[drugId]) state.drugOptions[drugId] = {};
-        state.drugOptions[drugId][key] = value;
-        saveState();
-        updatePrescriptionSheet();
-    };
-
-    // State
-    const state = {
-        selectedDrugIds: new Set(),
-        params: { ageYear: '', ageMonth: '', weight: '' },
-        drugOptions: {}
-    };
-    const STORAGE_KEY = 'kusuri_compass_calc_v25_state';
-
-    const STANDARD_WEIGHTS = [{ "age": 0, "month": 0, "w": 3 }, { "age": 0, "month": 1, "w": 4.2 }, { "age": 0, "month": 2, "w": 5.3 }, { "age": 0, "month": 3, "w": 6.2 }, { "age": 0, "month": 4, "w": 6.9 }, { "age": 0, "month": 5, "w": 7.5 }, { "age": 0, "month": 6, "w": 7.9 }, { "age": 0, "month": 7, "w": 8.3 }, { "age": 0, "month": 8, "w": 8.6 }, { "age": 0, "month": 9, "w": 8.9 }, { "age": 0, "month": 10, "w": 9.2 }, { "age": 0, "month": 11, "w": 9.4 }, { "age": 1, "month": 0, "w": 9.6 }, { "age": 1, "month": 6, "w": 10.7 }, { "age": 2, "month": 0, "w": 12 }, { "age": 3, "month": 0, "w": 14 }, { "age": 4, "month": 0, "w": 16 }, { "age": 5, "month": 0, "w": 18.5 }, { "age": 6, "month": 0, "w": 21 }, { "age": 7, "month": 0, "w": 24 }, { "age": 8, "month": 0, "w": 27 }, { "age": 9, "month": 0, "w": 30.5 }, { "age": 10, "month": 0, "w": 34 }, { "age": 11, "month": 0, "w": 38 }, { "age": 12, "month": 0, "w": 43 }, { "age": 13, "month": 0, "w": 49 }, { "age": 14, "month": 0, "w": 54 }, { "age": 15, "month": 0, "w": 58 }];
-
-    function getStandardWeight(years, months) {
-        const y = parseInt(years) || 0;
-        const m = parseInt(months) || 0;
-        const exact = STANDARD_WEIGHTS.find(d => d.age === y && d.month === m);
-        if (exact) return exact.w;
-        const sorted = [...STANDARD_WEIGHTS].sort((a, b) => (a.age * 12 + a.month) - (b.age * 12 + b.month));
-        const targetMonths = y * 12 + m;
-        let closest = sorted[0];
-        for (let d of sorted) {
-            if (d.age * 12 + d.month <= targetMonths) closest = d; else break;
+function loadState() {
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            const data = JSON.parse(raw);
+            if (data.selected) state.selectedDrugIds = new Set(data.selected);
+            if (data.options) state.drugOptions = data.options;
         }
-        return closest.w;
-    }
+    } catch (e) { }
+}
 
-    function saveState() {
-        const data = {
-            selected: Array.from(state.selectedDrugIds),
-            options: state.drugOptions
-        };
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { }
-    }
+// Logic for Clearing
+window.clearAllDrugs = () => {
+    state.selectedDrugIds.clear();
+    state.drugOptions = {};
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+};
 
-    function loadState() {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            if (raw) {
-                const data = JSON.parse(raw);
-                if (data.selected) state.selectedDrugIds = new Set(data.selected);
-                if (data.options) state.drugOptions = data.options;
-            }
-        } catch (e) { }
-    }
+// Logic for Removing Single Drug
+window.removeDrug = (id) => {
+    state.selectedDrugIds.delete(id);
+    if (state.drugOptions[id]) delete state.drugOptions[id];
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+};
 
-    // Logic for Clearing
-    window.clearAllDrugs = () => {
-        state.selectedDrugIds.clear();
-        state.drugOptions = {};
-        saveState();
-        renderDrugList();
-        updatePrescriptionSheet();
-    };
+let currentCategory = 'all';
+let currentSearchQuery = '';
 
-    // Logic for Removing Single Drug
-    window.removeDrug = (id) => {
-        state.selectedDrugIds.delete(id);
-        if (state.drugOptions[id]) delete state.drugOptions[id];
-        saveState();
-        renderDrugList();
-        updatePrescriptionSheet();
-    };
-
-    let currentCategory = 'all';
-    let currentSearchQuery = '';
-
-    function renderCategoryTabs() {
-        const container = document.getElementById('category-tabs');
-        if (!container) return;
-        const tabs = [{ id: 'all', label: 'すべて' }, ...Object.entries(DRUG_CATEGORIES).map(([Key, Label]) => ({ id: Key, label: Label }))];
-        container.innerHTML = tabs.map(tab => `
+function renderCategoryTabs() {
+    const container = document.getElementById('category-tabs');
+    if (!container) return;
+    const tabs = [{ id: 'all', label: 'すべて' }, ...Object.entries(DRUG_CATEGORIES).map(([Key, Label]) => ({ id: Key, label: Label }))];
+    container.innerHTML = tabs.map(tab => `
         <button class="cat-tab ${currentCategory === tab.id ? 'active' : ''}" data-cat="${tab.id}">${tab.label}</button>
     `).join('');
-        container.querySelectorAll('.cat-tab').forEach(btn => {
-            btn.addEventListener('click', () => {
-                currentCategory = btn.dataset.cat;
-                renderCategoryTabs();
-                renderDrugList();
-            });
+    container.querySelectorAll('.cat-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+            currentCategory = btn.dataset.cat;
+            renderCategoryTabs();
+            renderDrugList();
         });
-    }
+    });
+}
 
-    function normalizeText(text) {
-        if (!text) return '';
-        if (text.length > 100) return ''; // DoS prevention: Limit search query length
-        let t = text.trim();
-        // Full-width Alphanumeric to Half-width
-        t = t.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
-            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-        });
-        // Half-width Katakana to Full-width Katakana
-        const kanaMap = {
-            'ｶﾞ': 'ガ', 'ｷﾞ': 'ギ', 'ｸﾞ': 'グ', 'ｹﾞ': 'ゲ', 'ｺﾞ': 'ゴ',
-            'ｻﾞ': 'ザ', 'ｼﾞ': 'ジ', 'ｽﾞ': 'ズ', 'ｾﾞ': 'ゼ', 'ｿﾞ': 'ゾ',
-            'ﾀﾞ': 'ダ', 'ﾁﾞ': 'ヂ', 'ﾂﾞ': 'ヅ', 'ﾃﾞ': 'デ', 'ﾄﾞ': 'ド',
-            'ﾊﾞ': 'バ', 'ﾋﾞ': 'ビ', 'ﾌﾞ': 'ブ', 'ﾍﾞ': 'ベ', 'ﾎﾞ': 'ボ',
-            'ﾊﾟ': 'パ', 'ﾋﾟ': 'ピ', 'ﾌﾟ': 'プ', 'ﾍﾟ': 'ペ', 'ﾎﾟ': 'ポ',
-            'ｳﾞ': 'ヴ', 'ﾜﾞ': 'ヷ', 'ｦﾞ': 'ヺ',
-            'ｱ': 'ア', 'ｲ': 'イ', 'ｳ': 'ウ', 'ｴ': 'エ', 'ｵ': 'オ',
-            'ｶ': 'カ', 'ｷ': 'キ', 'ｸ': 'ク', 'ｹ': 'ケ', 'ｺ': 'コ',
-            'ｻ': 'サ', 'ｼ': 'シ', 'ｽ': 'ス', 'ｾ': 'セ', 'ｿ': 'ソ',
-            'ﾀ': 'タ', 'ﾁ': 'チ', 'ﾂ': 'ツ', 'ﾃ': 'テ', 'ﾄ': 'ト',
-            'ﾅ': 'ナ', 'ﾆ': 'ニ', 'ﾇ': 'ヌ', 'ﾈ': 'ネ', 'ﾉ': 'ノ',
-            'ﾊ': 'ハ', 'ﾋ': 'ヒ', 'ﾌ': 'フ', 'ﾍ': 'ヘ', 'ﾎ': 'ホ',
-            'ﾏ': 'マ', 'ﾐ': 'ミ', 'ﾑ': 'ム', 'ﾒ': 'メ', 'ﾓ': 'モ',
-            'ﾔ': 'ヤ', 'ﾕ': 'ユ', 'ﾖ': 'ヨ',
-            'ﾗ': 'ラ', 'ﾘ': 'リ', 'ﾙ': 'ル', 'ﾚ': 'レ', 'ﾛ': 'ロ',
-            'ﾜ': 'ワ', 'ｦ': 'ヲ', 'ﾝ': 'ン',
-            'ｧ': 'ァ', 'ｨ': 'ィ', 'ｩ': 'ゥ', 'ｪ': 'ェ', 'ｫ': 'ォ',
-            'ｯ': 'ッ', 'ｬ': 'ャ', 'ｭ': 'ュ', 'ｮ': 'ョ',
-            'ｰ': 'ー', '｡': '。', '｢': '「', '｣': '」', '､': '、', '･': '・'
-        };
-        const reg = new RegExp('(' + Object.keys(kanaMap).join('|') + ')', 'g');
-        t = t.replace(reg, function (match) {
-            return kanaMap[match];
-        });
-        // Hiragana to Katakana
-        t = t.replace(/[\u3041-\u3096]/g, function (ch) {
-            return String.fromCharCode(ch.charCodeAt(0) + 0x60);
-        });
-        return t.toLowerCase();
-    }
+function normalizeText(text) {
+    if (!text) return '';
+    if (text.length > 100) return ''; // DoS prevention: Limit search query length
+    let t = text.trim();
+    // Full-width Alphanumeric to Half-width
+    t = t.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+    // Half-width Katakana to Full-width Katakana
+    const kanaMap = {
+        'ｶﾞ': 'ガ', 'ｷﾞ': 'ギ', 'ｸﾞ': 'グ', 'ｹﾞ': 'ゲ', 'ｺﾞ': 'ゴ',
+        'ｻﾞ': 'ザ', 'ｼﾞ': 'ジ', 'ｽﾞ': 'ズ', 'ｾﾞ': 'ゼ', 'ｿﾞ': 'ゾ',
+        'ﾀﾞ': 'ダ', 'ﾁﾞ': 'ヂ', 'ﾂﾞ': 'ヅ', 'ﾃﾞ': 'デ', 'ﾄﾞ': 'ド',
+        'ﾊﾞ': 'バ', 'ﾋﾞ': 'ビ', 'ﾌﾞ': 'ブ', 'ﾍﾞ': 'ベ', 'ﾎﾞ': 'ボ',
+        'ﾊﾟ': 'パ', 'ﾋﾟ': 'ピ', 'ﾌﾟ': 'プ', 'ﾍﾟ': 'ペ', 'ﾎﾟ': 'ポ',
+        'ｳﾞ': 'ヴ', 'ﾜﾞ': 'ヷ', 'ｦﾞ': 'ヺ',
+        'ｱ': 'ア', 'ｲ': 'イ', 'ｳ': 'ウ', 'ｴ': 'エ', 'ｵ': 'オ',
+        'ｶ': 'カ', 'ｷ': 'キ', 'ｸ': 'ク', 'ｹ': 'ケ', 'ｺ': 'コ',
+        'ｻ': 'サ', 'ｼ': 'シ', 'ｽ': 'ス', 'ｾ': 'セ', 'ｿ': 'ソ',
+        'ﾀ': 'タ', 'ﾁ': 'チ', 'ﾂ': 'ツ', 'ﾃ': 'テ', 'ﾄ': 'ト',
+        'ﾅ': 'ナ', 'ﾆ': 'ニ', 'ﾇ': 'ヌ', 'ﾈ': 'ネ', 'ﾉ': 'ノ',
+        'ﾊ': 'ハ', 'ﾋ': 'ヒ', 'ﾌ': 'フ', 'ﾍ': 'ヘ', 'ﾎ': 'ホ',
+        'ﾏ': 'マ', 'ﾐ': 'ミ', 'ﾑ': 'ム', 'ﾒ': 'メ', 'ﾓ': 'モ',
+        'ﾔ': 'ヤ', 'ﾕ': 'ユ', 'ﾖ': 'ヨ',
+        'ﾗ': 'ラ', 'ﾘ': 'リ', 'ﾙ': 'ル', 'ﾚ': 'レ', 'ﾛ': 'ロ',
+        'ﾜ': 'ワ', 'ｦ': 'ヲ', 'ﾝ': 'ン',
+        'ｧ': 'ァ', 'ｨ': 'ィ', 'ｩ': 'ゥ', 'ｪ': 'ェ', 'ｫ': 'ォ',
+        'ｯ': 'ッ', 'ｬ': 'ャ', 'ｭ': 'ュ', 'ｮ': 'ョ',
+        'ｰ': 'ー', '｡': '。', '｢': '「', '｣': '」', '､': '、', '･': '・'
+    };
+    const reg = new RegExp('(' + Object.keys(kanaMap).join('|') + ')', 'g');
+    t = t.replace(reg, function (match) {
+        return kanaMap[match];
+    });
+    // Hiragana to Katakana
+    t = t.replace(/[\u3041-\u3096]/g, function (ch) {
+        return String.fromCharCode(ch.charCodeAt(0) + 0x60);
+    });
+    return t.toLowerCase();
+}
 
-    function getFilteredDrugs() {
-        const query = normalizeText(currentSearchQuery);
-        return PEDIATRIC_DRUGS.filter(d => {
-            const name = normalizeText(d.name);
-            const yj = normalizeText(d.yjCode);
-            const matchesSearch = name.includes(query) || yj.includes(query);
-            const matchesCategory = currentCategory === 'all' || d.category === currentCategory;
-            return matchesSearch && matchesCategory;
-        });
-    }
+function getFilteredDrugs() {
+    const query = normalizeText(currentSearchQuery);
+    return PEDIATRIC_DRUGS.filter(d => {
+        const name = normalizeText(d.name);
+        const yj = normalizeText(d.yjCode);
+        const matchesSearch = name.includes(query) || yj.includes(query);
+        const matchesCategory = currentCategory === 'all' || d.category === currentCategory;
+        return matchesSearch && matchesCategory;
+    });
+}
 
-    function renderDrugList() {
-        const container = document.getElementById('drug-grid');
-        if (!container) return;
-        const filtered = getFilteredDrugs();
-        if (filtered.length === 0) {
-            container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#94a3b8; padding:2rem;">該当なし</div>';
-            return;
-        }
-        container.innerHTML = filtered.map(d => {
-            const isSelected = state.selectedDrugIds.has(d.id);
-            const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
-            const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
-            const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
-            return `
+function renderDrugList() {
+    const container = document.getElementById('drug-grid');
+    if (!container) return;
+    const filtered = getFilteredDrugs();
+    if (filtered.length === 0) {
+        container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#94a3b8; padding:2rem;">該当なし</div>';
+        return;
+    }
+    container.innerHTML = filtered.map(d => {
+        const isSelected = state.selectedDrugIds.has(d.id);
+        const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
+        const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
+        const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
+        return `
         <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <span class="tag">${categoryLabel}</span>
@@ -2322,170 +2341,170 @@ function calculateDrug(drug, years, months, weight) {
                 <div style="font-size:0.75rem; color:#64748b; margin-top:0.25rem;">${potLabel}</div>
             </div>
         </div>`;
-        }).join('');
-        container.querySelectorAll('.drug-card').forEach(card => card.addEventListener('click', () => toggleDrug(card.dataset.id)));
-    }
+    }).join('');
+    container.querySelectorAll('.drug-card').forEach(card => card.addEventListener('click', () => toggleDrug(card.dataset.id)));
+}
 
-    function toggleDrug(id) {
-        if (state.selectedDrugIds.has(id)) state.selectedDrugIds.delete(id);
-        else state.selectedDrugIds.add(id);
-        saveState();
-        renderDrugList();
+function toggleDrug(id) {
+    if (state.selectedDrugIds.has(id)) state.selectedDrugIds.delete(id);
+    else state.selectedDrugIds.add(id);
+    saveState();
+    renderDrugList();
+    updatePrescriptionSheet();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const updateParams = () => {
+        state.params.ageYear = document.getElementById('age-input').value;
+        state.params.ageMonth = document.getElementById('month-input').value;
+        state.params.weight = document.getElementById('weight-input').value;
+        // Don't save params to local storage as per requirement
         updatePrescriptionSheet();
+    };
+    document.getElementById('age-input').addEventListener('input', updateParams);
+    document.getElementById('month-input').addEventListener('input', updateParams);
+    document.getElementById('weight-input').addEventListener('input', updateParams);
+
+    // Initial Default Weight
+    const weightInput = document.getElementById('weight-input');
+    if (!weightInput.value) {
+        weightInput.value = "10";
+        // Ensure state is updated so calculations run immediately on load
+        state.params.weight = "10";
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const updateParams = () => {
-            state.params.ageYear = document.getElementById('age-input').value;
-            state.params.ageMonth = document.getElementById('month-input').value;
-            state.params.weight = document.getElementById('weight-input').value;
-            // Don't save params to local storage as per requirement
-            updatePrescriptionSheet();
-        };
-        document.getElementById('age-input').addEventListener('input', updateParams);
-        document.getElementById('month-input').addEventListener('input', updateParams);
-        document.getElementById('weight-input').addEventListener('input', updateParams);
-
-        // Initial Default Weight
-        const weightInput = document.getElementById('weight-input');
-        if (!weightInput.value) {
-            weightInput.value = "10";
-            // Ensure state is updated so calculations run immediately on load
-            state.params.weight = "10";
-        }
-
-        document.getElementById('auto-weight-btn').addEventListener('click', () => {
-            const w = getStandardWeight(document.getElementById('age-input').value, document.getElementById('month-input').value);
-            document.getElementById('weight-input').value = w;
-            updateParams();
-        });
-
-        const searchInput = document.getElementById('drug-search');
-        if (searchInput) {
-            searchInput.addEventListener('input', (e) => {
-                currentSearchQuery = e.target.value;
-                renderDrugList();
-            });
-        }
-
-        loadState();
-        renderCategoryTabs();
-
-        // Check query params for auto-search
-        const urlParams = new URLSearchParams(window.location.search);
-        const yjQuery = urlParams.get('yj');
-        if (yjQuery) {
-            currentSearchQuery = yjQuery;
-            if (searchInput) searchInput.value = yjQuery;
-            // Auto switch to all category if searching
-            currentCategory = 'all';
-            renderCategoryTabs(); // To update active tab
-        }
-
-        renderDrugList();
-
-        if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
-        else {
-            const closeBtn = document.getElementById('close-sheet');
-            if (closeBtn) {
-                closeBtn.onclick = window.clearAllDrugs;
-                closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-            }
-        }
-        // Initial notification
-        setTimeout(() => {
-            window.showNotification('テスト中。不具合、バグを発見した際は掲示板、X等でご指摘ください。');
-        }, 1000);
+    document.getElementById('auto-weight-btn').addEventListener('click', () => {
+        const w = getStandardWeight(document.getElementById('age-input').value, document.getElementById('month-input').value);
+        document.getElementById('weight-input').value = w;
+        updateParams();
     });
 
-    /**
-     * Show a floating notification
-     */
-    window.showNotification = (message) => {
-        const container = document.getElementById('notification-container');
-        if (!container) return;
+    const searchInput = document.getElementById('drug-search');
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            renderDrugList();
+        });
+    }
 
-        const notification = document.createElement('div');
-        notification.className = 'floating-notification';
-        notification.innerHTML = `
+    loadState();
+    renderCategoryTabs();
+
+    // Check query params for auto-search
+    const urlParams = new URLSearchParams(window.location.search);
+    const yjQuery = urlParams.get('yj');
+    if (yjQuery) {
+        currentSearchQuery = yjQuery;
+        if (searchInput) searchInput.value = yjQuery;
+        // Auto switch to all category if searching
+        currentCategory = 'all';
+        renderCategoryTabs(); // To update active tab
+    }
+
+    renderDrugList();
+
+    if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
+    else {
+        const closeBtn = document.getElementById('close-sheet');
+        if (closeBtn) {
+            closeBtn.onclick = window.clearAllDrugs;
+            closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
+        }
+    }
+    // Initial notification
+    setTimeout(() => {
+        window.showNotification('テスト中。不具合、バグを発見した際は掲示板、X等でご指摘ください。');
+    }, 1000);
+});
+
+/**
+ * Show a floating notification
+ */
+window.showNotification = (message) => {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+
+    const notification = document.createElement('div');
+    notification.className = 'floating-notification';
+    notification.innerHTML = `
         <i class="fas fa-flask" style="color: #856404; margin-top: 0.2rem;"></i>
         <div style="color: #856404; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">${message}</div>
         <button class="notification-close"><i class="fas fa-times"></i></button>
     `;
 
-        notification.querySelector('.notification-close').onclick = () => {
-            notification.style.animation = 'slideIn 0.3s ease reverse forwards';
-            setTimeout(() => notification.remove(), 300);
-        };
-
-        container.appendChild(notification);
+    notification.querySelector('.notification-close').onclick = () => {
+        notification.style.animation = 'slideIn 0.3s ease reverse forwards';
+        setTimeout(() => notification.remove(), 300);
     };
 
-    import DOSAGE_DATA from './data/dosage_details.js';
+    container.appendChild(notification);
+};
 
-    // Dosage Modal Logic
-    window.viewDosageDetails = (yjCode, piUrl) => {
-        console.log(`[viewDosageDetails] Clicked YJ Code: "${yjCode}"`);
-        console.log(`[viewDosageDetails] Data entry exists:`, !!DOSAGE_DATA[yjCode]);
-        if (!DOSAGE_DATA[yjCode]) {
-            console.warn(`[viewDosageDetails] No data found for ${yjCode}. Check dosage_details.js keys.`);
-            console.log(`[viewDosageDetails] First 5 keys in data:`, Object.keys(DOSAGE_DATA).slice(0, 5));
+import DOSAGE_DATA from './data/dosage_details.js';
+
+// Dosage Modal Logic
+window.viewDosageDetails = (yjCode, piUrl) => {
+    console.log(`[viewDosageDetails] Clicked YJ Code: "${yjCode}"`);
+    console.log(`[viewDosageDetails] Data entry exists:`, !!DOSAGE_DATA[yjCode]);
+    if (!DOSAGE_DATA[yjCode]) {
+        console.warn(`[viewDosageDetails] No data found for ${yjCode}. Check dosage_details.js keys.`);
+        console.log(`[viewDosageDetails] First 5 keys in data:`, Object.keys(DOSAGE_DATA).slice(0, 5));
+    }
+    // Show modal loading
+    const modal = document.getElementById('dosage-modal');
+    const title = document.getElementById('dosage-modal-title');
+    const body = document.getElementById('dosage-modal-body');
+    const closeBtn = document.getElementById('close-dosage-modal');
+
+    if (!modal || !body) return;
+
+    // Reset content and show
+    body.scrollTop = 0;
+    const data = DOSAGE_DATA[yjCode];
+    const sourceSpan = document.getElementById('dosage-modal-source');
+
+    if (data) {
+        const html = typeof data === 'string' ? data : data.html;
+        const source = typeof data === 'string' ? '' : (data.source || '');
+
+        if (sourceSpan) {
+            sourceSpan.textContent = source ? `(参照: ${source})` : '';
         }
-        // Show modal loading
-        const modal = document.getElementById('dosage-modal');
-        const title = document.getElementById('dosage-modal-title');
-        const body = document.getElementById('dosage-modal-body');
-        const closeBtn = document.getElementById('close-dosage-modal');
 
-        if (!modal || !body) return;
+        // Replace potential XML processing instructions or placeholders
+        let content = html.replaceAll('<?enter?>', '<br>');
 
-        // Reset content and show
-        body.scrollTop = 0;
-        const data = DOSAGE_DATA[yjCode];
-        const sourceSpan = document.getElementById('dosage-modal-source');
-
-        if (data) {
-            const html = typeof data === 'string' ? data : data.html;
-            const source = typeof data === 'string' ? '' : (data.source || '');
-
-            if (sourceSpan) {
-                sourceSpan.textContent = source ? `(参照: ${source})` : '';
-            }
-
-            // Replace potential XML processing instructions or placeholders
-            let content = html.replaceAll('<?enter?>', '<br>');
-
-            // Add PMDA Link if exists
-            if (piUrl) {
-                content += `<div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e2e8f0; text-align:center;">
+        // Add PMDA Link if exists
+        if (piUrl) {
+            content += `<div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e2e8f0; text-align:center;">
                 <a href="${piUrl}" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; background:#f1f5f9; color:#475569; text-decoration:none; border-radius:0.5rem; font-weight:bold; font-size:0.9rem; transition:all 0.2s;">
                     <i class="fas fa-external-link-alt"></i> PMDAで全文を見る
                 </a>
             </div>`;
-            }
-            body.innerHTML = content;
-        } else {
-            body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
         }
+        body.innerHTML = content;
+    } else {
+        body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
+    }
 
-        modal.style.display = 'flex';
-        // Small delay to allow display:flex to apply before opacity transition
-        requestAnimationFrame(() => {
-            modal.classList.add('active');
-        });
+    modal.style.display = 'flex';
+    // Small delay to allow display:flex to apply before opacity transition
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
 
-        // Close handler
-        const closeModal = () => {
-            modal.classList.remove('active');
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
-        };
-
-        // Remove old listeners to prevent duplication if called multiple times (though window usually fine)
-        // Simpler: just overwrite onclick
-        if (closeBtn) closeBtn.onclick = closeModal;
-        modal.onclick = (e) => {
-            if (e.target === modal) closeModal();
-        };
+    // Close handler
+    const closeModal = () => {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     };
+
+    // Remove old listeners to prevent duplication if called multiple times (though window usually fine)
+    // Simpler: just overwrite onclick
+    if (closeBtn) closeBtn.onclick = closeModal;
+    modal.onclick = (e) => {
+        if (e.target === modal) closeModal();
+    };
+};

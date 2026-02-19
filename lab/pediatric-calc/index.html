@@ -564,7 +564,15 @@
         .patient-info-bar .input-group-enhanced {
             /* min-width removed for auto-fit */
             /* flex: 0 0 auto removed to allow shrinking if needed, or use default */
+            /* min-width removed for auto-fit */
+            /* flex: 0 0 auto removed to allow shrinking if needed, or use default */
             width: fit-content;
+        }
+
+        /* Force input fields to be small on PC */
+        .patient-info-bar .input-group-enhanced input {
+            width: 4rem;
+            text-align: center;
         }
 
         .patient-info-bar .age-inputs {
