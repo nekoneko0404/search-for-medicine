@@ -544,20 +544,27 @@
         }
 
         /* Mobile specific adjustments for Patient Info Bar */
+        /* Mobile specific adjustments for Patient Info Bar */
         @media (max-width: 768px) {
             .patient-info-bar .input-container {
                 flex-wrap: wrap !important;
-                gap: 0.75rem !important;
-                justify-content: center;
+                gap: 0.5rem !important;
+                justify-content: center !important;
+                padding: 0.25rem;
             }
 
-            .patient-info-bar .input-container>div {
-                flex: 1 1 auto;
-                min-width: 140px;
+            .patient-info-bar .age-inputs {
+                width: 100%;
+                justify-content: center;
+                display: flex;
+            }
+
+            .patient-info-bar .input-group-enhanced {
+                flex: 0 1 auto;
             }
 
             .patient-info-bar #close-sheet {
-                margin-left: initial !important;
+                margin-left: 0 !important;
                 flex: 0 0 auto;
             }
         }

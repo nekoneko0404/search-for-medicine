@@ -2049,7 +2049,7 @@ function updatePrescriptionSheet() {
             resultMain = `
                 <div class="result-row" style="border-bottom:1px dashed #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem; align-items: baseline;">
                     <span class="result-label" style="font-size:0.9rem;">1日量</span>
-                    <span class="result-val" style="font-size:1.5rem; color:#0f172a;">${calc.totalRange} <span style="font-size:1rem;color:#64748b;">${calc.unit}</span></span>
+                    <span class="result-val" style="font-size:1.4rem; color:#0f172a;">${calc.totalRange} <span style="font-size:1rem;color:#64748b;">${calc.unit}</span></span>
                 </div>
                 ${!calc.hidePerTime ? `
                 <div class="result-row" style="align-items: baseline;">
@@ -2069,14 +2069,13 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem;">
+        <div class="rx-item" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative;">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0;">
                     <div class="rx-title" style="font-weight:bold; font-size:0.8rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
                     <div class="rx-remove" onclick="removeDrug('${drug.id}')" style="font-size: 0.9rem; color: #94a3b8; cursor: pointer; line-height: 1;"><i class="fas fa-times"></i></div>
-                    ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="padding:1px 3px; font-size:0.55rem; line-height:1.1; white-space:nowrap; flex-shrink:0; text-align:center; height:auto; border: 1px solid #e2e8f0;">添付<br>文書</button>` : ''}
                 </div>
             </div>
             <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;">${selectorsHtml}</div>
@@ -2084,6 +2083,7 @@ function updatePrescriptionSheet() {
             <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
+            ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding:1px 3px; font-size:0.55rem; line-height:1.1; white-space:nowrap; text-align:center; height:auto; border: 1px solid #e2e8f0; background: #f8fafc; z-index: 10;">添付<br>文書</button>` : ''}
         </div>`;
     }).join('');
 
