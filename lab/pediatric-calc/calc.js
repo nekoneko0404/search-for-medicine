@@ -2305,6 +2305,12 @@ import DOSAGE_DATA from './data/dosage_details.js';
 
 // Dosage Modal Logic
 window.viewDosageDetails = (yjCode) => {
+    console.log(`[viewDosageDetails] Clicked YJ Code: "${yjCode}"`);
+    console.log(`[viewDosageDetails] Data entry exists:`, !!DOSAGE_DATA[yjCode]);
+    if (!DOSAGE_DATA[yjCode]) {
+        console.warn(`[viewDosageDetails] No data found for ${yjCode}. Check dosage_details.js keys.`);
+        console.log(`[viewDosageDetails] First 5 keys in data:`, Object.keys(DOSAGE_DATA).slice(0, 5));
+    }
     // Show modal loading
     const modal = document.getElementById('dosage-modal');
     const title = document.getElementById('dosage-modal-title');
@@ -2318,7 +2324,8 @@ window.viewDosageDetails = (yjCode) => {
     const html = DOSAGE_DATA[yjCode];
 
     if (html) {
-        body.innerHTML = html;
+        // Replace potential XML processing instructions or placeholders
+        body.innerHTML = html.replaceAll('<?enter?>', '<br>');
     } else {
         body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
     }
