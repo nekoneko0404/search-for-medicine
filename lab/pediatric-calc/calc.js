@@ -1326,14 +1326,48 @@ const PEDIATRIC_DRUGS = [
         "yjCode": "1139010R1020",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/1139010R1020",
         "potency": 500,
-        "piSnippetSource": "通常、4歳以上の小児には1日20mg/kg(製剤0.04g/kg)を2回に分けて経口投与する。症状により1日60mg/kg(製剤0.12g/kg)を超えない範囲で増減する。",
-        "dosage": {
-            "minMgKg": 20,
-            "maxMgKg": 60,
-            "timesPerDay": 2,
-            "note": "通常1日20mg/kg(製剤0.04g/kg)を2回。最大1日60mg/kg。"
-        },
-        "piSnippet": "通常、1日20mg/kg(製剤0.04g/kg)を2回に分けて服用する。最大1日60mg/kg。",
+        "piSnippetSource": "通常、4歳以上の小児には1日20mg/kg(製剤0.04g/kg)を2回に分けて経口投与する。症状により1日60mg/kg(製剤0.12g/kg)を超えない範囲で増減する。生後6ヵ月以上4歳未満の小児：通常、1日20mg/kgを1日2回に分 けて経口投与する。症状により1日60mg/kgを超えない範囲で増減する。生後1ヵ月以上6ヵ月未満の小児：通常、1日14mg/kgを1日2回に分けて経口投与する。症状により1日42mg/kgを超えない範囲で増減する。",
+        "diseases": [
+            {
+                "id": "partial",
+                "label": "部分発作"
+            },
+            {
+                "id": "tonic",
+                "label": "強直間代発作",
+                "dosage": {
+                    "note": "4歳以上の小児。他の抗てんかん薬と併用すること。"
+                }
+            }
+        ],
+        "calcType": "age-weight-switch",
+        "ageBranches": [
+            {
+                "ageMin": 0,
+                "ageMax": 0.5,
+                "label": "生後6ヶ月未満 (14-42mg/kg)",
+                "dosage": {
+                    "minMgKg": 14,
+                    "maxMgKg": 42,
+                    "timesPerDay": 2,
+                    "absoluteMaxMgPerDay": 3000,
+                    "note": "通常1日14mg/kg(製剤0.028g/kg)を2回。最大1日42mg/kg。"
+                }
+            },
+            {
+                "ageMin": 0.5,
+                "ageMax": 100,
+                "label": "生後6ヶ月以上 (20-60mg/kg)",
+                "dosage": {
+                    "minMgKg": 20,
+                    "maxMgKg": 60,
+                    "timesPerDay": 2,
+                    "absoluteMaxMgPerDay": 3000,
+                    "note": "通常1日20mg/kg(製剤0.04g/kg)を2回。最大1日60mg/kg。"
+                }
+            }
+        ],
+        "piSnippet": "年齢により異なります。通常、4歳以上および生後6ヶ月以上：1日20mg/kg(製剤0.04g/kg)を2回。最大1日60mg/kg。生後1ヶ月-6ヶ月未満：1日14mg/kg(製剤0.028g/kg)を2回。最大1日42mg/kg。",
         "category": "cns"
     },
     {

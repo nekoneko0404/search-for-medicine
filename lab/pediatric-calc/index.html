@@ -562,15 +562,16 @@
         }
 
         .patient-info-bar .input-group-enhanced {
-            min-width: 140px;
-            flex: 0 0 auto;
+            /* min-width removed for auto-fit */
+            /* flex: 0 0 auto removed to allow shrinking if needed, or use default */
+            width: fit-content;
         }
 
         .patient-info-bar .age-inputs {
             display: flex;
             gap: 0.5rem;
             width: auto;
-            min-width: 300px;
+            /* min-width: 300px; removed */
         }
 
         .patient-info-bar #close-sheet {
