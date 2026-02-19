@@ -2072,7 +2072,7 @@ function updatePrescriptionSheet() {
         <div class="rx-item" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative;">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0;">
-                    <div class="rx-title" style="font-weight:bold; font-size:0.8rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
+                    <div class="rx-title" style="font-weight:bold; font-size:1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
                     <div class="rx-remove" onclick="removeDrug('${drug.id}')" style="font-size: 0.9rem; color: #94a3b8; cursor: pointer; line-height: 1;"><i class="fas fa-times"></i></div>

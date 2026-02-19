@@ -550,6 +550,7 @@
             align-items: center;
             gap: 1rem;
             width: 100%;
+            padding: 0 1rem;
         }
 
         .inputs-wrapper {
@@ -574,26 +575,32 @@
                 padding: 0.25rem;
             }
 
+            .inputs-wrapper {
+                display: contents;
+                /* Allow children to flex-wrap directly in input-container */
+            }
+
             .patient-info-bar .age-inputs {
                 width: 100%;
                 justify-content: center;
                 display: flex;
+                order: 1;
             }
 
             .patient-info-bar .input-group-enhanced {
-                flex: 0 1 auto;
-                min-width: 110px;
-            }
-
-            /* Ensure weight and buttons stay on one row */
-            .patient-info-bar .input-group-enhanced:has(#weight-input) {
                 flex: 1 1 0;
                 min-width: 80px;
+                order: 2;
+            }
+
+            .patient-info-bar .helper-btn {
+                order: 3;
             }
 
             .patient-info-bar #close-sheet {
                 margin-left: auto !important;
                 flex: 0 0 auto;
+                order: 4;
             }
         }
 
@@ -670,6 +677,9 @@
     <!-- Patient Info Bar (Top Stack) -->
     <div class="patient-info-bar">
         <div class="input-container">
+            <!-- Left Spacer for Centering -->
+            <div class="spacer"></div>
+
             <!-- Wrapper for Centering Inputs -->
             <div class="inputs-wrapper">
                 <!-- Age Inputs -->
@@ -700,7 +710,7 @@
                 </button>
             </div>
 
-            <!-- Trash Button -->
+            <!-- Trash Button (Right Anchored) -->
             <button id="close-sheet" title="入力をすべて削除"
                 style="border:none; background:#fee2e2; color:#ef4444; width: 44px; height: 44px; border-radius: 0.75rem; font-size:1.1rem; cursor:pointer; margin-left: auto; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
                 <i class="fas fa-trash-alt"></i>
