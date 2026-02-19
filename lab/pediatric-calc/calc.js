@@ -915,23 +915,6 @@ const PEDIATRIC_DRUGS = [
             }
         ],
         "piSnippetSource": "通常、1回1.25μg/kgを1日2〜3回。6歳以上は1回25μgを1日1〜2回。年齢および症状に応じて適宜増減する。",
-        "diseases": [
-            {
-                "id": "meptin-2",
-                "label": "通常 (1日2回)",
-                "dosage": { "timesPerDay": 2 }
-            },
-            {
-                "id": "meptin-3",
-                "label": "1日3回 (6歳未満・乳幼児)",
-                "dosage": { "timesPerDay": 3 }
-            },
-            {
-                "id": "meptin-1",
-                "label": "1日1回就寝前 (6歳以上)",
-                "dosage": { "timesPerDay": 1 }
-            }
-        ],
         "calcType": "age-weight-switch",
         "ageBranches": [
             {
