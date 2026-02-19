@@ -142,6 +142,7 @@ const PEDIATRIC_DRUGS = [
             }
         ],
         "dosage": {
+            "timesPerDay": 2,
             "note": "1日量を12時間ごと(1日2回)に投与。添付文書の分包用量表に準拠。"
         },
         "piSnippetSource": "通常、1日96.4mg/kgを2回に分けて経口投与。分包製剤(パウチ)の場合は体重区分(6-10kg, 11-16kg等)ごとの固定量を投与する。",
@@ -690,6 +691,7 @@ const PEDIATRIC_DRUGS = [
         ],
         "dosage": {
             "timesPerDay": 1,
+            "isSingleDose": true,
             "note": "単回投与。体重10-20kg:10mg、20-40kg:20mg、40kg以上:40mg。"
         },
         "piSnippet": "通常、単回経口投与する。10-20kg未満:10mg(0.5g)、20-40kg未満:20mg(1.0g)、40kg以上:40mg(2.0g)。",
@@ -724,6 +726,7 @@ const PEDIATRIC_DRUGS = [
         ],
         "dosage": {
             "timesPerDay": 1,
+            "isSingleDose": true,
             "note": "単回吸入。10歳未満:20mg(1容器)、10歳以上:40mg(2容器)。"
         },
         "piSnippet": "通常、単回吸入投与する。10歳未満：20mg（1容器）、10歳以上：40mg（2容器）。",
@@ -1194,6 +1197,7 @@ const PEDIATRIC_DRUGS = [
             }
         ],
         "dosage": {
+            "timesPerDay": 1,
             "note": "1歳以上6歳未満：1日1回1包(4mg)。"
         },
         "piSnippet": "1歳以上6歳未満：通常、1日1回1包（4mg）を就寝前に服用する。",
@@ -1652,7 +1656,7 @@ function calculateDrug(drug, years, months, weight) {
             // If fixed dose has times, calculate total daily dose for display
             let totalStr = '', timeStr = '';
             let times = fixed.times || (dosageConfig ? dosageConfig.timesPerDay : 0);
-            if (times && fixed.dose) {
+            if (times > 0 && fixed.dose) {
                 const total = fixed.dose * times;
                 totalStr = `${total}`;
                 timeStr = `${fixed.dose}`;
@@ -1662,6 +1666,7 @@ function calculateDrug(drug, years, months, weight) {
                 result: fixed.label,
                 detail: display,
                 isFixed: true,
+                isSingleDose: dosageConfig ? dosageConfig.isSingleDose : false,
                 note: dosageConfig ? dosageConfig.note : '',
                 totalRange: totalStr,
                 perTimeRange: timeStr,
@@ -1783,7 +1788,41 @@ function calculateDrug(drug, years, months, weight) {
             let display = step.display || `${step.dose}${step.unit}`;
             // If isPerKg
             if (step.isPerKg && !step.display) display += "/kg";
-            return { result: step.label, detail: display, isFixed: true, note: dosageConfig ? dosageConfig.note : '' };
+
+            // Support Daily/PerTime split if timesPerDay is set (e.g. Clavamox)
+            let totalStr = '', timeStr = '';
+            const times = (dosageConfig && dosageConfig.timesPerDay) || 1;
+            const isSingleDose = dosageConfig && dosageConfig.isSingleDose;
+
+            if (times > 1 && step.dose && !isSingleDose) {
+                const total = step.dose; // weight-step usually provides daily total (like Clavamox)
+                const perTime = Math.round((total / times) * 100) / 100;
+                totalStr = `${total}`;
+                timeStr = `${perTime}`;
+                return {
+                    result: step.label,
+                    detail: display,
+                    totalRange: totalStr,
+                    perTimeRange: timeStr,
+                    times: times,
+                    unit: step.unit || unit,
+                    isFixed: true,
+                    isSingleDose: isSingleDose,
+                    note: dosageConfig ? dosageConfig.note : '',
+                    piUrl: drug.piUrl,
+                    piSnippet: drug.piSnippet
+                };
+            }
+
+            return {
+                result: step.label,
+                detail: display,
+                isFixed: true,
+                isSingleDose: isSingleDose,
+                note: dosageConfig ? dosageConfig.note : '',
+                piUrl: drug.piUrl,
+                piSnippet: drug.piSnippet
+            };
         }
         return { error: '該当体重の用量設定なし' };
     }
@@ -1932,9 +1971,10 @@ function updatePrescriptionSheet() {
         if (calc.error) {
             resultMain = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> ${calc.error}</div>`;
         } else if (calc.isFixed && !calc.totalRange) {
+            const label = calc.isSingleDose ? '単回投与' : '固定用量';
             resultMain = `
                 <div class="result-row">
-                    <span class="result-label">固定用量</span>
+                    <span class="result-label">${label}</span>
                     <span class="result-val">${calc.detail}</span>
                 </div>`;
         } else {
