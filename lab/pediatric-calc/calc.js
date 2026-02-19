@@ -592,15 +592,29 @@ const PEDIATRIC_DRUGS = [
                     "timeMgKg": 25,
                     "timesPerDay": 2,
                     "absoluteMaxMgPerTime": 500,
-                    "absoluteMaxMgPerDay": 1000,
-                    "note": "通常1回25mg/kgを1日2回。上限500mg/回。",
-                    "isByTime": true
+                    "isByTime": true,
+                    "weightBasedOverrides": [
+                        {
+                            "weightMin": 0,
+                            "weightMax": 10,
+                            "timesPerDay": 3,
+                            "absoluteMaxMgPerTime": 500,
+                            "note": "10kg未満:1回25mg/kgを1日3回。上限500mg/回。"
+                        },
+                        {
+                            "weightMin": 10,
+                            "weightMax": 1000,
+                            "timesPerDay": 2,
+                            "absoluteMaxMgPerTime": 500,
+                            "note": "10kg以上:1回25mg/kgを1日2回。上限500mg/回。"
+                        }
+                    ]
                 },
-                "piSnippet": "通常、小児には1回25mg/kgを1日2回服用する。ただし、1回最大用量は500mgを超えないこと。"
+                "piSnippet": "通常、10kg未満の小児：1回25mg/kgを1日3回、10kg以上の小児：1回25mg/kgを1日2回服用する。ただし、1回最大500mg。"
             }
         ],
         "dosage": {
-            "note": "通常1回25mg/kg。水痘・帯状疱疹(1日3回・上限1000mg)、単純ヘルペス(1日2回・上限500mg)。"
+            "note": "通常1回25mg/kg。疾患や体重により回数・上限が異なります。"
         },
         "piSnippet": "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回量として1000mgを超えないこと。",
         "category": "antiviral"
@@ -1646,8 +1660,18 @@ function calculateDrug(drug, years, months, weight) {
         const dis = drug.diseases.find(d => d.id === opts.diseaseId);
         if (dis && dis.dosage) {
             const parentNote = dosageConfig ? dosageConfig.note : undefined;
-            dosageConfig = dis.dosage;
+            dosageConfig = JSON.parse(JSON.stringify(dis.dosage)); // Deep copy to avoid mutating original
             if (!dosageConfig.note) dosageConfig.note = parentNote;
+
+            // Handle weight-based overrides within disease dosage
+            if (dosageConfig.weightBasedOverrides) {
+                const override = dosageConfig.weightBasedOverrides.find(o => weight >= (o.weightMin || 0) && weight < (o.weightMax || 999));
+                if (override) {
+                    if (override.timesPerDay !== undefined) dosageConfig.timesPerDay = override.timesPerDay;
+                    if (override.absoluteMaxMgPerTime !== undefined) dosageConfig.absoluteMaxMgPerTime = override.absoluteMaxMgPerTime;
+                    if (override.note !== undefined) dosageConfig.note = override.note;
+                }
+            }
             diseaseLabel = dis.label;
             if (dis.piSnippet) drug.tempPiSnippet = dis.piSnippet; // Override snippet
         }
