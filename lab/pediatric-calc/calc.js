@@ -152,23 +152,7 @@ const PEDIATRIC_DRUGS = [
         "piSnippet": "通常、1日96.4mg/kgを2回に分けて経口投与。分包製剤(パウチ)の場合は体重区分(6-10kg, 11-16kg等)ごとの固定量を投与する。",
         "category": "antibiotics"
     },
-    {
-        "id": "yj-6132003C1041",
-        "name": "ホスミシン／ホスホマイシン 20%顆粒",
-        "yjCode": "6132003C1041",
-        "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132003C1041",
-        "potency": 200,
-        "piSnippetSource": "小児：1回10〜30mg/kg(力価)を3〜4回。年齢、症状に応じ適宜増減。",
-        "dosage": {
-            "minMgKg": 40,
-            "maxMgKg": 120,
-            "timesPerDay": 3,
-            "absoluteMaxMgPerDay": 3000,
-            "note": "通常1日40〜120mg/kgを3回。1日最大3000mg。"
-        },
-        "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3000mg。",
-        "category": "abx"
-    },
+
     {
         "id": "yj-6132005C1053",
         "name": "ケフラール／セファクロル 10%",
@@ -293,7 +277,7 @@ const PEDIATRIC_DRUGS = [
                     "maxMgKg": 50,
                     "timesPerDay": 2,
                     "absoluteMaxMgPerDay": 1000,
-                    "note": "1日25〜50mg/kgを2回(朝夕)。成人最大1g/日。"
+                    "note": "1日25〜50mg/kgを2回(朝夕)。成人最大1000mg/日。"
                 },
                 "piSnippet": "通常、幼小児にはセファレキシンとして体重kgあたり1日25〜50mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
             },
@@ -305,7 +289,7 @@ const PEDIATRIC_DRUGS = [
                     "maxMgKg": 100,
                     "timesPerDay": 2,
                     "absoluteMaxMgPerDay": 2000,
-                    "note": "1日50〜100mg/kgを2回(朝夕)。成人最大2g/日。"
+                    "note": "1日50〜100mg/kgを2回(朝夕)。成人最大2000mg/日。"
                 },
                 "piSnippet": "重症の場合や分離菌の感受性が比較的低い症例にはセファレキシンとして体重kgあたり1日50〜100mg（力価）を2回に分割して、朝、夕食後に経口投与する。"
             }
@@ -346,11 +330,11 @@ const PEDIATRIC_DRUGS = [
         "dosage": {
             "minMgKg": 40,
             "maxMgKg": 120,
-            "timesPerDay": 4,
-            "absoluteMaxMgPerDay": 4500,
-            "note": "通常1日40〜120mg/kgを3〜4回。1日最大4.5g(4500mg)。"
+            "timesPerDay": 3,
+            "absoluteMaxMgPerDay": 3000,
+            "note": "通常1日40〜120mg/kgを3回。1日最大3000mg。"
         },
-        "piSnippet": "通常、小児には1日40〜120mg(力価)/kgを3〜4回に分割して服用する。",
+        "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3000mg。",
         "category": "antibiotics"
     },
     {
