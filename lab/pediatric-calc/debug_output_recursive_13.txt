@@ -8,138 +8,238 @@ Reading XML Base Directory: C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_al
 Found 18208 top-level directories.
 Searching for drug: サワシリン／アモキシシリン (規格選択) (6131001C1210) with keywords: サワシリン細粒
   Found directory: サワシリン細粒１０％ for keyword: サワシリン細粒
-  Failed to extract dosage content from XML for 6131001C1210
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 6131001C1210
 Searching for drug: ユナシン／スルタミシリン 10% (6131008C1033) with keywords: ユナシン, スルタミシリン 10%
   Found directory: ユナシン-Ｓキット静注用１．５ｇ for keyword: ユナシン
-  Failed to extract dosage content from XML for 6131008C1033
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 6131008C1033
 Searching for drug: クラバモックス小児用配合ドライシロップ (6139100R1036) with keywords: クラバモックス小児用配合ドライシロップ
   Found directory: クラバモックス小児用配合ドライシロップ for keyword: クラバモックス小児用配合ドライシロップ
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6139100R1036
 Searching for drug: ケフラール／セファクロル 25% (6132005C1053) with keywords: ケフラール, セファクロル 25%
   Found directory: ケフラールカプセル２５０ｍｇ for keyword: ケフラール
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6132005C1053
 Searching for drug: トミロン／セフテラム 10% (6132009C2023) with keywords: トミロン, セフテラム 10%
   Found directory: トミロン細粒小児用２０％ for keyword: トミロン
-  Failed to extract dosage content from XML for 6132009C2023
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 6132009C2023
 Searching for drug: バナン／セフポドキシム 10% (6132011R1078) with keywords: バナン, セフポドキシム 10%
   Found directory: バナンドライシロップ５％ for keyword: バナン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6132011R1078
 Searching for drug: セフゾン／セフジニル 10% (6132013C1031) with keywords: セフゾン, セフジニル 10%
   Found directory: セフゾンカプセル１００ｍｇ for keyword: セフゾン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6132013C1031
 Searching for drug: メイアクト／セフジトレン 10% (6132015C1103) with keywords: メイアクト, セフジトレン 10%
   Found directory: メイアクトＭＳ小児用細粒１０％ for keyword: メイアクト
-  Failed to extract dosage content from XML for 6132015C1103
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 6132015C1103
 Searching for drug: フロモックス／セフカペン 10% (6132016C1027) with keywords: フロモックス, セフカペン 10%
   Found directory: フロモックス小児用細粒１００ｍｇ for keyword: フロモックス
-  Failed to extract dosage content from XML for 6132016C1027
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 6132016C1027
 Searching for drug: Ｌ－ケフレックス／セファレキシン 10% (6132002E1034) with keywords: Ｌ－ケフレックス, セファレキシン 10%
   No matching directory found for Ｌ－ケフレックス／セファレキシン 10% (6132002E1034)
 Searching for drug: ホスミシン／ホスホマイシン (規格選択) (6135001R2110) with keywords: ホスミシンドライシロップ
   Found directory: ホスミシンドライシロップ２００ for keyword: ホスミシンドライシロップ
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6135001R2110
 Searching for drug: ファロム／ファロペネム 10% (6139001R1032) with keywords: ファロム, ファロペネム 10%
   Found directory: ファロムドライシロップ小児用１０％ for keyword: ファロム
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6139001R1032
 Searching for drug: オラペネム／テビペネム 10% (6139002C1026) with keywords: オラペネム, テビペネム 10%
   Found directory: オラペネム小児用細粒１０％ for keyword: オラペネム
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6139002C1026
 Searching for drug: エリスロシン／エリスロマイシン (規格選択) (6141001R2053) with keywords: エリスロシン, エリスロマイシン
   Found directory: エリスロシンドライシロップ１０％ for keyword: エリスロシン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6141001R2053
 Searching for drug: クラリス／クラリスロマイシン 10% (6149003R1143) with keywords: クラリスドライシロップ, 小児用
   Found directory: クラリスドライシロップ１０％小児用 for keyword: クラリスドライシロップ
-  Successfully extracted dosage for 6149003R1143
+DEBUG: Found nested DoseAdmin
+  Failed to extract dosage content from XML for 6149003R1143 in C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\クラリスドライシロップ１０％小児用\400059_6149003F1031_1_38.xml
 Searching for drug: ジスロマック／アジスロマイシン (10%) (6149004C1030) with keywords: ジスロマック, アジスロマイシン
   Found directory: ジスロマックカプセル小児用１００ｍｇ for keyword: ジスロマック
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6149004C1030
 Searching for drug: ミノマイシン／ミノサイクリン 2% (6152005D1094) with keywords: ミノマイシン, ミノサイクリン 2%
   Found directory: ミノマイシンカプセル１００ｍｇ for keyword: ミノマイシン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6152005D1094
 Searching for drug: オゼックス／トスフロキサシン 15% (6241010C1024) with keywords: オゼックス, トスフロキサシン 15%
   Found directory: オゼックス点眼液０．３％ for keyword: オゼックス
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6241010C1024
 Searching for drug: ゾビラックス／アシクロビル 40% (6250002D1024) with keywords: ゾビラックス, アシクロビル 40%
   Found directory: ゾビラックスクリーム５％ for keyword: ゾビラックス
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 6250002D1024
-Searching for drug: バルトレックス顆粒50% (6250019D1020) with keywords: バルトレックス
-  Found directory: バルトレックス錠５００ for keyword: バルトレックス
-  Failed to extract dosage content from XML for 6250019D1020
-Searching for drug: タミフル／オセルタミビル (規格選択) (6250021R1024) with keywords: タミフル
-  Found directory: タミフルカプセル７５ for keyword: タミフル
-  Failed to extract dosage content from XML for 6250021R1024
+Searching for drug: バルトレックス顆粒50% (6250019D1020) with keywords: バルトレックス顆粒５０％
+  Found directory: バルトレックス顆粒５０％ for keyword: バルトレックス顆粒５０％
+DEBUG: Found nested DoseAdmin
+  DEBUG: Child Tag: item, text: ［成人］
+          
+  ...
+  DEBUG: Child Tag: header, text: ［成人］...
+  DEBUG: Child Tag: simplelist, text: 〈単純疱疹〉
+            ...
+  DEBUG: Child Tag: header, text: 〈単純疱疹〉...
+  DEBUG: Child Tag: detail, text: 通常、成人にはバラシクロビルとして1回5...
+  DEBUG: Child Tag: header, text: 〈造血幹細胞移植における単純ヘルペスウイ...
+  DEBUG: Child Tag: detail, text: 通常、成人にはバラシクロビルとして1回5...
+  DEBUG: Child Tag: header, text: 〈帯状疱疹〉...
+  DEBUG: Child Tag: detail, text: 通常、成人にはバラシクロビルとして1回1...
+  DEBUG: Child Tag: header, text: 〈水痘〉...
+  DEBUG: Child Tag: detail, text: 通常、成人にはバラシクロビルとして1回1...
+  DEBUG: Child Tag: header, text: 〈性器ヘルペスの再発抑制〉...
+  DEBUG: Child Tag: detail, text: 通常、成人にはバラシクロビルとして1回5...
+  DEBUG: Child Tag: item, text: ［小児］
+          
+  ...
+  DEBUG: Child Tag: header, text: ［小児］...
+  DEBUG: Child Tag: simplelist, text: 〈単純疱疹〉
+            ...
+  DEBUG: Child Tag: header, text: 〈単純疱疹〉...
+  DEBUG: Child Tag: detail, text: 通常、体重10kg未満の小児には体重1k...
+  DEBUG: Child Tag: header, text: 〈造血幹細胞移植における単純ヘルペスウイ...
+  DEBUG: Child Tag: detail, text: 通常、体重10kg未満の小児には体重1k...
+  DEBUG: Child Tag: header, text: 〈帯状疱疹〉...
+  DEBUG: Child Tag: detail, text: 通常、小児には体重1kg当たりバラシクロ...
+  DEBUG: Child Tag: header, text: 〈水痘〉...
+  DEBUG: Child Tag: detail, text: 通常、小児には体重1kg当たりバラシクロ...
+  DEBUG: Child Tag: header, text: 〈性器ヘルペスの再発抑制〉...
+  DEBUG: Child Tag: detail, text: 通常、体重40kg以上の小児にはバラシク...
+  Successfully extracted dosage for 6250019D1020
+Searching for drug: タミフル／オセルタミビル (規格選択) (6250021R1024) with keywords: タミフルドライシロップ３％
+  Found directory: タミフルドライシロップ３％ for keyword: タミフルドライシロップ３％
+DEBUG: Found nested DoseAdmin
+  DEBUG: Child Tag: item, text: 〈治療〉
+          
+  ...
+  DEBUG: Child Tag: header, text: 〈治療〉...
+  DEBUG: Child Tag: detail, text: 成人...
+  DEBUG: Child Tag: simplelist, text: 通常、オセルタミビルとして1回75mgを...
+  DEBUG: Child Tag: detail, text: 通常、オセルタミビルとして1回75mgを...
+  DEBUG: Child Tag: item, text: 小児
+          
+    ...
+  DEBUG: Child Tag: detail, text: 小児...
+  DEBUG: Child Tag: simplelist, text: 通常、オセルタミビルとして以下の1回用量...
+  DEBUG: Child Tag: detail, text: 通常、オセルタミビルとして以下の1回用量...
+  DEBUG: Child Tag: item, text: 〈予防〉
+          
+  ...
+  DEBUG: Child Tag: header, text: 〈予防〉...
+  DEBUG: Child Tag: detail, text: 成人...
+  DEBUG: Child Tag: simplelist, text: 通常、オセルタミビルとして1回75mgを...
+  DEBUG: Child Tag: detail, text: 通常、オセルタミビルとして1回75mgを...
+  DEBUG: Child Tag: item, text: 小児
+          
+    ...
+  DEBUG: Child Tag: detail, text: 小児...
+  DEBUG: Child Tag: simplelist, text: 通常、オセルタミビルとして以下の1回用量...
+  DEBUG: Child Tag: detail, text: 通常、オセルタミビルとして以下の1回用量...
+  Successfully extracted dosage for 6250021R1024
 Searching for drug: ゾフルーザ顆粒2% (6250047D1021) with keywords: ゾフルーザ, ゾフルーザ顆粒2%
   Found directory: ゾフルーザ錠１０ｍｇ for keyword: ゾフルーザ
-  No XML files found in C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\ゾフルーザ錠１０ｍｇ
+  No XML files found in C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\ゾフルーザ錠１０ｍｇ (searched recursively)
 Searching for drug: イナビル吸入粉末剤20mg (6250022G1022) with keywords: イナビル吸入粉末剤
   Found directory: イナビル吸入粉末剤２０ｍｇ for keyword: イナビル吸入粉末剤
-  Successfully extracted dosage for 6250022G1022
+DEBUG: Found nested DoseAdmin
+  Failed to extract dosage content from XML for 6250022G1022 in C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\イナビル吸入粉末剤２０ｍｇ\430574_6250703G1022_1_20.xml
 Searching for drug: リレンザカプセル5mg (吸入用) (6250019G1022) with keywords: リレンザ, リレンザカプセル5mg, 吸入用)
   Found directory: リレンザ for keyword: リレンザ
-  Failed to extract dosage content from XML for 6250019G1022
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 6250019G1022
 Searching for drug: メジコン／デキストロメトルファン (10%) (2223001B1210) with keywords: メジコン, デキストロメトルファン
   Found directory: メジコン散１０％ for keyword: メジコン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2223001B1210
 Searching for drug: ムコダイン／カルボシステイン (50%) (2233002R2029) with keywords: ムコダイン, カルボシステイン
   Found directory: ムコダインシロップ５％ for keyword: ムコダイン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2233002R2029
 Searching for drug: ムコソルバン／アンブロキソール 1.5% (2239001Q1166) with keywords: ムコソルバン, アンブロキソール 1.5%
   Found directory: ムコソルバン内用液０．７５％ for keyword: ムコソルバン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2239001Q1166
 Searching for drug: アスベリン／チペピジン (規格選択) (2249003B1037) with keywords: アスベリン, チペピジン
   Found directory: アスベリンシロップ「調剤用」２％ for keyword: アスベリン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2249003B1037
 Searching for drug: テオドール／テオフィリン (20%) (2251001D1061) with keywords: テオドール, テオフィリン
   Found directory: テオドール錠１００ｍｇ for keyword: テオドール
-  Failed to extract dosage content from XML for 2251001D1061
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 2251001D1061
 Searching for drug: メプチン／プロカテロール (規格選択) (2259004R2024) with keywords: メプチン, プロカテロール
   Found directory: メプチンエアー１０μｇ吸入１００回 for keyword: メプチン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2259004R2024
 Searching for drug: ホクナリン／ツロブテロール 0.1% (2259002R1061) with keywords: ホクナリン, ツロブテロール 0.1%
   Found directory: ホクナリンテープ０．５ｍｇ for keyword: ホクナリン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2259002R1061
 Searching for drug: ゼスラン／メキタジン (0.6%) (4413004C2022) with keywords: ゼスラン小児用細粒
   Found directory: ゼスラン小児用細粒０．６％ for keyword: ゼスラン小児用細粒
-  Failed to extract dosage content from XML for 4413004C2022
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 4413004C2022
 Searching for drug: ポララミン散1% (4419002B1033) with keywords: ポララミン散1%
   No matching directory found for ポララミン散1% (4419002B1033)
 Searching for drug: ペリアクチン散1% (4419005B1045) with keywords: ペリアクチン散1%
   No matching directory found for ペリアクチン散1% (4419005B1045)
 Searching for drug: ザジテン／ケトチフェン (0.1%) (4490003R1228) with keywords: ザジテン, ケトチフェン
   Found directory: ザジテンカプセル１ｍｇ for keyword: ザジテン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490003R1228
 Searching for drug: オキサトミドドライシロップ小児用2% (4490005R1430) with keywords: オキサトミド, オキサトミドドライシロップ小児用2%
   Found directory: オキサトミドシロップ小児用０．２％「ＶＴＲＳ」 for keyword: オキサトミド
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490005R1430
 Searching for drug: オノン／プランルカスト (10%) (4490017R1033) with keywords: オノン, プランルカスト
   Found directory: オノンカプセル１１２．５ｍｇ for keyword: オノン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490017R1033
 Searching for drug: ジルテック／セチリジン (1.25%) (4490020R1027) with keywords: ジルテック, セチリジン
   Found directory: ジルテックドライシロップ１．２５％ for keyword: ジルテック
-  Failed to extract dosage content from XML for 4490020R1027
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 4490020R1027
 Searching for drug: フェキソフェナジンDS5% (旧アレグラ) (4490023R2035) with keywords: フェキソフェナジン, フェキソフェナジンDS5%, 旧アレグラ)
   Found directory: フェキソフェナジン塩酸塩錠３０ｍｇ「ケミファ」 for keyword: フェキソフェナジン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490023R2035
 Searching for drug: アレロック／オロパタジン (0.5%) (4490025D1022) with keywords: アレロック, オロパタジン
   Found directory: アレロック錠２．５ for keyword: アレロック
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490025D1022
 Searching for drug: キプレス／モンテルカスト (4490026C1021) with keywords: キプレス, モンテルカスト
   Found directory: キプレスチュアブル錠５ｍｇ for keyword: キプレス
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490026C1021
 Searching for drug: クラリチン／ロラタジン 1% (4490027R1029) with keywords: クラリチン, ロラタジン 1%
   Found directory: クラリチンドライシロップ１％ for keyword: クラリチン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 4490027R1029
 Searching for drug: ザイザル／レボセチリジン (0.05%) (4490028Q1028) with keywords: ザイザル, レボセチリジン
   Found directory: ザイザルシロップ０．０５％ for keyword: ザイザル
-  Failed to extract dosage content from XML for 4490028Q1028
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 4490028Q1028
 Searching for drug: イーケプラ／レベチラセタム 50% (1139010R1020) with keywords: イーケプラ, レベチラセタム 50%
   Found directory: イーケプラドライシロップ５０％ for keyword: イーケプラ
-  Failed to extract dosage content from XML for 1139010R1020
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 1139010R1020
 Searching for drug: メラトベル顆粒0.2%小児用 (1190028D1026) with keywords: メラトベル, メラトベル顆粒0.2%小児用
   Found directory: メラトベル錠小児用１ｍｇ for keyword: メラトベル
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 1190028D1026
 Searching for drug: カロナール／アセトアミノフェン (規格選択) (1141007C1075) with keywords: カロナール, アセトアミノフェン
   Found directory: カロナールシロップ２％ for keyword: カロナール
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 1141007C1075
 Searching for drug: ビオフェルミンR散 (2316004B1036) with keywords: ビオフェルミンR, ビオフェルミンR散
   No matching directory found for ビオフェルミンR散 (2316004B1036)
@@ -147,36 +247,47 @@ Searching for drug: ミヤBM細粒 (10%) (2316009C1026) with keywords: ミヤBM,
   No matching directory found for ミヤBM細粒 (10%) (2316009C1026)
 Searching for drug: ラックビー微粒N (10%) (2316014B1030) with keywords: ラックビー, ラックビー微粒N, 10%)
   Found directory: ラックビー微粒Ｎ for keyword: ラックビー
-  Failed to extract dosage content from XML for 2316014B1030
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 2316014B1030
 Searching for drug: ナウゼリン／ドンペリドン (2399005R1163) with keywords: ナウゼリン, ドンペリドン
   Found directory: ナウゼリンドライシロップ１％ for keyword: ナウゼリン
-  Failed to extract dosage content from XML for 2399005R1163
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 2399005R1163
 Searching for drug: 酸化マグネシウム細粒83% (2344009C1039) with keywords: 酸化マグネシウム, 酸化マグネシウム細粒83%
   Found directory: 酸化マグネシウム「コザカイ・Ｍ」 for keyword: 酸化マグネシウム
-  Failed to extract dosage content from XML for 2344009C1039
+DEBUG: Found nested DoseAdmin
+  Successfully extracted dosage for 2344009C1039
 Searching for drug: モビコールHD／LD (2359110B1037) with keywords: モビコール, モビコールHD
   Found directory: モビコール配合内用剤ＨＤ for keyword: モビコール
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 2359110B1037
 Searching for drug: インクレミン／溶性ピロリン酸第二鉄 (0.6%) (3222012Q1030) with keywords: インクレミンシロップ
   Found directory: インクレミンシロップ５％ for keyword: インクレミンシロップ
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 3222012Q1030
 Searching for drug: トランサミン／トラネキサム酸 50% (3327002B1027) with keywords: トランサミン, トラネキサム酸 50%
   Found directory: トランサミンカプセル２５０ｍｇ for keyword: トランサミン
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 3327002B1027
 Searching for drug: ツムラ葛根湯エキス顆粒 (5200013D1123) with keywords: ツムラ葛根湯, ツムラ葛根湯エキス顆粒
   Found directory: ツムラ葛根湯エキス顆粒（医療用） for keyword: ツムラ葛根湯
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 5200013D1123
 Searching for drug: ツムラ小建中湯エキス顆粒 (5200072D1058) with keywords: ツムラ小建中湯, ツムラ小建中湯エキス顆粒
   Found directory: ツムラ小建中湯エキス顆粒（医療用） for keyword: ツムラ小建中湯
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 5200072D1058
 Searching for drug: ツムラ抑肝散エキス顆粒 (5200139D1037) with keywords: ツムラ抑肝散, ツムラ抑肝散エキス顆粒
   Found directory: ツムラ抑肝散エキス顆粒（医療用） for keyword: ツムラ抑肝散
+DEBUG: Found nested DoseAdmin
   Successfully extracted dosage for 5200139D1037
 
-Extraction complete. Saved 35/57 records to C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc\data\dosage_details.js
-Amoxicillin: Data Missing or Empty ❌
-Zeslan: Data Missing or Empty ❌
+Extraction complete. Saved 49/57 records to C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc\data\dosage_details.js
+Amoxicillin: Data Extracted ✅
+Zeslan: Data Extracted ✅
 Fosmicin: Data Extracted ✅
 Incremin: Data Extracted ✅
-Inavir: Data Extracted ✅
-Clarith: Data Extracted ✅
+Inavir: Data Missing or Empty ❌
+Clarith: Data Missing or Empty ❌
+Valtrex: Data Extracted ✅
+Tamiflu: Data Extracted ✅

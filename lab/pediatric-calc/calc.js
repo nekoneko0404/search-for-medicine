@@ -1827,11 +1827,26 @@ function calculateDrug(drug, years, months, weight) {
             const times = (dosageConfig && dosageConfig.timesPerDay) || 1;
             const isSingleDose = dosageConfig && dosageConfig.isSingleDose;
 
-            if (times > 1 && step.dose && !isSingleDose) {
-                const total = step.dose; // weight-step usually provides daily total (like Clavamox)
-                const perTime = Math.round((total / times) * 100) / 100;
+            // NEW Check: Is it Per Kg (Zithromac < 15kg) OR (Fixed Dose with times > 1)
+            let total = 0;
+            let shouldCalculate = false;
+
+            if (step.isPerKg) {
+                total = step.dose * weight;
+                shouldCalculate = true;
+            } else if (times > 1 && step.dose && !isSingleDose) {
+                total = step.dose;
+                shouldCalculate = true;
+            }
+
+            if (shouldCalculate) {
+                const round = (n) => Math.round(n * 100) / 100;
+                total = round(total);
+
+                const perTime = round(total / times);
                 totalStr = `${total}`;
                 timeStr = `${perTime}`;
+
                 return {
                     result: step.label,
                     detail: display,
@@ -1839,7 +1854,7 @@ function calculateDrug(drug, years, months, weight) {
                     perTimeRange: timeStr,
                     times: times,
                     unit: step.unit || unit,
-                    isFixed: true,
+                    isFixed: !step.isPerKg, // If calculated per kg, treat as standard calc result
                     isSingleDose: isSingleDose,
                     hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                     note: dosageConfig ? dosageConfig.note : '',
@@ -2260,6 +2275,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('age-input').addEventListener('input', updateParams);
     document.getElementById('month-input').addEventListener('input', updateParams);
     document.getElementById('weight-input').addEventListener('input', updateParams);
+
+    // Initial Default Weight
+    const weightInput = document.getElementById('weight-input');
+    if (!weightInput.value) {
+        weightInput.value = "10";
+        // Ensure state is updated so calculations run immediately on load
+        state.params.weight = "10";
+    }
 
     document.getElementById('auto-weight-btn').addEventListener('click', () => {
         const w = getStandardWeight(document.getElementById('age-input').value, document.getElementById('month-input').value);

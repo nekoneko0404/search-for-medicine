@@ -1,0 +1,43 @@
+Current Working Directory: C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc
+Target calc.js path: C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc\calc.js
+Starting script execution...
+Reading calc.js...
+Successfully extracted 57 drugs via source parsing.
+Loaded 57 drugs.
+Reading XML Base Directory: C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML
+Found 18208 top-level directories.
+Searching for drug: サワシリン／アモキシシリン (規格選択) (6131001C1210) with keywords: サワシリン細粒
+  Found directory: サワシリン細粒１０％ for keyword: サワシリン細粒
+DEBUG: Clean XML Length: 118205
+DEBUG Tag: PACKINS
+DEBUG Tag: PACKAGEINSERTNO
+DEBUG Tag: COMPANYIDENTIFIER
+DEBUG Tag: DATEOFPREPARATIONORREVISION
+DEBUG Tag: PREPARATIONORREVISION
+DEBUG Tag: YEARMONTH
+DEBUG Tag: VERSION
+DEBUG Tag: LANG
+DEBUG Tag: PREPARATIONORREVISION
+DEBUG Tag: YEARMONTH
+DEBUG Tag: VERSION
+DEBUG Tag: LANG
+DEBUG Tag: SCCJ
+DEBUG Tag: SCCJNO
+DEBUG Tag: THERAPEUTICCLASSIFICATION
+DEBUG Tag: DETAIL
+DEBUG Tag: LANG
+DEBUG Tag: APPROVALETC
+DEBUG Tag: DETAILBRANDNAME
+DEBUG Tag: APPROVALBRANDNAME
+DEBUG: Found DoseAdmin tag: INFODOSEADMIN
+An error occurred during execution: TypeError: $ is not a function
+    at processItem (file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/scripts/extract_dosage.mjs:185:5)
+    at Element.<anonymous> (file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/scripts/extract_dosage.mjs:286:29)
+    at LoadedCheerio.each (file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/node_modules/cheerio/dist/esm/api/traversing.js:488:26)
+    at Element.<anonymous> (file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/scripts/extract_dosage.mjs:285:37)
+    at LoadedCheerio.each (file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/node_modules/cheerio/dist/esm/api/traversing.js:488:26)
+    at parseDoseAdmin (file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/scripts/extract_dosage.mjs:280:30)
+    at file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/scripts/extract_dosage.mjs:377:40
+    at file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/lab/pediatric-calc/scripts/extract_dosage.mjs:429:3
+    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)

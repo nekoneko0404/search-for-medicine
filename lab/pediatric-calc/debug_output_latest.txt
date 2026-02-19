@@ -62,11 +62,11 @@ Searching for drug: オゼックス／トスフロキサシン 15% (6241010C1024
 Searching for drug: ゾビラックス／アシクロビル 40% (6250002D1024) with keywords: ゾビラックス, アシクロビル 40%
   Found directory: ゾビラックスクリーム５％ for keyword: ゾビラックス
   Successfully extracted dosage for 6250002D1024
-Searching for drug: バルトレックス顆粒50% (6250019D1020) with keywords: バルトレックス
-  Found directory: バルトレックス錠５００ for keyword: バルトレックス
+Searching for drug: バルトレックス顆粒50% (6250019D1020) with keywords: バルトレックス顆粒５０％
+  Found directory: バルトレックス顆粒５０％ for keyword: バルトレックス顆粒５０％
   Failed to extract dosage content from XML for 6250019D1020
-Searching for drug: タミフル／オセルタミビル (規格選択) (6250021R1024) with keywords: タミフル
-  Found directory: タミフルカプセル７５ for keyword: タミフル
+Searching for drug: タミフル／オセルタミビル (規格選択) (6250021R1024) with keywords: タミフルドライシロップ３％
+  Found directory: タミフルドライシロップ３％ for keyword: タミフルドライシロップ３％
   Failed to extract dosage content from XML for 6250021R1024
 Searching for drug: ゾフルーザ顆粒2% (6250047D1021) with keywords: ゾフルーザ, ゾフルーザ顆粒2%
   Found directory: ゾフルーザ錠１０ｍｇ for keyword: ゾフルーザ

@@ -33,8 +33,8 @@ const DIRECTORY_KEYWORD_MAPPING = {
     "4413004C2022": ["ゼスラン小児用細粒"],
     "3222012Q1030": ["インクレミンシロップ"],
     "6131001C1210": ["サワシリン細粒"],
-    "6250019D1020": ["バルトレックス"],
-    "6250021R1024": ["タミフル"]
+    "6250019D1020": ["バルトレックス顆粒５０％"],
+    "6250021R1024": ["タミフルドライシロップ３％"]
 };
 
 function loadDrugsFromCalcJs() {
@@ -121,38 +121,48 @@ function getSearchKeywords(drug) {
     return [...new Set(keywords)].filter(k => k.length > 2);
 }
 
-function parseDoseAdmin(xmlContent, drugCode) {
-    // Strip namespaces to avoid Cheerio extraction issues
-    const cleanXml = xmlContent.replace(/xmlns="[^"]*"/g, '');
+function parseDoseAdmin(xmlContent, code) {
+    if (!xmlContent || xmlContent.trim().length === 0) {
+        console.error(`ERROR: XML content is empty for ${code}`);
+        return null;
+    }
+
+    const cleanXml = xmlContent.replace(/<\/?([a-zA-Z0-9]+):/g, (match, prefix) => {
+        return match.startsWith('</') ? '</' : '<';
+    }).replace(/\sxmlns(:[a-zA-Z0-9]+)?="[^"]*"/g, '');
+
+    // console.log(`DEBUG: Clean XML Length: ${cleanXml.length}`);
     const $ = cheerio.load(cleanXml, { xmlMode: true });
-
-    let doseAdmin = $('DoseAdmin');
-    if (doseAdmin.length === 0) doseAdmin = $('*[nodeName="DoseAdmin"]');
-    if (doseAdmin.length === 0) return null;
-
-    let html = '';
 
     function processTable(tblBlock) {
         let tableHtml = '<div class="table-responsive"><table class="dosage-table table table-bordered table-sm">';
-        const title = tblBlock.find('Title').first().text();
+
+        let title = '';
+        $(tblBlock).children().each((i, child) => {
+            if ($(child).prop('tagName').toLowerCase() === 'title') {
+                title = $(child).text();
+            }
+        });
+
         if (title) tableHtml = `<h5>${title}</h5>` + tableHtml;
 
-        let rows = tblBlock.find('Table Row');
-        if (rows.length === 0) {
-            rows = tblBlock.find('SimpleTable SimpTblRow');
-        }
+        // Find rows case-insensitively
+        let rows = $(tblBlock).find('*').filter((i, el) => {
+            const t = $(el).prop('tagName').toLowerCase();
+            return t === 'row' || t === 'simptblrow';
+        });
 
-        if (rows.length === 0) {
-            console.log(`[WARN] Table found but zero rows (checked Table/Row and SimpleTable/SimpTblRow).`);
-        }
+        // Ensure rows are found
+        // if (rows.length === 0) console.log('DEBUG: processTable found 0 rows');
 
         rows.each((i, row) => {
             tableHtml += '<tr>';
 
-            let cells = $(row).find('Cell');
-            if (cells.length === 0) {
-                cells = $(row).find('SimpTblCell');
-            }
+            // Find cells case-insensitively
+            let cells = $(row).find('*').filter((i, el) => {
+                const t = $(el).prop('tagName').toLowerCase();
+                return t === 'cell' || t === 'simptblcell';
+            });
 
             cells.each((j, cell) => {
                 const content = $(cell).text().trim();
@@ -182,39 +192,60 @@ function parseDoseAdmin(xmlContent, drugCode) {
     function processItem(item) {
         let itemHtml = '<div class="dosage-item mb-2">';
 
-        $(item).children().each((i, child) => {
-            const tagName = $(child).prop('tagName');
+        // Use contents() to include text nodes and elements
+        $(item).contents().each((i, child) => {
 
-            if (tagName === 'Header' || tagName === 'Caption' || tagName === 'Head') {
-                const text = $(child).text().trim();
-                if (text) {
-                    itemHtml += `<p class="dosage-header fw-bold mb-1">${text}</p>`;
-                }
-            } else if (tagName === 'Lang') {
+            // Handle Text Nodes
+            if (child.type === 'text') {
                 const text = $(child).text().trim();
                 if (text) {
                     itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
                 }
-            } else if (tagName === 'Detail') {
-                const text = $(child).text().trim();
+                return;
+            }
+
+            // Handle Element Nodes
+            if (child.type !== 'tag') return;
+
+            const childEl = $(child);
+            const tagName = (childEl.prop('tagName') || '').toLowerCase();
+            const text = childEl.text().trim();
+
+            if (tagName === 'item') {
+                // Recursive call for Item tags
+                itemHtml += processItem(child);
+            } else if (['paragraph', 'p'].includes(tagName)) {
+                if (text) itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
+            } else if (['header', 'caption', 'head'].includes(tagName)) {
+                if (text) {
+                    itemHtml += `<p class="dosage-header fw-bold mb-1">${text}</p>`;
+                }
+            } else if (tagName === 'lang') {
+                if (text) {
+                    itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
+                }
+            } else if (tagName === 'detail') {
                 if (text.length < 20) {
-                    // Short Details are often labels like "成人" or "小児"
                     itemHtml += `<p class="dosage-sub-header fw-bold mb-1">${text}</p>`;
                 } else {
                     itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
                 }
-            } else if (tagName === 'SimpleList' || tagName === 'UnorderedList' || tagName === 'OrderedList' || tagName === 'Content') {
-                $(child).find('> Item').each((j, nestedItem) => {
-                    itemHtml += processItem(nestedItem);
+            } else if (['simplelist', 'unorderedlist', 'orderedlist', 'content'].includes(tagName)) {
+                // Iterate children of the list to preserve order of Headers and Items
+                childEl.children().each((j, listChild) => {
+                    const lcTag = ($(listChild).prop('tagName') || '').toLowerCase();
+                    if (lcTag === 'item') {
+                        itemHtml += processItem(listChild);
+                    } else if (['header', 'caption', 'head'].includes(lcTag)) {
+                        const lcText = $(listChild).text().trim();
+                        if (lcText) itemHtml += `<p class="dosage-header fw-bold mb-1">${lcText}</p>`;
+                    } else if (lcTag === 'lang') { // Content might have direct Lang
+                        const lcText = $(listChild).text().trim();
+                        if (lcText) itemHtml += `<p class="dosage-text mb-1">${lcText}</p>`;
+                    }
                 });
-                // If Content has no Items, check for direct Langs
-                if (tagName === 'Content' && $(child).find('> Item').length === 0) {
-                    $(child).find('Lang').each((k, cl) => {
-                        itemHtml += `<p class="dosage-text mb-1">${$(cl).text().trim()}</p>`;
-                    });
-                }
-            } else if (tagName === 'TblBlock') {
-                itemHtml += processTable($(child));
+            } else if (['tblblock', 'simpletable'].includes(tagName)) {
+                itemHtml += processTable(childEl);
             }
         });
 
@@ -223,6 +254,7 @@ function parseDoseAdmin(xmlContent, drugCode) {
         // Cleanup empty items
         const $check = cheerio.load(itemHtml);
         const cleanText = $check.root().text().trim();
+
         if (!cleanText && !itemHtml.includes('<img') && !itemHtml.includes('<table')) {
             return "";
         }
@@ -230,32 +262,58 @@ function parseDoseAdmin(xmlContent, drugCode) {
         return itemHtml;
     }
 
-    let items = doseAdmin.find('> Item');
-    if (items.length === 0) {
-        // Handle SimpleList wrapper for Zeslan etc.
-        items = doseAdmin.find('> SimpleList > Item');
+    let html = '';
+
+    let doseAdmin = null;
+    $('*').each((i, el) => {
+        const t = ($(el).prop('tagName') || '').toLowerCase();
+        if (t.endsWith('doseadmin')) {
+            // console.log(`DEBUG: Found DoseAdmin tag: ${$(el).prop('tagName')}`);
+            doseAdmin = $(el);
+            return false;
+        }
+    });
+
+    if (!doseAdmin || doseAdmin.length === 0) {
+        console.log(`DEBUG: DoseAdmin NOT FOUND for ${code}`);
+        return null; // Return null to indicate failure
     }
 
-    if (items.length > 0) {
-        items.each((i, item) => html += processItem(item));
-    } else {
-        const tables = doseAdmin.find('> TblBlock');
-        if (tables.length > 0) {
-            tables.each((i, tbl) => html += processTable($(tbl)));
-        } else {
-            // Handle direct Detail (Fosmicin) or Lang
-            const details = doseAdmin.find('> Detail');
-            if (details.length > 0) {
-                details.each((i, detail) => {
-                    $(detail).find('Lang').each((j, lang) => html += `<p class="dosage-text">${$(lang).text().trim()}</p>`);
+    // Found InfoDoseAdmin or DoseAdmin.
+    // If it's InfoDoseAdmin, check if it has DoseAdmin child.
+    const rootTagName = (doseAdmin.prop('tagName') || '').toLowerCase();
+
+    // If it is InfoDoseAdmin, we iterate children to find DoseAdmin or process directly if structure differs
+    if (rootTagName === 'infodoseadmin') {
+        let hasDoseAdminChild = false;
+        doseAdmin.children().each((i, child) => {
+            const t = ($(child).prop('tagName') || '').toLowerCase();
+            // console.log(`DEBUG: InfoDoseAdmin child: ${t}`);
+            if (t === 'doseadmin') {
+                hasDoseAdminChild = true;
+                console.log(`DEBUG: Found nested DoseAdmin`);
+                // Process this DoseAdmin child
+                $(child).children().each((j, subChild) => {
+                    html += processItem(subChild);
                 });
-            } else {
-                const langs = doseAdmin.find('> Lang');
-                if (langs.length > 0) langs.each((i, lang) => html += `<p class="dosage-text">${$(lang).text().trim()}</p>`);
             }
+        });
+
+        if (!hasDoseAdminChild) {
+            console.log(`DEBUG: No nested DoseAdmin found, processing InfoDoseAdmin children directly`);
+            // Fallback: treat InfoDoseAdmin as DoseAdmin (iterate its children)
+            doseAdmin.children().each((i, child) => {
+                html += processItem(child);
+            });
         }
+    } else {
+        // It is DoseAdmin (or similar)
+        doseAdmin.children().each((i, child) => {
+            html += processItem(child);
+        });
     }
-    return html;
+
+    return html.trim() || null;
 }
 
 (async () => {
@@ -284,42 +342,69 @@ function parseDoseAdmin(xmlContent, drugCode) {
             if (!yjCode) continue;
 
             const searchKeywords = getSearchKeywords(drug);
+            console.log(`Searching for drug: ${drug.name || drug.brandName} (${yjCode}) with keywords: ${searchKeywords.join(', ')}`);
 
             let foundDir = null;
             for (const keyword of searchKeywords) {
                 const match = allDirs.find(dirName => dirName.includes(keyword));
                 if (match) {
                     foundDir = match;
+                    console.log(`  Found directory: ${foundDir} for keyword: ${keyword}`);
                     break;
                 }
             }
 
             if (foundDir) {
                 const fullDirPath = path.join(xmlBaseDir, foundDir);
-                let xmlFiles = [];
-                try {
-                    xmlFiles = fs.readdirSync(fullDirPath).filter(f => f.endsWith('.xml'));
-                } catch (e) {
-                    console.warn(`Failed to read dir content: ${fullDirPath}`);
+
+                function findXmlRecursive(dir) {
+                    let results = [];
+                    try {
+                        const list = fs.readdirSync(dir);
+                        for (let file of list) {
+                            const fullPath = path.join(dir, file);
+                            const stat = fs.statSync(fullPath);
+                            if (stat && stat.isDirectory()) {
+                                results = results.concat(findXmlRecursive(fullPath));
+                            } else if (file.endsWith('.xml')) {
+                                results.push(fullPath);
+                            }
+                        }
+                    } catch (e) {
+                        console.warn(`  Error searching in ${dir}: ${e.message}`);
+                    }
+                    return results;
                 }
 
+                const xmlFiles = findXmlRecursive(fullDirPath);
+
                 if (xmlFiles.length > 0) {
-                    const xmlPath = path.join(fullDirPath, xmlFiles[0]);
-                    const xmlContent = fs.readFileSync(xmlPath, 'utf-8');
+                    // console.log(`  Found ${xmlFiles.length} XML files, using ${xmlFiles[0]}`);
+                    const xmlPath = xmlFiles[0];
+                    let xmlContent = fs.readFileSync(xmlPath, 'utf-8');
+                    let originalXmlLength = xmlContent.length;
+                    // Strip BOM if present
+                    xmlContent = xmlContent.replace(/^\uFEFF/, '');
+
+                    // console.log(`DEBUG: XML Content Start (${yjCode}):`, xmlContent.substring(0, 200));
                     const dosageHtml = parseDoseAdmin(xmlContent, yjCode);
 
                     if (dosageHtml) {
                         dosageMap[yjCode] = dosageHtml;
                         foundCount++;
+                        console.log(`  Successfully extracted dosage for ${yjCode}`);
                     } else {
                         dosageMap[yjCode] = '<p class="dosage-empty">用法・用量情報の抽出に失敗しました。</p>';
+                        console.warn(`  Failed to extract dosage content from XML for ${yjCode} in ${xmlPath}`);
                     }
                 } else {
                     dosageMap[yjCode] = '<p class="dosage-empty">添付文書データ（XML）が見つかりませんでした。</p>';
+                    console.warn(`  No XML files found in ${fullDirPath} (searched recursively)`);
                 }
 
             } else {
                 dosageMap[yjCode] = '<p class="dosage-empty">添付文書データが見つかりませんでした。</p>';
+                console.warn(`  No matching directory found for ${drug.name || drug.brandName} (${yjCode})`);
             }
         }
 
@@ -327,29 +412,6 @@ function parseDoseAdmin(xmlContent, drugCode) {
         const outputJsPath = outputJsonPath.replace('.json', '.js');
         fs.writeFileSync(outputJsPath, jsContent, 'utf-8');
         console.log(`\nExtraction complete. Saved ${foundCount}/${drugs.length} records to ${outputJsPath}`);
-
-        const checkList = {
-            '6131001C1210': 'Amoxicillin',
-            '4413004C2022': 'Zeslan',
-            '6135001R2110': 'Fosmicin',
-            '3222012Q1030': 'Incremin',
-            '6250022G1022': 'Inavir',
-            '6149003R1143': 'Clarith'
-        };
-
-        for (const [code, name] of Object.entries(checkList)) {
-            if (dosageMap[code] && !dosageMap[code].includes('見つかりませんでした') && !dosageMap[code].includes('抽出に失敗しました') && !dosageMap[code].includes('<table></table>') && !dosageMap[code].includes('dosage-item mb-2"></div>')) {
-                // Check if it's just empty divs
-                const cleanText = cheerio.load(dosageMap[code]).text().trim();
-                if (!cleanText && !dosageMap[code].includes('<table')) {
-                    console.warn(`${name}: Data Missing or Empty (Empty Divs) ❌`);
-                } else {
-                    console.log(`${name}: Data Extracted ✅`);
-                }
-            } else {
-                console.warn(`${name}: Data Missing or Empty ❌`);
-            }
-        }
 
     } catch (e) {
         console.error("An error occurred during execution:", e);
