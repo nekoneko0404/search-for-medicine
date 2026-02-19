@@ -56,7 +56,8 @@ const DIRECTORY_KEYWORD_MAPPING = {
     "6152005D1094": ["ミノマイシン顆粒２％"],
     "6132002E1034": ["Ｌ-ケフレックス小児用顆粒"],
     "6132013C1031": ["セフゾン細粒小児用１０％"],
-    "6132005C1053": ["ケフラール細粒小児用１００ｍｇ"]
+    "6132005C1053": ["ケフラール細粒小児用１００ｍｇ"],
+    "6250002D1024": ["ゾビラックス顆粒４０％"]
 };
 
 function loadDrugsFromCalcJs() {
@@ -177,6 +178,32 @@ function parseDoseAdmin(xmlContent, code) {
             brandNameSource = brandNameEl.text().trim();
         }
     }
+
+    // --- NEW: Resolve Brand Name References ---
+    // Create a mapping of id -> brand name for resolving <ApprovalBrandNameRef> etc.
+    const brandMap = {};
+    $('DetailBrandName').each((i, el) => {
+        const id = $(el).attr('id');
+        const name = $(el).find('ApprovalBrandName Lang').first().text().trim();
+        if (id && name) {
+            brandMap[id] = name;
+        }
+    });
+
+    // Replace <ApprovalBrandNameRef> and <BrandNameRef> with actual text
+    $('*').each((i, el) => {
+        const tagName = ($(el).prop('tagName') || '').toLowerCase();
+        if (tagName.endsWith('brandnameref')) {
+            const refId = $(el).attr('ref');
+            if (refId && brandMap[refId]) {
+                $(el).replaceWith(brandMap[refId]);
+            } else {
+                // Fallback: remove the tag if not found, or use empty string
+                $(el).replaceWith("");
+            }
+        }
+    });
+    // --- END NEW ---
 
     function processTable(tblBlock) {
         let tableHtml = '<div class="table-responsive"><table class="dosage-table table table-bordered table-sm">';
