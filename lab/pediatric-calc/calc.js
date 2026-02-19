@@ -2047,6 +2047,7 @@ function updatePrescriptionSheet() {
             <div class="rx-meta">
                 <div>${calc.note || ''}</div>
                 ${drug.piUrl ? `<a href="${drug.piUrl}" target="_blank" class="pmda-link"><i class="fas fa-file-pdf"></i> PMDA</a>` : ''}
+                ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}')"><i class="fas fa-list-alt"></i> 用法・用量</button>` : ''}
             </div>
             ${calc.piSnippet ? `<details style="margin-top:0.5rem; font-size:0.7rem; color:#64748b; cursor:pointer;"><summary>添付文書(抜粋)</summary><div style="padding:4px; background:#f8fafc; border-radius:4px; margin-top:4px;">${calc.piSnippet}</div></details>` : ''}
         </div>`;
@@ -2299,3 +2300,55 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+// Dosage Modal Logic
+let dosageDataCache = null;
+
+window.viewDosageDetails = async (yjCode) => {
+    // Show modal loading
+    const modal = document.getElementById('dosage-modal');
+    const title = document.getElementById('dosage-modal-title');
+    const body = document.getElementById('dosage-modal-body');
+
+    if (!modal || !body) return;
+
+    modal.style.display = 'flex';
+    // Small delay to allow display:flex to apply before opacity transition
+    setTimeout(() => modal.classList.add('active'), 10);
+
+    body.innerHTML = '<div style="text-align:center; padding:3rem; color:#64748b;"><i class="fas fa-spinner fa-spin" style="font-size:2rem; margin-bottom:1rem;"></i><br>読み込み中...</div>';
+
+    // Fetch data if not loaded
+    if (!dosageDataCache) {
+        try {
+            const res = await fetch('data/dosage_details.json');
+            if (!res.ok) throw new Error('Network response was not ok');
+            dosageDataCache = await res.json();
+        } catch (e) {
+            console.error('Failed to load dosage data', e);
+            body.innerHTML = '<div class="dosage-empty"><i class="fas fa-exclamation-triangle" style="font-size:2rem; color:#ef4444; margin-bottom:1rem;"></i><p>データの読み込みに失敗しました。</p></div>';
+            return;
+        }
+    }
+
+    // Get content
+    const html = dosageDataCache[yjCode];
+
+    if (html) {
+        body.innerHTML = html;
+        body.scrollTop = 0;
+    } else {
+        body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
+    }
+
+    // Close handler setup
+    const closeBtn = document.getElementById('close-dosage-modal');
+    const closeModal = () => {
+        modal.classList.remove('active');
+        setTimeout(() => modal.style.display = 'none', 300);
+    };
+    if (closeBtn) closeBtn.onclick = closeModal;
+    modal.onclick = (e) => {
+        if (e.target === modal) closeModal();
+    };
+};

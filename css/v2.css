@@ -655,3 +655,174 @@ html {
         margin: 0;
     }
 }
+
+/* Dosage Modal styling */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(2px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+}
+
+.modal-content {
+    background: white;
+    width: 90%;
+    max-width: 800px;
+    max-height: 85vh;
+    border-radius: 12px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(20px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.modal-header h3 i {
+    color: #4f46e5;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    color: #64748b;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-modal-btn:hover {
+    background: #e2e8f0;
+    color: #ef4444;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #334155;
+    background: #ffffff;
+    overscroll-behavior: contain;
+}
+
+/* Dosage Content Styles */
+.dosage-section {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px dashed #e2e8f0;
+}
+
+.dosage-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.dosage-header {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #4f46e5;
+    margin: 0 0 0.75rem 0;
+    padding-left: 0.75rem;
+    border-left: 4px solid #4f46e5;
+    background: #eff6ff;
+    padding: 0.25rem 0.75rem;
+    border-radius: 0 4px 4px 0;
+    display: inline-block;
+}
+
+.dosage-text {
+    margin: 0 0 0.5rem 0;
+    text-align: justify;
+}
+
+.dosage-empty {
+    color: #94a3b8;
+    text-align: center;
+    padding: 3rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Button style for Dosage view */
+.btn-view-dosage {
+    border: none;
+    background: #eff6ff;
+    color: #4f46e5;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 0.5rem;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.btn-view-dosage:hover {
+    background: #e0e7ff;
+    transform: translateY(-1px);
+}
+
+@media (max-width: 640px) {
+    .modal-content {
+        width: 100%;
+        height: 100%;
+        max-height: 100vh;
+        border-radius: 0;
+    }
+    .modal-body {
+        padding: 1rem;
+    }
+    .modal-header {
+        padding: 0.75rem 1rem;
+    }
+}

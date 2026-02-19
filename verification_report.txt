@@ -1,0 +1,59 @@
+Parsing CSV...
+Parsed 16916 rows.
+Header found at row 1. YJ index: 4, Name index: 5
+Loaded 16909 valid entries.
+
+--- Verification Report ---
+
+[MISSING] YJ Code in Calc.js NOT found in CSV: 2254001R1053
+  Calc.js Name: メプチン／プロカテロール
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - メプチンシロップ５μｇ／ｍＬ : 2259004Q1111
+    - メプチンドライシロップ０．００５％ : 2259004R2024
+    - メプチン吸入液０．０１％ : 2259704G1032
+    - メプチン吸入液ユニット０．３ｍＬ : 2259704G5020
+    - メプチン吸入液ユニット０．５ｍＬ : 2259704G6026
+[MISSING] YJ Code in Calc.js NOT found in CSV: 4490005R1022
+  Calc.js Name: オキサトミド (旧セルテクト)
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - オキサトミドドライシロップ小児用２％「ツルハラ」 : 4490005R1430
+    - オキサトミドシロップ小児用０．２％「ＶＴＲＳ」 : 4490005Q1051
+[MISSING] YJ Code in Calc.js NOT found in CSV: 4490023R2027
+  Calc.js Name: フェキソフェナジン (旧アレグラ)
+  No powder/granule candidates found for "フェキソフェナジン"
+  Other form candidates:
+    - フェキソフェナジン塩酸塩錠６０ｍｇ「ＮＰ」 : 4490023F1083
+    - フェキソフェナジン塩酸塩錠３０ｍｇ「ＮＰ」 : 4490023F2080
+    - フェキソフェナジン塩酸塩ＯＤ錠６０ｍｇ「ＮＰ」 : 4490023F3043
+[MISSING] YJ Code in Calc.js NOT found in CSV: 5201139D1037
+  Calc.js Name: ツムラ抑肝散エキス顆粒
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - ツムラ抑肝散エキス顆粒（医療用） : 5200139D1037
+    - ツムラ抑肝散加陳皮半夏エキス顆粒（医療用） : 5200140D1021
+[MISSING] YJ Code in Calc.js NOT found in CSV: 6250022G1022
+  Calc.js Name: イナビル吸入粉末剤20mg
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - イナビル吸入懸濁用１６０ｍｇセット : 6250703G2029
+[MISSING] YJ Code in Calc.js NOT found in CSV: 6250019G1022
+  Calc.js Name: リレンザカプセル5mg (吸入用)
+  No powder/granule candidates found for "リレンザ"
+  Other form candidates:
+    - リレンザ : 6250702G1028
+[MISSING] YJ Code in Calc.js NOT found in CSV: 6132001B1028
+  Calc.js Name: Ｌ－ケフレックス／セファレキシン
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - Ｌ－ケフレックス小児用顆粒 : 6132002E1034
+    - Ｌ－ケフレックス顆粒 : 6132002E2030
+[MISSING] YJ Code in Calc.js NOT found in CSV: 6241013R1030
+  Calc.js Name: オゼックス／トスフロキサシン
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - オゼックス細粒小児用１５％ : 6241010C1024
+    - オゼックス点眼液０．３％ : 1319751Q1020
+[MISSING] YJ Code in Calc.js NOT found in CSV: 2344002B1032
+  Calc.js Name: 酸化マグネシウム
+  Potential Candidates in CSV (Powder/Granule/Liquid):
+    - 酸化マグネシウム細粒８３％「ヨシダ」 : 2344009C1063
+    - 酸化マグネシウム細粒８３％「ケンエー」 : 2344009C1039
+    - 酸化マグネシウム細粒８３％〈ハチ〉 : 2344009C1047
+
+Verification Complete. Missing: 9, Warnings: 0

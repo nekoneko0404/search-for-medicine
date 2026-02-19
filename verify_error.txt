@@ -1,0 +1,13 @@
+file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/verify_phase15.mjs:52
+const yokukansan = PEDIATRIC_DRUGS.find(d => d.brandName.includes('抑肝散'));
+                                                         ^
+
+TypeError: Cannot read properties of undefined (reading 'includes')
+    at file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/verify_phase15.mjs:52:58
+    at Array.find (<anonymous>)
+    at file:///C:/Users/kiyoshi/Github_repository/search-for-medicine/verify_phase15.mjs:52:36
+    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)
+    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
+
+Node.js v22.20.0
