@@ -2301,52 +2301,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Dosage Modal Logic
-let dosageDataCache = null;
+import DOSAGE_DATA from './data/dosage_details.js';
 
-window.viewDosageDetails = async (yjCode) => {
+// Dosage Modal Logic
+window.viewDosageDetails = (yjCode) => {
     // Show modal loading
     const modal = document.getElementById('dosage-modal');
     const title = document.getElementById('dosage-modal-title');
     const body = document.getElementById('dosage-modal-body');
+    const closeBtn = document.getElementById('close-dosage-modal');
 
     if (!modal || !body) return;
 
-    modal.style.display = 'flex';
-    // Small delay to allow display:flex to apply before opacity transition
-    setTimeout(() => modal.classList.add('active'), 10);
-
-    body.innerHTML = '<div style="text-align:center; padding:3rem; color:#64748b;"><i class="fas fa-spinner fa-spin" style="font-size:2rem; margin-bottom:1rem;"></i><br>読み込み中...</div>';
-
-    // Fetch data if not loaded
-    if (!dosageDataCache) {
-        try {
-            const res = await fetch('data/dosage_details.json');
-            if (!res.ok) throw new Error('Network response was not ok');
-            dosageDataCache = await res.json();
-        } catch (e) {
-            console.error('Failed to load dosage data', e);
-            body.innerHTML = '<div class="dosage-empty"><i class="fas fa-exclamation-triangle" style="font-size:2rem; color:#ef4444; margin-bottom:1rem;"></i><p>データの読み込みに失敗しました。</p></div>';
-            return;
-        }
-    }
-
-    // Get content
-    const html = dosageDataCache[yjCode];
+    // Reset content and show
+    body.scrollTop = 0;
+    const html = DOSAGE_DATA[yjCode];
 
     if (html) {
         body.innerHTML = html;
-        body.scrollTop = 0;
     } else {
         body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
     }
 
-    // Close handler setup
-    const closeBtn = document.getElementById('close-dosage-modal');
+    modal.style.display = 'flex';
+    // Small delay to allow display:flex to apply before opacity transition
+    requestAnimationFrame(() => {
+        modal.classList.add('active');
+    });
+
+    // Close handler
     const closeModal = () => {
         modal.classList.remove('active');
-        setTimeout(() => modal.style.display = 'none', 300);
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
     };
+
+    // Remove old listeners to prevent duplication if called multiple times (though window usually fine)
+    // Simpler: just overwrite onclick
     if (closeBtn) closeBtn.onclick = closeModal;
     modal.onclick = (e) => {
         if (e.target === modal) closeModal();

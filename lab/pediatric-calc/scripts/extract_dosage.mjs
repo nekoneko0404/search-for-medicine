@@ -174,8 +174,12 @@ try {
         }
     }
 
-    fs.writeFileSync(outputJsonPath, JSON.stringify(dosageMap, null, 2), 'utf-8');
-    console.log(`\nExtraction complete. Saved ${foundCount}/${yjCodes.length} records to ${outputJsonPath}`);
+}
+
+    const jsContent = `export default ${JSON.stringify(dosageMap, null, 2)};`;
+const outputJsPath = outputJsonPath.replace('.json', '.js');
+fs.writeFileSync(outputJsPath, jsContent, 'utf-8');
+console.log(`\nExtraction complete. Saved ${foundCount}/${yjCodes.length} records to ${outputJsPath}`);
 } catch (e) {
     console.error("An error occurred during execution:", e);
 }
