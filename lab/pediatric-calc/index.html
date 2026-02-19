@@ -545,24 +545,39 @@
 
         /* PC centering for Patient Info Bar */
         .patient-info-bar .input-container {
-            display: grid !important;
-            grid-template-columns: 1fr auto 1fr;
+            display: flex !important;
+            justify-content: center !important;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
             width: 100%;
-            padding: 0 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            /* For absolute trash positioning */
         }
 
         .inputs-wrapper {
-            grid-column: 2;
             display: flex;
             align-items: center;
+            gap: 1rem;
+        }
+
+        .patient-info-bar .input-group-enhanced {
+            min-width: 160px;
+            /* Ensure visibility on PC */
+            flex: 0 0 auto;
+        }
+
+        .patient-info-bar .age-inputs {
+            display: flex;
             gap: 0.5rem;
+            width: 340px;
         }
 
         .patient-info-bar #close-sheet {
-            grid-column: 3;
-            margin-left: auto !important;
+            position: absolute;
+            right: 0;
+            margin-left: 0 !important;
         }
 
         /* Mobile specific adjustments for Patient Info Bar */
@@ -573,6 +588,7 @@
                 gap: 0.5rem !important;
                 justify-content: center !important;
                 padding: 0.25rem;
+                position: static;
             }
 
             .inputs-wrapper {
@@ -598,6 +614,7 @@
             }
 
             .patient-info-bar #close-sheet {
+                position: static;
                 margin-left: auto !important;
                 flex: 0 0 auto;
                 order: 4;
@@ -677,9 +694,6 @@
     <!-- Patient Info Bar (Top Stack) -->
     <div class="patient-info-bar">
         <div class="input-container">
-            <!-- Left Spacer for Centering -->
-            <div class="spacer"></div>
-
             <!-- Wrapper for Centering Inputs -->
             <div class="inputs-wrapper">
                 <!-- Age Inputs -->
@@ -712,7 +726,7 @@
 
             <!-- Trash Button (Right Anchored) -->
             <button id="close-sheet" title="入力をすべて削除"
-                style="border:none; background:#fee2e2; color:#ef4444; width: 44px; height: 44px; border-radius: 0.75rem; font-size:1.1rem; cursor:pointer; margin-left: auto; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+                style="border:none; background:#fee2e2; color:#ef4444; width: 44px; height: 44px; border-radius: 0.75rem; font-size:1.1rem; cursor:pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
                 <i class="fas fa-trash-alt"></i>
             </button>
         </div>
