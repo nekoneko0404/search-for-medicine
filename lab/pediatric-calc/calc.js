@@ -2046,10 +2046,8 @@ function updatePrescriptionSheet() {
             <div class="rx-result-box">${resultMain}</div>
             <div class="rx-meta">
                 <div>${calc.note || ''}</div>
-                ${drug.piUrl ? `<a href="${drug.piUrl}" target="_blank" class="pmda-link"><i class="fas fa-file-pdf"></i> PMDA</a>` : ''}
-                ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}')"><i class="fas fa-list-alt"></i> 用法・用量</button>` : ''}
+                ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')">用法<br>用量</button>` : ''}
             </div>
-            ${calc.piSnippet ? `<details style="margin-top:0.5rem; font-size:0.7rem; color:#64748b; cursor:pointer;"><summary>添付文書(抜粋)</summary><div style="padding:4px; background:#f8fafc; border-radius:4px; margin-top:4px;">${calc.piSnippet}</div></details>` : ''}
         </div>`;
     }).join('');
 
@@ -2304,7 +2302,7 @@ document.addEventListener('DOMContentLoaded', () => {
 import DOSAGE_DATA from './data/dosage_details.js';
 
 // Dosage Modal Logic
-window.viewDosageDetails = (yjCode) => {
+window.viewDosageDetails = (yjCode, piUrl) => {
     console.log(`[viewDosageDetails] Clicked YJ Code: "${yjCode}"`);
     console.log(`[viewDosageDetails] Data entry exists:`, !!DOSAGE_DATA[yjCode]);
     if (!DOSAGE_DATA[yjCode]) {
@@ -2325,7 +2323,17 @@ window.viewDosageDetails = (yjCode) => {
 
     if (html) {
         // Replace potential XML processing instructions or placeholders
-        body.innerHTML = html.replaceAll('<?enter?>', '<br>');
+        let content = html.replaceAll('<?enter?>', '<br>');
+
+        // Add PMDA Link if exists
+        if (piUrl) {
+            content += `<div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e2e8f0; text-align:center;">
+                <a href="${piUrl}" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; background:#f1f5f9; color:#475569; text-decoration:none; border-radius:0.5rem; font-weight:bold; font-size:0.9rem; transition:all 0.2s;">
+                    <i class="fas fa-external-link-alt"></i> PMDAで全文を見る
+                </a>
+            </div>`;
+        }
+        body.innerHTML = content;
     } else {
         body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
     }

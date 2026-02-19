@@ -1,0 +1,24 @@
+Current Working Directory: C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc
+Target calc.js path: C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc\calc.js
+Starting script execution...
+Reading calc.js...
+Successfully extracted 57 drugs via source parsing.
+Loaded 57 drugs.
+Reading XML Base Directory: C:\Users\kiyoshi\OneDrive\繝峨く繝･繝｡繝ｳ繝・pmda_all_sgml_xml_20260217\SGML_XML
+Found 18208 top-level directories.
+
+--- DEBUG Parsing for 4413004C2022 ---
+DoseAdmin tag count: 1
+DoseAdmin children: 1
+--- DEBUG END ---
+
+
+--- DEBUG Parsing for 3222012Q1030 ---
+DoseAdmin tag count: 1
+DoseAdmin children: 3
+--- DEBUG END ---
+
+
+Extraction complete. Saved 5/57 records to C:\Users\kiyoshi\Github_repository\search-for-medicine\lab\pediatric-calc\data\dosage_details.js
+Incremin: Data Extracted 笨・Inavir: Data Extracted 笨・Clarith: Data Extracted 笨・
+Amoxicillin: Data Missing or Empty 笶・Zeslan: Data Missing or Empty 笶・Fosmicin: Data Missing or Empty 笶・
