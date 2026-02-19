@@ -2359,9 +2359,17 @@ window.viewDosageDetails = (yjCode, piUrl) => {
 
     // Reset content and show
     body.scrollTop = 0;
-    const html = DOSAGE_DATA[yjCode];
+    const data = DOSAGE_DATA[yjCode];
+    const sourceSpan = document.getElementById('dosage-modal-source');
 
-    if (html) {
+    if (data) {
+        const html = typeof data === 'string' ? data : data.html;
+        const source = typeof data === 'string' ? '' : (data.source || '');
+
+        if (sourceSpan) {
+            sourceSpan.textContent = source ? `(参照: ${source})` : '';
+        }
+
         // Replace potential XML processing instructions or placeholders
         let content = html.replaceAll('<?enter?>', '<br>');
 

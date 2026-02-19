@@ -597,8 +597,13 @@
     <div id="dosage-modal" class="modal-overlay" style="display:none;">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="dosage-modal-title">添付文書：用法及び用量</h3>
-                <button id="close-dosage-modal" class="close-modal-btn"><i class="fas fa-times"></i></button>
+                <div style="display:flex; align-items:baseline; gap:1rem; flex:1; min-width:0;">
+                    <h3 id="dosage-modal-title" style="margin:0; white-space:nowrap;">添付文書：用法及び用量</h3>
+                    <span id="dosage-modal-source"
+                        style="font-size:0.75rem; color:#64748b; margin-left:auto; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:normal;"></span>
+                </div>
+                <button id="close-dosage-modal" class="close-modal-btn" style="margin-left:1rem;"><i
+                        class="fas fa-times"></i></button>
             </div>
             <div id="dosage-modal-body" class="modal-body">
                 <!-- Content will be loaded here -->

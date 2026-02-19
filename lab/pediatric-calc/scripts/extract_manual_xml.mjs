@@ -11,28 +11,24 @@ const TARGET_FILES = [
     { name: "Biofermin R", code: "2316004B1036", path: String.raw`C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\ビオフェルミンＲ散\650006_2316004B1036_1_10.xml` },
     { name: "Miya BM", code: "2316009C1026", path: String.raw`C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\ミヤＢＭ細粒\750144_2316009C1026_1_07.xml` },
     { name: "Mukodyne DS 50%", code: "2233002R2029", path: String.raw`C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\ムコダインＤＳ５０％\231099_2233002R2029_2_03.xml` },
-    { name: "Meptin DS 0.005%", code: "2259004R2024", path: String.raw`C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\メプチンドライシロップ０．００５％\180078_2259004R2024_1_11.xml` }
+    { name: "Meptin DS 0.005%", code: "2259004R2024", path: String.raw`C:\Users\kiyoshi\OneDrive\ドキュメント\pmda_all_sgml_xml_20260217\SGML_XML\メプチンドライシロップ０．００５％\180078_2259004R2024_1_11.xml` },
+    { name: "Sawasillin/Widercillin", code: "6131001C1210", path: path.join("lab/pediatric-calc/data/xml/Widercillin_20.xml") }
 ];
 
 function parseDoseAdmin(xmlContent, code) {
-    // Basic cleanup
     if (xmlContent.charCodeAt(0) === 0xFEFF) {
         xmlContent = xmlContent.slice(1);
     }
 
-    // Check for "encoding="shift_jis"" and decode if necessary? 
-    // Usually Node.js fs.readFileSync with 'utf8' handles UTF-8 files. 
-    // If these XMLs are Shift-JIS, we might need iconv-lite, but let's assume standard UTF-8 or that proper read handles it.
-    // However, SGML/XML from PMDA might be complicated.
-    // The previous script assumed UTF-8.
-
-    // Strip namespaces
-    // const cleanXml = xmlContent.replace(/<\/?([a-zA-Z0-9]+):/g, (match, prefix) => {
-    //     return match.startsWith('</') ? '</' : '<';
-    // }).replace(/\sxmlns(:[a-zA-Z0-9]+)?="[^"]*"/g, '');
-
-    // console.log(`DEBUG: Clean XML Length: ${cleanXml.length}`);
     const $ = cheerio.load(xmlContent, { xmlMode: true });
+
+    // Extract Brand Name
+    let brandNameSource = '';
+    const brandNameEl = $('ApprovalBrandName Lang, BrandName Lang').first();
+    if (brandNameEl.length > 0) {
+        brandNameSource = brandNameEl.text().trim();
+    }
+
 
     function processTable(tblBlock) {
         let tableHtml = '';
@@ -292,7 +288,7 @@ function parseDoseAdmin(xmlContent, code) {
         });
     }
 
-    return html.trim() || null;
+    return { html: html.trim() || null, source: brandNameSource };
 }
 
 const RESULTS = {};
@@ -327,15 +323,13 @@ for (const target of TARGET_FILES) {
         // We replace the encoding declaration to utf-8 because we have decoded it to JS string (which is UTF-16/UCS-2 effectively, but Cheerio handles it)
         xmlContent = xmlContent.replace(/encoding="Shift_JIS"/i, 'encoding="UTF-8"');
 
-        const dosageHtml = parseDoseAdmin(xmlContent, target.code);
+        const result = parseDoseAdmin(xmlContent, target.code);
 
-        if (dosageHtml) {
-            RESULTS[target.code] = dosageHtml;
-            console.log(`  > Success (${dosageHtml.length} chars)`);
+        if (result && result.html) {
+            RESULTS[target.code] = result;
+            console.log(`  > Success (${result.html.length} chars) from ${result.source}`);
         } else {
             console.error(`  > Failed to extract dosage content.`);
-            // Debug: Print first 500 chars of XML if failed
-            // console.log(xmlContent.substring(0, 500));
         }
     } catch (e) {
         console.error(`  > Error: ${e.message}`);

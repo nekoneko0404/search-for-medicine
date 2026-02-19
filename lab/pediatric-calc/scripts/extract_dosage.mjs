@@ -7,15 +7,18 @@ import * as cheerio from 'cheerio';
 const cwd = process.cwd();
 console.log(`Current Working Directory: ${cwd}`);
 
-// If running from lab/pediatric-calc, calc.js is directly in CWD
-const calcJsPath = path.join(cwd, 'calc.js');
+// Resolve paths relative to script location
+const currentFile = new URL(import.meta.url).pathname.replace(/^\/([a-zA-Z]:)/, '$1'); // Handle Windows path
+const scriptDir = path.dirname(currentFile);
+const calcJsPath = path.resolve(scriptDir, '../calc.js');
 const xmlBaseDir = "C:\\Users\\kiyoshi\\OneDrive\\ドキュメント\\pmda_all_sgml_xml_20260217\\SGML_XML";
-const outputJsonPath = path.join(cwd, 'data', 'dosage_details.json');
+const outputJsPath = path.resolve(scriptDir, '../data/dosage_details.js');
 
+console.log(`Script Directory: ${scriptDir}`);
 console.log(`Target calc.js path: ${calcJsPath}`);
 
 // Ensure output directory exists
-const outputDir = path.dirname(outputJsonPath);
+const outputDir = path.dirname(outputJsPath);
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir, { recursive: true });
 }
@@ -133,6 +136,13 @@ function parseDoseAdmin(xmlContent, code) {
 
     // console.log(`DEBUG: Clean XML Length: ${cleanXml.length}`);
     const $ = cheerio.load(cleanXml, { xmlMode: true });
+
+    // Extract Brand Name
+    let brandNameSource = '';
+    const brandNameEl = $('ApprovalBrandName Lang, BrandName Lang').first();
+    if (brandNameEl.length > 0) {
+        brandNameSource = brandNameEl.text().trim();
+    }
 
     function processTable(tblBlock) {
         let tableHtml = '<div class="table-responsive"><table class="dosage-table table table-bordered table-sm">';
@@ -313,7 +323,7 @@ function parseDoseAdmin(xmlContent, code) {
         });
     }
 
-    return html.trim() || null;
+    return { html: html.trim() || null, source: brandNameSource };
 }
 
 (async () => {
@@ -387,29 +397,28 @@ function parseDoseAdmin(xmlContent, code) {
                     xmlContent = xmlContent.replace(/^\uFEFF/, '');
 
                     // console.log(`DEBUG: XML Content Start (${yjCode}):`, xmlContent.substring(0, 200));
-                    const dosageHtml = parseDoseAdmin(xmlContent, yjCode);
+                    const result = parseDoseAdmin(xmlContent, yjCode);
 
-                    if (dosageHtml) {
-                        dosageMap[yjCode] = dosageHtml;
+                    if (result && result.html) {
+                        dosageMap[yjCode] = result;
                         foundCount++;
-                        console.log(`  Successfully extracted dosage for ${yjCode}`);
+                        console.log(`  Successfully extracted dosage for ${yjCode} from ${result.source}`);
                     } else {
-                        dosageMap[yjCode] = '<p class="dosage-empty">用法・用量情報の抽出に失敗しました。</p>';
+                        dosageMap[yjCode] = { html: '<p class="dosage-empty">用法・用量情報の抽出に失敗しました。</p>', source: '' };
                         console.warn(`  Failed to extract dosage content from XML for ${yjCode} in ${xmlPath}`);
                     }
                 } else {
-                    dosageMap[yjCode] = '<p class="dosage-empty">添付文書データ（XML）が見つかりませんでした。</p>';
+                    dosageMap[yjCode] = { html: '<p class="dosage-empty">添付文書データ（XML）が見つかりませんでした。</p>', source: '' };
                     console.warn(`  No XML files found in ${fullDirPath} (searched recursively)`);
                 }
 
             } else {
-                dosageMap[yjCode] = '<p class="dosage-empty">添付文書データが見つかりませんでした。</p>';
+                dosageMap[yjCode] = { html: '<p class="dosage-empty">添付文書データが見つかりませんでした。</p>', source: '' };
                 console.warn(`  No matching directory found for ${drug.name || drug.brandName} (${yjCode})`);
             }
         }
 
         const jsContent = `export default ${JSON.stringify(dosageMap, null, 2)};`;
-        const outputJsPath = outputJsonPath.replace('.json', '.js');
         fs.writeFileSync(outputJsPath, jsContent, 'utf-8');
         console.log(`\nExtraction complete. Saved ${foundCount}/${drugs.length} records to ${outputJsPath}`);
 
