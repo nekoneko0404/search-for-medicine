@@ -57,7 +57,13 @@ const DIRECTORY_KEYWORD_MAPPING = {
     "6132002E1034": ["Ｌ-ケフレックス小児用顆粒"],
     "6132013C1031": ["セフゾン細粒小児用１０％"],
     "6132005C1053": ["ケフラール細粒小児用１００ｍｇ"],
-    "6250002D1024": ["ゾビラックス顆粒４０％"]
+    "6250002D1024": ["ゾビラックス顆粒４０％"],
+    "2259004R2024": ["メプチンドライシロップ０．００５％"],
+    "2233002R2029": ["ムコダインＤＳ５０％"],
+    "4419002R1031": ["ポララミンドライシロップ０．２％"],
+    "2344009C1039": ["酸化マグネシウム細粒８３％「ケンエー」"],
+    "2316009C1026": ["ミヤＢＭ細粒"],
+    "2316004B1036": ["ビオフェルミンＲ散"]
 };
 
 function loadDrugsFromCalcJs() {
@@ -112,16 +118,49 @@ function loadDrugsFromCalcJs() {
         const getDrugs = new Function(cleanSource);
         const drugs = getDrugs();
 
-        console.log(`Successfully extracted ${drugs.length} drugs via source parsing.`);
-        return drugs;
+        // Flatten the drugs list to include nested products / subOptions
+        const flattened = [];
+        for (const drug of drugs) {
+            if (drug.yjCode) flattened.push(drug);
+
+            const subItems = drug.products || drug.subOptions;
+            if (subItems && Array.isArray(subItems)) {
+                for (const subItem of subItems) {
+                    if (subItem.yjCode) {
+                        // Inherit name/brandName if missing
+                        if (!subItem.name && drug.name) subItem.name = drug.name;
+                        if (!subItem.brandName && drug.brandName) subItem.brandName = drug.brandName;
+                        flattened.push(subItem);
+                    }
+                }
+            }
+        }
+
+        console.log(`Successfully extracted ${flattened.length} drugs (including nested items) via source parsing.`);
+        return flattened;
 
     } catch (e) {
         console.error("Failed to parse extracted source:", e);
         const arrayOnly = content.substring(scanStart, endIndex);
         try {
             const drugs = eval(arrayOnly);
-            console.log(`Successfully extracted ${drugs.length} drugs via direct eval.`);
-            return drugs;
+            const flattened = [];
+            for (const drug of drugs) {
+                if (drug.yjCode) flattened.push(drug);
+
+                const subItems = drug.products || drug.subOptions;
+                if (subItems && Array.isArray(subItems)) {
+                    for (const subItem of subItems) {
+                        if (subItem.yjCode) {
+                            if (!subItem.name && drug.name) subItem.name = drug.name;
+                            if (!subItem.brandName && drug.brandName) subItem.brandName = drug.brandName;
+                            flattened.push(subItem);
+                        }
+                    }
+                }
+            }
+            console.log(`Successfully extracted ${flattened.length} drugs (including nested items) via direct eval.`);
+            return flattened;
         } catch (e2) {
             console.error("Failed fallback eval:", e2);
             return [];

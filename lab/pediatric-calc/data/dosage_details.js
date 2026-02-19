@@ -100,8 +100,8 @@ export default {
     "source": "メジコン散10%"
   },
   "2233002R2029": {
-    "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常、幼・小児に、体重kg当り、カルボシステインとして1日30mgを3回に分割して経口投与する。なお、年齢、体重、症状により適宜増減する。幼・小児の用量は次のとおりである。</p></div><div class=\"dosage-item mb-2\"><div class=\"table-responsive\"><table class=\"dosage-table table table-bordered table-sm\"><tr><td style=\"text-align:center;vertical-align:middle;\"></td><td style=\"text-align:center;vertical-align:middle;\">シロップ1回投与量</td><td style=\"text-align:center;vertical-align:middle;\">投与回数</td></tr><tr><td style=\"text-align:center;vertical-align:middle;\">幼・小児</td><td style=\"text-align:center;vertical-align:middle;\">体重kg当たり0.2mL\r\n              \r\n              \r\n                （L-カルボシステインとして10mg）</td><td style=\"text-align:center;vertical-align:middle;\">1日3回\r\n              \r\n              \r\n                経口投与</td></tr></table></div></div>",
-    "source": "ムコダインシロップ5%"
+    "html": "<div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈成人〉</p><p class=\"dosage-text mb-1\">通常、成人にカルボシステインとして1回500mg（本剤1.0g）を用時懸濁し、1日3回経口投与する。なお、年齢、症状により適宜増減する。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈小児〉</p><p class=\"dosage-text mb-1\">通常、幼・小児にカルボシステインとして体重kg当たり1回10mg（本剤0.02g）を用時懸濁し、1日3回経口投与する。なお、年齢、症状により適宜増減する。</p></div></div>",
+    "source": "ムコダインDS50%"
   },
   "2239001Q1166": {
     "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常、幼・小児に1日0.06g/kg（アンブロキソール塩酸塩として0.9mg/kg）を3回に分け、用時溶解して経口投与する。なお、年齢・症状により適宜増減する。</p></div>",
@@ -116,8 +116,8 @@ export default {
     "source": "テオドール顆粒20%"
   },
   "2259004R2024": {
-    "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">プロカテロール塩酸塩水和物として、通常成人1回20μg（2吸入）、小児1回10μg（1吸入）を吸入する。なお、年齢、症状により適宜増減する。</p></div>",
-    "source": "メプチンエアー10μg吸入100回"
+    "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常、成人にはプロカテロール塩酸塩水和物として1回50μg（ドライシロップとして1g）を1日1回就寝前ないしは1日2回、朝及び就寝前に用時溶解して経口投与する。</p></div><div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">6歳以上の小児にはプロカテロール塩酸塩水和物として1回25μg（ドライシロップとして0.5g）を1日1回就寝前ないしは1日2回、朝及び就寝前に用時溶解して経口投与する。6歳未満の乳幼児にはプロカテロール塩酸塩水和物として1回1.25μg/kg（ドライシロップとして0.025g/kg）を1日2回、朝及び就寝前ないしは1日3回、朝、昼及び就寝前に用時溶解して経口投与する。</p></div></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">なお、年齢、症状により適宜増減する。</p></div>",
+    "source": "メプチンドライシロップ0.005%"
   },
   "2259002R1061": {
     "html": "<div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈ホクナリン錠1mg〉</p><p class=\"dosage-text mb-1\">通常、成人1回1錠、1日2回経口投与する。ただし、年齢、症状により適宜増減する。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈ホクナリンドライシロップ0.1%小児用〉</p><p class=\"dosage-text mb-1\">通常、小児に対し、ドライシロップとして、1日40mg/kg（ツロブテロール塩酸塩として0.04mg/kg）を2回に分け、用時溶解して経口投与する。ただし、年齢、症状により適宜増減する。なお、標準投与量は、通常、下記の用量を1日2回に分け、用時溶解して経口投与する。</p><div class=\"table-responsive\"><table class=\"dosage-table table table-bordered table-sm\"><tr><td style=\"text-align:center;vertical-align:middle;\">年齢</td><td style=\"text-align:center;vertical-align:middle;\">ドライシロップとして1日量（ツロブテロール塩酸塩として1日量）</td></tr><tr><td style=\"text-align:center;vertical-align:middle;\">0.5～3歳未満3～9歳未満9～15歳</td><td style=\"text-align:center;vertical-align:middle;\">0.25～0.5g（0.25～0.5mg）0.5～1g（0.5～1mg）1～2g（1～2mg）</td></tr></table></div></div></div>",
@@ -130,6 +130,10 @@ export default {
   "4419002B1033": {
     "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">d-クロルフェニラミンマレイン酸塩として、通常成人1回2mgを1日1〜4回経口投与する。なお、年齢、症状により適宜増減する。</p></div>",
     "source": "ポララミンシロップ0.04％"
+  },
+  "4419002R1031": {
+    "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">d-クロルフェニラミンマレイン酸塩として、通常成人1回2mgを1日1～4回、用時溶解して経口投与する。なお、年齢、症状により適宜増減する。</p></div>",
+    "source": "ポララミンドライシロップ0.2％"
   },
   "4419005B1045": {
     "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">シプロヘプタジン塩酸塩として、通常成人1回4mgを1日1～3回経口投与する。なお、年齢、症状により適宜増減する。</p></div>",
@@ -184,12 +188,12 @@ export default {
     "source": "カロナール細粒20%"
   },
   "2316004B1036": {
-    "html": "<p class=\"dosage-empty\">添付文書データが見つかりませんでした。</p>",
-    "source": ""
+    "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常成人1日3gを3回に分割経口投与する。なお、年齢、症状により適宜増減する。</p></div>",
+    "source": "ビオフェルミンR散"
   },
   "2316009C1026": {
-    "html": "<p class=\"dosage-empty\">添付文書データが見つかりませんでした。</p>",
-    "source": ""
+    "html": "<div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈細粒〉</p><p class=\"dosage-text mb-1\">通常、成人1日1.5～3gを3回に分割経口投与する。なお、年齢、症状により適宜増減する。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈錠〉</p><p class=\"dosage-text mb-1\">通常、成人1日3～6錠を3回に分割経口投与する。なお、年齢、症状により適宜増減する。</p></div></div>",
+    "source": "ミヤBM細粒"
   },
   "2316014B1030": {
     "html": "<div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈ラックビー微粒N〉</p><p class=\"dosage-text mb-1\">通常成人1日3～6gを3回に分割経口投与する。なお、年齢、症状により適宜増減する。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈ラックビー錠〉</p><p class=\"dosage-text mb-1\">通常成人1日3～6錠を3回に分割経口投与する。なお、年齢、症状により適宜増減する。</p></div></div>",
@@ -200,8 +204,8 @@ export default {
     "source": "ナウゼリンドライシロップ1%"
   },
   "2344009C1039": {
-    "html": "<div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈制酸剤として使用する場合〉</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">酸化マグネシウムとして、通常成人1日0.5～1.0gを数回に分割経口投与する。</p></div></div><div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈緩下剤として使用する場合〉</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">酸化マグネシウムとして、通常成人1日2gを食前又は食後の3回に分割経口投与するか、または就寝前に1回投与する。</p></div></div><div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-header fw-bold mb-1\">〈尿路シュウ 酸カルシウム結石の発生予防に使用する場合〉</p><p class=\"dosage-text mb-1\">酸化マグネシウムとして、通常成人1日0.2～0.6gを多量の水とともに経口投与する。</p></div></div><div class=\"dosage-item mb-2\"><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">なお、いずれの場合も年齢、症状により適宜増減する。</p></div></div>",
-    "source": "酸化マグネシウム「コザカイ・M」"
+    "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">〈制酸剤として使用する場合〉酸化マグネシウムとして、通常成人1日0.5～1.0gを数回に分割経口投与する。〈緩下剤として使用する場合〉酸化マグネシウムとして、通常成人1日2gを食前又は食後の3回に分割経口投与するか、又は就寝前に1回投与する。〈尿路蓚酸カルシウム結石の発生予防に使用する場合〉酸化マグネシウムとして、通常成人1日0.2～0.6gを多量の水とともに経口投与する。なお、いずれの場合も年齢、症状により適宜増減する。</p></div>",
+    "source": "酸化マグネシウム細粒83％「ケンエー」"
   },
   "2359110B1037": {
     "html": "<div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">本剤は、水で溶解して経口投与する。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常、2歳以上7歳未満の幼児には初回用量としてモビコール配合内用剤LD（以後LD）1包を1日1回経口投与する。以降、症状に応じて適宜増減し、1日1～3回経口投与、最大投与量は1日量としてLD 4包又はモビコール配合内用剤HD（以後HD）2包まで（1回量としてLD 2包又はHD 1包まで）とする。ただし、増量は2日以上の間隔をあけて行い、増量幅は1日量としてLD 1包までとする。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常、7歳以上12歳未満の小児には初回用量としてLD 2包又はHD 1包を1日1回経口投与する。以降、症状に応じて適宜増減し、1日1～3回経口投与、最大投与量は1日量としてLD 4包又はHD 2包まで（1回量としてLD 2包又はHD 1包まで）とする。ただし、増量は2日以上の間隔をあけて行い、増量幅は1日量としてLD 1包までとする。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">通常、成人及び12歳以上の小児には初回用量としてLD 2包又はHD 1包を1日1回経口投与する。以降、症状に応じて適宜増減し、1日1～3回経口投与、最大投与量は1日量としてLD 6包又はHD 3包まで（1回量としてLD 4包又はHD 2包まで）とする。ただし、増量は2日以上の間隔をあけて行い、増量幅は1日量としてLD 2包又はHD 1包までとする。</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">＜参考＞</p></div><div class=\"dosage-item mb-2\"><p class=\"dosage-text mb-1\">初回は1日1回。以降、適宜増減（1日1～3回）。</p></div><div class=\"dosage-item mb-2\"><div class=\"table-responsive\"><table class=\"dosage-table table table-bordered table-sm\"><tr><td rowspan=\"2\" style=\"text-align:center;vertical-align:middle;\">年齢区分</td><td rowspan=\"2\" colspan=\"2\" style=\"text-align:center;vertical-align:middle;\">投与量の区分</td><td colspan=\"2\" style=\"text-align:center;vertical-align:middle;\">モビコール配合内用剤</td></tr><tr><td style=\"text-align:center;vertical-align:middle;\">LD</td><td style=\"text-align:center;vertical-align:middle;\">HD</td></tr><tr><td rowspan=\"4\" style=\"text-align:left;vertical-align:top;\">2歳以上7歳未満</td><td colspan=\"2\" style=\"text-align:left;vertical-align:middle;\">初回用量</td><td style=\"text-align:center;vertical-align:middle;\">1包</td><td style=\"text-align:center;vertical-align:middle;\">－</td></tr><tr><td colspan=\"2\" style=\"text-align:left;vertical-align:middle;\">1日量あたりの最大増量幅※</td><td style=\"text-align:center;vertical-align:middle;\">1包</td><td style=\"text-align:center;vertical-align:middle;\">－</td></tr><tr><td rowspan=\"2\" style=\"text-align:left;vertical-align:middle;\">最大投与量</td><td style=\"text-align:center;vertical-align:middle;\">1回量</td><td style=\"text-align:center;vertical-align:middle;\">2包</td><td style=\"text-align:center;vertical-align:middle;\">1包</td></tr><tr><td style=\"text-align:center;vertical-align:middle;\">1日量</td><td style=\"text-align:center;vertical-align:middle;\">4包</td><td style=\"text-align:center;vertical-align:middle;\">2包</td></tr><tr><td rowspan=\"4\" style=\"text-align:left;vertical-align:top;\">7歳以上12歳未満</td><td colspan=\"2\" style=\"text-align:left;vertical-align:middle;\">初回用量</td><td style=\"text-align:center;vertical-align:middle;\">2包</td><td style=\"text-align:center;vertical-align:middle;\">1包</td></tr><tr><td colspan=\"2\" style=\"text-align:left;vertical-align:middle;\">1日量あたりの最大増量幅※</td><td style=\"text-align:center;vertical-align:middle;\">1包</td><td style=\"text-align:center;vertical-align:middle;\">－</td></tr><tr><td rowspan=\"2\" style=\"text-align:left;vertical-align:middle;\">最大投与量</td><td style=\"text-align:center;vertical-align:middle;\">1回量</td><td style=\"text-align:center;vertical-align:middle;\">2包</td><td style=\"text-align:center;vertical-align:middle;\">1包</td></tr><tr><td style=\"text-align:center;vertical-align:middle;\">1日量</td><td style=\"text-align:center;vertical-align:middle;\">4包</td><td style=\"text-align:center;vertical-align:middle;\">2包</td></tr><tr><td rowspan=\"4\" style=\"text-align:left;vertical-align:top;\">12歳以上（成人を含む）</td><td colspan=\"2\" style=\"text-align:left;vertical-align:middle;\">初回用量</td><td style=\"text-align:center;vertical-align:middle;\">2包</td><td style=\"text-align:center;vertical-align:middle;\">1包</td></tr><tr><td colspan=\"2\" style=\"text-align:left;vertical-align:middle;\">1日量あたりの最大増量幅※</td><td style=\"text-align:center;vertical-align:middle;\">2包</td><td style=\"text-align:center;vertical-align:middle;\">1包</td></tr><tr><td rowspan=\"2\" style=\"text-align:left;vertical-align:middle;\">最大投与量</td><td style=\"text-align:center;vertical-align:middle;\">1回量</td><td style=\"text-align:center;vertical-align:middle;\">4包</td><td style=\"text-align:center;vertical-align:middle;\">2包</td></tr><tr><td style=\"text-align:center;vertical-align:middle;\">1日量</td><td style=\"text-align:center;vertical-align:middle;\">6包</td><td style=\"text-align:center;vertical-align:middle;\">3包</td></tr></table></div></div>",
