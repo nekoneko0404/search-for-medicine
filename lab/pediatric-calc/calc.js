@@ -38,7 +38,8 @@ const YJ_CATEGORY_MAP = {
     '6149': 'マクロライド系',
     '6152': 'テトラサイクリン系',
     '6241': 'ニューキノロン系',
-    '6250': '抗ウイルス剤'
+    '6250': '抗ウイルス剤',
+    '3327': '抗プラスミン剤'
 };
 
 const PEDIATRIC_DRUGS = [
@@ -143,6 +144,7 @@ const PEDIATRIC_DRUGS = [
         ],
         "dosage": {
             "timesPerDay": 2,
+            "hidePerTime": true,
             "note": "1日量を12時間ごと(1日2回)に投与。添付文書の分包用量表に準拠。"
         },
         "piSnippetSource": "通常、1日96.4mg/kgを2回に分けて経口投与。分包製剤(パウチ)の場合は体重区分(6-10kg, 11-16kg等)ごとの固定量を投与する。",
@@ -945,7 +947,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-4413004C2022",
-        "name": "ゼスラン／ニポラジン",
+        "name": "ゼスラン／メキタジン (0.6%)",
         "yjCode": "4413004C2022",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4413004C2022",
         "potency": 6,
@@ -1808,6 +1810,7 @@ function calculateDrug(drug, years, months, weight) {
                     unit: step.unit || unit,
                     isFixed: true,
                     isSingleDose: isSingleDose,
+                    hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                     note: dosageConfig ? dosageConfig.note : '',
                     piUrl: drug.piUrl,
                     piSnippet: drug.piSnippet
@@ -1819,6 +1822,7 @@ function calculateDrug(drug, years, months, weight) {
                 detail: display,
                 isFixed: true,
                 isSingleDose: isSingleDose,
+                hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                 note: dosageConfig ? dosageConfig.note : '',
                 piUrl: drug.piUrl,
                 piSnippet: drug.piSnippet
@@ -1984,10 +1988,11 @@ function updatePrescriptionSheet() {
                     <span class="result-label" style="font-size:0.9rem;">1日量</span>
                     <span class="result-val" style="font-size:1.5rem; color:#0f172a;">${calc.totalRange} <span style="font-size:1rem;color:#64748b;">${calc.unit}</span></span>
                 </div>
+                ${!calc.hidePerTime ? `
                 <div class="result-row" style="align-items: baseline;">
                     <span class="result-label">1回量</span>
                     <span class="result-sub" style="font-weight:bold; color:#475569;">${calc.perTimeRange} ${calc.unit} / 分${calc.times}</span>
-                </div>`;
+                </div>` : ''}`;
         }
 
         let displayName = drug.name;
