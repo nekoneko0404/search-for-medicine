@@ -545,38 +545,39 @@
 
         /* PC centering for Patient Info Bar */
         .patient-info-bar .input-container {
-            display: flex !important;
-            justify-content: center !important;
+            display: grid !important;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            gap: 1.5rem;
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
             position: relative;
-            /* For absolute trash positioning */
         }
 
         .inputs-wrapper {
+            grid-column: 2;
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 1.5rem;
         }
 
         .patient-info-bar .input-group-enhanced {
-            min-width: 160px;
-            /* Ensure visibility on PC */
+            min-width: 140px;
             flex: 0 0 auto;
         }
 
         .patient-info-bar .age-inputs {
             display: flex;
             gap: 0.5rem;
-            width: 340px;
+            width: auto;
+            min-width: 300px;
         }
 
         .patient-info-bar #close-sheet {
-            position: absolute;
-            right: 0;
+            grid-column: 3;
+            justify-self: end;
+            margin-right: 1.5rem;
+            position: static !important;
             margin-left: 0 !important;
         }
 

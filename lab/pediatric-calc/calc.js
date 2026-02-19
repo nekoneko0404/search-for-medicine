@@ -154,7 +154,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132005C1053",
-        "name": "ケフラール／セファクロル 25%",
+        "name": "ケフラール／セファクロル 10%",
         "brandName": "ケフラール",
         "yjCode": "6132005C1053",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132005C1053",
@@ -172,7 +172,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-6132009C2023",
-        "name": "トミロン／セフテラム 10%",
+        "name": "トミロン／セフテラム 20%",
         "brandName": "トミロン",
         "yjCode": "6132009C2023",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6132009C2023",
@@ -914,7 +914,24 @@ const PEDIATRIC_DRUGS = [
                 }
             }
         ],
-        "piSnippetSource": "通常、小児には1回体重1kgあたり1.25μgを1日2回経口投与。6歳以上は1回25μgを1日2回。",
+        "piSnippetSource": "通常、1回1.25μg/kgを1日2〜3回。6歳以上は1回25μgを1日1〜2回。年齢および症状に応じて適宜増減する。",
+        "diseases": [
+            {
+                "id": "meptin-2",
+                "label": "通常 (1日2回)",
+                "dosage": { "timesPerDay": 2 }
+            },
+            {
+                "id": "meptin-3",
+                "label": "1日3回 (6歳未満・乳幼児)",
+                "dosage": { "timesPerDay": 3 }
+            },
+            {
+                "id": "meptin-1",
+                "label": "1日1回就寝前 (6歳以上)",
+                "dosage": { "timesPerDay": 1 }
+            }
+        ],
         "calcType": "age-weight-switch",
         "ageBranches": [
             {
@@ -927,7 +944,8 @@ const PEDIATRIC_DRUGS = [
                     "unit": "g",
                     "timesPerDay": 2,
                     "isByTime": true,
-                    "note": "通常1回1.25μg/kg(DSとして0.025g/kg)を1日2回。"
+                    "absoluteMaxMgPerDay": 0.05,
+                    "note": "通常1回1.25μg/kgを1日2回(朝・就寝前)または3回(朝・昼・就寝前)。"
                 }
             },
             {
@@ -939,11 +957,13 @@ const PEDIATRIC_DRUGS = [
                     "dosePerTimeMg": 0.025,
                     "dosePerTime": 0.5,
                     "unit": "g",
-                    "timesPerDay": 2
+                    "timesPerDay": 2,
+                    "absoluteMaxMgPerDay": 0.05,
+                    "note": "通常1回25μgを1日1回(就寝前)または2回(朝・就寝前)。"
                 }
             }
         ],
-        "piSnippet": "6歳以上：1回25μgを1日2回。6歳未満：1回1.25μg/kgを1日2回。",
+        "piSnippet": "6歳以上の小児：1回25μgを1日1回就寝前ないしは1日2回（朝及び就寝前）経口投与。6歳未満：1回1.25μg/kgを1日2回（朝及び就寝前）ないしは1日3回（朝、昼及び就寝前）経口投与。",
         "category": "respiratory"
     },
     {
@@ -1637,6 +1657,8 @@ const PEDIATRIC_DRUGS = [
 
 
 function calculateDrug(drug, years, months, weight) {
+    drug.tempPiSnippet = null; // Reset to avoid stale overrides
+    // 1. Resolve Sub-options (if any)
     if (!weight || weight <= 0) return { error: '体重を入力してください' };
 
     // Effective Age
@@ -1723,7 +1745,7 @@ function calculateDrug(drug, years, months, weight) {
                 times: times,
                 unit: fixed.unit || unit,
                 piUrl: drug.piUrl,
-                piSnippet: drug.piSnippet
+                piSnippet: drug.tempPiSnippet || drug.piSnippet
             };
         }
         return { error: '該当年齢の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
@@ -1761,7 +1783,7 @@ function calculateDrug(drug, years, months, weight) {
             subOption: subOptionLabel,
             note: (dosageConfig.note || '') + method,
             piUrl: drug.piUrl,
-            piSnippet: drug.piSnippet
+            piSnippet: drug.tempPiSnippet || drug.piSnippet
         };
     }
     else if (drug.calcType === 'age-weight-switch' && drug.ageBranches) {
@@ -1769,7 +1791,7 @@ function calculateDrug(drug, years, months, weight) {
         const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax)
             || drug.ageBranches[drug.ageBranches.length - 1];
         const branchDosage = branch.dosage;
-        const times = branchDosage.timesPerDay || 3;
+        const times = (dosageConfig && dosageConfig.timesPerDay) || branchDosage.timesPerDay || 3;
 
         // Check for fixed dose in branch
         if (branchDosage.isFixed) {
@@ -1803,17 +1825,18 @@ function calculateDrug(drug, years, months, weight) {
             minMgPerDay = (branchDosage.minMgKg || 0) * weight;
             maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
         }
-        const round = (n) => Math.round(n * 100) / 100;
-        let dayMin = round(minMgPerDay);
-        let dayMax = round(maxMgPerDay);
+        const roundMg = (n) => Math.round(n * 10000) / 10000;
+        const roundProduct = (n) => Math.round(n * 1000) / 1000;
+        let dayMin = roundMg(minMgPerDay);
+        let dayMax = roundMg(maxMgPerDay);
         if (branchDosage.absoluteMaxMgPerDay) {
             if (dayMin > branchDosage.absoluteMaxMgPerDay) dayMin = branchDosage.absoluteMaxMgPerDay;
             if (dayMax > branchDosage.absoluteMaxMgPerDay) dayMax = branchDosage.absoluteMaxMgPerDay;
         }
-        const totalMin = round(dayMin / potency);
-        const totalMax = round(dayMax / potency);
-        const timeMin = round(totalMin / times);
-        const timeMax = round(totalMax / times);
+        const totalMin = roundProduct(dayMin / potency);
+        const totalMax = roundProduct(dayMax / potency);
+        const timeMin = roundProduct(totalMin / times);
+        const timeMax = roundProduct(totalMax / times);
         const totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
         const timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
         return {
@@ -1825,7 +1848,7 @@ function calculateDrug(drug, years, months, weight) {
             subOption: subOptionLabel,
             note: branchDosage.note,
             piUrl: drug.piUrl,
-            piSnippet: drug.piSnippet
+            piSnippet: drug.tempPiSnippet || drug.piSnippet
         };
     }
     else if (drug.calcType === 'weight-step' && drug.weightSteps) {
@@ -1857,10 +1880,10 @@ function calculateDrug(drug, years, months, weight) {
             }
 
             if (shouldCalculate) {
-                const round = (n) => Math.round(n * 100) / 100;
-                total = round(total);
+                const roundProduct = (n) => Math.round(n * 1000) / 1000;
+                total = roundProduct(total);
 
-                const perTime = round(total / times);
+                const perTime = roundProduct(total / times);
                 totalStr = `${total}`;
                 timeStr = `${perTime}`;
 
@@ -1876,7 +1899,7 @@ function calculateDrug(drug, years, months, weight) {
                     hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                     note: dosageConfig ? dosageConfig.note : '',
                     piUrl: drug.piUrl,
-                    piSnippet: drug.piSnippet
+                    piSnippet: drug.tempPiSnippet || drug.piSnippet
                 };
             }
 
@@ -1888,10 +1911,10 @@ function calculateDrug(drug, years, months, weight) {
                 hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                 note: dosageConfig ? dosageConfig.note : '',
                 piUrl: drug.piUrl,
-                piSnippet: drug.piSnippet
+                piSnippet: drug.tempPiSnippet || drug.piSnippet
             };
         }
-        return { error: '該当体重の用量設定なし' };
+        return { error: '該当体重の用量設定なし', piUrl: drug.piUrl, piSnippet: drug.piSnippet };
     }
 
     // Standard Calc
@@ -1946,13 +1969,17 @@ function calculateDrug(drug, years, months, weight) {
     }
 
     // Convert to Product Amount
-    const round = (n) => Math.round(n * 100) / 100;
+    const roundProduct = (n) => Math.round(n * 10000) / 10000; // Using high precision for intermediate calculation
+    const roundDisplay = (n) => Math.round(n * 1000) / 1000; // 3 places for display
 
-    let totalMin = round(mgPerDayMin / potency);
-    let totalMax = round(mgPerDayMax / potency);
+    let totalMin = roundProduct(mgPerDayMin / potency);
+    let totalMax = roundProduct(mgPerDayMax / potency);
 
-    let timeMin = round(totalMin / times);
-    let timeMax = round(totalMax / times);
+    let timeMin = roundDisplay(totalMin / times);
+    let timeMax = roundDisplay(totalMax / times);
+
+    totalMin = roundDisplay(totalMin);
+    totalMax = roundDisplay(totalMax);
 
     // If max < min due to caps, clamp
     if (totalMax < totalMin) totalMax = totalMin;
@@ -1970,7 +1997,7 @@ function calculateDrug(drug, years, months, weight) {
         subOption: subOptionLabel,
         note: dosageConfig.note,
         piUrl: drug.piUrl,
-        piSnippet: drug.piSnippet
+        piSnippet: drug.tempPiSnippet || drug.piSnippet
     };
 }
 
