@@ -2048,8 +2048,8 @@ function updatePrescriptionSheet() {
             // Daily First
             resultMain = `
                 <div class="result-row" style="border-bottom:1px dashed #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem; align-items: baseline;">
-                    <span class="result-label" style="font-size:0.9rem;">1日量</span>
-                    <span class="result-val" style="font-size:1.4rem; color:#0f172a;">${calc.totalRange} <span style="font-size:1rem;color:#64748b;">${calc.unit}</span></span>
+                    <span class="result-label">1日量</span>
+                    <span class="result-val" style="font-size: clamp(1.1rem, 6vw, 1.4rem); color:#0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${calc.totalRange} <span style="font-size:0.9rem;color:#64748b;font-weight:normal;">${calc.unit}</span></span>
                 </div>
                 ${!calc.hidePerTime ? `
                 <div class="result-row" style="align-items: baseline;">
@@ -2266,7 +2266,6 @@ function renderDrugList() {
         <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <span class="tag">${categoryLabel}</span>
-                <div class="indicator"><i class="fas fa-check"></i></div>
             </div>
             <div>
                 <h3>${d.name}</h3>
