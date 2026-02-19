@@ -61,8 +61,16 @@
 
         @media (max-width: 600px) {
             .input-container {
-                grid-template-columns: repeat(3, 1fr) 48px;
-                gap: 0.3rem;
+                grid-template-columns: 1fr 1fr;
+                gap: 0.5rem;
+            }
+
+            .age-inputs {
+                grid-column: span 2;
+            }
+
+            .input-container .helper-btn {
+                grid-column: span 1;
             }
         }
 

@@ -1526,7 +1526,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "transamin-group",
-        "name": "トランサミン散50%",
+        "name": "トランサミン／トラネキサム酸 50%",
         "brandName": "トランサミン",
         "yjCode": "3327002B1027",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/3327002B1027",
@@ -1539,7 +1539,7 @@ const PEDIATRIC_DRUGS = [
             "note": "通常1日30〜50mg/kgを3〜4回。成人最大1日2g。"
         },
         "piSnippet": "通常、小児にはトラネキサム酸として1日30〜50mg/kgを3〜4回に分割して服用する。",
-        "category": "others"
+        "category": "respiratory"
     },
     {
         "id": "yj-5200013D1123",
