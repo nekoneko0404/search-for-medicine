@@ -32,7 +32,9 @@ const DIRECTORY_KEYWORD_MAPPING = {
     "2359005X1026": ["モビコール配合内用剤"],
     "4413004C2022": ["ゼスラン小児用細粒"],
     "3222012Q1030": ["インクレミンシロップ"],
-    "6131001C1210": ["サワシリン細粒"]
+    "6131001C1210": ["サワシリン細粒"],
+    "6250019D1020": ["バルトレックス"],
+    "6250021R1024": ["タミフル"]
 };
 
 function loadDrugsFromCalcJs() {
@@ -179,58 +181,48 @@ function parseDoseAdmin(xmlContent, drugCode) {
 
     function processItem(item) {
         let itemHtml = '<div class="dosage-item mb-2">';
-        const caption = $(item).find('> Caption').text().trim();
-        const head = $(item).find('> Head').text().trim();
-        if (caption) itemHtml += `<h5 class="dosage-caption fw-bold">${caption}</h5>`;
-        if (head && head !== caption) itemHtml += `<h6 class="dosage-head fw-bold">${head}</h6>`;
 
-        // Direct Lang
-        $(item).find('> Lang').each((i, lang) => {
-            if ($(lang).parentsUntil(item).length === 0) { // Only direct children
-                itemHtml += `<p class="dosage-text mb-1">${$(lang).text().trim()}</p>`;
-            }
-        });
+        $(item).children().each((i, child) => {
+            const tagName = $(child).prop('tagName');
 
-        // Direct Detail (Amoxicillin)
-        $(item).find('> Detail').each((i, detail) => {
-            $(detail).find('Lang').each((j, lang) => {
-                itemHtml += `<p class="dosage-text mb-1">${$(lang).text().trim()}</p>`;
-            });
-        });
-
-        // Nested Lists (SimpleList, UnorderedList, OrderedList)
-        const nestedLists = $(item).find('> SimpleList, > UnorderedList, > OrderedList');
-        if (nestedLists.length > 0) {
-            nestedLists.each((i, list) => {
-                $(list).find('> Item').each((j, nestedItem) => {
+            if (tagName === 'Header' || tagName === 'Caption' || tagName === 'Head') {
+                const text = $(child).text().trim();
+                if (text) {
+                    itemHtml += `<p class="dosage-header fw-bold mb-1">${text}</p>`;
+                }
+            } else if (tagName === 'Lang') {
+                const text = $(child).text().trim();
+                if (text) {
+                    itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
+                }
+            } else if (tagName === 'Detail') {
+                const text = $(child).text().trim();
+                if (text.length < 20) {
+                    // Short Details are often labels like "成人" or "小児"
+                    itemHtml += `<p class="dosage-sub-header fw-bold mb-1">${text}</p>`;
+                } else {
+                    itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
+                }
+            } else if (tagName === 'SimpleList' || tagName === 'UnorderedList' || tagName === 'OrderedList' || tagName === 'Content') {
+                $(child).find('> Item').each((j, nestedItem) => {
                     itemHtml += processItem(nestedItem);
                 });
-            });
-        }
-
-        // Direct Content
-        $(item).find('> Content').each((i, content) => {
-            const nestedItems = $(content).find('> Item');
-            if (nestedItems.length > 0) {
-                nestedItems.each((j, nestedItem) => itemHtml += processItem(nestedItem));
-            } else {
-                const contentLangs = $(content).find('Lang');
-                if (contentLangs.length > 0) {
-                    contentLangs.each((k, cl) => itemHtml += `<p class="dosage-text mb-1">${$(cl).text().trim()}</p>`);
-                } else {
-                    const text = $(content).text().trim();
-                    if (text) itemHtml += `<p class="dosage-text mb-1">${text}</p>`;
+                // If Content has no Items, check for direct Langs
+                if (tagName === 'Content' && $(child).find('> Item').length === 0) {
+                    $(child).find('Lang').each((k, cl) => {
+                        itemHtml += `<p class="dosage-text mb-1">${$(cl).text().trim()}</p>`;
+                    });
                 }
+            } else if (tagName === 'TblBlock') {
+                itemHtml += processTable($(child));
             }
         });
-
-        // Tables
-        $(item).find('> TblBlock').each((i, tbl) => itemHtml += processTable($(tbl)));
 
         itemHtml += '</div>';
 
         // Cleanup empty items
-        const cleanText = $(cheerio.load(itemHtml).root()).text().trim();
+        const $check = cheerio.load(itemHtml);
+        const cleanText = $check.root().text().trim();
         if (!cleanText && !itemHtml.includes('<img') && !itemHtml.includes('<table')) {
             return "";
         }
