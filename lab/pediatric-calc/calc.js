@@ -671,7 +671,7 @@ const PEDIATRIC_DRUGS = [
         "id": "zofluza-group",
         "name": "ゾフルーザ顆粒2%",
         "brandName": "ゾフルーザ",
-        "yjCode": "6250047D1021",
+        "yjCode": "6250047F1022",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250047D1021",
         "potency": 10,
         "unit": "g",
@@ -794,7 +794,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "carbocisteine-group",
-        "name": "ムコダイン／カルボシステイン (50%)",
+        "name": "ムコダイン／カルボシステイン DS50%",
         "brandName": "ムコダイン",
         "yjCode": "2233002R2029",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2233002R2029",
@@ -899,6 +899,7 @@ const PEDIATRIC_DRUGS = [
                 "label": "メプチンドライシロップ0.005%",
                 "potency": 0.05,
                 "unit": "g",
+                "yjCode": "2259004R2024",
                 "dosage": {
                     "note": "【0.005%】通常1回1.25μg/kg(DSとして0.025g/kg)を1日2回。"
                 }
@@ -1003,20 +1004,36 @@ const PEDIATRIC_DRUGS = [
         "category": "allergy"
     },
     {
-        "id": "yj-4419002B1033",
-        "name": "ポララミン散1%",
+        "id": "polaramine-group",
+        "name": "ポララミン／d-クロルフェニラミン (規格選択)",
+        "brandName": "ポララミン",
         "yjCode": "4419002B1033",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4419002B1033",
         "potency": 100,
+        "hasSubOptions": true,
+        "subOptions": [
+            {
+                "id": "polaramine-powder",
+                "label": "ポララミン散1%",
+                "potency": 100,
+                "yjCode": "4419002B1033"
+            },
+            {
+                "id": "polaramine-ds",
+                "label": "ポララミンドライシロップ0.2%",
+                "potency": 20,
+                "yjCode": "4419002R1031"
+            }
+        ],
         "calcType": "age",
         "adultDose": 0.6,
         "unit": "g",
-        "isAdultOnly": true,
+        "isAdultOnly": false,
         "piSnippetSource": "通常、成人には1回2mg(0.2g)を1日1〜4回経口投与する。なお、年齢、症状により適宜増減する。",
         "dosage": {
-            "note": "成人1回2mg(0.2g)。小児用量記載なし、Augsberger式等で算出。"
+            "note": "成人1回2mg(散1%:0.2g, DS0.2%:1g)。小児用量記載なし、Augsberger式等で算出。"
         },
-        "piSnippet": "通常、成人1回2mg(0.2g)を1日1〜4回。小児は年齢・症状により適宜増減。",
+        "piSnippet": "通常、成人1回2mg(散1%:0.2g, DS0.2%:1g)を1日1〜4回。小児は年齢・症状により適宜増減。",
         "category": "allergy"
     },
     {
