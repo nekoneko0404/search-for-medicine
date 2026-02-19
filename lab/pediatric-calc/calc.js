@@ -2069,18 +2069,18 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item">
-            <div class="rx-header">
+        <div class="rx-item" style="flex: 0 0 350px; min-width: 350px;">
+            <div class="rx-header" style="padding: 0.5rem 0.75rem;">
                 <div style="display:flex; align-items:center; gap:0.5rem; flex:1; min-width:0;">
-                    <div class="rx-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${displayName}</div>
-                    ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="padding:1px 6px; font-size:0.7rem; white-space:nowrap; flex-shrink:0;">用法</button>` : ''}
+                    <div class="rx-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis; font-weight:bold; font-size:0.95rem;">${displayName}</div>
+                    ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="padding:2px 6px; font-size:0.65rem; line-height:1.1; white-space:nowrap; flex-shrink:0; text-align:center; height:auto;">用法<br>用量</button>` : ''}
                 </div>
-                <div class="rx-remove" onclick="removeDrug('${drug.id}')"><i class="fas fa-times"></i></div>
+                <div class="rx-remove" onclick="removeDrug('${drug.id}')" style="margin-left: 0.25rem;"><i class="fas fa-times"></i></div>
             </div>
             <div class="rx-config">${selectorsHtml}</div>
             <div class="rx-result-box">${resultMain}</div>
             <div class="rx-meta">
-                <div>${calc.note || ''}</div>
+                <div style="font-size:0.8rem; color:#64748b;">${calc.note || ''}</div>
             </div>
         </div>`;
     }).join('');
