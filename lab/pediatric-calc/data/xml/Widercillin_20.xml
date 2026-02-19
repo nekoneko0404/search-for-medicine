@@ -1,0 +1,1368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackIns version="1.0" xmlKind="Packins" drugType="Medicine" referenceOfPrecautionsForUse="6131001-S0003" referenceOfPrecautionsForHandling="6131001-T0003" containedLang="ja" xmlns="http://info.pmda.go.jp/namespace/prescription_drugs/package_insert/1.0">
+  <PackageInsertNo>6131001C2100_1_09</PackageInsertNo>
+  <CompanyIdentifier>780009</CompanyIdentifier>
+  <!--ア.作成又は改訂年月-->
+  <DateOfPreparationOrRevision>
+    <PreparationOrRevision id="今回">
+      <YearMonth>2025-05</YearMonth>
+      <Version>
+        <Lang xml:lang="ja">第3版</Lang>
+      </Version>
+    </PreparationOrRevision>
+    <PreparationOrRevision id="前回">
+      <YearMonth>2024-05</YearMonth>
+    </PreparationOrRevision>
+  </DateOfPreparationOrRevision>
+  <!--イ.日本標準商品分類番号-->
+  <Sccj>
+    <SccjNo>876131</SccjNo>
+  </Sccj>
+  <!--オ.薬効分類名-->
+  <TherapeuticClassification>
+    <Detail>
+      <Lang xml:lang="ja">合成ペニシリン製剤</Lang>
+    </Detail>
+  </TherapeuticClassification>
+  <ApprovalEtc>
+    <DetailBrandName id="BRD_Drug1">
+      <ApprovalBrandName>
+        <Lang xml:lang="ja">ワイドシリン細粒20%</Lang>
+      </ApprovalBrandName>
+      <BrandCode>
+        <YJCode>6131001C2100</YJCode>
+      </BrandCode>
+      <TrademarkInEnglish>
+        <TrademarkName>WIDECILLIN FINE GRANULES</TrademarkName>
+      </TrademarkInEnglish>
+      <BrandNameInHiragana>
+        <NameInHiragana>わいどしりんさいりゅう20%</NameInHiragana>
+      </BrandNameInHiragana>
+      <!--ウ.承認番号-->
+      <ApprovalAndLicenseNo>
+        <ApprovalNo>22600AMX00916000</ApprovalNo>
+      </ApprovalAndLicenseNo>
+      <!--ウ.販売開始年月-->
+      <StartingDateOfMarketing>1981-09</StartingDateOfMarketing>
+      <!--エ.貯法、有効期間-->
+      <Storage>
+        <StorageMethod>
+          <Lang xml:lang="ja">室温保存</Lang>
+        </StorageMethod>
+        <ShelfLife>
+          <Lang xml:lang="ja">2年</Lang>
+        </ShelfLife>
+      </Storage>
+      <!--カ.規制区分-->
+      <RegulatoryClassification>
+        <RegulatoryClassificationCodeAndNote>
+          <RegulatoryClassificationCode>12</RegulatoryClassificationCode>
+        </RegulatoryClassificationCodeAndNote>
+      </RegulatoryClassification>
+    </DetailBrandName>
+  </ApprovalEtc>
+  <!--キ.一般的名称-->
+  <GenericName>
+    <Detail>
+      <Lang xml:lang="ja">アモキシシリン水和物</Lang>
+    </Detail>
+  </GenericName>
+  <!--２.禁忌（次の患者には投与しないこと）-->
+  <ContraIndications id="HDR_ContraIndications" heading="fixing">
+    <OrderedList numberContinued="false">
+      <Item id="HDR_ContraIndications_1" heading="free">
+        <Detail modified="前回">
+          <Lang xml:lang="ja">本剤の成分に対し過敏症の既往歴のある患者<HeaderRef ref="HDR_ImportantPrecautions_2" />,<HeaderRef ref="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_1" />,<HeaderRef ref="HDR_SeriousAdverseEvents_1" />,<HeaderRef ref="HDR_SeriousAdverseEvents_2" />,<HeaderRef ref="HDR_SeriousAdverseEvents_3" /></Lang>
+        </Detail>
+      </Item>
+      <Item id="HDR_ContraIndications_2" heading="free">
+        <Detail>
+          <Lang xml:lang="ja">伝染性単核症の患者<ReferenceBookRef ref="DOC_01" />［発疹の発現頻度を高めるおそれがある。］</Lang>
+        </Detail>
+      </Item>
+    </OrderedList>
+  </ContraIndications>
+  <!--３.組成・性状-->
+  <CompositionAndProperty id="HDR_CompositionAndProperty" heading="fixing">
+    <!--３.１ 組成-->
+    <Composition id="HDR_Composition" heading="fixing">
+      <CompositionForBrand ref="BRD_Drug1">
+        <CompositionForConstituentUnits>
+          <CompositionTable>
+            <OtherComposition>
+              <CategoryName>
+                <Lang xml:lang="ja">有効成分</Lang>
+              </CategoryName>
+              <Content>
+                <ContentDetail>
+                  <Lang xml:lang="ja">1g中日局アモキシシリン水和物200mg（力価）</Lang>
+                </ContentDetail>
+              </Content>
+            </OtherComposition>
+            <OtherComposition>
+              <CategoryName>
+                <Lang xml:lang="ja">添加剤</Lang>
+              </CategoryName>
+              <Content>
+                <ContentDetail>
+                  <Lang xml:lang="ja">クエン酸ナトリウム水和物、軽質無水ケイ酸、<Sub>D</Sub>-マンニトール、サッカリンナトリウム水和物、パラオキシ安息香酸メチル、パラオキシ安息香酸プロピル、ヒドロキシプロピルセルロース、シリコーン樹脂、ソルビタン脂肪酸エステル、グリセリン脂肪酸エステル、ポリオキシエチレン硬化ヒマシ油60、カルミン<?enter?>香料、乳糖、微結晶セルロース、微粒二酸化ケイ素、バニリン、エチルバニリン、プロピレングリコール</Lang>
+                </ContentDetail>
+              </Content>
+            </OtherComposition>
+          </CompositionTable>
+        </CompositionForConstituentUnits>
+      </CompositionForBrand>
+    </Composition>
+    <!--３.２ 製剤の性状-->
+    <Property id="HDR_Property" heading="fixing">
+      <PropertyForBrand ref="BRD_Drug1">
+        <PropertyForConstituentUnits>
+          <PropertyTable>
+            <Formulation>
+              <Lang xml:lang="ja">細粒</Lang>
+            </Formulation>
+            <ColorTone>
+              <Lang xml:lang="ja">桃色</Lang>
+            </ColorTone>
+            <Odor>
+              <Lang xml:lang="ja">芳香</Lang>
+            </Odor>
+            <Taste>
+              <Lang xml:lang="ja">甘味</Lang>
+            </Taste>
+          </PropertyTable>
+        </PropertyForConstituentUnits>
+      </PropertyForBrand>
+    </Property>
+  </CompositionAndProperty>
+  <!--４.効能又は効果-->
+  <IndicationsOrEfficacy wordingPatternOfIndications="3" id="HDR_IndicationsOrEfficacy" heading="fixing">
+    <SimpleList>
+      <Item>
+        <Header>
+          <Lang xml:lang="ja">〈適応菌種〉</Lang>
+        </Header>
+        <Detail>
+          <Lang xml:lang="ja">本剤に感性のブドウ球菌属、レンサ球菌属、肺炎球菌、腸球菌属、淋菌、大腸菌、プロテウス・ミラビリス、インフルエンザ菌、ヘリコバクター・ピロリ、梅毒トレポネーマ</Lang>
+        </Detail>
+      </Item>
+      <Item>
+        <Header>
+          <Lang xml:lang="ja">〈適応症〉</Lang>
+        </Header>
+        <Detail>
+          <Lang xml:lang="ja">表在性皮膚感染症、深在性皮膚感染症、リンパ管・リンパ節炎、慢性膿皮症、外傷・熱傷及び手術創等の二次感染、びらん・潰瘍の二次感染、乳腺炎、骨髄炎、咽頭・喉頭炎、扁桃炎、急性気管支炎、肺炎、慢性呼吸器病変の二次感染、膀胱炎、腎盂腎炎、前立腺炎（急性症、慢性症）、精巣上体炎（副睾丸炎）、淋菌感染症、梅毒、子宮内感染、子宮付属器炎、子宮旁結合織炎、涙嚢炎、麦粒腫、中耳炎、歯周組織炎、歯冠周囲炎、顎炎、猩紅熱、胃潰瘍・十二指腸潰瘍におけるヘリコバクター・ピロリ感染症</Lang>
+        </Detail>
+      </Item>
+    </SimpleList>
+  </IndicationsOrEfficacy>
+  <!--５.効能又は効果に関連する注意-->
+  <EfficacyRelatedPrecautions wordingPatternOfEfficacyRelatedPrecautions="3" id="HDR_EfficacyRelatedPrecautions" heading="fixing">
+    <SimpleList>
+      <Item>
+        <Header>
+          <Lang xml:lang="ja">〈咽頭・喉頭炎、扁桃炎、急性気管支炎、中耳炎〉</Lang>
+        </Header>
+        <Detail>
+          <Lang xml:lang="ja">「抗微生物薬適正使用の手引き」<ReferenceBookRef ref="DOC_02" />を参照し、抗菌薬投与の必要性を判断した上で、本剤の投与が適切と判断される場合に投与すること。</Lang>
+        </Detail>
+      </Item>
+    </SimpleList>
+  </EfficacyRelatedPrecautions>
+  <!--６.用法及び用量-->
+  <InfoDoseAdmin wordingPatternOfDoseAdmin="3" id="HDR_InfoDoseAdmin" heading="fixing">
+    <DoseAdmin>
+      <SimpleList>
+        <Item>
+          <Header>
+            <Lang xml:lang="ja">〈ヘリコバクター・ピロリ感染を除く感染症〉</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">成人：アモキシシリン水和物として、通常1回250mg（力価）を1日3～4回経口投与する。<?enter?>なお、年齢、症状により適宜増減する。</Lang>
+          </Detail>
+          <Detail>
+            <Lang xml:lang="ja">小児：アモキシシリン水和物として、通常1日20～40mg（力価）/kgを3～4回に分割経口投与する。<?enter?>なお、年齢、症状により適宜増減するが、1日量として最大90mg（力価）/kgを超えないこと。</Lang>
+          </Detail>
+        </Item>
+        <Item>
+          <Header>
+            <Lang xml:lang="ja">〈胃潰瘍・十二指腸潰瘍におけるヘリコバクター・ピロリ感染症〉</Lang>
+          </Header>
+          <UnorderedList>
+            <Item>
+              <Detail>
+                <Lang xml:lang="ja">アモキシシリン水和物、クラリスロマイシン及びランソプラゾール併用の場合<?enter?>通常、成人にはアモキシシリン水和物として1回750mg（力価）、クラリスロマイシンとして1回200mg（力価）及びランソプラゾールとして1回30mgの3剤を同時に1日2回、7日間経口投与する。<?enter?>なお、クラリスロマイシンは、必要に応じて適宜増量することができる。ただし、1回400mg（力価）1日2回を上限とする。</Lang>
+              </Detail>
+            </Item>
+            <Item>
+              <Detail>
+                <Lang xml:lang="ja">アモキシシリン水和物、クラリスロマイシン及びラベプラゾールナトリウム併用の場合<?enter?>通常、成人にはアモキシシリン水和物として1回750mg（力価）、クラリスロマイシンとして1回200mg（力価）及びラベプラゾールナトリウムとして1回10mgの3剤を同時に1日2回、7日間経口投与する。<?enter?>なお、クラリスロマイシンは、必要に応じて適宜増量することができる。ただし、1回400mg（力価）1日2回を上限とする。</Lang>
+              </Detail>
+            </Item>
+          </UnorderedList>
+        </Item>
+      </SimpleList>
+    </DoseAdmin>
+  </InfoDoseAdmin>
+  <!--８.重要な基本的注意-->
+  <ImportantPrecautions id="HDR_ImportantPrecautions" heading="fixing">
+    <OrderedList numberContinued="false">
+      <Item id="HDR_ImportantPrecautions_1" heading="free">
+        <Detail>
+          <Lang xml:lang="ja">本剤の使用にあたっては、耐性菌の発現等を防ぐため、原則として感受性を確認し、疾病の治療上必要な最小限の期間の投与にとどめること。</Lang>
+        </Detail>
+      </Item>
+      <Item id="HDR_ImportantPrecautions_2" heading="free">
+        <Detail modified="前回">
+          <Lang xml:lang="ja">ショック、アナフィラキシー、アレルギー反応に伴う急性冠症候群、薬剤により誘発される胃腸炎症候群の発生を確実に予知できる方法はないが、事前に当該事象の既往歴等について十分な問診を行うこと。なお、抗生物質によるアレルギー歴は必ず確認すること。<HeaderRef ref="HDR_ContraIndications_1" />,<HeaderRef ref="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_1" />,<HeaderRef ref="HDR_SeriousAdverseEvents_1" />,<HeaderRef ref="HDR_SeriousAdverseEvents_2" />,<HeaderRef ref="HDR_SeriousAdverseEvents_3" /></Lang>
+        </Detail>
+      </Item>
+      <Item id="HDR_ImportantPrecautions_3" heading="free">
+        <Detail>
+          <Lang xml:lang="ja">顆粒球減少、血小板減少があらわれることがあるので、定期的に検査を行うなど観察を十分に行うこと。<HeaderRef ref="HDR_SeriousAdverseEvents_5" /></Lang>
+        </Detail>
+      </Item>
+      <Item id="HDR_ImportantPrecautions_4" heading="free">
+        <Detail>
+          <Lang xml:lang="ja">黄疸、AST、ALTの上昇等があらわれることがあるので、定期的に検査を行うなど観察を十分に行うこと。<HeaderRef ref="HDR_SeriousAdverseEvents_6" /></Lang>
+        </Detail>
+      </Item>
+      <Item id="HDR_ImportantPrecautions_5" heading="free">
+        <Detail>
+          <Lang xml:lang="ja">急性腎障害等の重篤な腎障害があらわれることがあるので、定期的に検査を行うなど観察を十分に行うこと。<HeaderRef ref="HDR_SeriousAdverseEvents_7" /></Lang>
+        </Detail>
+      </Item>
+    </OrderedList>
+  </ImportantPrecautions>
+  <!--９.特定の背景を有する患者に関する注意-->
+  <UseInSpecificPopulations id="HDR_UseInSpecificPopulations" heading="fixing">
+    <!--９.１ 合併症・既往歴等のある患者-->
+    <UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc id="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc" heading="fixing">
+      <OrderedList numberContinued="false">
+        <Item id="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_1" heading="free">
+          <Header>
+            <Lang xml:lang="ja">ペニシリン系又はセフェム系抗生物質に対し過敏症の既往歴のある患者（ただし、本剤に対し過敏症の既往歴のある患者には投与しないこと）</Lang>
+          </Header>
+          <Detail modified="前回">
+            <Lang xml:lang="ja"><HeaderRef ref="HDR_ContraIndications_1" />,<HeaderRef ref="HDR_ImportantPrecautions_2" />,<HeaderRef ref="HDR_SeriousAdverseEvents_1" />,<HeaderRef ref="HDR_SeriousAdverseEvents_2" />,<HeaderRef ref="HDR_SeriousAdverseEvents_3" /></Lang>
+          </Detail>
+        </Item>
+        <Item id="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_2" heading="free">
+          <Header>
+            <Lang xml:lang="ja">本人又は両親、兄弟に気管支喘息、発疹、蕁麻疹等のアレルギー症状を起こしやすい体質を有する患者</Lang>
+          </Header>
+        </Item>
+        <Item id="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_3" heading="free">
+          <Header>
+            <Lang xml:lang="ja">経口摂取の不良な患者又は非経口栄養の患者、全身状態の悪い患者</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">観察を十分に行うこと。ビタミンK欠乏症状があらわれることがある。</Lang>
+          </Detail>
+        </Item>
+      </OrderedList>
+    </UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc>
+    <!--９.２ 腎機能障害患者-->
+    <PatientsWithRenalImpairment id="HDR_PatientsWithRenalImpairment" heading="fixing">
+      <OrderedList numberContinued="false">
+        <Item id="HDR_PatientsWithRenalImpairment_1" heading="free">
+          <Header>
+            <Lang xml:lang="ja">高度の腎障害のある患者</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">腎障害の程度に応じて投与量を減量し、投与の間隔をあけて使用すること。血中濃度が持続する。<HeaderRef ref="HDR_SpecificPopulation_1" /></Lang>
+          </Detail>
+        </Item>
+      </OrderedList>
+    </PatientsWithRenalImpairment>
+    <!--９.５ 妊婦-->
+    <UseInPregnant id="HDR_UseInPregnant" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">妊婦又は妊娠している可能性のある女性には、治療上の有益性が危険性を上回ると判断される場合にのみ投与すること。なお、動物試験（ラット）において、アモキシシリン水和物（500mg/kg/日）、クラリスロマイシン（160mg/kg/日）及びランソプラゾール（50mg/kg/日）を併用投与すると、母動物での毒性の増強とともに胎児の発育抑制の増強が認められている。また、ラットにアモキシシリン水和物（400mg/kg/日以上）、クラリスロマイシン（50mg/kg/日以上）及びラベプラゾールナトリウム（25mg/kg/日）を4週間併用投与した試験で、雌で栄養状態の悪化が認められている。</Lang>
+      </Detail>
+    </UseInPregnant>
+    <!--９.６ 授乳婦-->
+    <UseInNursing id="HDR_UseInNursing" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">治療上の有益性及び母乳栄養の有益性を考慮し、授乳の継続又は中止を検討すること。母乳中へ移行することが報告されている。<HeaderRef ref="HDR_Distribution_1" /></Lang>
+      </Detail>
+    </UseInNursing>
+    <!--９.７ 小児等-->
+    <PediatricUse id="HDR_PediatricUse" heading="fixing">
+      <SimpleList>
+        <Item>
+          <Header>
+            <Lang xml:lang="ja">〈ヘリコバクター・ピロリ感染を除く感染症〉</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">低出生体重児、新生児を対象とした有効性及び安全性を指標とした臨床試験は実施していない。</Lang>
+          </Detail>
+        </Item>
+      </SimpleList>
+    </PediatricUse>
+    <!--９.８ 高齢者-->
+    <UseInTheElderly id="HDR_UseInTheElderly" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">次の点に注意し、用量並びに投与間隔に留意するなど患者の状態を観察しながら、慎重に投与すること。</Lang>
+      </Detail>
+      <UnorderedList>
+        <Item>
+          <Detail>
+            <Lang xml:lang="ja">生理機能が低下していることが多く、副作用が発現しやすい。</Lang>
+          </Detail>
+        </Item>
+        <Item>
+          <Detail>
+            <Lang xml:lang="ja">ビタミンK欠乏による出血傾向があらわれることがある。</Lang>
+          </Detail>
+        </Item>
+      </UnorderedList>
+    </UseInTheElderly>
+  </UseInSpecificPopulations>
+  <!--１０.相互作用-->
+  <Interactions id="HDR_Interactions" heading="fixing">
+    <!--１０.２ 併用注意（併用に注意すること）-->
+    <PrecautionsForCombinations id="HDR_PrecautionsForCombinations" heading="fixing">
+      <PrecautionsForCombination>
+        <PrecautionsForCombi>
+          <WidthDefinition totalWidth="582.12px">
+            <Col width="161.0px" />
+            <Col width="210.0px" />
+            <Col width="211.12px" />
+          </WidthDefinition>
+          <Drug>
+            <DrugName>
+              <Detail>
+                <Lang xml:lang="ja">ワルファリンカリウム</Lang>
+              </Detail>
+            </DrugName>
+            <ClinSymptomsAndMeasures>
+              <Detail>
+                <Lang xml:lang="ja">ワルファリンカリウムの作用が増強されるおそれがある。</Lang>
+              </Detail>
+            </ClinSymptomsAndMeasures>
+            <MechanismAndRiskFactors>
+              <Detail>
+                <Lang xml:lang="ja">腸内細菌によるビタミンKの産生を抑制することがある。</Lang>
+              </Detail>
+            </MechanismAndRiskFactors>
+          </Drug>
+          <Drug>
+            <DrugName>
+              <Detail>
+                <Lang xml:lang="ja">経口避妊薬</Lang>
+              </Detail>
+            </DrugName>
+            <ClinSymptomsAndMeasures>
+              <Detail>
+                <Lang xml:lang="ja">経口避妊薬の効果が減弱するおそれがある。</Lang>
+              </Detail>
+            </ClinSymptomsAndMeasures>
+            <MechanismAndRiskFactors>
+              <Detail>
+                <Lang xml:lang="ja">腸内細菌叢を変化させ、経口避妊薬の腸肝循環による再吸収を抑制すると考えられている。</Lang>
+              </Detail>
+            </MechanismAndRiskFactors>
+          </Drug>
+          <Drug>
+            <DrugName>
+              <Detail>
+                <Lang xml:lang="ja">プロベネシド</Lang>
+              </Detail>
+            </DrugName>
+            <ClinSymptomsAndMeasures>
+              <Detail>
+                <Lang xml:lang="ja">本剤の血中濃度を増加させる。</Lang>
+              </Detail>
+            </ClinSymptomsAndMeasures>
+            <MechanismAndRiskFactors>
+              <Detail>
+                <Lang xml:lang="ja">本剤の尿細管分泌を阻害し、尿中排泄を低下させると考えられている。</Lang>
+              </Detail>
+            </MechanismAndRiskFactors>
+          </Drug>
+          <Drug>
+            <DrugName>
+              <Detail modified="今回">
+                <Lang xml:lang="ja">メトトレキサート</Lang>
+              </Detail>
+            </DrugName>
+            <ClinSymptomsAndMeasures>
+              <Detail modified="今回">
+                <Lang xml:lang="ja">メトトレキサートの副作用を増強させるおそれがある。</Lang>
+              </Detail>
+            </ClinSymptomsAndMeasures>
+            <MechanismAndRiskFactors>
+              <Detail modified="今回">
+                <Lang xml:lang="ja">メトトレキサートの尿細管分泌を阻害し、尿中排泄を低下させると考えられている。</Lang>
+              </Detail>
+            </MechanismAndRiskFactors>
+          </Drug>
+        </PrecautionsForCombi>
+      </PrecautionsForCombination>
+    </PrecautionsForCombinations>
+  </Interactions>
+  <!--１１.副作用-->
+  <AdverseEvents id="HDR_AdverseEvents" heading="fixing">
+    <CommonPrecautionsForAdverse>
+      <Lang xml:lang="ja">次の副作用があらわれることがあるので、観察を十分に行い、異常が認められた場合には投与を中止するなど適切な処置を行うこと。</Lang>
+    </CommonPrecautionsForAdverse>
+    <!--１１.１ 重大な副作用-->
+    <SeriousAdverseEvents id="HDR_SeriousAdverseEvents" heading="fixing">
+      <SeriousAdverse>
+        <OrderedList numberContinued="false">
+          <Item id="HDR_SeriousAdverseEvents_1" heading="free">
+            <Header>
+              <Lang xml:lang="ja">ショック、アナフィラキシー（各0.1%未満）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">呼吸困難、全身潮紅、血管浮腫、蕁麻疹等を起こすことがあるので、不快感、口内異常感、喘鳴、眩暈、便意、耳鳴、発汗等があらわれた場合には投与を中止し、適切な処置を行うこと。<HeaderRef ref="HDR_ContraIndications_1" />,<HeaderRef ref="HDR_ImportantPrecautions_2" />,<HeaderRef ref="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_1" /></Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_2" heading="free">
+            <Header>
+              <Lang xml:lang="ja">アレルギー反応に伴う急性冠症候群（頻度不明）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja"><HeaderRef ref="HDR_ContraIndications_1" />,<HeaderRef ref="HDR_ImportantPrecautions_2" />,<HeaderRef ref="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_1" /></Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_3" heading="free">
+            <Header modified="前回">
+              <Lang xml:lang="ja">薬剤により誘発される胃腸炎症候群（頻度不明）</Lang>
+            </Header>
+            <Detail modified="前回">
+              <Lang xml:lang="ja">投与から数時間以内の反復性嘔吐を主症状とし、下痢、嗜眠、顔面蒼白、低血圧、腹痛、好中球増加等を伴う、食物蛋白誘発性胃腸炎に類似したアレルギー性の胃腸炎（Drug-induced enterocolitis syndrome）があらわれることがある。主に小児で報告されている。<HeaderRef ref="HDR_ContraIndications_1" />,<HeaderRef ref="HDR_ImportantPrecautions_2" />,<HeaderRef ref="HDR_UseInPatientsWithComplicationsOrHistoryOfDiseasesEtc_1" /></Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_4" heading="free">
+            <Header>
+              <Lang xml:lang="ja">中毒性表皮壊死融解症（Toxic Epidermal Necrolysis：TEN）、皮膚粘膜眼症候群（Stevens-Johnson症候群）（各0.1%未満）、多形紅斑、急性汎発性発疹性膿疱症、紅皮症（剥脱性皮膚炎）（いずれも頻度不明）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">発熱、頭痛、関節痛、皮膚や粘膜の紅斑・水疱、膿疱、皮膚の緊張感・灼熱感・疼痛等の異常が認められた場合には投与を中止し、適切な処置を行うこと<ReferenceBookRef ref="DOC_03" />。</Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_5" heading="free">
+            <Header>
+              <Lang xml:lang="ja">顆粒球減少（0.1%未満）、血小板減少（頻度不明）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja"><HeaderRef ref="HDR_ImportantPrecautions_3" /></Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_6" heading="free">
+            <Header>
+              <Lang xml:lang="ja">肝障害（頻度不明）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">黄疸（0.1%未満）、AST、ALTの上昇（各0.1%未満）等があらわれることがある。<HeaderRef ref="HDR_ImportantPrecautions_4" /></Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_7" heading="free">
+            <Header>
+              <Lang xml:lang="ja">腎障害（0.1%未満）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">急性腎障害等の重篤な腎障害があらわれることがある。<HeaderRef ref="HDR_ImportantPrecautions_5" /></Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_8" heading="free">
+            <Header>
+              <Lang xml:lang="ja">大腸炎（0.1%未満）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">偽膜性大腸炎、出血性大腸炎等の血便を伴う重篤な大腸炎があらわれることがある。腹痛、頻回の下痢があらわれた場合には直ちに投与を中止し、適切な処置を行うこと。</Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_9" heading="free">
+            <Header>
+              <Lang xml:lang="ja">間質性肺炎、好酸球性肺炎（いずれも頻度不明）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">咳嗽、呼吸困難、発熱等が認められた場合には、速やかに胸部X線、胸部CT等の検査を実施すること。間質性肺炎、好酸球性肺炎が疑われた場合には投与を中止し、副腎皮質ホルモン剤の投与等の適切な処置を行うこと。</Lang>
+            </Detail>
+          </Item>
+          <Item id="HDR_SeriousAdverseEvents_10" heading="free">
+            <Header>
+              <Lang xml:lang="ja">無菌性髄膜炎（頻度不明）</Lang>
+            </Header>
+            <Detail>
+              <Lang xml:lang="ja">項部硬直、発熱、頭痛、悪心・嘔吐あるいは意識混濁等を伴う無菌性髄膜炎があらわれることがある。</Lang>
+            </Detail>
+          </Item>
+        </OrderedList>
+      </SeriousAdverse>
+    </SeriousAdverseEvents>
+    <!--１１.２ その他の副作用-->
+    <OtherAdverseEvents id="HDR_OtherAdverseEvents" heading="fixing">
+      <OtherAdverseEvent>
+        <Instructions>
+          <SimpleList>
+            <Item>
+              <Header>
+                <Lang xml:lang="ja">〈ヘリコバクター・ピロリ感染を除く感染症〉</Lang>
+              </Header>
+            </Item>
+          </SimpleList>
+        </Instructions>
+        <OtherAdverse>
+          <WidthDefinition totalWidth="580.23px">
+            <Col width="108.50px" />
+            <Col width="120.61px" />
+            <Col width="175.07px" />
+            <Col width="176.05px" />
+          </WidthDefinition>
+          <CategoryDefinition>
+            <Category id="OTHER1_TYPE1">
+              <Detail>
+                <Lang xml:lang="ja">過敏症</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER1_TYPE2">
+              <Detail>
+                <Lang xml:lang="ja">血液</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER1_TYPE3">
+              <Detail>
+                <Lang xml:lang="ja">消化器</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER1_TYPE4">
+              <Detail modified="今回">
+                <Lang xml:lang="ja">皮膚</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER1_TYPE5">
+              <Detail>
+                <Lang xml:lang="ja">菌交代症</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER1_TYPE6">
+              <Detail>
+                <Lang xml:lang="ja">ビタミン欠乏症</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER1_TYPE7">
+              <Detail>
+                <Lang xml:lang="ja">その他</Lang>
+              </Detail>
+            </Category>
+          </CategoryDefinition>
+          <FrequencyDefinition>
+            <Frequency id="OTHER1_FRQ1">
+              <Detail>
+                <Lang xml:lang="ja">0.1～5%未満</Lang>
+              </Detail>
+            </Frequency>
+            <Frequency id="OTHER1_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">0.1%未満</Lang>
+              </Detail>
+            </Frequency>
+            <Frequency id="OTHER1_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">頻度不明</Lang>
+              </Detail>
+            </Frequency>
+          </FrequencyDefinition>
+          <AdverseReactions>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE1" frequencyRef="OTHER1_FRQ1">
+              <Detail>
+                <Lang xml:lang="ja">発疹</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE1" frequencyRef="OTHER1_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">発熱</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE1" frequencyRef="OTHER1_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">そう痒</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE2" frequencyRef="OTHER1_FRQ1">
+              <Detail>
+                <Lang xml:lang="ja">好酸球増多</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE3" frequencyRef="OTHER1_FRQ1">
+              <Detail>
+                <Lang xml:lang="ja">下痢、悪心、嘔吐、食欲不振、腹痛</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE3" frequencyRef="OTHER1_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">黒毛舌</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE4" frequencyRef="OTHER1_FRQ3">
+              <Detail modified="今回">
+                <Lang xml:lang="ja">線状IgA水疱症</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE5" frequencyRef="OTHER1_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">口内炎、カンジダ症</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE6" frequencyRef="OTHER1_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">ビタミンK欠乏症状（低プロトロンビン血症、出血傾向等）、ビタミンB群欠乏症状（舌炎、口内炎、食欲不振、神経炎等）</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER1_TYPE7" frequencyRef="OTHER1_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">梅毒患者において、ヤーリッシュ・ヘルクスハイマー反応（発熱、全身倦怠感、頭痛等の発現、病変部の増悪）が起こることがある。</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+          </AdverseReactions>
+        </OtherAdverse>
+      </OtherAdverseEvent>
+      <OtherAdverseEvent>
+        <Instructions>
+          <SimpleList>
+            <Item>
+              <Header>
+                <Lang xml:lang="ja">〈胃潰瘍・十二指腸潰瘍におけるヘリコバクター・ピロリ感染症〉</Lang>
+              </Header>
+            </Item>
+          </SimpleList>
+        </Instructions>
+        <OtherAdverse>
+          <WidthDefinition totalWidth="582.19px">
+            <Col width="108.50px" />
+            <Col width="87.57px" />
+            <Col width="141.89px" />
+            <Col width="155.61px" />
+            <Col width="88.62px" />
+          </WidthDefinition>
+          <CategoryDefinition>
+            <Category id="OTHER2_TYPE1">
+              <Detail>
+                <Lang xml:lang="ja">消化器</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER2_TYPE2">
+              <Detail>
+                <Lang xml:lang="ja">肝臓</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER2_TYPE3">
+              <Detail>
+                <Lang xml:lang="ja">血液</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER2_TYPE4">
+              <Detail>
+                <Lang xml:lang="ja">過敏症</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER2_TYPE5">
+              <Detail>
+                <Lang xml:lang="ja">精神神経系</Lang>
+              </Detail>
+            </Category>
+            <Category id="OTHER2_TYPE6">
+              <Detail>
+                <Lang xml:lang="ja">その他</Lang>
+              </Detail>
+            </Category>
+          </CategoryDefinition>
+          <FrequencyDefinition>
+            <Frequency id="OTHER2_FRQ1">
+              <Detail>
+                <Lang xml:lang="ja">5%以上</Lang>
+              </Detail>
+            </Frequency>
+            <Frequency id="OTHER2_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">1～5%未満</Lang>
+              </Detail>
+            </Frequency>
+            <Frequency id="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">1%未満</Lang>
+              </Detail>
+            </Frequency>
+            <Frequency id="OTHER2_FRQ4">
+              <Detail>
+                <Lang xml:lang="ja">頻度不明</Lang>
+              </Detail>
+            </Frequency>
+          </FrequencyDefinition>
+          <AdverseReactions>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE1" frequencyRef="OTHER2_FRQ1">
+              <Detail>
+                <Lang xml:lang="ja">下痢（15.5%）、軟便（13.5%）、味覚異常</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE1" frequencyRef="OTHER2_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">腹痛、腹部膨満感、口内炎、便秘、食道炎</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE1" frequencyRef="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">口渇、悪心、舌炎、胃食道逆流、胸やけ、十二指腸炎、嘔吐、痔核、食欲不振</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE1" frequencyRef="OTHER2_FRQ4">
+              <Detail>
+                <Lang xml:lang="ja">黒毛舌</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE2" frequencyRef="OTHER2_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">AST上昇、ALT上昇、LDH上昇、γ-GTP上昇</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE2" frequencyRef="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">Al-P上昇、ビリルビン上昇</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE3" frequencyRef="OTHER2_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">好中球減少、好酸球増多</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE3" frequencyRef="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">貧血、白血球増多</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE4" frequencyRef="OTHER2_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">発疹</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE4" frequencyRef="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">そう痒</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE5" frequencyRef="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">頭痛、しびれ感、めまい、眠気、不眠、うつ状態</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE6" frequencyRef="OTHER2_FRQ2">
+              <Detail>
+                <Lang xml:lang="ja">尿蛋白陽性、トリグリセリド上昇、総コレステロールの上昇・低下</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+            <AdverseReactionDescription categoryRef="OTHER2_TYPE6" frequencyRef="OTHER2_FRQ3">
+              <Detail>
+                <Lang xml:lang="ja">尿糖陽性、尿酸上昇、倦怠感、熱感、動悸、発熱、QT延長、カンジダ症、浮腫、血圧上昇、霧視</Lang>
+              </Detail>
+            </AdverseReactionDescription>
+          </AdverseReactions>
+        </OtherAdverse>
+      </OtherAdverseEvent>
+    </OtherAdverseEvents>
+  </AdverseEvents>
+  <!--１２.臨床検査結果に及ぼす影響-->
+  <InfluenceOnLaboratoryValues id="HDR_InfluenceOnLaboratoryValues" heading="fixing">
+    <SimpleList>
+      <Item>
+        <Header>
+          <Lang xml:lang="ja">〈胃潰瘍・十二指腸潰瘍におけるヘリコバクター・ピロリ感染症〉</Lang>
+        </Header>
+        <Detail>
+          <Lang xml:lang="ja">ランソプラゾール等のプロトンポンプインヒビターやアモキシシリン水和物、クラリスロマイシン等の抗生物質の服用中や投与終了直後では、<Sup>13</Sup>C-尿素呼気試験の判定結果が偽陰性になる可能性があるため、<Sup>13</Sup>C-尿素呼気試験による除菌判定を行う場合には、これらの薬剤の投与終了後4週以降の時点で実施することが望ましい。</Lang>
+        </Detail>
+      </Item>
+    </SimpleList>
+  </InfluenceOnLaboratoryValues>
+  <!--１５.その他の注意-->
+  <OtherPrecautions id="HDR_OtherPrecautions" heading="fixing">
+    <!--１５.２ 非臨床試験に基づく情報-->
+    <InformationBasedOnNonclinicalStudies id="HDR_InformationBasedOnNonclinicalStudies" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">ラットにアモキシシリン水和物（2,000mg/kg/日）、ランソプラゾール（15mg/kg/日以上）を4週間併用経口投与した試験、及びイヌにアモキシシリン水和物（500mg/kg/日）、ランソプラゾール（100mg/kg/日）、クラリスロマイシン（25mg/kg/日）を4週間併用経口投与した試験で、アモキシシリン水和物を単独あるいは併用投与した動物に結晶尿が認められているが、結晶はアモキシシリン水和物が排尿後に析出したものであり、体内で析出したものではないことが確認されている。</Lang>
+      </Detail>
+    </InformationBasedOnNonclinicalStudies>
+  </OtherPrecautions>
+  <!--１６.薬物動態-->
+  <Pharmacokinetics id="HDR_Pharmacokinetics" heading="fixing">
+    <!--１６.１ 血中濃度-->
+    <BloodLevel id="HDR_BloodLevel" heading="fixing">
+      <OrderedList numberContinued="false">
+        <Item id="HDR_BloodLevel_1" heading="free">
+          <Detail>
+            <Lang xml:lang="ja">健康成人（n＝22）に空腹時125mg（力価）又は250mg（力価）を経口投与したとき、血清中濃度のピークは2時間後に見られ、それぞれ2.6、5.3μg/mLで以後漸減し、6時間後にはそれぞれ0.15、0.3μg/mLの値を示した<ReferenceBookRef ref="DOC_04" />。</Lang>
+          </Detail>
+        </Item>
+        <Item id="HDR_BloodLevel_2" heading="free">
+          <Header>
+            <Lang xml:lang="ja">アモキシシリン水和物、クラリスロマイシン及びランソプラゾール併用時の薬物動態</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">健康成人（n＝6）にアモキシシリン水和物として1回1,000mg（力価）<Sup>注）</Sup>、クラリスロマイシンとして1回400mg（力価）及びランソプラゾールとして1回30mgの3剤を同時に経口投与した場合、アモキシシリン水和物の血中濃度パラメータは表のとおりである。</Lang>
+          </Detail>
+          <TblBlock>
+            <WidthDefinition totalWidth="581.07px">
+              <Col width="266.07px" />
+              <Col width="315.00px" />
+            </WidthDefinition>
+            <SimpleTable>
+              <SimpTblRow>
+                <SimpTblCell align="center" valign="middle" />
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">絶食下</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">Tmax</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">1.67±0.52hr</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">Cmax</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">10.05±1.62μg/mL</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">T<Sub>1/2</Sub></Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">1.0±0.2hr</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">AUC</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">29.04±7.15hr・μg/mL</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+            </SimpleTable>
+            <SimpTblFoot align="right">
+              <Detail>
+                <Lang xml:lang="ja">6例の平均値±標準偏差</Lang>
+              </Detail>
+            </SimpTblFoot>
+          </TblBlock>
+          <Detail>
+            <Lang xml:lang="ja">なお、3剤併用時の3剤各々の血中濃度は単独投与時の血中濃度とほぼ同様の推移を示す。<?enter?>また、健康成人（n＝7）に3剤を同様の用量で同時に1日2回7日間反復経口投与した時、薬物動態に変化は認められていない。</Lang>
+          </Detail>
+        </Item>
+      </OrderedList>
+    </BloodLevel>
+    <!--１６.３ 分布-->
+    <Distribution id="HDR_Distribution" heading="fixing">
+      <OrderedList numberContinued="false">
+        <Item id="HDR_Distribution_1" heading="free">
+          <Header>
+            <Lang xml:lang="ja">乳汁中移行</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">授乳婦6例にアモキシシリン水和物として500mg（力価）<Sup>注）</Sup>単回経口投与後の乳汁中移行は投与後2～6時間後でtrace～0.6μg/mLであった<ReferenceBookRef ref="DOC_05" /><Sup>,</Sup><ReferenceBookRef ref="DOC_06" />。<HeaderRef ref="HDR_UseInNursing" /></Lang>
+          </Detail>
+        </Item>
+      </OrderedList>
+    </Distribution>
+    <!--１６.４ 代謝-->
+    <Metabolism id="HDR_Metabolism" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">ヒトの尿中には抗菌活性代謝物質を認めなかった<ReferenceBookRef ref="DOC_07" />。</Lang>
+      </Detail>
+    </Metabolism>
+    <!--１６.５ 排泄-->
+    <Excretion id="HDR_Excretion" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">健康成人（n＝22）に空腹時125mg（力価）又は250mg（力価）を経口投与後、6時間までの尿中排泄率はそれぞれ54、62%であった<ReferenceBookRef ref="DOC_04" />。</Lang>
+      </Detail>
+    </Excretion>
+    <!--１６.６ 特定の背景を有する患者-->
+    <SpecificPopulation id="HDR_SpecificPopulation" heading="fixing">
+      <OrderedList numberContinued="false">
+        <Item id="HDR_SpecificPopulation_1" heading="free">
+          <Header>
+            <Lang xml:lang="ja">腎機能障害患者</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">本剤250mg（力価）を空腹時単回投与したときの最高血中濃度は腎機能正常例（2例）の3.5μg/mLに対し、慢性腎不全例（5例）では7.7μg/mLとなり、半減期はそれぞれ0.97時間、12.6時間であった<ReferenceBookRef ref="DOC_08" />。<HeaderRef ref="HDR_PatientsWithRenalImpairment_1" /></Lang>
+          </Detail>
+          <Detail>
+            <Lang xml:lang="ja">注）「胃潰瘍・十二指腸潰瘍におけるヘリコバクター・ピロリ感染症」においては、アモキシシリン水和物としての承認用量は通常1回750mg（力価）である。また、「ヘリコバクター・ピロリ感染を除く感染症」においては、アモキシシリン水和物としての承認用量は通常1回250mg（力価）である。</Lang>
+          </Detail>
+        </Item>
+      </OrderedList>
+    </SpecificPopulation>
+  </Pharmacokinetics>
+  <!--１７.臨床成績-->
+  <ResultsOfClinicalTrials id="HDR_ResultsOfClinicalTrials" heading="fixing">
+    <!--１７.１ 有効性及び安全性に関する試験-->
+    <EfficacyAndSafety id="HDR_EfficacyAndSafety" heading="fixing">
+      <SimpleList>
+        <Item>
+          <Header>
+            <Lang xml:lang="ja">〈ヘリコバクター・ピロリ感染症〉</Lang>
+          </Header>
+          <OrderedList numberContinued="true">
+            <Item id="HDR_EfficacyAndSafety_1" heading="free">
+              <Header>
+                <Lang xml:lang="ja">国内臨床試験（アモキシシリン水和物、クラリスロマイシン及びランソプラゾール併用時）</Lang>
+              </Header>
+              <Detail>
+                <Lang xml:lang="ja">ヘリコバクター・ピロリ陽性の胃潰瘍又は十二指腸潰瘍の患者を対象とした除菌の臨床試験（アモキシシリン水和物、クラリスロマイシン及びランソプラゾールの3剤療法）における除菌<Sup>※</Sup>率は下表のとおりである。</Lang>
+              </Detail>
+              <Detail>
+                <Lang xml:lang="ja">※培養法及び組織診断法の結果がいずれも陰性</Lang>
+              </Detail>
+              <TblBlock>
+                <TblCaption align="top">
+                  <Lang xml:lang="ja">表1　胃潰瘍における除菌率（7日間経口投与）</Lang>
+                </TblCaption>
+                <WidthDefinition totalWidth="559.58px">
+                  <Col width="318.57px" />
+                  <Col width="120.40px" />
+                  <Col width="120.61px" />
+                </WidthDefinition>
+                <SimpleTable>
+                  <SimpTblRow>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">各薬剤の1回投与量</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">投与回数</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">除菌率</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                  </SimpTblRow>
+                  <SimpTblRow>
+                    <SimpTblCell align="left" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">アモキシシリン水和物 750mg（力価）<?enter?>クラリスロマイシン 200mg（力価）<?enter?>ランソプラゾール 30mg</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">2回/日</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">87.5%<?enter?>（84/96例）</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                  </SimpTblRow>
+                  <SimpTblRow>
+                    <SimpTblCell align="left" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">アモキシシリン水和物 750mg（力価）<?enter?>クラリスロマイシン 400mg（力価）<?enter?>ランソプラゾール 30mg</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">2回/日</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">89.2%<?enter?>（83/93例）</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                  </SimpTblRow>
+                </SimpleTable>
+                <SimpTblFoot align="right">
+                  <Detail>
+                    <Lang xml:lang="ja">除菌率は基本解析対象集団を対象とした</Lang>
+                  </Detail>
+                </SimpTblFoot>
+              </TblBlock>
+              <TblBlock>
+                <TblCaption align="top">
+                  <Lang xml:lang="ja">表2　十二指腸潰瘍における除菌率（7日間経口投与）</Lang>
+                </TblCaption>
+                <WidthDefinition totalWidth="559.58px">
+                  <Col width="318.57px" />
+                  <Col width="120.40px" />
+                  <Col width="120.61px" />
+                </WidthDefinition>
+                <SimpleTable>
+                  <SimpTblRow>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">各薬剤の1回投与量</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">投与回数</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">除菌率</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                  </SimpTblRow>
+                  <SimpTblRow>
+                    <SimpTblCell align="left" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">アモキシシリン水和物 750mg（力価）<?enter?>クラリスロマイシン 200mg（力価）<?enter?>ランソプラゾール 30mg</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">2回/日</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">91.1%<?enter?>（82/90例）</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                  </SimpTblRow>
+                  <SimpTblRow>
+                    <SimpTblCell align="left" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">アモキシシリン水和物 750mg（力価）<?enter?>クラリスロマイシン 400mg（力価）<?enter?>ランソプラゾール 30mg</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">2回/日</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                    <SimpTblCell align="center" valign="middle">
+                      <Detail>
+                        <Lang xml:lang="ja">83.7%<?enter?>（82/98例）</Lang>
+                      </Detail>
+                    </SimpTblCell>
+                  </SimpTblRow>
+                </SimpleTable>
+                <SimpTblFoot align="right">
+                  <Detail>
+                    <Lang xml:lang="ja">除菌率は基本解析対象集団を対象とした</Lang>
+                  </Detail>
+                </SimpTblFoot>
+              </TblBlock>
+              <Detail>
+                <Lang xml:lang="ja">臨床検査値の異常変動を含む副作用は、430例中217例（50.5%）に認められた。主な副作用は、軟便59例（13.7%）、下痢38例（8.8%）であった。<?enter?>なお、米国及び英国で行われたヘリコバクター・ピロリ陽性の十二指腸潰瘍等に対する除菌の臨床試験<Sup>注）</Sup>においても、同程度の除菌率が認められている。<?enter?>臨床検査値の異常変動を含む副作用は、548例中179例（32.7%）に認められている。</Lang>
+              </Detail>
+              <Detail>
+                <Lang xml:lang="ja">注）各薬剤の投与量、投与期間は下記のとおりであり、国内の承認用法・用量と異なる。</Lang>
+              </Detail>
+              <Detail>
+                <Lang xml:lang="ja">米国：アモキシシリン水和物として1回1,000mg（力価）、クラリスロマイシンとして1回500mg（力価）及びランソプラゾールとして1回30mgの3剤を1日2回、10日間又は14日間経口投与</Lang>
+              </Detail>
+              <Detail>
+                <Lang xml:lang="ja">英国：アモキシシリン水和物として1回1,000mg（力価）、クラリスロマイシンとして1回250mg（力価）及びランソプラゾールとして1回30mgの3剤を1日2回、7日間経口投与</Lang>
+              </Detail>
+            </Item>
+          </OrderedList>
+        </Item>
+      </SimpleList>
+    </EfficacyAndSafety>
+  </ResultsOfClinicalTrials>
+  <!--１８.薬効薬理-->
+  <EfficacyPharmacology id="HDR_EfficacyPharmacology" heading="fixing">
+    <!--１８.１ 作用機序-->
+    <MechanismOfAction id="HDR_MechanismOfAction" heading="fixing">
+      <Detail>
+        <Lang xml:lang="ja">細菌の細胞壁の合成を阻害する。</Lang>
+      </Detail>
+    </MechanismOfAction>
+    <OtherInformation id="HDR_EfficacyPharmacology_OtherInformation_1" heading="free">
+      <Header>
+        <Lang xml:lang="ja">抗菌作用</Lang>
+      </Header>
+      <OrderedList numberContinued="false">
+        <Item id="HDR_EfficacyPharmacology_1" heading="free">
+          <Header>
+            <Lang xml:lang="ja"><Italic>in vitro</Italic>抗菌作用</Lang>
+          </Header>
+          <Detail>
+            <Lang xml:lang="ja">アモキシシリン水和物は、グラム陽性菌・陰性菌に抗菌力を示し、その最小発育阻止濃度は次のとおりである<ReferenceBookRef ref="DOC_09" />。</Lang>
+          </Detail>
+          <TblBlock>
+            <WidthDefinition totalWidth="581.07px">
+              <Col width="353.50px" />
+              <Col width="227.57px" />
+            </WidthDefinition>
+            <SimpleTable>
+              <SimpTblRow>
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">被験菌</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="center" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">最小発育阻止濃度（μg/mL）</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Staphylococcus aureus</Italic> ATCC 6538P</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">0.05</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Staphylococcus aureus </Italic>Smith</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">0.1</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Staphylococcus epidermidis </Italic>ATCC 12228</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">0.39</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Streptococcus pneumoniae</Italic> type III</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">0.05</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Enterococcus faecalis</Italic> ATCC 1263</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">0.39</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Escherichia coli</Italic> NIHJ</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">3.12</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+              <SimpTblRow>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja"><Italic>Proteus mirabilis</Italic> R</Lang>
+                  </Detail>
+                </SimpTblCell>
+                <SimpTblCell align="left" valign="middle">
+                  <Detail>
+                    <Lang xml:lang="ja">＞100</Lang>
+                  </Detail>
+                </SimpTblCell>
+              </SimpTblRow>
+            </SimpleTable>
+          </TblBlock>
+        </Item>
+        <Item id="HDR_EfficacyPharmacology_2" heading="free">
+          <Header>
+            <Lang xml:lang="ja">ヘリコバクター・ピロリに対する作用</Lang>
+          </Header>
+          <OrderedList numberContinued="false">
+            <Item id="HDR_EfficacyPharmacology_3" heading="free">
+              <Detail>
+                <Lang xml:lang="ja">殺菌的な抗菌作用を示す（<Italic>in vitro</Italic>）。</Lang>
+              </Detail>
+            </Item>
+            <Item id="HDR_EfficacyPharmacology_4" heading="free">
+              <Detail>
+                <Lang xml:lang="ja">アモキシシリン水和物とクラリスロマイシンとの併用における抗菌力には、相乗又は相加作用が認められ、いずれの菌株においても拮抗作用は認められていない（<Italic>in vitro</Italic>）。</Lang>
+              </Detail>
+            </Item>
+          </OrderedList>
+        </Item>
+      </OrderedList>
+    </OtherInformation>
+    <OtherInformation id="HDR_EfficacyPharmacology_OtherInformation_2" heading="free">
+      <Header>
+        <Lang xml:lang="ja">胃潰瘍・十二指腸潰瘍におけるヘリコバクター・ピロリ感染症に対するアモキシシリン水和物、クラリスロマイシン及びランソプラゾールの3剤療法</Lang>
+      </Header>
+      <OrderedList numberContinued="false">
+        <Item id="HDR_EfficacyPharmacology_5" heading="free">
+          <Detail>
+            <Lang xml:lang="ja">アモキシシリン水和物及びクラリスロマイシンともにランソプラゾールとの併用により、経口投与後の胃組織中濃度の上昇が認められる（ラット）。</Lang>
+          </Detail>
+        </Item>
+        <Item id="HDR_EfficacyPharmacology_6" heading="free">
+          <Detail>
+            <Lang xml:lang="ja">プロトンポンプインヒビターの強力な胃酸分泌抑制作用により胃内pHを上昇させることにより、アモキシシリン水和物及びクラリスロマイシンの抗菌活性が高まると考えられる。</Lang>
+          </Detail>
+        </Item>
+      </OrderedList>
+    </OtherInformation>
+  </EfficacyPharmacology>
+  <!--１９.有効成分に関する理化学的知見-->
+  <PhyschemOfActIngredients id="HDR_PhyschemOfActIngredients" heading="fixing">
+    <PhyschemOfActIngredientsSection>
+      <GeneralName>
+        <Detail>
+          <Lang xml:lang="ja">アモキシシリン水和物（Amoxicillin Hydrate）</Lang>
+        </Detail>
+      </GeneralName>
+      <ChemicalName>
+        <Detail>
+          <Lang xml:lang="ja">(2<Italic>S</Italic>,5<Italic>R</Italic>,6<Italic>R</Italic>)-6-［(2<Italic>R</Italic>)-2-Amino-2-(4-hydroxyphenyl)-acetylamino］-3,3-dimethyl-7-oxo-4-thia-1-azabicyclo［3.2.0］heptane-2-carboxylic acid trihydrate</Lang>
+        </Detail>
+      </ChemicalName>
+      <MolecularFormula>
+        <Detail>
+          <Lang xml:lang="ja">C<Sub>16</Sub>H<Sub>19</Sub>N<Sub>3</Sub>O<Sub>5</Sub>S・3H<Sub>2</Sub>O</Lang>
+        </Detail>
+      </MolecularFormula>
+      <MolecularWeight>
+        <Detail>
+          <Lang xml:lang="ja">419.45</Lang>
+        </Detail>
+      </MolecularWeight>
+      <DescriptionOfActiveIngredients>
+        <Detail>
+          <Lang xml:lang="ja">アモキシシリン水和物は白色～淡黄白色の結晶又は結晶性の粉末である。<?enter?>本品は水又はメタノールに溶けにくく、エタノール（95）に極めて溶けにくい。</Lang>
+        </Detail>
+      </DescriptionOfActiveIngredients>
+      <StructuralFormula>
+        <Detail>
+          <Lang xml:lang="ja"><InlineGraphic gfname="780009_6131001C2100_1_09_fig01.gif" scale="69" /></Lang>
+        </Detail>
+      </StructuralFormula>
+      <OtherInformation heading="free">
+        <Header>
+          <Lang xml:lang="ja">略号</Lang>
+        </Header>
+        <Detail>
+          <Lang xml:lang="ja">AMPC</Lang>
+        </Detail>
+      </OtherInformation>
+    </PhyschemOfActIngredientsSection>
+  </PhyschemOfActIngredients>
+  <!--２２.包装-->
+  <Package id="HDR_Package" heading="fixing">
+    <Detail>
+      <Lang xml:lang="ja">ボトル（乾燥剤入）　100g</Lang>
+    </Detail>
+  </Package>
+  <!--２３.主要文献-->
+  <MainLiterature id="HDR_MainLiterature" heading="fixing">
+    <Reference id="DOC_01">
+      <Lang xml:lang="ja">第30回日本皮膚科学会中部支部学術集会</Lang>
+    </Reference>
+    <Reference id="DOC_02">
+      <Lang xml:lang="ja">厚生労働省健康局結核感染症課編：抗微生物薬適正使用の手引き</Lang>
+    </Reference>
+    <Reference id="DOC_03">
+      <Lang xml:lang="ja">細川隆文 他：臨床血液 1985；26（6）：936-942</Lang>
+    </Reference>
+    <Reference id="DOC_04">
+      <Lang xml:lang="ja">Croydon, E. A., et al.：Antimicrob. Agents Chemother. 1970；10：427-430</Lang>
+    </Reference>
+    <Reference id="DOC_05">
+      <Lang xml:lang="ja">古谷　博 他：日本化学療法学会雑誌 1973；21（8）：1752-1758</Lang>
+    </Reference>
+    <Reference id="DOC_06">
+      <Lang xml:lang="ja">青河寛次 他：日本化学療法学会雑誌 1973；21（8）：1780-1786</Lang>
+    </Reference>
+    <Reference id="DOC_07">
+      <Lang xml:lang="ja">村川武雄 他：日本化学療法学会雑誌 1973；21（8）：1399-1408</Lang>
+    </Reference>
+    <Reference id="DOC_08">
+      <Lang xml:lang="ja">楠　信男 他：日本化学療法学会雑誌 1978；26（3）：311-316</Lang>
+    </Reference>
+    <Reference id="DOC_09">
+      <Lang xml:lang="ja">社内資料：アンピシリンとアモキシシリンのMIC値測定</Lang>
+    </Reference>
+  </MainLiterature>
+  <!--２４.文献請求先及び問い合わせ先-->
+  <AddresseeOfLiteratureRequest id="HDR_AddresseeOfLiteratureRequest" heading="fixing">
+    <AddresseeInfo>
+      <AddresseeOfInquiry>
+        <Lang xml:lang="ja">Meiji Seika ファルマ株式会社　くすり相談室</Lang>
+      </AddresseeOfInquiry>
+      <Address>
+        <Lang xml:lang="ja">〒104-8002　東京都中央区京橋2-4-16</Lang>
+      </Address>
+      <ContactInformation>
+        <Detail>
+          <Lang xml:lang="ja">フリーダイヤル（0120）093-396　電話（03）3273-3539<?enter?>FAX（03）3272-2438</Lang>
+        </Detail>
+      </ContactInformation>
+    </AddresseeInfo>
+  </AddresseeOfLiteratureRequest>
+  <!--２６.製造販売業者等-->
+  <NameAddressManufact id="HDR_NameAddressManufact" heading="fixing">
+    <Manufacturer>
+      <TypeOfIndustry>
+        <Lang xml:lang="ja">製造販売元</Lang>
+      </TypeOfIndustry>
+      <Name>
+        <Lang xml:lang="ja">Meiji Seika ファルマ株式会社</Lang>
+      </Name>
+      <Address>
+        <Lang xml:lang="ja">東京都中央区京橋2-4-16</Lang>
+      </Address>
+    </Manufacturer>
+  </NameAddressManufact>
+</PackIns>

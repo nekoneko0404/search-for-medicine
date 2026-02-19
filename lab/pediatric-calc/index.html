@@ -512,6 +512,55 @@
             font-weight: bold;
             font-size: 0.7rem;
         }
+
+        /* Horizontal Layout Overrides */
+        body {
+            overflow: hidden !important;
+            /* Let main-container handle scrolling */
+        }
+
+        .horizontal-layout {
+            display: flex !important;
+            flex-direction: row !important;
+            overflow-x: auto !important;
+            overflow-y: hidden !important;
+            align-items: stretch !important;
+            height: calc(100vh - var(--header-offset)) !important;
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: none !important;
+            gap: 0 !important;
+        }
+
+        /* Scrollbar styling for the main container */
+        .horizontal-layout::-webkit-scrollbar {
+            height: 12px;
+        }
+
+        .horizontal-layout::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .horizontal-layout::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 6px;
+        }
+
+        .horizontal-layout::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Adjustments for columns */
+        .patient-info-column,
+        .prescription-sheet,
+        .library-area {
+            flex-shrink: 0 !important;
+            height: 100% !important;
+            overflow-y: hidden !important;
+            /* Inner content handles scroll */
+            display: flex;
+            flex-direction: column;
+        }
     </style>
 </head>
 
@@ -525,55 +574,51 @@
         テスト中。不具合、バグを発見した際は掲示板、X等でご指摘ください。
     </div>
 
-    <!-- Patient Info Bar (Highlighted) -->
-    <div class="patient-info-bar">
-        <div class="input-container">
-            <!-- Age Inputs -->
-            <div class="age-inputs">
-                <div class="input-group-enhanced">
-                    <div class="input-icon"><i class="fas fa-cake-candles"></i></div>
-                    <input type="number" id="age-input" placeholder="0" inputmode="numeric" min="0">
-                    <div class="input-unit">歳</div>
+    <!-- Main Content with Horizontal Scroll -->
+    <div class="main-container horizontal-layout">
+        <!-- Column 1: Patient Info -->
+        <div class="patient-info-column"
+            style="flex: 0 0 350px; padding: 1rem; background: #fff; border-right: 1px solid #e2e8f0; height: fit-content;">
+            <div class="input-container" style="display:flex; flex-direction:column; gap:1rem;">
+                <h3
+                    style="margin:0; font-size:1.1rem; color:#1e293b; border-bottom:2px solid #4f46e5; padding-bottom:0.5rem;">
+                    <i class="fas fa-child" style="margin-right:0.5rem; color:#4f46e5;"></i>患者情報
+                </h3>
+
+                <!-- Age Inputs -->
+                <div class="age-inputs" style="grid-template-columns: 1fr 1fr; display:grid; gap:0.5rem;">
+                    <div class="input-group-enhanced">
+                        <div class="input-icon"><i class="fas fa-cake-candles"></i></div>
+                        <input type="number" id="age-input" placeholder="0" inputmode="numeric" min="0">
+                        <div class="input-unit">歳</div>
+                    </div>
+                    <div class="input-group-enhanced">
+                        <input type="number" id="month-input" placeholder="0" inputmode="numeric" min="0" max="11">
+                        <div class="input-unit">ヶ月</div>
+                    </div>
                 </div>
-                <div class="input-group-enhanced">
-                    <input type="number" id="month-input" placeholder="0" inputmode="numeric" min="0" max="11">
-                    <div class="input-unit">ヶ月</div>
+
+                <!-- Weight Input -->
+                <div style="display:flex; gap:0.5rem;">
+                    <div class="input-group-enhanced" style="flex:1;">
+                        <div class="input-icon"><i class="fas fa-weight-scale"></i></div>
+                        <input type="number" id="weight-input" placeholder="0.0" step="0.1" inputmode="decimal">
+                        <div class="input-unit">kg</div>
+                    </div>
+
+                    <!-- Auto Weight Button -->
+                    <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力"
+                        style="width: 44px; height: 44px; padding: 0.2rem; display: flex; flex-direction: column; gap: 0; justify-content: center; align-items: center;">
+                        <i class="fas fa-calculator" style="font-size: 0.9rem; margin-bottom: 1px;"></i>
+                        <div style="font-size: 0.6rem; line-height: 1; font-weight: bold;">標準<br>体重</div>
+                    </button>
                 </div>
             </div>
-
-            <!-- Weight Input -->
-            <div class="input-group-enhanced">
-                <div class="input-icon"><i class="fas fa-weight-scale"></i></div>
-                <input type="number" id="weight-input" placeholder="0.0" step="0.1" inputmode="decimal">
-                <div class="input-unit">kg</div>
-            </div>
-
-            <!-- Auto Weight Button -->
-            <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力"
-                style="width: 44px; height: 44px; padding: 0.2rem; display: flex; flex-direction: column; gap: 0; justify-content: center; align-items: center;">
-                <i class="fas fa-calculator" style="font-size: 0.9rem; margin-bottom: 1px;"></i>
-                <div style="font-size: 0.6rem; line-height: 1; font-weight: bold;">標準<br>体重</div>
-            </button>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-container">
-        <!-- Library Area -->
-        <div class="library-area">
-            <div class="search-area">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="drug-search" placeholder="薬剤名・成分名・YJコードで検索..." maxlength="50">
-                </div>
-                <div class="category-tabs" id="category-tabs"></div>
-            </div>
-
-            <div id="drug-grid" class="drug-grid"></div>
         </div>
 
-        <!-- Prescription Sheet (static, always visible) -->
-        <div class="prescription-sheet" id="prescription-sheet">
+        <!-- Column 2: Prescription Sheet -->
+        <div class="prescription-sheet" id="prescription-sheet"
+            style="flex: 0 0 450px; height: auto; position: static; box-shadow: none; border-right: 1px solid #e2e8f0; border-radius: 0;">
             <div class="sheet-header">
                 <div style="font-weight:800; font-size:1.1rem; color:#1e293b;">
                     <i class="fas fa-file-prescription"
@@ -584,11 +629,30 @@
                     <i class="fas fa-trash-alt"></i>
                 </button>
             </div>
-            <div class="sheet-content" id="sheet-content">
+            <div class="sheet-content" id="sheet-content"
+                style="background: #f8fafc; height: calc(100% - 60px); overflow-y: auto;">
                 <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
                     <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
                     <p>薬剤を選択してください</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- Column 3: Library Area -->
+        <div class="library-area" style="flex: 0 0 500px; padding: 1rem; overflow-y: auto;">
+            <h3
+                style="margin:0 0 1rem 0; font-size:1.1rem; color:#1e293b; border-bottom:2px solid #64748b; padding-bottom:0.5rem;">
+                <i class="fas fa-pills" style="margin-right:0.5rem; color:#64748b;"></i>医薬品リスト
+            </h3>
+            <div class="search-area">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="drug-search" placeholder="薬剤名・成分名・YJコードで検索..." maxlength="50">
+                </div>
+                <div class="category-tabs" id="category-tabs"></div>
+            </div>
+
+            <div id="drug-grid" class="drug-grid" style="grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));">
             </div>
         </div>
     </div>

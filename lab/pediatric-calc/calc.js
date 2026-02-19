@@ -2071,14 +2071,16 @@ function updatePrescriptionSheet() {
         return `
         <div class="rx-item">
             <div class="rx-header">
-                <div class="rx-title">${displayName}</div>
+                <div style="display:flex; align-items:center; gap:0.5rem; flex:1; min-width:0;">
+                    <div class="rx-title" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">${displayName}</div>
+                    ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="padding:1px 6px; font-size:0.7rem; white-space:nowrap; flex-shrink:0;">用法</button>` : ''}
+                </div>
                 <div class="rx-remove" onclick="removeDrug('${drug.id}')"><i class="fas fa-times"></i></div>
             </div>
             <div class="rx-config">${selectorsHtml}</div>
             <div class="rx-result-box">${resultMain}</div>
             <div class="rx-meta">
                 <div>${calc.note || ''}</div>
-                ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')">用法<br>用量</button>` : ''}
             </div>
         </div>`;
     }).join('');
