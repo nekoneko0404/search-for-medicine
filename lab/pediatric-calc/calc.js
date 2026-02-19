@@ -539,7 +539,8 @@ const PEDIATRIC_DRUGS = [
                     "timeMgKg": 20,
                     "timesPerDay": 4,
                     "absoluteMaxMgPerTime": 800,
-                    "absoluteMaxMgPerDay": 3200
+                    "absoluteMaxMgPerDay": 3200,
+                    "note": "通常1回20mg/kgを1日4回。上限800mg/回。"
                 },
                 "piSnippet": "通常、小児には1回20mg/kgを1日4回服用する。ただし、1回最大用量は800mgを超えないこと。"
             },
@@ -551,13 +552,14 @@ const PEDIATRIC_DRUGS = [
                     "timeMgKg": 20,
                     "timesPerDay": 4,
                     "absoluteMaxMgPerTime": 200,
-                    "absoluteMaxMgPerDay": 800
+                    "absoluteMaxMgPerDay": 800,
+                    "note": "通常1回20mg/kgを1日4回。上限200mg/回。"
                 },
                 "piSnippet": "通常、小児には1回20mg/kgを1日4回服用する。ただし、1回最大用量は200mgを超えないこと。"
             }
         ],
         "dosage": {
-            "note": "通常1回20mg/kgを1日4回。水痘・帯状疱疹：上限800mg/回。単純ヘルペス：上限200mg/回。"
+            "note": "通常1回20mg/kgを1日4回。疾患により1回量の上限が異なります。"
         },
         "piSnippet": "通常、小児には1回20mg/kgを1日4回服用する。疾患により1回量上限（200mg/800mg）が異なります。",
         "category": "antiviral"
@@ -578,7 +580,8 @@ const PEDIATRIC_DRUGS = [
                     "timeMgKg": 25,
                     "timesPerDay": 3,
                     "absoluteMaxMgPerTime": 1000,
-                    "absoluteMaxMgPerDay": 3000
+                    "absoluteMaxMgPerDay": 3000,
+                    "note": "通常1回25mg/kgを1日3回。上限1000mg/回。"
                 },
                 "piSnippet": "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回最大用量は1000mgを超えないこと。"
             },
@@ -589,14 +592,15 @@ const PEDIATRIC_DRUGS = [
                     "timeMgKg": 25,
                     "timesPerDay": 2,
                     "absoluteMaxMgPerTime": 500,
-                    "note": "1回25mg/kgを1日2回。上限500mg/回。",
+                    "absoluteMaxMgPerDay": 1000,
+                    "note": "通常1回25mg/kgを1日2回。上限500mg/回。",
                     "isByTime": true
                 },
                 "piSnippet": "通常、小児には1回25mg/kgを1日2回服用する。ただし、1回最大用量は500mgを超えないこと。"
             }
         ],
         "dosage": {
-            "note": "通常1回25mg/kgを1日3回。上限1000mg/回。40kg以上の単純ヘルペスは1回500mgを1日2回。"
+            "note": "通常1回25mg/kg。水痘・帯状疱疹(1日3回・上限1000mg)、単純ヘルペス(1日2回・上限500mg)。"
         },
         "piSnippet": "通常、小児には1回25mg/kgを1日3回服用する。ただし、1回量として1000mgを超えないこと。",
         "category": "antiviral"
@@ -959,7 +963,8 @@ const PEDIATRIC_DRUGS = [
                     "isByTime": true,
                     "timeMgKg": 0.12,
                     "timesPerDay": 2,
-                    "absoluteMaxMgPerDay": 12
+                    "absoluteMaxMgPerDay": 12,
+                    "note": "通常1回0.12mg/kgを1日2回。上限12mg(成人量)。"
                 },
                 "piSnippet": "通常、気管支喘息にはメキタジンとして1回0.12mg/kgを1日2回服用する。"
             },
@@ -970,13 +975,14 @@ const PEDIATRIC_DRUGS = [
                     "isByTime": true,
                     "timeMgKg": 0.06,
                     "timesPerDay": 2,
-                    "absoluteMaxMgPerDay": 12
+                    "absoluteMaxMgPerDay": 6,
+                    "note": "通常1回0.06mg/kgを1日2回。上限6mg(成人量)。"
                 },
                 "piSnippet": "通常、アレルギー性鼻炎、じん麻疹等にはメキタジンとして1回0.06mg/kgを1日2回服用する。"
             }
         ],
         "dosage": {
-            "note": "喘息:1回0.12mg/kg、その他:1回0.06mg/kg。1日2回。上限12mg(成人量)。"
+            "note": "通常1日2回。喘息(1回0.12mg/kg・上限12mg)、その他(1回0.06mg/kg・上限6mg)。"
         },
         "piSnippet": "疾患により1回投与量が異なります（喘息 0.12mg/kg、その他 0.06mg/kg）。",
         "category": "allergy"
