@@ -2312,10 +2312,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const searchInput = document.getElementById('drug-search');
-    searchInput.addEventListener('input', (e) => {
-        currentSearchQuery = e.target.value;
-        renderDrugList();
-    });
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            currentSearchQuery = e.target.value;
+            renderDrugList();
+        });
+    }
 
     loadState();
     renderCategoryTabs();
@@ -2325,7 +2327,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const yjQuery = urlParams.get('yj');
     if (yjQuery) {
         currentSearchQuery = yjQuery;
-        searchInput.value = yjQuery;
+        if (searchInput) searchInput.value = yjQuery;
         // Auto switch to all category if searching
         currentCategory = 'all';
         renderCategoryTabs(); // To update active tab

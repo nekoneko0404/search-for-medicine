@@ -543,6 +543,25 @@
             width: 100%;
         }
 
+        /* Mobile specific adjustments for Patient Info Bar */
+        @media (max-width: 768px) {
+            .patient-info-bar .input-container {
+                flex-wrap: wrap !important;
+                gap: 0.75rem !important;
+                justify-content: center;
+            }
+
+            .patient-info-bar .input-container>div {
+                flex: 1 1 auto;
+                min-width: 140px;
+            }
+
+            .patient-info-bar #close-sheet {
+                margin-left: initial !important;
+                flex: 0 0 auto;
+            }
+        }
+
         /* Selected Drug Style - Emerald Green to differentiate from blue */
         .drug-card.selected {
             background-color: #ecfdf5 !important;
