@@ -40,7 +40,7 @@ async function main() {
         const browser = await chromium.launch();
         const context = await browser.newContext({
             viewport: { width: 1280, height: 720 },
-            deviceScaleFactor: 1.5
+            deviceScaleFactor: 1.0 // 標準解像度にしてサイズを確実に抑える
         });
         const page = await context.newPage();
 
@@ -57,9 +57,13 @@ async function main() {
                     path: target.filename,
                     fullPage: true,
                     type: 'jpeg',
-                    quality: 85
+                    quality: 80
                 });
                 console.log(`Saved ${target.filename}`);
+
+                // ファイルサイズをチェックしてログに残す
+                const stats = fs.statSync(target.filename);
+                console.log(`File size: ${(stats.size / 1024).toFixed(2)} KB`);
 
                 // 4. Upload Image to Bluesky as Blob
                 console.log(`Uploading ${target.filename} to Bluesky...`);
