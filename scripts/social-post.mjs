@@ -39,7 +39,7 @@ async function main() {
         // 2. Setup Playwright
         const browser = await chromium.launch();
         const context = await browser.newContext({
-            viewport: { width: 1280, height: 800 },
+            viewport: { width: 1280, height: 1600 },
             deviceScaleFactor: 2.0 // 高解像度を復活
         });
         const page = await context.newPage();
@@ -57,7 +57,7 @@ async function main() {
                     path: target.filename,
                     type: 'jpeg',
                     quality: 85,
-                    clip: { x: 0, y: 0, width: 1280, height: 800 } // 上部800pxだけを切り取る
+                    clip: { x: 0, y: 0, width: 1280, height: 1600 } // 上部1600pxを切り取る
                 });
                 console.log(`Saved ${target.filename}`);
 
