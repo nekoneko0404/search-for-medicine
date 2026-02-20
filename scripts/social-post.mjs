@@ -1,13 +1,11 @@
 import { chromium } from 'playwright';
-import { TwitterApi } from 'twitter-api-v2';
+import atproto from '@atproto/api';
+const { BskyAgent } = atproto;
 import fs from 'fs';
 
 // --- Configuration ---
-// These should be set via environment variables in GitHub Actions
-const TWITTER_API_KEY = process.env.TWITTER_API_KEY;
-const TWITTER_API_SECRET = process.env.TWITTER_API_SECRET;
-const TWITTER_ACCESS_TOKEN = process.env.TWITTER_ACCESS_TOKEN;
-const TWITTER_ACCESS_SECRET = process.env.TWITTER_ACCESS_SECRET;
+const BSKY_HANDLE = process.env.BSKY_HANDLE; // e.g., yourname.bsky.social
+const BSKY_PASSWORD = process.env.BSKY_PASSWORD; // App Password
 
 const TARGET_URLS = [
     {
@@ -23,76 +21,88 @@ const TARGET_URLS = [
 ];
 
 async function main() {
-    // 1. Setup Twitter Client
-    if (!TWITTER_API_KEY || !TWITTER_API_SECRET || !TWITTER_ACCESS_TOKEN || !TWITTER_ACCESS_SECRET) {
-        console.error('Error: Twitter API credentials are missing.');
+    // 1. Setup Bluesky Agent
+    if (!BSKY_HANDLE || !BSKY_PASSWORD) {
+        console.error('Error: BSKY_HANDLE or BSKY_PASSWORD is missing.');
         process.exit(1);
     }
 
-    const client = new TwitterApi({
-        appKey: TWITTER_API_KEY,
-        appSecret: TWITTER_API_SECRET,
-        accessToken: TWITTER_ACCESS_TOKEN,
-        accessSecret: TWITTER_ACCESS_SECRET,
-    });
-
-    // 2. Setup Playwright
-    const browser = await chromium.launch();
-    const context = await browser.newContext({
-        viewport: { width: 1280, height: 720 }, // Set initial viewport
-        deviceScaleFactor: 2 // High DPI for better quality
-    });
-    const page = await context.newPage();
-
-    const mediaIds = [];
+    const agent = new BskyAgent({ service: 'https://bsky.social' });
 
     try {
-        // 3. Take Screenshots
-        for (const target of TARGET_URLS) {
-            console.log(`Navigating to ${target.url}...`);
-            await page.goto(target.url, { waitUntil: 'networkidle' });
-
-            // Wait for any specific element if needed (e.g., table)
-            // await page.waitForSelector('.your-target-element'); 
-
-            console.log(`Taking full page screenshot for ${target.title}...`);
-            await page.screenshot({ path: target.filename, fullPage: true });
-            console.log(`Saved ${target.filename}`);
-
-            // 4. Upload Media to Twitter
-            console.log(`Uploading ${target.filename} to X...`);
-            const mediaId = await client.v1.uploadMedia(target.filename);
-            mediaIds.push(mediaId);
-        }
-
-        // 5. Post Tweet
-        console.log('Posting tweet...');
-        const text = `
-【供給状況更新】
-Google Driveのデータ更新を検知しました。
-直近3日間の供給状況変化をお知らせします。
-
-#医薬品供給 #薬不足 #search_for_medicine
-    `.trim();
-
-        await client.v2.tweet({
-            text: text,
-            media: { media_ids: mediaIds }
+        console.log('Logging in to Bluesky...');
+        await agent.login({
+            identifier: BSKY_HANDLE,
+            password: BSKY_PASSWORD,
         });
 
-        console.log('Successfully posted to X!');
+        // 2. Setup Playwright
+        const browser = await chromium.launch();
+        const context = await browser.newContext({
+            viewport: { width: 1280, height: 720 },
+            deviceScaleFactor: 2
+        });
+        const page = await context.newPage();
+
+        const images = [];
+
+        try {
+            // 3. Take Screenshots
+            for (const target of TARGET_URLS) {
+                console.log(`Navigating to ${target.url}...`);
+                await page.goto(target.url, { waitUntil: 'networkidle' });
+
+                console.log(`Taking full page screenshot for ${target.title}...`);
+                await page.screenshot({ path: target.filename, fullPage: true });
+                console.log(`Saved ${target.filename}`);
+
+                // 4. Upload Image to Bluesky as Blob
+                console.log(`Uploading ${target.filename} to Bluesky...`);
+                const imageContent = fs.readFileSync(target.filename);
+                const { data } = await agent.uploadBlob(imageContent, {
+                    encoding: 'image/png',
+                });
+
+                images.push({
+                    image: data.blob,
+                    alt: `${target.title}の一覧スクリーンショット`,
+                });
+            }
+
+            // 5. Post to Bluesky
+            console.log('Posting to Bluesky...');
+            const text = `
+【医薬品供給状況 更新通知】
+Google Driveのデータ更新を検知しました。
+直近3日間の供給状況の変化、および現在の動向をお知らせします。
+
+#医薬品供給 #薬不足 #search_for_medicine
+            `.trim();
+
+            await agent.post({
+                text: text,
+                embed: {
+                    $type: 'app.bsky.embed.images',
+                    images: images,
+                },
+                createdAt: new Date().toISOString(),
+            });
+
+            console.log('Successfully posted to Bluesky!');
+
+        } finally {
+            await browser.close();
+            // Clean up files
+            TARGET_URLS.forEach(target => {
+                if (fs.existsSync(target.filename)) {
+                    fs.unlinkSync(target.filename);
+                }
+            });
+        }
 
     } catch (error) {
         console.error('An error occurred:', error);
         process.exit(1);
-    } finally {
-        await browser.close();
-        // Clean up files
-        TARGET_URLS.forEach(target => {
-            if (fs.existsSync(target.filename)) {
-                fs.unlinkSync(target.filename);
-            }
-        });
     }
 }
 
