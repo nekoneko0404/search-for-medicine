@@ -39,7 +39,7 @@ async function main() {
         const browser = await chromium.launch();
         const context = await browser.newContext({
             viewport: { width: 1280, height: 1600 },
-            deviceScaleFactor: 3.0 // さらに解像度を上げて極限まで綺麗に
+            deviceScaleFactor: 2.4 // 3.0だと1.2MBになるため、2.4に調整
         });
         const page = await context.newPage();
 
@@ -59,7 +59,7 @@ async function main() {
                 await page.screenshot({
                     path: target.filename,
                     type: 'jpeg',
-                    quality: 90, // 画質をさらに向上
+                    quality: 80, // 90から80に下げてサイズを稼ぐ
                     clip: { x: 0, y: 0, width: 1280, height: 1600 } // 上部1600pxを切り取る
                 });
                 console.log(`Saved ${target.filename}`);
