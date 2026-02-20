@@ -11,12 +11,12 @@ const TARGET_URLS = [
     {
         url: 'https://search-for-medicine.pages.dev/update/?period=3days&normal=1&limited=1&stopped=1&up=1&down=0',
         title: '【供給改善・回復】',
-        filename: 'improvement.png'
+        filename: 'improvement.jpg'
     },
     {
         url: 'https://search-for-medicine.pages.dev/update/?period=3days&normal=1&limited=1&stopped=1&up=0&down=1',
         title: '【供給悪化・停止】',
-        filename: 'worsening.png'
+        filename: 'worsening.jpg'
     }
 ];
 
@@ -40,7 +40,7 @@ async function main() {
         const browser = await chromium.launch();
         const context = await browser.newContext({
             viewport: { width: 1280, height: 720 },
-            deviceScaleFactor: 2
+            deviceScaleFactor: 1.5
         });
         const page = await context.newPage();
 
@@ -53,14 +53,19 @@ async function main() {
                 await page.goto(target.url, { waitUntil: 'networkidle' });
 
                 console.log(`Taking full page screenshot for ${target.title}...`);
-                await page.screenshot({ path: target.filename, fullPage: true });
+                await page.screenshot({
+                    path: target.filename,
+                    fullPage: true,
+                    type: 'jpeg',
+                    quality: 85
+                });
                 console.log(`Saved ${target.filename}`);
 
                 // 4. Upload Image to Bluesky as Blob
                 console.log(`Uploading ${target.filename} to Bluesky...`);
                 const imageContent = fs.readFileSync(target.filename);
                 const { data } = await agent.uploadBlob(imageContent, {
-                    encoding: 'image/png',
+                    encoding: 'image/jpeg',
                 });
 
                 images.push({
