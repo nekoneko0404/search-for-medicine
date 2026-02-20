@@ -1,6 +1,5 @@
 import { chromium } from 'playwright';
-import atproto from '@atproto/api';
-const { BskyAgent } = atproto;
+import { BskyAgent, RichText } from '@atproto/api';
 import fs from 'fs';
 
 // --- Configuration ---
@@ -99,7 +98,7 @@ https://search-for-medicine.pages.dev/
             `.trim();
 
             // リッチテキスト（リンク）の処理
-            const rt = new atproto.RichText({ text });
+            const rt = new RichText({ text });
             await rt.detectFacets(agent);
 
             await agent.post({
