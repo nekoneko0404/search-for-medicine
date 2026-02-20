@@ -52,6 +52,10 @@ async function main() {
                 console.log(`Navigating to ${target.url}...`);
                 await page.goto(target.url, { waitUntil: 'networkidle' });
 
+                // アニメーションの完了を待つ
+                console.log('Waiting for animations to complete...');
+                await page.waitForTimeout(2000);
+
                 console.log(`Taking full page screenshot for ${target.title}...`);
                 await page.screenshot({
                     path: target.filename,
