@@ -1,0 +1,4 @@
+L-Keflex Note 1: OK (1000mg)
+L-Keflex Note 2: OK (2000mg)
+Fosmicin Group: OK (3 times, 3000mg)
+Duplicate Fosmicin: GONE (OK)
