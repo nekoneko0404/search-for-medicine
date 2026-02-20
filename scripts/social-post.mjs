@@ -39,8 +39,8 @@ async function main() {
         // 2. Setup Playwright
         const browser = await chromium.launch();
         const context = await browser.newContext({
-            viewport: { width: 1280, height: 720 },
-            deviceScaleFactor: 1.0 // 標準解像度にしてサイズを確実に抑える
+            viewport: { width: 1280, height: 800 },
+            deviceScaleFactor: 2.0 // 高解像度を復活
         });
         const page = await context.newPage();
 
@@ -55,9 +55,9 @@ async function main() {
                 console.log(`Taking full page screenshot for ${target.title}...`);
                 await page.screenshot({
                     path: target.filename,
-                    fullPage: true,
+                    // fullPage: true は削除（1画面分のみ撮影）
                     type: 'jpeg',
-                    quality: 80
+                    quality: 85 // 高解像度なら85%で十分綺麗
                 });
                 console.log(`Saved ${target.filename}`);
 
