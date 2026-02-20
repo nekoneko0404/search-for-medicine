@@ -55,9 +55,9 @@ async function main() {
                 console.log(`Taking full page screenshot for ${target.title}...`);
                 await page.screenshot({
                     path: target.filename,
-                    // fullPage: true は削除（1画面分のみ撮影）
                     type: 'jpeg',
-                    quality: 85 // 高解像度なら85%で十分綺麗
+                    quality: 85,
+                    clip: { x: 0, y: 0, width: 1280, height: 800 } // 上部800pxだけを切り取る
                 });
                 console.log(`Saved ${target.filename}`);
 
@@ -84,6 +84,9 @@ async function main() {
 【医薬品供給状況 更新通知】
 Google Driveのデータ更新を検知しました。
 直近3日間の供給状況の変化、および現在の動向をお知らせします。
+
+アプリで詳細を確認：
+https://search-for-medicine.pages.dev/
 
 #医薬品供給 #薬不足 #search_for_medicine
             `.trim();
