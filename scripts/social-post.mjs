@@ -40,7 +40,7 @@ async function main() {
         const browser = await chromium.launch();
         const context = await browser.newContext({
             viewport: { width: 1280, height: 1600 },
-            deviceScaleFactor: 2.0 // 高解像度を復活
+            deviceScaleFactor: 3.0 // さらに解像度を上げて極限まで綺麗に
         });
         const page = await context.newPage();
 
@@ -60,7 +60,7 @@ async function main() {
                 await page.screenshot({
                     path: target.filename,
                     type: 'jpeg',
-                    quality: 85,
+                    quality: 90, // 画質をさらに向上
                     clip: { x: 0, y: 0, width: 1280, height: 1600 } // 上部1600pxを切り取る
                 });
                 console.log(`Saved ${target.filename}`);
@@ -82,12 +82,15 @@ async function main() {
                 });
             }
 
-            // 5. Post to Bluesky
+            // 5. Post to Bluesky with RichText Link
             console.log('Posting to Bluesky...');
             const text = `
 【医薬品供給状況 更新通知】
-Google Driveのデータ更新を検知しました。
-直近3日間の供給状況の変化、および現在の動向をお知らせします。
+厚生労働省データの更新を検知しました。
+更新情報を一部抜粋しています。
+
+厚労省データはメーカー公表より1～2日遅れます。
+速報はXなどでメーカー公表をご覧ください。
 
 アプリで詳細を確認：
 https://search-for-medicine.pages.dev/
@@ -95,8 +98,13 @@ https://search-for-medicine.pages.dev/
 #医薬品供給 #薬不足 #search_for_medicine
             `.trim();
 
+            // リッチテキスト（リンク）の処理
+            const rt = new atproto.RichText({ text });
+            await rt.detectFacets(agent);
+
             await agent.post({
-                text: text,
+                text: rt.text,
+                facets: rt.facets,
                 embed: {
                     $type: 'app.bsky.embed.images',
                     images: images,
