@@ -50,7 +50,7 @@ const html = `
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>小児用量計算機 全薬剤一括チェック</title>
+    <title>小児薬用量計算機 全薬剤一括チェック</title>
     <style>
         :root {
             --primary: #2563eb;
@@ -141,7 +141,7 @@ const html = `
 <body>
     <div class="header" id="mainHeader">
         <div class="header-top">
-            <h1>小児用量計算機 一括チェックツール</h1>
+            <h1>小児薬用量計算機 一括チェックツール</h1>
             <div id="dateStr" class="meta"></div>
         </div>
         <div class="controls">
