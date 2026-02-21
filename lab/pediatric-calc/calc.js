@@ -1981,14 +1981,7 @@ function calculateDrug(drug, years, months, weight) {
     };
 }
 
-// Logic for Clearing
-window.clearAllDrugs = () => {
-    state.selectedDrugIds.clear();
-    state.drugOptions = {};
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
+
 
 function updatePrescriptionSheet() {
     const sheet = document.getElementById('prescription-sheet');
@@ -2187,23 +2180,7 @@ function loadState() {
     } catch (e) { }
 }
 
-// Logic for Clearing
-window.clearAllDrugs = () => {
-    state.selectedDrugIds.clear();
-    state.drugOptions = {};
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
 
-// Logic for Removing Single Drug
-window.removeDrug = (id) => {
-    state.selectedDrugIds = state.selectedDrugIds.filter(drugId => drugId !== id);
-    if (state.drugOptions[id]) delete state.drugOptions[id];
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
 
 let currentCategory = 'all';
 let currentSearchQuery = '';
