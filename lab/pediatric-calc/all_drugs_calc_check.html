@@ -1945,69 +1945,20 @@
         };
     }
     else if (drug.calcType === 'age-weight-switch' && drug.ageBranches) {
-        // Find the appropriate age branch
         const branch = drug.ageBranches.find(b => age >= b.ageMin && age < b.ageMax)
             || drug.ageBranches[drug.ageBranches.length - 1];
-        const branchDosage = branch.dosage;
-        const times = (dosageConfig && dosageConfig.timesPerDay) || branchDosage.timesPerDay || 3;
 
-        // Check for fixed dose in branch
-        if (branchDosage.isFixed) {
-            let detailStr = '';
-            if (branchDosage.dosePerTimeMg && potency) {
-                const amount = Math.round((branchDosage.dosePerTimeMg / potency) * 100) / 100;
-                detailStr = `${amount}${branchDosage.unit || unit}`;
-            } else {
-                detailStr = `${branchDosage.dosePerTime}${branchDosage.unit || unit}`;
-            }
-            return {
-                result: branch.label,
-                detail: detailStr,
-                isFixed: true,
-                times: times,
-                unit: branchDosage.unit || unit,
-                disease: branch.label,
-                subOption: subOptionLabel,
-                note: branchDosage.note,
-                piUrl: drug.piUrl,
-                piSnippet: drug.tempPiSnippet || drug.piSnippet
-            };
-        }
-
-        let minMgPerDay = 0;
-        let maxMgPerDay = 0;
-        if (branchDosage.isByTime && branchDosage.timeMgKg) {
-            minMgPerDay = branchDosage.timeMgKg * times * weight;
-            maxMgPerDay = minMgPerDay;
-        } else {
-            minMgPerDay = (branchDosage.minMgKg || 0) * weight;
-            maxMgPerDay = (branchDosage.maxMgKg || 0) * weight;
-        }
-        const roundMg = (n) => Math.round(n * 10000) / 10000;
-        const roundProduct = (n) => Math.round(n * 1000) / 1000;
-        let dayMin = roundMg(minMgPerDay);
-        let dayMax = roundMg(maxMgPerDay);
-        if (branchDosage.absoluteMaxMgPerDay) {
-            if (dayMin > branchDosage.absoluteMaxMgPerDay) dayMin = branchDosage.absoluteMaxMgPerDay;
-            if (dayMax > branchDosage.absoluteMaxMgPerDay) dayMax = branchDosage.absoluteMaxMgPerDay;
-        }
-        const totalMin = roundProduct(dayMin / potency);
-        const totalMax = roundProduct(dayMax / potency);
-        const timeMin = roundProduct(totalMin / times);
-        const timeMax = roundProduct(totalMax / times);
-        const totalStr = (totalMin === totalMax) ? `${totalMin}` : `${totalMin}〜${totalMax}`;
-        const timeStr = (timeMin === timeMax) ? `${timeMin}` : `${timeMin}〜${timeMax}`;
-        return {
-            totalRange: totalStr,
-            perTimeRange: timeStr,
-            times: times,
-            unit: unit,
-            disease: branch.label,
-            subOption: subOptionLabel,
-            note: branchDosage.note,
-            piUrl: drug.piUrl,
-            piSnippet: drug.tempPiSnippet || drug.piSnippet
+        const virtualDrug = {
+            ...drug,
+            ...branch.dosage,
+            dosage: branch.dosage,
+            ageBranches: null,
+            calcType: branch.dosage.calcType || 'weight-step'
         };
+        // Ensure weightSteps is specifically moved to top level if it's in dosage
+        if (branch.dosage.weightSteps) virtualDrug.weightSteps = branch.dosage.weightSteps;
+
+        return calculateDrug(virtualDrug, years, months, weight);
     }
     else if (drug.calcType === 'weight-step' && drug.weightSteps) {
         let step = drug.weightSteps.find(s => weight >= s.weightMin && weight < s.weightMax);
