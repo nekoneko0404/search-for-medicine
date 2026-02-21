@@ -1860,7 +1860,7 @@ function calculateDrug(drug, years, months, weight) {
             }
 
             if (shouldCalculate) {
-                const roundProduct = (n) => Math.round(n * 1000) / 1000;
+                const roundProduct = (n) => Math.round(n * 100) / 100;
                 total = roundProduct(total);
 
                 const perTime = roundProduct(total / times);
@@ -1950,7 +1950,7 @@ function calculateDrug(drug, years, months, weight) {
 
     // Convert to Product Amount
     const roundProduct = (n) => Math.round(n * 10000) / 10000; // Using high precision for intermediate calculation
-    const roundDisplay = (n) => Math.round(n * 1000) / 1000; // 3 places for display
+    const roundDisplay = (n) => Math.round(n * 100) / 100; // 2 places for display
 
     let totalMin = roundProduct(mgPerDayMin / potency);
     let totalMax = roundProduct(mgPerDayMax / potency);
