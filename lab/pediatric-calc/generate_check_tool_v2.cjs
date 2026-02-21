@@ -42,7 +42,7 @@ const mainCatsStr = calcContent.substring(mainCatStart + 'const DRUG_CATEGORIES 
 
 // Extract calculateDrug function
 const funcStart = calcContent.indexOf('function calculateDrug');
-const nextFunc = calcContent.indexOf('window.clearAllDrugs', funcStart);
+const nextFunc = calcContent.indexOf('function updatePrescriptionSheet', funcStart);
 const funcStr = calcContent.substring(funcStart, nextFunc);
 
 const html = `

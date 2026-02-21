@@ -2001,7 +2001,7 @@ function updatePrescriptionSheet() {
             <p>薬剤を選択してください</p>
         </div>`;
 
-    if (state.selectedDrugIds.size === 0) {
+    if (state.selectedDrugIds.length === 0) {
         content.innerHTML = emptyHtml;
         return;
     }
