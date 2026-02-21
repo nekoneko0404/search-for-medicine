@@ -1,49 +1,140 @@
-import { PHARMA_CLASSIFICATION_MAP } from './pharma_classification.js';
 
-/**
- * PEDIATRIC_CALC_VERSION: 20260218-1145
- */
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>小児用量計算機 全薬剤一括チェック</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #eff6ff;
+            --bg: #f8fafc;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #059669;
+        }
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; padding: 0; color: var(--text-main); }
+        
+        .header { 
+            background: white; 
+            padding: 20px 24px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+        h1 { margin: 0; font-size: 1.2rem; color: var(--primary); font-weight: 700; }
+        .meta { font-size: 0.75rem; color: var(--text-muted); }
+        
+        .controls { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; }
+        .input-group { display: flex; flex-direction: column; gap: 4px; }
+        label { font-size: 0.7rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; }
+        input, select { 
+            padding: 8px 12px; 
+            border: 1px solid var(--border); 
+            border-radius: 6px; 
+            font-size: 0.9rem; 
+            background: #fff;
+        }
+        
+        .presets { margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap; border-top: 1px solid var(--border); padding-top: 12px; }
+        .btn { 
+            padding: 4px 10px; 
+            background: var(--primary-light); 
+            color: var(--primary); 
+            border: 1px solid rgba(37, 99, 235, 0.1); 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 0.8rem; 
+        }
+        .btn:hover, .btn-active { background: var(--primary); color: white; }
+        
+        .main-content { padding: 0; margin-top: 0; }
+        
+        table { width: 100%; border-collapse: collapse; background: white; }
+        
+        /* THEAD STICKY POSITIONING */
+        thead th { 
+            background: #f1f5f9; 
+            padding: 12px 16px; 
+            text-align: left; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--text-muted); 
+            position: sticky; 
+            top: 0; /* JS will update this to match header height */
+            z-index: 900;
+            border-bottom: 2px solid var(--border);
+            white-space: nowrap;
+        }
+        
+        td { padding: 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+        
+        .drug-name { font-weight: 700; color: #0f172a; font-size: 0.95rem; margin-bottom: 4px; }
+        .category-tag { font-size: 0.65rem; background: var(--bg); padding: 2px 8px; border-radius: 10px; color: var(--text-muted); display: inline-block; }
+        
+        .result-main { font-weight: 700; color: var(--success); font-size: 1.1rem; }
+        .result-sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+        .logic-cell { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; max-width: 250px; }
+        
+        .pi-snippet { font-size: 0.7rem; color: #94a3b8; line-height: 1.4; max-width: 350px; height: 2.8em; overflow: hidden; }
+        .pi-snippet:hover { height: auto; overflow: visible; background: #fffbeb; z-index: 10; position: relative; padding: 4px; outline: 1px solid #fed7aa; }
 
+        tr:hover td { background-color: #fbfcfe; }
+        
+        .error { color: #ef4444; font-size: 0.8rem; font-weight: bold; }
+        select { font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="header" id="mainHeader">
+        <div class="header-top">
+            <h1>小児用量計算機 一括チェックツール</h1>
+            <div id="dateStr" class="meta"></div>
+        </div>
+        <div class="controls">
+            <div class="input-group">
+                <label>年齢（歳）</label>
+                <input type="number" id="y" value="1" style="width: 50px">
+            </div>
+            <div class="input-group">
+                <label>年齢（月）</label>
+                <input type="number" id="m" value="0" style="width: 50px">
+            </div>
+            <div class="input-group">
+                <label>体重 (kg)</label>
+                <input type="number" id="w" value="10" step="0.1" style="width: 70px">
+            </div>
+            <div class="input-group" style="flex-grow: 1">
+                <label>薬剤検索</label>
+                <input type="text" id="q" placeholder="薬剤名・カテゴリ..." style="width: 100%">
+            </div>
+        </div>
+        <div class="presets" id="presets"></div>
+    </div>
 
-export const DRUG_CATEGORIES = {
-    antibiotics: "抗生剤",
-    antiviral: "抗ウイルス",
-    respiratory: "呼吸器・鎮咳",
-    allergy: "抗アレルギー",
-    cns: "神経・てんかん",
-    antipyretic: "解熱鎮痛",
-    gi: "消化器・整腸",
-    others: "その他・漢方"
-};
+    <div class="main-content">
+        <table id="table">
+            <thead>
+                <tr id="tableHeaderRow">
+                    <th style="width: 250px">薬剤名 / カテゴリ</th>
+                    <th style="width: 180px">設定 (疾患 / 規格)</th>
+                    <th>計算設定・注釈</th>
+                    <th style="width: 200px">計算結果 (アプリ表示)</th>
+                    <th>添付文書抜粋</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
 
-// YJ Code Category Map (4-digit)
-const YJ_CATEGORY_MAP = {
-    '1139': '抗てんかん剤',
-    '1141': '解熱鎮痛剤',
-    '1190': '入眠改善剤',
-    '2223': '鎮咳剤',
-    '2233': '去痰剤',
-    '2249': '鎮咳去痰剤',
-    '2251': '気管支拡張剤',
-    '2259': '気管支拡張剤',
-    '2316': '整腸剤',
-    '2399': '制吐剤',
-    '4413': '抗ヒスタミン剤',
-    '4419': '抗ヒスタミン剤',
-    '4490': '抗アレルギー剤',
-    '5200': '漢方製剤',
-    '6131': 'ペニシリン系',
-    '6132': 'セフェム系',
-    '6139': '配合ペニシリン系',
-    '6141': 'マクロライド系',
-    '6149': 'マクロライド系',
-    '6152': 'テトラサイクリン系',
-    '6241': 'ニューキノロン系',
-    '6250': '抗ウイルス剤',
-    '3327': '抗プラスミン剤'
-};
-
-const PEDIATRIC_DRUGS = [
+    <script>
+        const PEDIATRIC_DRUGS = [
     {
         "id": "amoxicillin-group",
         "name": "サワシリン／アモキシシリン (規格選択)",
@@ -1675,10 +1766,48 @@ const PEDIATRIC_DRUGS = [
         "category": "others"
     }
 ];
+        const YJ_CATEGORY_MAP = {
+    '1139': '抗てんかん剤',
+    '1141': '解熱鎮痛剤',
+    '1190': '入眠改善剤',
+    '2223': '鎮咳剤',
+    '2233': '去痰剤',
+    '2249': '鎮咳去痰剤',
+    '2251': '気管支拡張剤',
+    '2259': '気管支拡張剤',
+    '2316': '整腸剤',
+    '2399': '制吐剤',
+    '4413': '抗ヒスタミン剤',
+    '4419': '抗ヒスタミン剤',
+    '4490': '抗アレルギー剤',
+    '5200': '漢方製剤',
+    '6131': 'ペニシリン系',
+    '6132': 'セフェム系',
+    '6139': '配合ペニシリン系',
+    '6141': 'マクロライド系',
+    '6149': 'マクロライド系',
+    '6152': 'テトラサイクリン系',
+    '6241': 'ニューキノロン系',
+    '6250': '抗ウイルス剤',
+    '3327': '抗プラスミン剤'
+};
+        const DRUG_CATEGORIES = {
+    antibiotics: "抗生剤",
+    antiviral: "抗ウイルス",
+    respiratory: "呼吸器・鎮咳",
+    allergy: "抗アレルギー",
+    cns: "神経・てんかん",
+    antipyretic: "解熱鎮痛",
+    gi: "消化器・整腸",
+    others: "その他・漢方"
+};
 
+        const state = {
+            drugOptions: {},
+            params: { ageYear: 1, ageMonth: 0, weight: 10 }
+        };
 
-
-function calculateDrug(drug, years, months, weight) {
+        function calculateDrug(drug, years, months, weight) {
     drug.tempPiSnippet = null; // Reset to avoid stale overrides
     // 1. Resolve Sub-options (if any)
     if (!weight || weight <= 0) return { error: '体重を入力してください' };
@@ -2031,467 +2160,125 @@ function calculateDrug(drug, years, months, weight) {
 }
 
 // Logic for Clearing
-window.clearAllDrugs = () => {
-    state.selectedDrugIds.clear();
-    state.drugOptions = {};
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
 
-function updatePrescriptionSheet() {
-    const sheet = document.getElementById('prescription-sheet');
-    const content = document.getElementById('sheet-content');
-    const closeBtn = document.getElementById('close-sheet');
 
-    // Update Close Button to Delete
-    closeBtn.onclick = window.clearAllDrugs;
-    closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-    closeBtn.style.color = '#ef4444';
+        const presetList = [
+            { l: "0歳5か月 11kg", y: 0, m: 5, w: 11 },
+            { l: "0歳7か月 9kg", y: 0, m: 7, w: 9 },
+            { l: "1歳 10kg", y: 1, m: 0, w: 10 },
+            { l: "5歳 18kg", y: 5, m: 0, w: 18 },
+            { l: "6歳 18kg", y: 6, m: 0, w: 18 },
+            { l: "7歳 18kg", y: 7, m: 0, w: 18 },
+            { l: "12歳 18kg", y: 12, m: 0, w: 18 },
+            { l: "12歳 80kg", y: 12, m: 0, w: 80 }
+        ];
 
-    const validCount = Array.from(state.selectedDrugIds).filter(id => PEDIATRIC_DRUGS.find(d => d.id === id)).length;
+        function render() {
+            const y = parseInt(document.getElementById('y').value) || 0;
+            const m = parseInt(document.getElementById('m').value) || 0;
+            const w = parseFloat(document.getElementById('w').value) || 0;
+            const q = document.getElementById('q').value.toLowerCase();
 
-    const emptyHtml = `
-        <div style="text-align:center; color:#94a3b8; padding:3rem 1rem;">
-            <i class="fas fa-hand-pointer" style="font-size:2rem; margin-bottom:1rem; opacity:0.5;"></i>
-            <p>薬剤を選択してください</p>
-        </div>`;
+            state.params.ageYear = y;
+            state.params.ageMonth = m;
+            state.params.weight = w;
 
-    if (state.selectedDrugIds.size === 0) {
-        content.innerHTML = emptyHtml;
-        return;
-    }
+            const tbody = document.getElementById('tbody');
+            tbody.innerHTML = '';
 
-    const y = state.params.ageYear;
-    const m = state.params.ageMonth;
-    const w = parseFloat(state.params.weight);
+            PEDIATRIC_DRUGS.forEach((drug) => {
+                const searchStr = (drug.name + (drug.yjCode || '') + (drug.category || '')).toLowerCase();
+                if (q && !searchStr.includes(q)) return;
 
-    const itemsHtml = Array.from(state.selectedDrugIds).reverse().map(id => {
-        const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
-        if (!drug) return '';
+                const res = calculateDrug(drug, y, m, w, state.drugOptions[drug.id] || {});
+                
+                const tr = document.createElement('tr');
+                
+                let optHtml = '';
+                if (drug.hasSubOptions) {
+                    optHtml += '<select onchange="window.setOpt(\''+drug.id+'\', \'subOptionId\', this.value)">';
+                    if (!state.drugOptions[drug.id]?.subOptionId) {
+                        if (!state.drugOptions[drug.id]) state.drugOptions[drug.id] = {};
+                        state.drugOptions[drug.id].subOptionId = drug.subOptions[0].id;
+                    }
+                    drug.subOptions.forEach(o => {
+                        const sel = (state.drugOptions[drug.id]?.subOptionId === o.id) ? 'selected' : '';
+                        optHtml += '<option value="'+o.id+'" '+sel+'>'+o.label+'</option>';
+                    });
+                    optHtml += '</select>';
+                }
+                if (drug.diseases) {
+                    if (optHtml) optHtml += '<div style="margin-top: 5px;"></div>';
+                    optHtml += '<select onchange="window.setOpt(\''+drug.id+'\', \'diseaseId\', this.value)">';
+                    if (!state.drugOptions[drug.id]) state.drugOptions[drug.id] = {};
+                    if (!state.drugOptions[drug.id]?.diseaseId) {
+                        state.drugOptions[drug.id].diseaseId = drug.diseases[0].id;
+                    }
+                    drug.diseases.forEach(d => {
+                        const sel = (state.drugOptions[drug.id]?.diseaseId === d.id) ? 'selected' : '';
+                        optHtml += '<option value="'+d.id+'" '+sel+'>'+d.label+'</option>';
+                    });
+                    optHtml += '</select>';
+                }
 
-        if (!state.drugOptions[id]) state.drugOptions[id] = {};
-        const opts = state.drugOptions[id];
+                const yjPrefix = drug.yjCode ? drug.yjCode.substring(0, 4) : '';
+                const cat = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[drug.category] || drug.category;
 
-        const calc = calculateDrug(drug, y, m, w);
+                let resText = '';
+                if (res.error) {
+                    resText = '<span class="error">'+res.error+'</span>';
+                } else if (res.isFixed && !res.totalRange) {
+                    resText = '<div class="result-main">' + res.detail + '</div>';
+                } else {
+                    resText = '<div class="result-main">' + (res.totalRange || '-') + ' <span style="font-size: 0.7rem; color: #666;">' + (res.unit || '') + '/日</span></div>';
+                    resText += '<div class="result-sub">' + (res.perTimeRange || '-') + ' ' + (res.unit || '') + ' × ' + (res.times || '-') + '回</div>';
+                }
 
-        // Selectors
-        let selectorsHtml = '';
-        if (drug.hasSubOptions) {
-            const options = drug.subOptions.map(o =>
-                `<option value="${o.id}" ${opts.subOptionId === o.id ? 'selected' : ''}>${o.label}</option>`
-            ).join('');
-            selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'subOptionId', this.value)">${options}</select>`;
-        }
-        if (drug.diseases) {
-            const options = drug.diseases.map(d =>
-                `<option value="${d.id}" ${opts.diseaseId === d.id ? 'selected' : ''}>${d.label}</option>`
-            ).join('');
-            selectorsHtml += `<select class="rx-select" onchange="updateDrugOption('${id}', 'diseaseId', this.value)">${options}</select>`;
-        }
+                tr.innerHTML = "<td><div class='drug-name'>" + drug.name + "</div><div class='category-tag'>" + cat + "</div></td>" +
+                               "<td>" + optHtml + "</td>" +
+                               "<td><div class='logic-cell'>" + (res.note || '') + "</div></td>" +
+                               "<td>" + resText + "</td>" +
+                               "<td><div class='pi-snippet'>" + (res.piSnippet || drug.piSnippet || '-') + "</div></td>";
+                tbody.appendChild(tr);
+            });
 
-        let resultMain = '';
-        if (calc.error) {
-            resultMain = `<div style="color:#ef4444; font-weight:bold;"><i class="fas fa-exclamation-triangle"></i> ${calc.error}</div>`;
-        } else if (calc.isFixed && !calc.totalRange) {
-            const label = calc.isSingleDose ? '単回投与' : '固定用量';
-            resultMain = `
-                <div class="result-row">
-                    <span class="result-label">${label}</span>
-                    <span class="result-val">${calc.detail}</span>
-                </div>`;
-        } else {
-            // Daily First
-            resultMain = `
-                <div class="result-row" style="border-bottom:1px dashed #cbd5e1; padding-bottom:0.25rem; margin-bottom:0.5rem; align-items: baseline;">
-                    <span class="result-label">1日量</span>
-                    <span class="result-val" style="font-size: clamp(1.1rem, 6vw, 1.4rem); color:#0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${calc.totalRange} <span style="font-size:0.9rem;color:#64748b;font-weight:normal;">${calc.unit}</span></span>
-                </div>
-                ${!calc.hidePerTime ? `
-                <div class="result-row" style="align-items: baseline;">
-                    <span class="result-label">1回量</span>
-                    <span class="result-sub" style="font-weight:bold; color:#475569;">${calc.perTimeRange} ${calc.unit} / 分${calc.times}</span>
-                </div>` : ''}`;
-        }
-
-        let displayName = drug.name;
-        if (drug.hasSubOptions && opts.subOptionId) {
-            const subOpt = drug.subOptions.find(o => o.id === opts.subOptionId);
-            if (subOpt) {
-                // Remove "(規格選択)" and append or replace with subOpt.label
-                // User requirement: Replace "(規格選択)" with "○％" (or the label)
-                displayName = displayName.replace('(規格選択)', subOpt.label);
-            }
+            updateHeaderPosition();
         }
 
-        return `
-        <div class="rx-item" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative;">
-            <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
-                <div style="flex:1; min-width:0;">
-                    <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
-                    <div class="rx-remove" onclick="removeDrug('${drug.id}')" style="font-size: 0.9rem; color: #94a3b8; cursor: pointer; line-height: 1;"><i class="fas fa-times"></i></div>
-                </div>
-            </div>
-            <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;">${selectorsHtml}</div>
-            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem;">${resultMain}</div>
-            <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;">
-                <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
-            </div>
-            ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding:1px 3px; font-size:0.55rem; line-height:1.1; white-space:nowrap; text-align:center; height:auto; border: 1px solid #e2e8f0; background: #f8fafc; z-index: 10;">添付<br>文書</button>` : ''}
-        </div>`;
-    }).join('');
-
-    content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
-}
-
-
-// Logic for Clearing
-window.clearAllDrugs = () => {
-    state.selectedDrugIds.clear();
-    state.drugOptions = {};
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
-
-// Logic for Removing Single Drug
-window.removeDrug = (id) => {
-    state.selectedDrugIds.delete(id);
-    if (state.drugOptions[id]) delete state.drugOptions[id];
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
-
-// Update drug option (sub-option or disease) and re-render
-window.updateDrugOption = (drugId, key, value) => {
-    if (!state.drugOptions[drugId]) state.drugOptions[drugId] = {};
-    state.drugOptions[drugId][key] = value;
-    saveState();
-    updatePrescriptionSheet();
-};
-
-// State
-const state = {
-    selectedDrugIds: new Set(),
-    params: { ageYear: '', ageMonth: '', weight: '' },
-    drugOptions: {}
-};
-const STORAGE_KEY = 'kusuri_compass_calc_v25_state';
-
-const STANDARD_WEIGHTS = [{ "age": 0, "month": 0, "w": 3 }, { "age": 0, "month": 1, "w": 4.2 }, { "age": 0, "month": 2, "w": 5.3 }, { "age": 0, "month": 3, "w": 6.2 }, { "age": 0, "month": 4, "w": 6.9 }, { "age": 0, "month": 5, "w": 7.5 }, { "age": 0, "month": 6, "w": 7.9 }, { "age": 0, "month": 7, "w": 8.3 }, { "age": 0, "month": 8, "w": 8.6 }, { "age": 0, "month": 9, "w": 8.9 }, { "age": 0, "month": 10, "w": 9.2 }, { "age": 0, "month": 11, "w": 9.4 }, { "age": 1, "month": 0, "w": 9.6 }, { "age": 1, "month": 6, "w": 10.7 }, { "age": 2, "month": 0, "w": 12 }, { "age": 3, "month": 0, "w": 14 }, { "age": 4, "month": 0, "w": 16 }, { "age": 5, "month": 0, "w": 18.5 }, { "age": 6, "month": 0, "w": 21 }, { "age": 7, "month": 0, "w": 24 }, { "age": 8, "month": 0, "w": 27 }, { "age": 9, "month": 0, "w": 30.5 }, { "age": 10, "month": 0, "w": 34 }, { "age": 11, "month": 0, "w": 38 }, { "age": 12, "month": 0, "w": 43 }, { "age": 13, "month": 0, "w": 49 }, { "age": 14, "month": 0, "w": 54 }, { "age": 15, "month": 0, "w": 58 }];
-
-function getStandardWeight(years, months) {
-    const y = parseInt(years) || 0;
-    const m = parseInt(months) || 0;
-    const exact = STANDARD_WEIGHTS.find(d => d.age === y && d.month === m);
-    if (exact) return exact.w;
-    const sorted = [...STANDARD_WEIGHTS].sort((a, b) => (a.age * 12 + a.month) - (b.age * 12 + b.month));
-    const targetMonths = y * 12 + m;
-    let closest = sorted[0];
-    for (let d of sorted) {
-        if (d.age * 12 + d.month <= targetMonths) closest = d; else break;
-    }
-    return closest.w;
-}
-
-function saveState() {
-    const data = {
-        selected: Array.from(state.selectedDrugIds),
-        options: state.drugOptions
-    };
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { }
-}
-
-function loadState() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-            const data = JSON.parse(raw);
-            if (data.selected) state.selectedDrugIds = new Set(data.selected);
-            if (data.options) state.drugOptions = data.options;
-        }
-    } catch (e) { }
-}
-
-// Logic for Clearing
-window.clearAllDrugs = () => {
-    state.selectedDrugIds.clear();
-    state.drugOptions = {};
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
-
-// Logic for Removing Single Drug
-window.removeDrug = (id) => {
-    state.selectedDrugIds.delete(id);
-    if (state.drugOptions[id]) delete state.drugOptions[id];
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-};
-
-let currentCategory = 'all';
-let currentSearchQuery = '';
-
-function renderCategoryTabs() {
-    const container = document.getElementById('category-tabs');
-    if (!container) return;
-    const tabs = [{ id: 'all', label: 'すべて' }, ...Object.entries(DRUG_CATEGORIES).map(([Key, Label]) => ({ id: Key, label: Label }))];
-    container.innerHTML = tabs.map(tab => `
-        <button class="cat-tab ${currentCategory === tab.id ? 'active' : ''}" data-cat="${tab.id}">${tab.label}</button>
-    `).join('');
-    container.querySelectorAll('.cat-tab').forEach(btn => {
-        btn.addEventListener('click', () => {
-            currentCategory = btn.dataset.cat;
-            renderCategoryTabs();
-            renderDrugList();
-        });
-    });
-}
-
-function normalizeText(text) {
-    if (!text) return '';
-    if (text.length > 100) return ''; // DoS prevention: Limit search query length
-    let t = text.trim();
-    // Full-width Alphanumeric to Half-width
-    t = t.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
-        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-    });
-    // Half-width Katakana to Full-width Katakana
-    const kanaMap = {
-        'ｶﾞ': 'ガ', 'ｷﾞ': 'ギ', 'ｸﾞ': 'グ', 'ｹﾞ': 'ゲ', 'ｺﾞ': 'ゴ',
-        'ｻﾞ': 'ザ', 'ｼﾞ': 'ジ', 'ｽﾞ': 'ズ', 'ｾﾞ': 'ゼ', 'ｿﾞ': 'ゾ',
-        'ﾀﾞ': 'ダ', 'ﾁﾞ': 'ヂ', 'ﾂﾞ': 'ヅ', 'ﾃﾞ': 'デ', 'ﾄﾞ': 'ド',
-        'ﾊﾞ': 'バ', 'ﾋﾞ': 'ビ', 'ﾌﾞ': 'ブ', 'ﾍﾞ': 'ベ', 'ﾎﾞ': 'ボ',
-        'ﾊﾟ': 'パ', 'ﾋﾟ': 'ピ', 'ﾌﾟ': 'プ', 'ﾍﾟ': 'ペ', 'ﾎﾟ': 'ポ',
-        'ｳﾞ': 'ヴ', 'ﾜﾞ': 'ヷ', 'ｦﾞ': 'ヺ',
-        'ｱ': 'ア', 'ｲ': 'イ', 'ｳ': 'ウ', 'ｴ': 'エ', 'ｵ': 'オ',
-        'ｶ': 'カ', 'ｷ': 'キ', 'ｸ': 'ク', 'ｹ': 'ケ', 'ｺ': 'コ',
-        'ｻ': 'サ', 'ｼ': 'シ', 'ｽ': 'ス', 'ｾ': 'セ', 'ｿ': 'ソ',
-        'ﾀ': 'タ', 'ﾁ': 'チ', 'ﾂ': 'ツ', 'ﾃ': 'テ', 'ﾄ': 'ト',
-        'ﾅ': 'ナ', 'ﾆ': 'ニ', 'ﾇ': 'ヌ', 'ﾈ': 'ネ', 'ﾉ': 'ノ',
-        'ﾊ': 'ハ', 'ﾋ': 'ヒ', 'ﾌ': 'フ', 'ﾍ': 'ヘ', 'ﾎ': 'ホ',
-        'ﾏ': 'マ', 'ﾐ': 'ミ', 'ﾑ': 'ム', 'ﾒ': 'メ', 'ﾓ': 'モ',
-        'ﾔ': 'ヤ', 'ﾕ': 'ユ', 'ﾖ': 'ヨ',
-        'ﾗ': 'ラ', 'ﾘ': 'リ', 'ﾙ': 'ル', 'ﾚ': 'レ', 'ﾛ': 'ロ',
-        'ﾜ': 'ワ', 'ｦ': 'ヲ', 'ﾝ': 'ン',
-        'ｧ': 'ァ', 'ｨ': 'ィ', 'ｩ': 'ゥ', 'ｪ': 'ェ', 'ｫ': 'ォ',
-        'ｯ': 'ッ', 'ｬ': 'ャ', 'ｭ': 'ュ', 'ｮ': 'ョ',
-        'ｰ': 'ー', '｡': '。', '｢': '「', '｣': '」', '､': '、', '･': '・'
-    };
-    const reg = new RegExp('(' + Object.keys(kanaMap).join('|') + ')', 'g');
-    t = t.replace(reg, function (match) {
-        return kanaMap[match];
-    });
-    // Hiragana to Katakana
-    t = t.replace(/[\u3041-\u3096]/g, function (ch) {
-        return String.fromCharCode(ch.charCodeAt(0) + 0x60);
-    });
-    return t.toLowerCase();
-}
-
-function getFilteredDrugs() {
-    const query = normalizeText(currentSearchQuery);
-    return PEDIATRIC_DRUGS.filter(d => {
-        const name = normalizeText(d.name);
-        const yj = normalizeText(d.yjCode);
-        const matchesSearch = name.includes(query) || yj.includes(query);
-        const matchesCategory = currentCategory === 'all' || d.category === currentCategory;
-        return matchesSearch && matchesCategory;
-    });
-}
-
-function renderDrugList() {
-    const container = document.getElementById('drug-grid');
-    if (!container) return;
-    const filtered = getFilteredDrugs();
-    if (filtered.length === 0) {
-        container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#94a3b8; padding:2rem;">該当なし</div>';
-        return;
-    }
-    container.innerHTML = filtered.map(d => {
-        const isSelected = state.selectedDrugIds.has(d.id);
-        const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
-        const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
-        const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
-        return `
-        <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}">
-            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                <span class="tag">${categoryLabel}</span>
-            </div>
-            <div>
-                <h3>${d.name}</h3>
-                <div style="font-size:0.75rem; color:#64748b; margin-top:0.25rem;">${potLabel}</div>
-            </div>
-        </div>`;
-    }).join('');
-    container.querySelectorAll('.drug-card').forEach(card => card.addEventListener('click', () => toggleDrug(card.dataset.id)));
-}
-
-function toggleDrug(id) {
-    if (state.selectedDrugIds.has(id)) state.selectedDrugIds.delete(id);
-    else state.selectedDrugIds.add(id);
-    saveState();
-    renderDrugList();
-    updatePrescriptionSheet();
-}
-
-document.addEventListener('DOMContentLoaded', () => {
-    const updateParams = () => {
-        state.params.ageYear = document.getElementById('age-input').value;
-        state.params.ageMonth = document.getElementById('month-input').value;
-        state.params.weight = document.getElementById('weight-input').value;
-        // Don't save params to local storage as per requirement
-        updatePrescriptionSheet();
-    };
-    document.getElementById('age-input').addEventListener('input', updateParams);
-    document.getElementById('month-input').addEventListener('input', updateParams);
-    document.getElementById('weight-input').addEventListener('input', updateParams);
-
-    // Initial Default Weight
-    const weightInput = document.getElementById('weight-input');
-    if (!weightInput.value) {
-        weightInput.value = "10";
-        // Ensure state is updated so calculations run immediately on load
-        state.params.weight = "10";
-    }
-
-    document.getElementById('auto-weight-btn').addEventListener('click', () => {
-        const w = getStandardWeight(document.getElementById('age-input').value, document.getElementById('month-input').value);
-        document.getElementById('weight-input').value = w;
-        updateParams();
-    });
-
-    const searchInput = document.getElementById('drug-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            currentSearchQuery = e.target.value;
-            renderDrugList();
-        });
-    }
-
-    loadState();
-    renderCategoryTabs();
-
-    // Check query params for auto-search
-    const urlParams = new URLSearchParams(window.location.search);
-    const yjQuery = urlParams.get('yj');
-    if (yjQuery) {
-        currentSearchQuery = yjQuery;
-        if (searchInput) searchInput.value = yjQuery;
-        // Auto switch to all category if searching
-        currentCategory = 'all';
-        renderCategoryTabs(); // To update active tab
-    }
-
-    renderDrugList();
-
-    if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
-    else {
-        const closeBtn = document.getElementById('close-sheet');
-        if (closeBtn) {
-            closeBtn.onclick = window.clearAllDrugs;
-            closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        }
-    }
-    // Initial notification
-    setTimeout(() => {
-        window.showNotification('テスト中。不具合、バグを発見した際は掲示板、X等でご指摘ください。');
-    }, 1000);
-});
-
-/**
- * Show a floating notification
- */
-window.showNotification = (message) => {
-    const container = document.getElementById('notification-container');
-    if (!container) return;
-
-    const notification = document.createElement('div');
-    notification.className = 'floating-notification';
-    notification.innerHTML = `
-        <i class="fas fa-flask" style="color: #856404; margin-top: 0.2rem;"></i>
-        <div style="color: #856404; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">${message}</div>
-        <button class="notification-close"><i class="fas fa-times"></i></button>
-    `;
-
-    notification.querySelector('.notification-close').onclick = () => {
-        notification.style.animation = 'slideIn 0.3s ease reverse forwards';
-        setTimeout(() => notification.remove(), 300);
-    };
-
-    container.appendChild(notification);
-};
-
-import DOSAGE_DATA from './data/dosage_details.js';
-
-// Dosage Modal Logic
-window.viewDosageDetails = (yjCode, piUrl) => {
-    console.log(`[viewDosageDetails] Clicked YJ Code: "${yjCode}"`);
-    console.log(`[viewDosageDetails] Data entry exists:`, !!DOSAGE_DATA[yjCode]);
-    if (!DOSAGE_DATA[yjCode]) {
-        console.warn(`[viewDosageDetails] No data found for ${yjCode}. Check dosage_details.js keys.`);
-        console.log(`[viewDosageDetails] First 5 keys in data:`, Object.keys(DOSAGE_DATA).slice(0, 5));
-    }
-    // Show modal loading
-    const modal = document.getElementById('dosage-modal');
-    const title = document.getElementById('dosage-modal-title');
-    const body = document.getElementById('dosage-modal-body');
-    const closeBtn = document.getElementById('close-dosage-modal');
-
-    if (!modal || !body) return;
-
-    // Reset content and show
-    body.scrollTop = 0;
-    const data = DOSAGE_DATA[yjCode];
-    const sourceSpan = document.getElementById('dosage-modal-source');
-
-    if (data) {
-        const html = typeof data === 'string' ? data : data.html;
-        const source = typeof data === 'string' ? '' : (data.source || '');
-
-        if (sourceSpan) {
-            sourceSpan.textContent = source ? `(参照: ${source})` : '';
+        function updateHeaderPosition() {
+            const h = document.getElementById('mainHeader').offsetHeight;
+            document.querySelectorAll('thead th').forEach(th => th.style.top = (h - 1) + 'px');
         }
 
-        // Replace potential XML processing instructions or placeholders
-        let content = html.replaceAll('<?enter?>', '<br>');
+        window.setOpt = (id, k, v) => {
+            if (!state.drugOptions[id]) state.drugOptions[id] = {};
+            state.drugOptions[id][k] = v;
+            render();
+        };
 
-        // Add PMDA Link if exists
-        if (piUrl) {
-            content += `<div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e2e8f0; text-align:center;">
-                <a href="${piUrl}" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; background:#f1f5f9; color:#475569; text-decoration:none; border-radius:0.5rem; font-weight:bold; font-size:0.9rem; transition:all 0.2s;">
-                    <i class="fas fa-external-link-alt"></i> PMDAで全文を見る
-                </a>
-            </div>`;
-        }
-        body.innerHTML = content;
-    } else {
-        body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
-    }
+        window.onload = () => {
+            document.getElementById('dateStr').textContent = '生成日時: ' + new Date().toLocaleString('ja-JP');
 
-    modal.style.display = 'flex';
-    // Small delay to allow display:flex to apply before opacity transition
-    requestAnimationFrame(() => {
-        modal.classList.add('active');
-    });
+            const pDiv = document.getElementById('presets');
+            presetList.forEach(p => {
+                const b = document.createElement('button');
+                b.className = 'btn';
+                b.textContent = p.l;
+                b.onclick = () => {
+                    document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('btn-active'));
+                    b.classList.add('btn-active');
+                    document.getElementById('y').value = p.y;
+                    document.getElementById('m').value = p.m;
+                    document.getElementById('w').value = p.w;
+                    render();
+                };
+                pDiv.appendChild(b);
+            });
 
-    // Close handler
-    const closeModal = () => {
-        modal.classList.remove('active');
-        setTimeout(() => {
-            modal.style.display = 'none';
-        }, 300);
-    };
-
-    // Remove old listeners to prevent duplication if called multiple times (though window usually fine)
-    // Simpler: just overwrite onclick
-    if (closeBtn) closeBtn.onclick = closeModal;
-    modal.onclick = (e) => {
-        if (e.target === modal) closeModal();
-    };
-};
+            document.querySelectorAll('input').forEach(i => i.oninput = render);
+            new ResizeObserver(updateHeaderPosition).observe(document.getElementById('mainHeader'));
+            render();
+        };
+    </script>
+</body>
+</html>
