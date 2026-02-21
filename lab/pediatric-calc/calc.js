@@ -2102,6 +2102,9 @@ function updatePrescriptionSheet() {
         window.rxSortable = new Sortable(content, {
             animation: 150,
             ghostClass: 'sortable-ghost',
+            delay: 300, // 300ms delay for long-press
+            delayOnTouchOnly: true, // only delay on touch devices
+            touchStartThreshold: 5, // sensitivity to allow small movement before cancel
             onEnd: function (evt) {
                 // Update state based on new DOM order
                 const newOrder = Array.from(content.querySelectorAll('.rx-item')).map(el => el.dataset.id);
