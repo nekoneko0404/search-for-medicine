@@ -2017,7 +2017,7 @@ function updatePrescriptionSheet() {
     const m = state.params.ageMonth;
     const w = parseFloat(state.params.weight);
 
-    const itemsHtml = Array.from(state.selectedDrugIds).reverse().map(id => {
+    const itemsHtml = state.selectedDrugIds.map(id => {
         const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
         if (!drug) return '';
 
@@ -2076,9 +2076,9 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative;">
+        <div class="rx-item" data-id="${drug.id}" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative; cursor: grab;">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
-                <div style="flex:1; min-width:0;">
+                <div style="flex:1; min-width:0; pointer-events: none;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
@@ -2095,12 +2095,29 @@ function updatePrescriptionSheet() {
     }).join('');
 
     content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
+
+    // Initialize/Re-initialize Sortable
+    if (itemsHtml.length > 1 && window.Sortable) {
+        if (window.rxSortable) window.rxSortable.destroy();
+        window.rxSortable = new Sortable(content, {
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            onEnd: function (evt) {
+                // Update state based on new DOM order
+                const newOrder = Array.from(content.querySelectorAll('.rx-item')).map(el => el.dataset.id);
+                state.selectedDrugIds = newOrder;
+                saveState();
+                // We don't call updatePrescriptionSheet() here to avoid loop/flicker, 
+                // but state is now synced.
+            }
+        });
+    }
 }
 
 
 // Logic for Clearing
 window.clearAllDrugs = () => {
-    state.selectedDrugIds.clear();
+    state.selectedDrugIds = [];
     state.drugOptions = {};
     saveState();
     renderDrugList();
@@ -2109,7 +2126,7 @@ window.clearAllDrugs = () => {
 
 // Logic for Removing Single Drug
 window.removeDrug = (id) => {
-    state.selectedDrugIds.delete(id);
+    state.selectedDrugIds = state.selectedDrugIds.filter(drugId => drugId !== id);
     if (state.drugOptions[id]) delete state.drugOptions[id];
     saveState();
     renderDrugList();
@@ -2126,7 +2143,7 @@ window.updateDrugOption = (drugId, key, value) => {
 
 // State
 const state = {
-    selectedDrugIds: new Set(),
+    selectedDrugIds: [],
     params: { ageYear: '', ageMonth: '', weight: '' },
     drugOptions: {}
 };
@@ -2150,7 +2167,7 @@ function getStandardWeight(years, months) {
 
 function saveState() {
     const data = {
-        selected: Array.from(state.selectedDrugIds),
+        selected: state.selectedDrugIds,
         options: state.drugOptions
     };
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch (e) { }
@@ -2161,7 +2178,7 @@ function loadState() {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
             const data = JSON.parse(raw);
-            if (data.selected) state.selectedDrugIds = new Set(data.selected);
+            if (data.selected) state.selectedDrugIds = Array.isArray(data.selected) ? data.selected : [];
             if (data.options) state.drugOptions = data.options;
         }
     } catch (e) { }
@@ -2178,7 +2195,7 @@ window.clearAllDrugs = () => {
 
 // Logic for Removing Single Drug
 window.removeDrug = (id) => {
-    state.selectedDrugIds.delete(id);
+    state.selectedDrugIds = state.selectedDrugIds.filter(drugId => drugId !== id);
     if (state.drugOptions[id]) delete state.drugOptions[id];
     saveState();
     renderDrugList();
@@ -2265,7 +2282,7 @@ function renderDrugList() {
         return;
     }
     container.innerHTML = filtered.map(d => {
-        const isSelected = state.selectedDrugIds.has(d.id);
+        const isSelected = state.selectedDrugIds.includes(d.id);
         const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
         const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
         const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
@@ -2284,8 +2301,13 @@ function renderDrugList() {
 }
 
 function toggleDrug(id) {
-    if (state.selectedDrugIds.has(id)) state.selectedDrugIds.delete(id);
-    else state.selectedDrugIds.add(id);
+    const index = state.selectedDrugIds.indexOf(id);
+    if (index > -1) {
+        state.selectedDrugIds.splice(index, 1);
+    } else {
+        // Add to the beginning to mimic previous .reverse() behavior
+        state.selectedDrugIds.unshift(id);
+    }
     saveState();
     renderDrugList();
     updatePrescriptionSheet();
@@ -2341,7 +2363,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderDrugList();
 
-    if (state.selectedDrugIds.size > 0) updatePrescriptionSheet();
+    if (state.selectedDrugIds.length > 0) updatePrescriptionSheet();
     else {
         const closeBtn = document.getElementById('close-sheet');
         if (closeBtn) {
