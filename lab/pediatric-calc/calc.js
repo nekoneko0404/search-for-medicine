@@ -1762,7 +1762,8 @@ function calculateDrug(drug, years, months, weight) {
                 timeStr = `${fixed.dose}`;
             }
 
-            const totalRange = totalStr || (isSingleDose ? "―" : display);
+            const isSingleDose = dosageConfig ? !!dosageConfig.isSingleDose : false;
+            const totalRange = totalStr || (isSingleDose ? '―' : display);
             const perTimeRange = timeStr || display;
 
             return {
