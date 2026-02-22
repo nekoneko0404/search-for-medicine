@@ -166,8 +166,194 @@
 
         @media (max-width: 600px) {
             .age-inputs {
-                grid-column: span 2;
+                grid-column: span 1;
             }
+        }
+
+        /* Responsive Visibility */
+        .pc-only {
+            display: flex !important;
+        }
+
+        .mobile-only {
+            display: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .pc-only {
+                display: none !important;
+            }
+
+            .mobile-only {
+                display: flex !important;
+            }
+        }
+
+        /* Dial Picker Styles */
+        .dial-container {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 0 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 48px;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .dial-container:active {
+            transform: scale(0.98);
+            background: #f1f5f9;
+        }
+
+        .dial-value {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #1e293b;
+        }
+
+        .dial-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        /* Overlay */
+        .dial-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dial-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .dial-modal {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 320px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .dial-overlay.active .dial-modal {
+            transform: translateY(0);
+        }
+
+        .dial-modal-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #1e293b;
+            margin-bottom: 1.5rem;
+        }
+
+        .dial-wheels-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .dial-wheel-wrapper {
+            position: relative;
+            width: 80px;
+            height: 150px;
+            overflow: hidden;
+        }
+
+        .dial-wheel {
+            height: 100%;
+            overflow-y: scroll;
+            padding: 60px 0;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            scroll-snap-type: y mandatory;
+        }
+
+        .dial-wheel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .dial-item {
+            height: 30px;
+            line-height: 30px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #94a3b8;
+            scroll-snap-align: center;
+            transition: all 0.2s;
+        }
+
+        .dial-item.active {
+            color: var(--primary-color);
+            font-size: 1.6rem;
+            font-weight: 900;
+        }
+
+        .dial-wheel-mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: linear-gradient(to bottom,
+                    rgba(255, 255, 255, 1) 0%,
+                    rgba(255, 255, 255, 0) 40%,
+                    rgba(255, 255, 255, 0) 60%,
+                    rgba(255, 255, 255, 1) 100%);
+            border-top: 2px solid #f1f5f9;
+            border-bottom: 2px solid #f1f5f9;
+            box-sizing: border-box;
+        }
+
+        .dial-wheel-highlight {
+            position: absolute;
+            top: 60px;
+            left: 0;
+            width: 100%;
+            height: 30px;
+            background: rgba(79, 70, 229, 0.05);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .dial-confirm-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dial-confirm-btn:active {
+            transform: scale(0.95);
         }
 
         /* =============================================
@@ -593,42 +779,58 @@
 
         /* Mobile specific adjustments for Patient Info Bar */
         @media (max-width: 768px) {
+            .patient-info-bar {
+                padding: 0.5rem 2%;
+            }
+
             .patient-info-bar .input-container {
                 display: flex !important;
-                flex-wrap: wrap !important;
-                gap: 0.5rem !important;
-                justify-content: center !important;
-                padding: 0.25rem;
-                position: static;
+                flex-direction: row !important;
+                flex-wrap: nowrap !important;
+                gap: 4px !important;
+                justify-content: space-between !important;
+                align-items: center !important;
+                padding: 0;
+                width: 100%;
+                max-width: none;
             }
 
             .inputs-wrapper {
-                display: contents;
-                /* Allow children to flex-wrap directly in input-container */
+                display: flex !important;
+                flex: 1;
+                gap: 4px;
+                min-width: 0;
             }
 
-            .patient-info-bar .age-inputs {
-                width: 100%;
+            .dial-container {
+                padding: 0 0.3rem;
+                height: 44px;
+                flex: 1;
+                min-width: 0;
                 justify-content: center;
-                display: flex;
-                order: 1;
+                gap: 2px;
             }
 
-            .patient-info-bar .input-group-enhanced {
-                flex: 1 1 0;
-                min-width: 80px;
-                order: 2;
+            .dial-value {
+                font-size: 1rem;
+            }
+
+            .dial-label {
+                font-size: 0.6rem;
             }
 
             .patient-info-bar .helper-btn {
-                order: 3;
+                width: 44px;
+                height: 44px;
+                padding: 0;
+                flex-shrink: 0;
             }
 
             .patient-info-bar #close-sheet {
-                position: static;
-                margin-left: auto !important;
-                flex: 0 0 auto;
-                order: 4;
+                width: 44px;
+                height: 44px;
+                flex-shrink: 0;
+                margin-left: 0 !important;
             }
         }
 
@@ -718,8 +920,8 @@
         <div class="input-container">
             <!-- Wrapper for Centering Inputs -->
             <div class="inputs-wrapper">
-                <!-- Age Inputs -->
-                <div class="age-inputs">
+                <!-- PC Inputs (Traditional) -->
+                <div class="age-inputs pc-only">
                     <div class="input-group-enhanced">
                         <div class="input-icon"><i class="fas fa-cake-candles"></i></div>
                         <input type="number" id="age-input" placeholder="0" inputmode="numeric" min="0">
@@ -730,27 +932,59 @@
                         <div class="input-unit">ヶ月</div>
                     </div>
                 </div>
-
-                <!-- Weight Input -->
-                <div class="input-group-enhanced">
+                <div class="input-group-enhanced pc-only" style="width: auto;">
                     <div class="input-icon"><i class="fas fa-weight-scale"></i></div>
-                    <input type="number" id="weight-input" placeholder="0.0" step="0.1" inputmode="decimal">
+                    <input type="number" id="weight-input" placeholder="0.0" inputmode="decimal" style="width: 5rem;">
                     <div class="input-unit">kg</div>
                 </div>
 
+                <!-- Mobile Dial Trigger -->
+                <div class="dial-container mobile-only" id="age-dial-trigger">
+                    <div class="dial-value" id="age-val-display">0</div>
+                    <div class="dial-label" id="age-unit-display">歳</div>
+                    <div class="dial-value" id="month-val-display">0</div>
+                    <div class="dial-label">ヶ月</div>
+                </div>
+
+                <div class="dial-container mobile-only" id="weight-dial-trigger">
+                    <div class="dial-value" id="weight-val-display">10</div>
+                    <div class="dial-label">kg</div>
+                </div>
+
                 <!-- Auto Weight Button -->
-                <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力"
-                    style="width: 44px; height: 44px; padding: 0.2rem; display: flex; flex-direction: column; gap: 0; justify-content: center; align-items: center; flex: 0 0 auto;">
-                    <i class="fas fa-calculator" style="font-size: 0.9rem; margin-bottom: 1px;"></i>
-                    <div style="font-size: 0.6rem; line-height: 1; font-weight: bold;">標準<br>体重</div>
+                <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力">
+                    <i class="fas fa-calculator" style="font-size: 0.9rem; margin-bottom: 2px;"></i>
+                    <div style="font-size: 0.55rem; line-height: 1; font-weight: bold;">標準体重</div>
                 </button>
             </div>
 
             <!-- Trash Button (Right Anchored) -->
-            <button id="close-sheet" title="入力をすべて削除"
-                style="border:none; background:#fee2e2; color:#ef4444; width: 44px; height: 44px; border-radius: 0.75rem; font-size:1.1rem; cursor:pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
+            <button id="close-sheet" title="入力をすべて削除">
                 <i class="fas fa-trash-alt"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- Dial Picker Overlay -->
+    <div class="dial-overlay" id="dial-overlay">
+        <div class="dial-modal">
+            <div class="dial-modal-title" id="dial-title">年齢を選択</div>
+            <div class="dial-wheels-container" id="dial-wheels">
+                <!-- Age Wheels -->
+                <div class="dial-wheel-wrapper" id="wheel-left-wrapper">
+                    <div class="dial-wheel-highlight"></div>
+                    <div class="dial-wheel" id="wheel-left"></div>
+                    <div class="dial-wheel-mask"></div>
+                    <div style="font-size: 0.7rem; color: #64748b; margin-top: 4px;" id="label-left">歳</div>
+                </div>
+                <div class="dial-wheel-wrapper" id="wheel-right-wrapper">
+                    <div class="dial-wheel-highlight"></div>
+                    <div class="dial-wheel" id="wheel-right"></div>
+                    <div class="dial-wheel-mask"></div>
+                    <div style="font-size: 0.7rem; color: #64748b; margin-top: 4px;" id="label-right">ヶ月</div>
+                </div>
+            </div>
+            <button class="dial-confirm-btn" id="dial-confirm">決定</button>
         </div>
     </div>
 

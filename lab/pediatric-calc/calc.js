@@ -2293,30 +2293,172 @@ function toggleDrug(id) {
     updatePrescriptionSheet();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const updateParams = () => {
-        state.params.ageYear = document.getElementById('age-input').value;
-        state.params.ageMonth = document.getElementById('month-input').value;
-        state.params.weight = document.getElementById('weight-input').value;
-        // Don't save params to local storage as per requirement
+/**
+ * Dial Picker Implementation
+ */
+function initDialPicker() {
+    const overlay = document.getElementById('dial-overlay');
+    const wheelLeft = document.getElementById('wheel-left');
+    const wheelRight = document.getElementById('wheel-right');
+    const title = document.getElementById('dial-title');
+    const labelLeft = document.getElementById('label-left');
+    const labelRight = document.getElementById('label-right');
+    const confirmBtn = document.getElementById('dial-confirm');
+
+    let currentMode = 'age'; // 'age' or 'weight'
+    let tempValues = { left: 0, right: 0 };
+
+    const populateWheel = (wheel, min, max, current) => {
+        let html = '';
+        for (let i = min; i <= max; i++) {
+            html += `<div class="dial-item" data-value="${i}">${i}</div>`;
+        }
+        wheel.innerHTML = html;
+
+        // Delay to ensure rendering for offsetTop
+        setTimeout(() => {
+            const item = wheel.querySelector(`[data-value="${current}"]`);
+            if (item) {
+                wheel.scrollTop = item.offsetTop - 60; // 60 is padding-top
+                item.classList.add('active');
+            }
+        }, 50);
+    };
+
+    const handleScroll = (e) => {
+        const wheel = e.target;
+        const items = wheel.querySelectorAll('.dial-item');
+        const scrollCenter = wheel.scrollTop + 75; // 75 is half of wheel height (150/2)
+
+        let closest = null;
+        let minDiff = Infinity;
+
+        items.forEach(item => {
+            const itemCenter = item.offsetTop + 15; // 15 is half of item height (30/2)
+            const diff = Math.abs(scrollCenter - itemCenter);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closest = item;
+            }
+            item.classList.remove('active');
+        });
+
+        if (closest) {
+            closest.classList.add('active');
+            const val = parseInt(closest.dataset.value);
+            if (wheel === wheelLeft) tempValues.left = val;
+            else tempValues.right = val;
+        }
+    };
+
+    wheelLeft.onscroll = handleScroll;
+    wheelRight.onscroll = handleScroll;
+
+    const openPicker = (mode) => {
+        currentMode = mode;
+        if (mode === 'age') {
+            title.textContent = '年齢を選択';
+            labelLeft.textContent = '歳';
+            labelRight.textContent = 'ヶ月';
+            const y = parseInt(state.params.ageYear) || 0;
+            const m = parseInt(state.params.ageMonth) || 0;
+            tempValues.left = y;
+            tempValues.right = m;
+            populateWheel(wheelLeft, 0, 15, y);
+            populateWheel(wheelRight, 0, 11, m);
+        } else {
+            title.textContent = '体重を選択';
+            labelLeft.textContent = '10の位';
+            labelRight.textContent = '1の位';
+            const w = Math.round(parseFloat(state.params.weight)) || 0;
+            tempValues.left = Math.floor(w / 10);
+            tempValues.right = w % 10;
+            populateWheel(wheelLeft, 0, 9, tempValues.left);
+            populateWheel(wheelRight, 0, 9, tempValues.right);
+        }
+        overlay.classList.add('active');
+    };
+
+    document.getElementById('age-dial-trigger').onclick = () => openPicker('age');
+    document.getElementById('weight-dial-trigger').onclick = () => openPicker('weight');
+
+    confirmBtn.onclick = () => {
+        if (currentMode === 'age') {
+            state.params.ageYear = tempValues.left;
+            state.params.ageMonth = tempValues.right;
+            syncInputDisplays();
+        } else {
+            const weight = tempValues.left * 10 + tempValues.right;
+            state.params.weight = weight;
+            syncInputDisplays();
+        }
+        overlay.classList.remove('active');
         updatePrescriptionSheet();
     };
-    document.getElementById('age-input').addEventListener('input', updateParams);
-    document.getElementById('month-input').addEventListener('input', updateParams);
-    document.getElementById('weight-input').addEventListener('input', updateParams);
+
+    overlay.onclick = (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+    };
+}
+
+/**
+ * Sync all input displays (PC inputs and Mobile dials) with current state
+ */
+function syncInputDisplays() {
+    const { ageYear, ageMonth, weight } = state.params;
+
+    // PC Inputs
+    const ageIn = document.getElementById('age-input');
+    const monthIn = document.getElementById('month-input');
+    const weightIn = document.getElementById('weight-input');
+
+    if (ageIn) ageIn.value = ageYear;
+    if (monthIn) monthIn.value = ageMonth;
+    if (weightIn) weightIn.value = weight;
+
+    // Mobile Dials
+    const ageDisp = document.getElementById('age-val-display');
+    const monthDisp = document.getElementById('month-val-display');
+    const weightDisp = document.getElementById('weight-val-display');
+
+    if (ageDisp) ageDisp.textContent = ageYear;
+    if (monthDisp) monthDisp.textContent = ageMonth;
+    if (weightDisp) weightDisp.textContent = weight;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // PC Input Listeners
+    const pcAgeIn = document.getElementById('age-input');
+    const pcMonthIn = document.getElementById('month-input');
+    const pcWeightIn = document.getElementById('weight-input');
+
+    const handlePcInput = () => {
+        state.params.ageYear = pcAgeIn.value;
+        state.params.ageMonth = pcMonthIn.value;
+        state.params.weight = pcWeightIn.value;
+        syncInputDisplays();
+        updatePrescriptionSheet();
+    };
+
+    if (pcAgeIn) pcAgeIn.addEventListener('input', handlePcInput);
+    if (pcMonthIn) pcMonthIn.addEventListener('input', handlePcInput);
+    if (pcWeightIn) pcWeightIn.addEventListener('input', handlePcInput);
 
     // Initial Default Weight
-    const weightInput = document.getElementById('weight-input');
-    if (!weightInput.value) {
-        weightInput.value = "10";
-        // Ensure state is updated so calculations run immediately on load
+    if (!state.params.weight) {
         state.params.weight = "10";
     }
 
-    document.getElementById('auto-weight-btn').addEventListener('click', () => {
-        const w = getStandardWeight(document.getElementById('age-input').value, document.getElementById('month-input').value);
-        document.getElementById('weight-input').value = w;
-        updateParams();
+    syncInputDisplays();
+    initDialPicker();
+
+    document.getElementById('auto-weight-btn').addEventListener('click', (e) => {
+        e.stopPropagation(); // Avoid triggering dial
+        const w = getStandardWeight(state.params.ageYear, state.params.ageMonth);
+        const roundedW = Math.round(w);
+        state.params.weight = roundedW;
+        syncInputDisplays();
+        updatePrescriptionSheet();
     });
 
     const searchInput = document.getElementById('drug-search');
@@ -2344,13 +2486,14 @@ document.addEventListener('DOMContentLoaded', () => {
     renderDrugList();
 
     if (state.selectedDrugIds.length > 0) updatePrescriptionSheet();
-    else {
-        const closeBtn = document.getElementById('close-sheet');
-        if (closeBtn) {
-            closeBtn.onclick = window.clearAllDrugs;
-            closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        }
+
+    const closeBtn = document.getElementById('close-sheet');
+    if (closeBtn) {
+        closeBtn.onclick = window.clearAllDrugs;
+        // Trash icon for clearing all
+        closeBtn.innerHTML = '<i class="fas fa-trash-alt"></i>';
     }
+
     // Initial notification
     setTimeout(() => {
         window.showNotification('テスト中。不具合、バグを発見した際は掲示板、X等でご指摘ください。');
