@@ -2069,17 +2069,13 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: grab;" onclick="window.handleRxItemClick('${drug.id}', event)">
+        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: pointer;" onclick="window.handleRxItemClick('${drug.id}', event)">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0; pointer-events: none;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
-                <!-- Remove Pi Button for all in RX list as it's accessible via tap on mobile -->
-                ${drug.piUrl ? `<a href="${drug.piUrl}" target="_blank" class="pi-link pc-only" style="margin-top:0.2rem;" onclick="event.stopPropagation()">
-                    <i class="fas fa-file-medical"></i>
-                </a>` : ''}
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
-                    <div class="rx-remove" onclick="removeDrug('${drug.id}')" style="font-size: 0.9rem; color: #94a3b8; cursor: pointer; line-height: 1;"><i class="fas fa-times"></i></div>
+                    <div class="rx-remove" onclick="removeDrug('${drug.id}'); event.stopPropagation();" style="font-size: 1.1rem; color: #94a3b8; cursor: pointer; padding: 4px; line-height: 1;"><i class="fas fa-times"></i></div>
                 </div>
             </div>
             <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;">${selectorsHtml}</div>
@@ -2087,6 +2083,11 @@ function updatePrescriptionSheet() {
             <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
+            ${drug.piUrl ? `
+                <button class="pi-link pc-only" onclick="window.open('${drug.piUrl}', '_blank'); event.stopPropagation();" 
+                    style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding: 2px 6px; font-size: 0.65rem; background: #f5f3ff; border: 1px solid #ddd; border-radius: 4px; z-index: 10;">
+                    添付文書
+                </button>` : ''}
         </div>`;
     }).join('');
 
@@ -2530,20 +2531,16 @@ import DOSAGE_DATA from './data/dosage_details.js';
 
 // Click handling logic
 window.handleDrugClick = (drugId, e) => {
-    if (window.innerWidth <= 768) {
-        // Mobile: Show full screen detail
-        window.viewDosageDetails(drugId);
-    } else {
-        // PC: Standard selection
-        window.toggleDrugSelection(drugId);
-    }
+    // Standard behavior: Toggle selection globally
+    window.toggleDrug(drugId);
 };
 
 window.handleRxItemClick = (drugId, e) => {
+    // Only show detail on mobile when tapping the Rx item
     if (window.innerWidth <= 768) {
         window.viewDosageDetails(drugId);
     }
-    // Else do nothing for PC (maybe drag is handled elsewhere)
+    // Else (PC): Normal interaction (drag or click buttons within)
 };
 
 // Dosage Modal Logic - Enhanced for Mobile
