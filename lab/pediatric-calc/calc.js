@@ -2069,11 +2069,15 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: grab;">
+        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: grab;" onclick="window.handleRxItemClick('${drug.id}', event)">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0; pointer-events: none;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
+                <!-- Remove Pi Button for all in RX list as it's accessible via tap on mobile -->
+                ${drug.piUrl ? `<a href="${drug.piUrl}" target="_blank" class="pi-link pc-only" style="margin-top:0.2rem;" onclick="event.stopPropagation()">
+                    <i class="fas fa-file-medical"></i>
+                </a>` : ''}
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
                     <div class="rx-remove" onclick="removeDrug('${drug.id}')" style="font-size: 0.9rem; color: #94a3b8; cursor: pointer; line-height: 1;"><i class="fas fa-times"></i></div>
                 </div>
@@ -2083,7 +2087,6 @@ function updatePrescriptionSheet() {
             <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
-            ${drug.yjCode ? `<button class="btn-view-dosage" onclick="window.viewDosageDetails('${drug.yjCode}', '${drug.piUrl || ''}')" style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding:1px 3px; font-size:0.55rem; line-height:1.1; white-space:nowrap; text-align:center; height:auto; border: 1px solid #e2e8f0; background: #f8fafc; z-index: 10;">添付<br>文書</button>` : ''}
         </div>`;
     }).join('');
 
@@ -2267,7 +2270,7 @@ function renderDrugList() {
         const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
         const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
         return `
-        <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}">
+        <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}" onclick="window.handleDrugClick('${d.id}', event)">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                 <span class="tag">${categoryLabel}</span>
             </div>
@@ -2277,7 +2280,7 @@ function renderDrugList() {
             </div>
         </div>`;
     }).join('');
-    container.querySelectorAll('.drug-card').forEach(card => card.addEventListener('click', () => toggleDrug(card.dataset.id)));
+    // Note: click handler is now inline via onclick to handle delegation/params correctly with current structure
 }
 
 function toggleDrug(id) {
@@ -2525,14 +2528,35 @@ window.showNotification = (message) => {
 
 import DOSAGE_DATA from './data/dosage_details.js';
 
-// Dosage Modal Logic
-window.viewDosageDetails = (yjCode, piUrl) => {
-    console.log(`[viewDosageDetails] Clicked YJ Code: "${yjCode}"`);
-    console.log(`[viewDosageDetails] Data entry exists:`, !!DOSAGE_DATA[yjCode]);
-    if (!DOSAGE_DATA[yjCode]) {
-        console.warn(`[viewDosageDetails] No data found for ${yjCode}. Check dosage_details.js keys.`);
-        console.log(`[viewDosageDetails] First 5 keys in data:`, Object.keys(DOSAGE_DATA).slice(0, 5));
+// Click handling logic
+window.handleDrugClick = (drugId, e) => {
+    if (window.innerWidth <= 768) {
+        // Mobile: Show full screen detail
+        window.viewDosageDetails(drugId);
+    } else {
+        // PC: Standard selection
+        window.toggleDrugSelection(drugId);
     }
+};
+
+window.handleRxItemClick = (drugId, e) => {
+    if (window.innerWidth <= 768) {
+        window.viewDosageDetails(drugId);
+    }
+    // Else do nothing for PC (maybe drag is handled elsewhere)
+};
+
+// Dosage Modal Logic - Enhanced for Mobile
+window.viewDosageDetails = (idOrYjCode) => {
+    // Find drug by ID first, then by YJ code (for backward compatibility if any)
+    let drug = PEDIATRIC_DRUGS.find(d => d.id === idOrYjCode);
+    if (!drug) drug = PEDIATRIC_DRUGS.find(d => d.yjCode === idOrYjCode);
+
+    const yjCode = drug ? drug.yjCode : idOrYjCode;
+    const piUrl = drug ? drug.piUrl : null;
+
+    console.log(`[viewDosageDetails] ID/YJ: "${idOrYjCode}" -> YJ: "${yjCode}"`);
+
     // Show modal loading
     const modal = document.getElementById('dosage-modal');
     const title = document.getElementById('dosage-modal-title');
@@ -2546,6 +2570,38 @@ window.viewDosageDetails = (yjCode, piUrl) => {
     const data = DOSAGE_DATA[yjCode];
     const sourceSpan = document.getElementById('dosage-modal-source');
 
+    let content = '';
+
+    // If mobile and we found a drug, add calculation results
+    if (window.innerWidth <= 768 && drug) {
+        const weight = parseFloat(state.params.weight) || 0;
+        const res = drug.calculate(weight, state.params);
+
+        content += `
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <div style="font-weight: bold; font-size: 1.1rem; color: #1e293b; border-bottom: 2px solid #4f46e5; padding-bottom: 0.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+                    <i class="fas fa-calculator" style="color: #4f46e5;"></i> 推計用量
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                    <div style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid #f1f5f9; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.2rem; font-weight: bold;">1日量</div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: #4f46e5;">${res.dosage} <span style="font-size: 0.8rem;">${drug.unit}</span></div>
+                    </div>
+                    <div style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid #f1f5f9; text-align: center;">
+                        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.2rem; font-weight: bold;">1回量</div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: #1e293b;">${res.perDose} <span style="font-size: 0.8rem;">${drug.unit}</span></div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; font-size: 0.85rem; color: #475569; background: #fffbeb; padding: 0.6rem; border-radius: 6px; border-left: 4px solid #fbbf24;">
+                    <i class="fas fa-info-circle" style="color: #fbbf24; margin-right: 0.3rem;"></i> ${res.limitNote || (drug.times + '回/日')}
+                </div>
+            </div>
+            <div style="font-weight: bold; font-size: 0.9rem; color: #475569; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
+                <i class="fas fa-book" style="color: #64748b;"></i> 添付文書（用法・用量）
+            </div>
+        `;
+    }
+
     if (data) {
         const html = typeof data === 'string' ? data : data.html;
         const source = typeof data === 'string' ? '' : (data.source || '');
@@ -2554,10 +2610,9 @@ window.viewDosageDetails = (yjCode, piUrl) => {
             sourceSpan.textContent = source ? `(参照: ${source})` : '';
         }
 
-        // Replace potential XML processing instructions or placeholders
-        let content = html.replaceAll('<?enter?>', '<br>');
+        content += html.replaceAll('<?enter?>', '<br>');
 
-        // Add PMDA Link if exists
+        // Add PMDA Link
         if (piUrl) {
             content += `<div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid #e2e8f0; text-align:center;">
                 <a href="${piUrl}" target="_blank" style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1rem; background:#f1f5f9; color:#475569; text-decoration:none; border-radius:0.5rem; font-weight:bold; font-size:0.9rem; transition:all 0.2s;">
@@ -2565,10 +2620,12 @@ window.viewDosageDetails = (yjCode, piUrl) => {
                 </a>
             </div>`;
         }
-        body.innerHTML = content;
     } else {
-        body.innerHTML = '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
+        content += '<div class="dosage-empty"><i class="fas fa-info-circle" style="font-size:2rem; color:#94a3b8; margin-bottom:1rem;"></i><p>この薬剤の詳細情報は登録されていません。</p><p style="font-size:0.8rem">対象外またはデータがありません。</p></div>';
     }
+
+    title.textContent = drug ? drug.name : '薬剤詳細';
+    body.innerHTML = content;
 
     modal.style.display = 'flex';
     // Small delay to allow display:flex to apply before opacity transition
@@ -2584,8 +2641,6 @@ window.viewDosageDetails = (yjCode, piUrl) => {
         }, 300);
     };
 
-    // Remove old listeners to prevent duplication if called multiple times (though window usually fine)
-    // Simpler: just overwrite onclick
     if (closeBtn) closeBtn.onclick = closeModal;
     modal.onclick = (e) => {
         if (e.target === modal) closeModal();

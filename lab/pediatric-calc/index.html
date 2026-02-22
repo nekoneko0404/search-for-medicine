@@ -630,6 +630,25 @@
             color: #ef4444;
         }
 
+        .pi-link {
+            text-decoration: none;
+            color: #4f46e5;
+            font-size: 0.8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            padding: 0.3rem 0.5rem;
+            background: #f5f3ff;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        @media (max-width: 768px) {
+            .pi-link {
+                display: none !important;
+            }
+        }
+
         .rx-config {
             display: flex;
             gap: 0.5rem;
