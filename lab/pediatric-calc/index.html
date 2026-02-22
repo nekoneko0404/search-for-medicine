@@ -602,6 +602,9 @@
             margin-bottom: 1rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
             border: 1px solid #e2e8f0;
+            flex: 0 0 240px;
+            min-width: 240px;
+            font-size: 0.8rem;
         }
 
         .rx-header {
@@ -780,7 +783,7 @@
         /* Mobile specific adjustments for Patient Info Bar */
         @media (max-width: 768px) {
             .patient-info-bar {
-                padding: 0.5rem 2%;
+                padding: 0.4rem 2%;
             }
 
             .patient-info-bar .input-container {
@@ -803,34 +806,77 @@
             }
 
             .dial-container {
-                padding: 0 0.3rem;
-                height: 44px;
+                padding: 0 0.2rem;
+                height: 48px;
                 flex: 1;
                 min-width: 0;
                 justify-content: center;
                 gap: 2px;
+                border-width: 1.5px;
             }
 
             .dial-value {
-                font-size: 1rem;
+                font-size: 0.95rem;
             }
 
             .dial-label {
-                font-size: 0.6rem;
+                font-size: 0.55rem;
             }
 
             .patient-info-bar .helper-btn {
                 width: 44px;
-                height: 44px;
+                height: 48px;
                 padding: 0;
                 flex-shrink: 0;
+                flex-direction: column;
+                justify-content: center;
+                gap: 1px;
             }
 
             .patient-info-bar #close-sheet {
                 width: 44px;
-                height: 44px;
+                height: 48px;
                 flex-shrink: 0;
                 margin-left: 0 !important;
+            }
+
+            /* RX item smaller for mobile */
+            .rx-item {
+                padding: 0.6rem !important;
+                margin-bottom: 0.5rem !important;
+                flex: 0 0 200px !important;
+                min-width: 200px !important;
+            }
+
+            .rx-title {
+                font-size: 0.85rem !important;
+            }
+
+            .rx-result-box {
+                padding: 0.4rem !important;
+            }
+
+            .result-val {
+                font-size: 1rem !important;
+            }
+
+            .result-label {
+                font-size: 0.7rem !important;
+            }
+
+            /* Card grid smaller */
+            .drug-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+                gap: 0.5rem !important;
+            }
+
+            .drug-card {
+                padding: 0.6rem !important;
+                min-height: 70px !important;
+            }
+
+            .drug-card h3 {
+                font-size: 0.8rem !important;
             }
         }
 
@@ -952,9 +998,10 @@
                 </div>
 
                 <!-- Auto Weight Button -->
-                <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力">
-                    <i class="fas fa-calculator" style="font-size: 0.9rem; margin-bottom: 2px;"></i>
-                    <div style="font-size: 0.55rem; line-height: 1; font-weight: bold;">標準体重</div>
+                <button class="helper-btn" id="auto-weight-btn" title="標準体重を入力"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: center; line-height: 1;">
+                    <i class="fas fa-calculator" style="font-size: 0.8rem; margin-bottom: 2px;"></i>
+                    <div style="font-size: 0.55rem; font-weight: bold; letter-spacing: -0.02em;">標準<br>体重</div>
                 </button>
             </div>
 

@@ -2069,7 +2069,7 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" data-id="${drug.id}" style="flex: 0 0 240px; min-width: 240px; font-size: 0.8rem; position: relative; cursor: grab;">
+        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: grab;">
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0; pointer-events: none;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
