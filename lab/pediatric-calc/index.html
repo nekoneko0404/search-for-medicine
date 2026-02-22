@@ -782,6 +782,10 @@
 
         /* Mobile specific adjustments for Patient Info Bar */
         @media (max-width: 768px) {
+            body {
+                zoom: 0.9;
+            }
+
             .patient-info-bar {
                 padding: 0.4rem 2%;
             }
@@ -864,19 +868,19 @@
                 font-size: 0.7rem !important;
             }
 
-            /* Card grid smaller */
+            /* Card grid smaller - ensure 3 columns on 90% scaled mobile */
             .drug-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
-                gap: 0.5rem !important;
+                grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)) !important;
+                gap: 0.4rem !important;
             }
 
             .drug-card {
-                padding: 0.6rem !important;
-                min-height: 70px !important;
+                padding: 0.5rem !important;
+                min-height: 65px !important;
             }
 
             .drug-card h3 {
-                font-size: 0.8rem !important;
+                font-size: 0.75rem !important;
             }
         }
 
@@ -970,7 +974,8 @@
                 <div class="age-inputs pc-only">
                     <div class="input-group-enhanced">
                         <div class="input-icon"><i class="fas fa-cake-candles"></i></div>
-                        <input type="number" id="age-input" placeholder="0" inputmode="numeric" min="0">
+                        <input type="number" id="age-input" placeholder="000" inputmode="numeric" min="0" max="999"
+                            style="width: 4.5rem;">
                         <div class="input-unit">歳</div>
                     </div>
                     <div class="input-group-enhanced">
