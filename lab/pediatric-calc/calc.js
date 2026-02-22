@@ -1762,14 +1762,17 @@ function calculateDrug(drug, years, months, weight) {
                 timeStr = `${fixed.dose}`;
             }
 
+            const totalRange = totalStr || (isSingleDose ? "―" : display);
+            const perTimeRange = timeStr || display;
+
             return {
                 result: fixed.label,
                 detail: display,
                 isFixed: true,
-                isSingleDose: dosageConfig ? dosageConfig.isSingleDose : false,
+                isSingleDose: isSingleDose,
                 note: dosageConfig ? dosageConfig.note : '',
-                totalRange: totalStr,
-                perTimeRange: timeStr,
+                totalRange: totalRange,
+                perTimeRange: perTimeRange,
                 times: times,
                 unit: fixed.unit || unit,
                 piUrl: drug.piUrl,
@@ -1883,6 +1886,9 @@ function calculateDrug(drug, years, months, weight) {
                 };
             }
 
+            const totalRange = totalStr || (isSingleDose ? "―" : display);
+            const perTimeRange = timeStr || display;
+
             return {
                 result: step.label,
                 detail: display,
@@ -1890,6 +1896,10 @@ function calculateDrug(drug, years, months, weight) {
                 isSingleDose: isSingleDose,
                 hidePerTime: dosageConfig ? dosageConfig.hidePerTime : false,
                 note: dosageConfig ? dosageConfig.note : '',
+                totalRange: totalRange,
+                perTimeRange: perTimeRange,
+                times: times,
+                unit: step.unit || unit,
                 piUrl: drug.piUrl,
                 piSnippet: drug.tempPiSnippet || drug.piSnippet
             };
@@ -2576,7 +2586,7 @@ window.viewDosageDetails = (idOrYjCode) => {
         const m = state.params.ageMonth;
         const w = parseFloat(state.params.weight) || 0;
         const res = calculateDrug(drug, y, m, w);
-        const unit = drug.unit || 'mg';
+        const unit = res.unit || 'mg';
 
         content += `
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
