@@ -2084,7 +2084,7 @@ function updatePrescriptionSheet() {
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
             ${drug.piUrl ? `
-                <button class="pi-link pc-only" onclick="window.open('${drug.piUrl}', '_blank'); event.stopPropagation();" 
+                <button class="pi-link pc-only" onclick="window.viewDosageDetails('${drug.id}'); event.stopPropagation();" 
                     style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding: 2px 6px; font-size: 0.65rem; background: #f5f3ff; border: 1px solid #ddd; border-radius: 4px; z-index: 10;">
                     添付文書
                 </button>` : ''}
@@ -2284,7 +2284,8 @@ function renderDrugList() {
     // Note: click handler is now inline via onclick to handle delegation/params correctly with current structure
 }
 
-function toggleDrug(id) {
+// Local helper or shared helper (defined on window for easy access from templates)
+window.toggleDrug = (id) => {
     const index = state.selectedDrugIds.indexOf(id);
     if (index > -1) {
         state.selectedDrugIds.splice(index, 1);
@@ -2295,7 +2296,7 @@ function toggleDrug(id) {
     saveState();
     renderDrugList();
     updatePrescriptionSheet();
-}
+};
 
 /**
  * Dial Picker Implementation
@@ -2570,9 +2571,12 @@ window.viewDosageDetails = (idOrYjCode) => {
     let content = '';
 
     // If mobile and we found a drug, add calculation results
-    if (window.innerWidth <= 768 && drug) {
-        const weight = parseFloat(state.params.weight) || 0;
-        const res = drug.calculate(weight, state.params);
+    if (drug) {
+        const y = state.params.ageYear;
+        const m = state.params.ageMonth;
+        const w = parseFloat(state.params.weight) || 0;
+        const res = calculateDrug(drug, y, m, w);
+        const unit = drug.unit || 'mg';
 
         content += `
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
@@ -2582,15 +2586,15 @@ window.viewDosageDetails = (idOrYjCode) => {
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid #f1f5f9; text-align: center;">
                         <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.2rem; font-weight: bold;">1日量</div>
-                        <div style="font-size: 1.2rem; font-weight: 800; color: #4f46e5;">${res.dosage} <span style="font-size: 0.8rem;">${drug.unit}</span></div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: #4f46e5;">${res.totalRange || '―'} <span style="font-size: 0.8rem;">${unit}</span></div>
                     </div>
                     <div style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid #f1f5f9; text-align: center;">
                         <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.2rem; font-weight: bold;">1回量</div>
-                        <div style="font-size: 1.2rem; font-weight: 800; color: #1e293b;">${res.perDose} <span style="font-size: 0.8rem;">${drug.unit}</span></div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: #1e293b;">${res.perTimeRange || '―'} <span style="font-size: 0.8rem;">${unit}</span></div>
                     </div>
                 </div>
                 <div style="margin-top: 1rem; font-size: 0.85rem; color: #475569; background: #fffbeb; padding: 0.6rem; border-radius: 6px; border-left: 4px solid #fbbf24;">
-                    <i class="fas fa-info-circle" style="color: #fbbf24; margin-right: 0.3rem;"></i> ${res.limitNote || (drug.times + '回/日')}
+                    <i class="fas fa-info-circle" style="color: #fbbf24; margin-right: 0.3rem;"></i> ${res.note || (drug.times + '回/日')}
                 </div>
             </div>
             <div style="font-weight: bold; font-size: 0.9rem; color: #475569; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
