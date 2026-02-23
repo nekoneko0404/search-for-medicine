@@ -57,6 +57,7 @@ class MainHeader extends HTMLElement {
         const links = [
             { id: 'search', label: '出荷状況検索', path: '/search.html' },
             { id: 'update', label: '出荷状況更新', path: '/update/index.html' },
+            { id: 'pediatric-calc', label: '小児用量計算 <span style="background-color: #ef4444; color: white; font-size: 0.6rem; padding: 2px 4px; border-radius: 4px; margin-left: 4px; vertical-align: top;">New!</span>', path: '/pediatric-calc/' },
             { id: 'pakkun', label: '小児服薬支援', path: '/okuri_pakkun/' },
             { id: 'pollen', label: '花粉飛散状況', path: '/pollen-app/index.html' }
         ];
