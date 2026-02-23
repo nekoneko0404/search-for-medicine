@@ -917,7 +917,7 @@ const PEDIATRIC_DRUGS = [
                 }
             }
         ],
-        "piSnippetSource": "通常、1回1.25μg/kgを1日2〜3回。6歳以上は1回25μgを1日1〜2回。年齢および症状に応じて適宜増減する。",
+        "piSnippetSource": "通常、1回1.25μg/kgを1日2〜3回. 6歳以上は1回25μgを1日1〜2回。年齢および症状に応じて適宜増減する。",
         "calcType": "age-weight-switch",
         "ageBranches": [
             {
@@ -939,12 +939,17 @@ const PEDIATRIC_DRUGS = [
                 "ageMax": 100,
                 "label": "6歳以上: 固定量 (1回25μg)",
                 "dosage": {
-                    "isFixed": true,
-                    "dosePerTimeMg": 0.025,
-                    "dosePerTime": 0.5,
-                    "unit": "g",
+                    "calcType": "fixed-age",
+                    "fixedDoses": [
+                        {
+                            "ageMin": 6,
+                            "ageMax": 100,
+                            "dose": 0.5,
+                            "unit": "g",
+                            "label": "6歳以上: 1回25μg (0.5g)"
+                        }
+                    ],
                     "timesPerDay": 2,
-                    "absoluteMaxMgPerDay": 0.05,
                     "note": "通常1回25μgを1日1回(就寝前)または2回(朝・就寝前)。"
                 }
             }
@@ -1015,29 +1020,29 @@ const PEDIATRIC_DRUGS = [
         "brandName": "ポララミン",
         "yjCode": "4419002B1033",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4419002B1033",
-        "potency": 100,
+        "potency": 10,
         "hasSubOptions": true,
         "subOptions": [
             {
                 "id": "polaramine-powder",
                 "label": "ポララミン散1%",
-                "potency": 100,
+                "potency": 10,
                 "yjCode": "4419002B1033"
             },
             {
                 "id": "polaramine-ds",
                 "label": "ポララミンドライシロップ0.2%",
-                "potency": 20,
+                "potency": 2,
                 "yjCode": "4419002R1031"
             }
         ],
         "calcType": "age",
-        "adultDose": 0.6,
+        "adultDose": 6,
         "unit": "g",
         "isAdultOnly": false,
         "piSnippetSource": "通常、成人には1回2mg(0.2g)を1日1〜4回経口投与する。なお、年齢、症状により適宜増減する。",
         "dosage": {
-            "note": "成人1回2mg(散1%:0.2g, DS0.2%:1g)。小児用量記載なし、Augsberger式等で算出。"
+            "note": "成人1日6mg(2mg×3回)。小児用量記載なし、Augsberger式等で算出。"
         },
         "piSnippet": "通常、成人1回2mg(散1%:0.2g, DS0.2%:1g)を1日1〜4回。小児は年齢・症状により適宜増減。",
         "category": "allergy"
@@ -1134,10 +1139,10 @@ const PEDIATRIC_DRUGS = [
             },
             {
                 "ageMin": 7,
-                "ageMax": 15,
+                "ageMax": 100,
                 "dose": 0.4,
                 "unit": "g",
-                "label": "7-15歳未満"
+                "label": "7歳以上"
             }
         ],
         "piSnippetSource": "2歳以上7歳未満：1回0.2gを1日2回。7歳以上15歳未満：1回0.4gを1日2回。",
@@ -1268,7 +1273,7 @@ const PEDIATRIC_DRUGS = [
             },
             {
                 "ageMin": 7,
-                "ageMax": 15,
+                "ageMax": 100,
                 "dose": 1,
                 "unit": "g",
                 "label": "7歳以上"
@@ -1309,10 +1314,10 @@ const PEDIATRIC_DRUGS = [
             },
             {
                 "ageMin": 7,
-                "ageMax": 15,
+                "ageMax": 100,
                 "dose": 5,
                 "unit": "mL",
-                "label": "7歳以上15歳未満 (1日2回)",
+                "label": "7歳以上 (1日2回)",
                 "times": 2
             }
         ],
@@ -1467,7 +1472,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-2316009C1026",
-        "name": "ミヤBM細粒 (10%)",
+        "name": "ミヤBM",
         "brandName": "ミヤBM",
         "yjCode": "2316009C1026",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2316009C1026",
@@ -1484,7 +1489,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-2316014B1030",
-        "name": "ラックビー微粒N (10%)",
+        "name": "ラックビー",
         "brandName": "ラックビー",
         "yjCode": "2316014B1030",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2316014B1030",
@@ -1501,7 +1506,7 @@ const PEDIATRIC_DRUGS = [
     },
     {
         "id": "yj-2399005R1163",
-        "name": "ナウゼリン／ドンペリドン",
+        "name": "ナウゼリンDS1%",
         "brandName": "ナウゼリン",
         "yjCode": "2399005R1163",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2399005R1163",
@@ -1727,7 +1732,7 @@ function calculateDrug(drug, years, months, weight) {
             }
             if (dis.dosage) {
                 const parentNote = dosageConfig ? dosageConfig.note : undefined;
-                dosageConfig = JSON.parse(JSON.stringify(dis.dosage)); // Deep copy to avoid mutating original
+                dosageConfig = { ...dosageConfig, ...JSON.parse(JSON.stringify(dis.dosage)) }; // Merge to preserve existing params
                 if (!dosageConfig.note) dosageConfig.note = parentNote;
 
                 // Handle weight-based overrides within disease dosage
@@ -1804,7 +1809,7 @@ function calculateDrug(drug, years, months, weight) {
         }
 
         const round = (n) => Math.round(n * 100) / 100;
-        const total = round(resultDose);
+        const total = round(resultDose / (potency || 1));
         const perTime = round(total / times);
 
         return {
