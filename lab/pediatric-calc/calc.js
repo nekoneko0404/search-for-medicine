@@ -2588,10 +2588,41 @@ window.viewDosageDetails = (idOrYjCode) => {
         const res = calculateDrug(drug, y, m, w);
         const unit = res.unit || 'mg';
 
+        // Determine what parameters are used
+        const ct = drug.calcType;
+        const usesAge = ct === 'age' || ct === 'fixed-age' || ct === 'age-weight-switch';
+        const usesWeight = !ct || ct === 'weight-step' || ct === 'age-weight-switch' ||
+            (!ct && drug.dosage && (drug.dosage.minMgKg || drug.dosage.isByTime));
+        const isAugsberger = ct === 'age' && !drug.isKampo;
+        const isKampo = ct === 'age' && drug.isKampo;
+
+        // Build parameter icons
+        const paramIcons = [];
+        if (usesAge) paramIcons.push(`<span style="display:inline-flex; align-items:center; gap:0.2rem; background:#e0e7ff; color:#4338ca; border-radius:4px; padding:1px 6px; font-size:0.7rem; font-weight:bold;"><i class="fas fa-birthday-cake" style="font-size:0.65rem;"></i> 年齢</span>`);
+        if (usesWeight) paramIcons.push(`<span style="display:inline-flex; align-items:center; gap:0.2rem; background:#d1fae5; color:#065f46; border-radius:4px; padding:1px 6px; font-size:0.7rem; font-weight:bold;"><i class="fas fa-weight" style="font-size:0.65rem;"></i> 体重</span>`);
+
+        // Build Augsberger note
+        let calcMethodNote = '';
+        if (isAugsberger) {
+            const age = (parseInt(y) || 0) + (parseInt(m) || 0) / 12;
+            const ageStr = age.toFixed(1);
+            calcMethodNote = `<div style="margin-top:0.5rem; padding:0.5rem 0.6rem; background:#f1f5f9; border-radius:6px; font-size:0.72rem; color:#64748b; border-left:3px solid #94a3b8;">
+                <span style="font-weight:bold; color:#475569;">Augsberger (小児年齢換算式)</span>
+                <div style="margin-top:0.2rem; font-family:monospace; letter-spacing:0.03em;">成人量 × (4×年齢 + 20) / 100</div>
+                <div style="margin-top:0.1rem;">現在: 成人量 × (4×${ageStr} + 20) / 100 = <strong>${Math.round((4 * age + 20))}%</strong></div>
+            </div>`;
+        } else if (isKampo) {
+            calcMethodNote = `<div style="margin-top:0.5rem; padding:0.5rem 0.6rem; background:#f1f5f9; border-radius:6px; font-size:0.72rem; color:#64748b; border-left:3px solid #94a3b8;">
+                <span style="font-weight:bold; color:#475569;">漢方年齢区分による計算</span>
+                <div style="margin-top:0.2rem;">2歳未満25% / 4歳未満33% / 7歳未満50% / 15歳未満66% / 15歳以上100%</div>
+            </div>`;
+        }
+
         content += `
             <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
                 <div style="font-weight: bold; font-size: 1.1rem; color: #1e293b; border-bottom: 2px solid #4f46e5; padding-bottom: 0.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-calculator" style="color: #4f46e5;"></i> 推計用量
+                    <span style="margin-left:auto; display:flex; gap:0.3rem;">${paramIcons.join('')}</span>
                 </div>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <div style="background: white; padding: 0.8rem; border-radius: 8px; border: 1px solid #f1f5f9; text-align: center;">
@@ -2606,6 +2637,7 @@ window.viewDosageDetails = (idOrYjCode) => {
                 <div style="margin-top: 1rem; font-size: 0.85rem; color: #475569; background: #fffbeb; padding: 0.6rem; border-radius: 6px; border-left: 4px solid #fbbf24;">
                     <i class="fas fa-info-circle" style="color: #fbbf24; margin-right: 0.3rem;"></i> ${res.note || (drug.times + '回/日')}
                 </div>
+                ${calcMethodNote}
             </div>
             <div style="font-weight: bold; font-size: 0.9rem; color: #475569; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem;">
                 <i class="fas fa-book" style="color: #64748b;"></i> 添付文書（用法・用量）
