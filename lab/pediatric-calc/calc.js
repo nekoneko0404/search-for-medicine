@@ -2080,9 +2080,9 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" data-id="${drug.id}" style="position: relative;">
-            <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;" onclick="window.handleRxItemClick('${drug.id}', event)">
-                <div style="flex:1; min-width:0;">
+        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: pointer;" onclick="window.handleRxItemClick('${drug.id}', event)">
+            <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
+                <div style="flex:1; min-width:0; pointer-events: none;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
@@ -2090,8 +2090,8 @@ function updatePrescriptionSheet() {
                 </div>
             </div>
             <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;" onclick="event.stopPropagation()">${selectorsHtml}</div>
-            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem;" onclick="event.stopPropagation()">${resultMain}</div>
-            <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;" onclick="event.stopPropagation()">
+            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem; pointer-events: none;">${resultMain}</div>
+            <div class="rx-meta" style="padding: 0 0.6rem 0.6rem; pointer-events: none;">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
             ${drug.piUrl ? `
@@ -2375,22 +2375,22 @@ function initDialPicker() {
         if (mode === 'age') {
             title.textContent = '年齢を選択';
             labelLeft.textContent = '歳';
-            labelRight.textContent = 'ヶ月';
+            labelRight.textContent = 'ケ月';
             const y = parseInt(state.params.ageYear) || 0;
             const m = parseInt(state.params.ageMonth) || 0;
             tempValues.left = y;
             tempValues.right = m;
             populateWheel(wheelLeft, 0, 15, y);
             populateWheel(wheelRight, 0, 11, m);
+            document.getElementById('wheel-right-wrapper').style.display = '';
         } else {
             title.textContent = '体重を選択';
-            labelLeft.textContent = '10の位';
-            labelRight.textContent = '1の位';
-            const w = Math.round(parseFloat(state.params.weight)) || 0;
-            tempValues.left = Math.floor(w / 10);
-            tempValues.right = w % 10;
-            populateWheel(wheelLeft, 0, 9, tempValues.left);
-            populateWheel(wheelRight, 0, 9, tempValues.right);
+            labelLeft.textContent = 'kg';
+            const w = Math.round(parseFloat(state.params.weight)) || 10;
+            tempValues.left = w;
+            tempValues.right = 0;
+            populateWheel(wheelLeft, 1, 100, w);
+            document.getElementById('wheel-right-wrapper').style.display = 'none';
         }
         overlay.classList.add('active');
     };
@@ -2404,8 +2404,7 @@ function initDialPicker() {
             state.params.ageMonth = tempValues.right;
             syncInputDisplays();
         } else {
-            const weight = tempValues.left * 10 + tempValues.right;
-            state.params.weight = weight;
+            state.params.weight = tempValues.left;
             syncInputDisplays();
         }
         overlay.classList.remove('active');
