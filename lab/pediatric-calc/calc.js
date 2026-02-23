@@ -2190,11 +2190,24 @@ function updatePrescriptionSheet() {
             <div class="rx-meta" style="padding: 0 0.6rem 0.6rem; pointer-events: none;">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
-            ${drug.piUrl ? `
-                <button class="pi-link pc-only" onclick="window.viewDosageDetails('${drug.id}'); event.stopPropagation();" 
-                    style="position: absolute; right: 0.6rem; bottom: 0.6rem; padding: 2px 6px; font-size: 0.65rem; background: #f5f3ff; border: 1px solid #ddd; border-radius: 4px; z-index: 10;">
-                    添付文書
-                </button>` : ''}
+            <div style="position: absolute; right: 0.6rem; bottom: 0.6rem; display: flex; align-items: center; gap: 0.3rem;">
+                ${(() => {
+                const ct = drug.calcType;
+                const usesAge = ct === 'age' || ct === 'fixed-age' || ct === 'age-weight-switch';
+                const usesWeight = !ct || ct === 'weight-step' || ct === 'age-weight-switch' ||
+                    (!ct && drug.dosage && (drug.dosage.minMgKg || drug.dosage.isByTime));
+
+                let badges = '';
+                if (usesAge) badges += `<span style="display:inline-flex; align-items:center; gap:0.2rem; background:#e0e7ff; color:#4338ca; border-radius:4px; padding:1px 4px; font-size:0.6rem; font-weight:bold;"><i class="fas fa-birthday-cake" style="font-size:0.6rem;"></i> 年齢</span>`;
+                if (usesWeight) badges += `<span style="display:inline-flex; align-items:center; gap:0.2rem; background:#d1fae5; color:#065f46; border-radius:4px; padding:1px 4px; font-size:0.6rem; font-weight:bold;"><i class="fas fa-weight" style="font-size:0.6rem;"></i> 体重</span>`;
+                return badges;
+            })()}
+                ${drug.piUrl ? `
+                    <button class="pi-link pc-only" onclick="window.viewDosageDetails('${drug.id}'); event.stopPropagation();" 
+                        style="padding: 2px 6px; font-size: 0.65rem; background: #f5f3ff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                        添付文書
+                    </button>` : ''}
+            </div>
         </div>`;
     }).join('');
 
