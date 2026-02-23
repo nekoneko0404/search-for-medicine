@@ -200,12 +200,48 @@ const PEDIATRIC_DRUGS = [
         "potency": 100,
         "piSnippetSource": "通常1回3mg/kgを1日3回。重症時1回4.5mg/kgを1日3回。年齢および症状に応じて適宜増減する。ただし1日量200mg(力価)を超えないこと。",
         "dosage": {
-            "minMgKg": 9,
-            "maxMgKg": 13.5,
-            "absoluteMaxMgPerDay": 200,
+            "isByTime": true,
+            "timeMgKg": 3,
+            "timesPerDay": 3,
+            "absoluteMaxMgPerDay": 400,
             "absoluteMaxMinMgPerDay": 200,
-            "note": "通常1日9〜13.5mg/kgを3回。重症時1回4.5mg/kg(13.5mg/kg/日)。上限200mg/日。"
+            "note": "通常1回3mg/kgを1日2〜3回。重症時1回4.5mg/kgを1日3回。上限400mg(成人量)/日。"
         },
+        "calcType": "age-weight-switch",
+        "ageBranches": [
+            {
+                "ageMin": 0,
+                "ageMax": 15,
+                "label": "15歳未満 (体重換算/最大200mg)",
+                "dosage": {
+                    "isByTime": true,
+                    "timeMgKg": 3,
+                    "timesPerDay": 3,
+                    "absoluteMaxMgPerDay": 200,
+                    "note": "小児：通常1回3mg/kgを1日3回(または2回)。上限200mg/日。"
+                }
+            },
+            {
+                "ageMin": 15,
+                "ageMax": 100,
+                "label": "成人 (100〜200mg 1日2回)",
+                "dosage": {
+                    "calcType": "fixed-age",
+                    "fixedDoses": [
+                        {
+                            "ageMin": 15,
+                            "ageMax": 100,
+                            "doseMg": 100,
+                            "unit": "g",
+                            "times": 2,
+                            "label": "成人 100mg x 2回"
+                        }
+                    ],
+                    "timesPerDay": 2,
+                    "note": "成人：通常1回100〜200mg(力価)を1日2回。適宜増減。"
+                }
+            }
+        ],
         "piSnippet": "通常1回3mg/kgを1日3回。重症時、1回4.5mg(力価)/kgを1日3回経口投与する。ただし、1日量として200mg(力価)を超えないこと。",
         "category": "antibiotics"
     },
@@ -340,6 +376,7 @@ const PEDIATRIC_DRUGS = [
             "maxMgKg": 120,
             "timesPerDay": 3,
             "absoluteMaxMgPerDay": 3000,
+            "absoluteMaxMinMgPerDay": 2000,
             "note": "通常1日40〜120mg/kgを3回。1日最大3000mg。"
         },
         "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3000mg。",
@@ -413,6 +450,7 @@ const PEDIATRIC_DRUGS = [
             "maxMgKg": 50,
             "timesPerDay": 4,
             "absoluteMaxMgPerDay": 1200,
+            "absoluteMaxMinMgPerDay": 800,
             "note": "1日25〜50mg/kgを4〜6回。成人量(1200mg)を上限とする。"
         },
         "piSnippet": "小児には1日体重1kgあたり25〜50mg(力価)を4〜6回に分割経口投与。なお、年齢、症状により適宜増減する。ただし、小児用量は成人量(1日800〜1200mg)を上限とする。",
@@ -937,7 +975,7 @@ const PEDIATRIC_DRUGS = [
             {
                 "ageMin": 0,
                 "ageMax": 6,
-                "label": "6歳未満: 体重換算 (1.25μg/kg)",
+                "label": "6歳未満: 1.25μg/kg",
                 "dosage": {
                     "isFixed": false,
                     "timeMgKg": 0.00125,
@@ -945,27 +983,47 @@ const PEDIATRIC_DRUGS = [
                     "timesPerDay": 2,
                     "isByTime": true,
                     "absoluteMaxMgPerDay": 0.05,
-                    "note": "通常1回1.25μg/kgを1日2回(朝・就寝前)または3回(朝・昼・就寝前)。"
+                    "note": "6歳未満:通常1回1.25μg/kgを1日2〜3回。"
                 }
             },
             {
                 "ageMin": 6,
-                "ageMax": 100,
-                "label": "6歳以上: 固定量 (1回25μg)",
+                "ageMax": 15,
+                "label": "6歳以上: 25μg 固定",
                 "dosage": {
                     "calcType": "fixed-age",
                     "fixedDoses": [
                         {
                             "ageMin": 6,
-                            "ageMax": 100,
-                            "dose": 0.5,
+                            "ageMax": 15,
+                            "doseMg": 0.025,
                             "unit": "g",
                             "times": 2,
-                            "label": "6歳以上: 1回25μg (0.5g)"
+                            "label": "6歳以上15歳未満: 1回25μg"
                         }
                     ],
                     "timesPerDay": 2,
-                    "note": "通常1回25μgを1日1回(就寝前)または2回(朝・就寝前)。"
+                    "note": "6歳以上:通常1回25μgを1日1〜2回。"
+                }
+            },
+            {
+                "ageMin": 15,
+                "ageMax": 100,
+                "label": "15歳以上(成人): 50μg 固定",
+                "dosage": {
+                    "calcType": "fixed-age",
+                    "fixedDoses": [
+                        {
+                            "ageMin": 15,
+                            "ageMax": 100,
+                            "doseMg": 0.05,
+                            "unit": "g",
+                            "times": 2,
+                            "label": "15歳以上: 1回50μg"
+                        }
+                    ],
+                    "timesPerDay": 2,
+                    "note": "成人:通常1回50μgを1日1〜2回。"
                 }
             }
         ],
@@ -1033,8 +1091,6 @@ const PEDIATRIC_DRUGS = [
         "id": "polaramine-group",
         "name": "ポララミン／d-クロルフェニラミン (規格選択)",
         "brandName": "ポララミン",
-        "yjCode": "4419002B1033",
-        "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4419002B1033",
         "potency": 10,
         "hasSubOptions": true,
         "subOptions": [
@@ -1067,9 +1123,9 @@ const PEDIATRIC_DRUGS = [
         "name": "ペリアクチン散1%",
         "yjCode": "4419005B1045",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/4419005B1045",
-        "potency": 100,
+        "potency": 10,
         "calcType": "age",
-        "adultDose": 1.2,
+        "adultDose": 12,
         "unit": "g",
         "isAdultOnly": true,
         "piSnippetSource": "通常、成人には1回4mg(0.4g)を1日1〜3回経口投与する。なお、年齢、症状により適宜増減する。",
@@ -1470,7 +1526,7 @@ const PEDIATRIC_DRUGS = [
             "absoluteMaxMgPerDay": 1500,
             "isByTime": true,
             "timesPerDay": 4,
-            "note": "1回10〜15mg/kg。原則4時間空ける。上限：500mg/回、1500mg/日。",
+            "note": "1回10〜15mg/kg。原則4時間空ける。15歳以上：1回300〜500mg。上限：500mg/回、1500mg/日。",
             "minTimeMgKg": 10,
             "maxTimeMgKg": 15
         },
@@ -1778,6 +1834,11 @@ function calculateDrug(drug, years, months, weight) {
     if (drug.calcType === 'fixed-age' && drug.fixedDoses) {
         const fixed = drug.fixedDoses.find(f => age >= f.ageMin && age < f.ageMax);
         if (fixed) {
+            // If fixed dose has doseMg, divide by potency
+            if (fixed.doseMg && potency) {
+                fixed.dose = fixed.doseMg / potency;
+            }
+
             let display = fixed.display || `${fixed.dose}${fixed.unit}`;
             // If isPerKg
             if (fixed.isPerKg && !fixed.display) display += "/kg";
