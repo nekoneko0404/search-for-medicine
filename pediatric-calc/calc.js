@@ -2211,7 +2211,10 @@ function updatePrescriptionSheet() {
         </div>`;
     }).join('');
 
-    content.innerHTML = itemsHtml.length ? itemsHtml : emptyHtml;
+    const finalHtml = itemsHtml.length ? itemsHtml : emptyHtml;
+    content.innerHTML = window.DOMPurify
+        ? window.DOMPurify.sanitize(finalHtml, { ADD_ATTR: ['onclick', 'onchange', 'data-id'] })
+        : finalHtml;
 
     // Initialize/Re-initialize Sortable
     if (itemsHtml.length > 1 && window.Sortable) {
@@ -2298,10 +2301,18 @@ function loadState() {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
             const data = JSON.parse(raw);
-            if (data.selected) state.selectedDrugIds = Array.isArray(data.selected) ? data.selected : [];
-            if (data.options) state.drugOptions = data.options;
+            if (data.selected && Array.isArray(data.selected)) {
+                state.selectedDrugIds = data.selected.filter(id => typeof id === 'string');
+            } else {
+                state.selectedDrugIds = [];
+            }
+            if (data.options && typeof data.options === 'object' && !Array.isArray(data.options)) {
+                state.drugOptions = data.options;
+            }
         }
-    } catch (e) { }
+    } catch (e) {
+        console.warn("Failed to load or parse state from localStorage:", e);
+    }
 }
 
 
@@ -2385,7 +2396,7 @@ function renderDrugList() {
         container.innerHTML = '<div style="grid-column: 1/-1; text-align:center; color:#94a3b8; padding:2rem;">該当なし</div>';
         return;
     }
-    container.innerHTML = filtered.map(d => {
+    const html = filtered.map(d => {
         const isSelected = state.selectedDrugIds.includes(d.id);
         const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
         const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
@@ -2401,6 +2412,9 @@ function renderDrugList() {
             </div>
         </div>`;
     }).join('');
+    container.innerHTML = window.DOMPurify
+        ? window.DOMPurify.sanitize(html, { ADD_ATTR: ['onclick', 'data-id', 'data-cat'] })
+        : html;
     // Note: click handler is now inline via onclick to handle delegation/params correctly with current structure
 }
 
@@ -2633,9 +2647,10 @@ window.showNotification = (message) => {
 
     const notification = document.createElement('div');
     notification.className = 'floating-notification';
+    const safeMessage = typeof message === 'string' ? message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
     notification.innerHTML = `
         <i class="fas fa-flask" style="color: #856404; margin-top: 0.2rem;"></i>
-        <div style="color: #856404; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">${message}</div>
+        <div style="color: #856404; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">${safeMessage}</div>
         <button class="notification-close"><i class="fas fa-times"></i></button>
     `;
 
@@ -2777,7 +2792,9 @@ window.viewDosageDetails = (idOrYjCode) => {
     }
 
     title.textContent = drug ? drug.name : '薬剤詳細';
-    body.innerHTML = content;
+    body.innerHTML = window.DOMPurify
+        ? window.DOMPurify.sanitize(content, { ADD_ATTR: ['target'] })
+        : content;
 
     modal.style.display = 'flex';
     // Small delay to allow display:flex to apply before opacity transition
