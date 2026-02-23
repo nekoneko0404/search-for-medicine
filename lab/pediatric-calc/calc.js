@@ -946,6 +946,7 @@ const PEDIATRIC_DRUGS = [
                             "ageMax": 100,
                             "dose": 0.5,
                             "unit": "g",
+                            "times": 2,
                             "label": "6歳以上: 1回25μg (0.5g)"
                         }
                     ],
@@ -1314,16 +1315,24 @@ const PEDIATRIC_DRUGS = [
             },
             {
                 "ageMin": 7,
-                "ageMax": 100,
+                "ageMax": 15,
                 "dose": 5,
                 "unit": "mL",
-                "label": "7歳以上 (1日2回)",
+                "label": "7歳以上15歳未満 (1日2回)",
                 "times": 2
+            },
+            {
+                "ageMin": 15,
+                "ageMax": 100,
+                "dose": 10,
+                "unit": "mL",
+                "label": "15歳以上 (1日1回)",
+                "times": 1
             }
         ],
         "piSnippetSource": "6ヶ月以上1歳未満:1回2.5mL(1日1回)。1歳以上7歳未満:1回2.5mL(1日2回)。7歳以上15歳未満:1回5mL(1日2回)。",
         "dosage": {
-            "note": "6ヶ月-1歳未満:2.5mL(1回)、1-7歳:2.5mL(2回)、7-15歳:5mL(2回)。"
+            "note": "6ヶ月-1歳未満:2.5mL(1回)、1-7歳:2.5mL(2回)、7-15歳:5mL(2回)、15歳以上:10mL(1回)。"
         },
         "piSnippet": "6ヵ月以上1歳未満：1回2.5mLを1日1回。1歳以上7歳未満：1回2.5mLを1日2回。7歳以上15歳未満：1回5mLを1日2回服用する。",
         "category": "allergy"
@@ -1476,7 +1485,7 @@ const PEDIATRIC_DRUGS = [
         "brandName": "ミヤBM",
         "yjCode": "2316009C1026",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2316009C1026",
-        "potency": 100,
+        "potency": 1,
         "calcType": "age",
         "adultDose": 1.5,
         "unit": "g",
@@ -1493,7 +1502,7 @@ const PEDIATRIC_DRUGS = [
         "brandName": "ラックビー",
         "yjCode": "2316014B1030",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/2316014B1030",
-        "potency": 100,
+        "potency": 1,
         "calcType": "age",
         "adultDose": 3,
         "unit": "g",
