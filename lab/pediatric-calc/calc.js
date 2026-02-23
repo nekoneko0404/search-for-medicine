@@ -2204,7 +2204,7 @@ function updatePrescriptionSheet() {
             })()}
                 ${drug.piUrl ? `
                     <button class="pi-link pc-only" onclick="window.viewDosageDetails('${drug.id}'); event.stopPropagation();" 
-                        style="padding: 2px 6px; font-size: 0.65rem; background: #f5f3ff; border: 1px solid #ddd; border-radius: 4px; cursor: pointer;">
+                        style="display: inline-flex; align-items: center; padding: 1px 6px; font-size: 0.6rem; font-weight: bold; background: #f8fafc; color: #475569; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer;">
                         添付文書
                     </button>` : ''}
             </div>
