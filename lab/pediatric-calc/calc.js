@@ -1524,8 +1524,9 @@ const PEDIATRIC_DRUGS = [
             "absoluteMaxMgKg": 60,
             "absoluteMaxMgPerTime": 500,
             "absoluteMaxMgPerDay": 1500,
+            "absoluteMaxMinMgPerDay": 900,
             "isByTime": true,
-            "timesPerDay": 4,
+            "timesPerDay": 3,
             "note": "1回10〜15mg/kg。原則4時間空ける。15歳以上：1回300〜500mg。上限：500mg/回、1500mg/日。",
             "minTimeMgKg": 10,
             "maxTimeMgKg": 15
@@ -1795,7 +1796,7 @@ function calculateDrug(drug, years, months, weight) {
         subOptionLabel = sub.label;
         if (sub.dosage) {
             const parentNote = dosageConfig ? dosageConfig.note : undefined;
-            dosageConfig = sub.dosage;
+            dosageConfig = { ...dosageConfig, ...JSON.parse(JSON.stringify(sub.dosage)) }; // Merge to preserve existing params
             if (!dosageConfig.note) dosageConfig.note = parentNote;
         }
         if (sub.piSnippet) drug.tempPiSnippet = sub.piSnippet; // Override snippet
