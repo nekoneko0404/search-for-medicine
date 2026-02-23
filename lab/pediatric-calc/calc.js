@@ -2080,18 +2080,18 @@ function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: pointer;" onclick="window.handleRxItemClick('${drug.id}', event)">
-            <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
-                <div style="flex:1; min-width:0; pointer-events: none;">
+        <div class="rx-item" data-id="${drug.id}" style="position: relative;">
+            <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;" onclick="window.handleRxItemClick('${drug.id}', event)">
+                <div style="flex:1; min-width:0;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
                 <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
                     <div class="rx-remove" onclick="removeDrug('${drug.id}'); event.stopPropagation();" style="font-size: 1.1rem; color: #94a3b8; cursor: pointer; padding: 4px; line-height: 1;"><i class="fas fa-times"></i></div>
                 </div>
             </div>
-            <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;">${selectorsHtml}</div>
-            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem;">${resultMain}</div>
-            <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;">
+            <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;" onclick="event.stopPropagation()">${selectorsHtml}</div>
+            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem;" onclick="event.stopPropagation()">${resultMain}</div>
+            <div class="rx-meta" style="padding: 0 0.6rem 0.6rem;" onclick="event.stopPropagation()">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
             ${drug.piUrl ? `
