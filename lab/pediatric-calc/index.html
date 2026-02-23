@@ -973,6 +973,85 @@
         .rx-item:active {
             cursor: grabbing;
         }
+
+        /* Disclaimer Banner */
+        .disclaimer-banner {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 380px;
+            background: #fff;
+            border-left: 5px solid #ef4444;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            z-index: 10000;
+            transform: translateX(120%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .disclaimer-banner.show {
+            transform: translateX(0);
+        }
+
+        @media (max-width: 600px) {
+            .disclaimer-banner {
+                bottom: 0;
+                right: 0;
+                width: 100%;
+                border-radius: 1rem 1rem 0 0;
+                border-left: none;
+                border-top: 5px solid #ef4444;
+                transform: translateY(120%);
+                padding: 1rem 1.25rem;
+                box-sizing: border-box;
+            }
+
+            .disclaimer-banner.show {
+                transform: translateY(0);
+            }
+        }
+
+        .disclaimer-close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #94a3b8;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+        }
+
+        .disclaimer-close:hover {
+            color: #ef4444;
+        }
+
+        .disclaimer-content h4 {
+            margin: 0 0 0.75rem 0;
+            font-size: 1rem;
+            color: #1e293b;
+        }
+
+        .disclaimer-content p {
+            font-size: 0.75rem;
+            color: #475569;
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .disclaimer-never-show {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.8rem;
+            color: #1e293b;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -1107,6 +1186,44 @@
     <!-- Scripts -->
     <script type="module" src="../../js/components/MainHeader.js"></script>
     <script type="module" src="calc.js"></script>
+
+    <!-- Disclaimer Banner -->
+    <div id="disclaimer-banner" class="disclaimer-banner">
+        <button class="disclaimer-close" id="disclaimer-close" title="閉じる">&times;</button>
+        <div class="disclaimer-content">
+            <h4>制限事項 / 特記事項</h4>
+            <p><strong>免責事項:</strong>
+                本アプリケーションは医療従事者向けの計算「補助」ツールです。出力される結果から直接処方意図を決定するものではなく、最終的な投与量や適応の判断は医師・薬剤師の責任のもとで行うものとします。</p>
+            <p><strong>データ保証:</strong>
+                本ツールの薬剤基礎データは手書きやスクリプト抽出のハイブリッドで構築されています。LLM等による自動生成データの誤りを排除するため、定期的な目視確認と添付文書との突合を行っていますが、使用時は必ず添付文書等の一次文書をご確認ください。
+            </p>
+            <label class="disclaimer-never-show">
+                <input type="checkbox" id="disclaimer-never-show-check"> 再表示しない
+            </label>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const banner = document.getElementById('disclaimer-banner');
+            const closeBtn = document.getElementById('disclaimer-close');
+            const neverShowCheck = document.getElementById('disclaimer-never-show-check');
+
+            // Check localStorage
+            if (!localStorage.getItem('pedCalcDisclaimerHidden')) {
+                // Delay banner presentation slightly for better UX
+                setTimeout(() => {
+                    banner.classList.add('show');
+                }, 800);
+            }
+
+            closeBtn.addEventListener('click', () => {
+                banner.classList.remove('show');
+                if (neverShowCheck.checked) {
+                    localStorage.setItem('pedCalcDisclaimerHidden', 'true');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
