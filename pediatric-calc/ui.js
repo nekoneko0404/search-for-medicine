@@ -125,12 +125,10 @@ export function updatePrescriptionSheet() {
 
         return `
         <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: pointer;" onclick="window.handleRxItemClick('${drug.id}', event)">
+            <div class="rx-remove" onclick="removeDrug('${drug.id}'); event.stopPropagation();" style="position: absolute; top: 0.3rem; right: 0.3rem; font-size: 1.2rem; color: #94a3b8; cursor: pointer; padding: 4px; line-height: 1; z-index: 10;"><i class="fas fa-times"></i></div>
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
-                <div style="flex:1; min-width:0; pointer-events: none;">
+                <div style="flex:1; min-width:0; pointer-events: none; padding-right: 1.5rem;">
                     <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:0.3rem; margin-left: 0.4rem;">
-                    <div class="rx-remove" onclick="removeDrug('${drug.id}'); event.stopPropagation();" style="font-size: 1.1rem; color: #94a3b8; cursor: pointer; padding: 4px; line-height: 1;"><i class="fas fa-times"></i></div>
                 </div>
             </div>
             <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;" onclick="event.stopPropagation()">${selectorsHtml}</div>

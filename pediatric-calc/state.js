@@ -28,10 +28,19 @@ export function loadState() {
     } catch (e) { console.warn("Load state failed:", e); }
 }
 
+const proxyCache = new WeakMap();
+
 const handler = {
     get(target, property, receiver) {
         const value = Reflect.get(target, property, receiver);
-        if (typeof value === 'object' && value !== null) return new Proxy(value, handler);
+        if (typeof value === 'object' && value !== null) {
+            if (proxyCache.has(value)) {
+                return proxyCache.get(value);
+            }
+            const proxy = new Proxy(value, handler);
+            proxyCache.set(value, proxy);
+            return proxy;
+        }
         return value;
     },
     set(target, property, value, receiver) {
