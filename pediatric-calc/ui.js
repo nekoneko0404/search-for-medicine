@@ -382,36 +382,114 @@ window.viewDosageDetails = (idOrYjCode) => {
     if (!modal || !body) return;
     body.scrollTop = 0;
     const data = DOSAGE_DATA[yjCode];
-    if (sourceSpan) sourceSpan.textContent = drug ? drug.name : yjCode;
+
+    if (title) title.textContent = drug ? drug.name : yjCode;
+    if (sourceSpan && drug && drug.originalName) {
+        sourceSpan.textContent = `(参照: ${drug.originalName})`;
+    } else if (sourceSpan) {
+        sourceSpan.textContent = '';
+    }
+
     let content = '';
+
     if (drug) {
         const y = state.params.ageYear, m = state.params.ageMonth, w = parseFloat(state.params.weight) || 0;
         const res = calculateDrug(drug, y, m, w);
         const ct = drug.calcType;
         const usesAge = ct === 'age' || ct === 'fixed-age' || ct === 'age-weight-switch';
         const usesWeight = !ct || ct === 'weight-step' || ct === 'age-weight-switch' || (!ct && drug.dosage && (drug.dosage.minMgKg || drug.dosage.isByTime));
-        content += `<div class="dosage-modal-param-badge-container">`;
-        if (usesAge) content += `<span class="param-badge-age"><i class="fas fa-birthday-cake"></i> 年齢</span>`;
-        if (usesWeight) content += `<span class="param-badge-weight"><i class="fas fa-weight"></i> 体重</span>`;
-        content += `</div>`;
+
+        // Badges
+        let badgesHtml = '';
+        if (usesAge) badgesHtml += `<span class="param-badge-age" style="margin-left: 0.5rem; font-size:0.75rem;"><i class="fas fa-birthday-cake"></i> 年齢</span>`;
+        if (usesWeight) badgesHtml += `<span class="param-badge-weight" style="margin-left: 0.5rem; font-size:0.75rem;"><i class="fas fa-weight"></i> 体重</span>`;
+
+        // Estimated Dosage Box
+        content += `
+        <div style="border: 1px solid #cbd5e1; border-radius: 8px; margin-bottom: 2rem; overflow: hidden;">
+            <div style="display: flex; justify-content: space-between; padding: 0.75rem 1rem; border-bottom: 1px solid #e2e8f0; background: white; align-items: center;">
+                <div style="font-weight: bold; color: #4f46e5; display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-calculator" style="color: #4f46e5;"></i> 推計用量</div>
+                <div>${badgesHtml}</div>
+            </div>
+            <div style="padding: 1.5rem; background: #ffffff;">`;
+
+        if (res.error) {
+            content += `<div style="color: #ef4444; font-weight: bold; text-align: center; padding: 1rem;"><i class="fas fa-exclamation-triangle"></i> ${res.error}</div>`;
+        } else if (res.isFixed && (!res.totalRange || res.totalRange === 'undefined')) {
+            const label = res.isSingleDose ? '単回投与' : '固定用量';
+            const detailStr = res.detail !== 'undefined' ? res.detail : '';
+            content += `
+                <div style="text-align: center; padding: 1rem; border: 1px solid #e2e8f0; border-radius: 8px;">
+                    <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem; font-weight:bold;">${label}</div>
+                    <div style="font-size: 1.8rem; font-weight: bold; color: #4f46e5;">${detailStr}</div>
+                </div>`;
+        } else {
+            const tRange = res.totalRange && res.totalRange !== 'undefined' ? res.totalRange : '―';
+            const pRange = res.perTimeRange && res.perTimeRange !== 'undefined' ? res.perTimeRange : '―';
+            const u = res.unit || '';
+
+            content += `
+                <div style="display: flex; gap: 1.5rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 150px; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem 1rem;">
+                        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem; font-weight:bold;">1日量</div>
+                        <div style="font-size: 1.8rem; font-weight: bold; color: #4f46e5;">${tRange} <span style="font-size: 1rem; font-weight: bold; color: #0f172a;">${u}</span></div>
+                    </div>
+                    ${!res.hidePerTime ? `
+                    <div style="flex: 1; min-width: 150px; text-align: center; border: 1px solid #e2e8f0; border-radius: 8px; padding: 1.25rem 1rem;">
+                        <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem; font-weight:bold;">1回量</div>
+                        <div style="font-size: 1.8rem; font-weight: bold; color: #0f172a;">${pRange} <span style="font-size: 1rem; font-weight: bold; color: #0f172a;">${u}</span></div>
+                    </div>` : ''}
+                </div>`;
+        }
+
+        if (res.note) {
+            content += `
+                <div style="margin-top: 1.5rem; background: #fffbeb; border-left: 4px solid #f59e0b; padding: 1rem; border-radius: 4px; font-size: 0.9rem; color: #b45309; line-height: 1.5;">
+                    <i class="fas fa-info-circle" style="color: #f59e0b; margin-right: 0.5rem;"></i> ${res.note}
+                </div>`;
+        }
+
+        let methodHtml = '';
         if (ct === 'age' && !drug.isKampo) {
             const age = (parseInt(y) || 0) + (parseInt(m) || 0) / 12;
-            content += `<div class="dosage-modal-calc-note"><span style="font-weight:bold;">Augsberger式</span><br>成人量 × (4×${age.toFixed(1)} + 20) / 100 = <strong>${Math.round(4 * age + 20)}%</strong></div>`;
+            methodHtml = `<div style="margin-top: 1rem; font-size: 0.8rem; color: #64748b; text-align:right;">[Augsberger式: 成人量 × <strong>${Math.round(4 * age + 20)}%</strong>]</div>`;
         } else if (ct === 'age' && drug.isKampo) {
-            content += `<div class="dosage-modal-calc-note"><span style="font-weight:bold;">漢方年齢区分</span><br>2歳未満25% / 4歳未満33% / 7歳未満50% / 15歳未満66%</div>`;
+            methodHtml = `<div style="margin-top: 1rem; font-size: 0.8rem; color: #64748b; text-align:right;">[漢方年齢区分による算出]</div>`;
         }
+        content += methodHtml;
+
+        content += `
+            </div>
+        </div>`;
     }
-    content += `<div style="margin-top:1.5rem; line-height:1.7; color:#334155;">${data ? data.dosage : (drug ? (drug.piSnippet || 'データ未登録') : 'データ未登録')}</div>`;
-    if (drug?.piUrl) content += `<div style="margin-top:1.5rem;"><a href="${drug.piUrl}" target="_blank" class="pmda-link"><i class="fas fa-external-link-alt"></i> PMDA情報を開く</a></div>`;
+
+    content += `<div style="font-weight: bold; color: #475569; margin-bottom: 1rem; display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-file-medical-alt" style="color: #64748b;"></i> 添付文書（用法・用量）</div>`;
+
+    let dosageText = data ? data.dosage : (drug ? (drug.piSnippet || 'データ未登録') : 'データ未登録');
+    // Replace newlines with <br> if it doesn't already have HTML block tags to preserve formatting.
+    if (!/<div|<p|<br/i.test(dosageText)) {
+        dosageText = dosageText.replace(/\n/g, '<br>');
+    }
+
+    content += `<div style="font-size: 0.95rem; line-height: 1.8; color: #334155; margin-bottom: 2rem;">${dosageText}</div>`;
+
+    if (drug?.piUrl) {
+        content += `
+         <div style="text-align: center; margin-top: 2rem; margin-bottom: 1rem;">
+            <a href="${drug.piUrl}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 2rem; border: 1px solid #cbd5e1; border-radius: 8px; color: #475569; text-decoration: none; font-weight: bold; background: #f8fafc; transition: all 0.2s; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+                <i class="fas fa-external-link-square-alt"></i> PMDAで全文を見る
+            </a>
+         </div>`;
+    }
+
     body.innerHTML = content;
-    modal.style.display = ''; // Reset any inline style if present
+    modal.style.display = '';
     modal.classList.add('active');
 
     document.getElementById('close-dosage-modal').onclick = () => {
         modal.classList.remove('active');
     };
 
-    // Allow closing by clicking the semi-transparent background
     modal.onclick = (e) => {
         if (e.target === modal) {
             modal.classList.remove('active');
