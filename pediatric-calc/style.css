@@ -505,9 +505,9 @@ body {
     position: fixed;
     bottom: 1rem;
     right: 1rem;
-    width: 280px;
+    width: 320px;
     background: white;
-    padding: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
     border-radius: 8px;
     border-left: 4px solid #ef4444;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
@@ -521,16 +521,16 @@ body {
 }
 
 .disclaimer-content h4 {
-    margin: 0 0 0.4rem 0;
-    font-size: 0.85rem;
+    margin: 0 0 0.5rem 0;
+    font-size: 0.95rem;
     font-weight: 800;
     color: #1e293b;
 }
 
 .disclaimer-content p {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.75rem;
-    line-height: 1.4;
+    margin: 0 0 0.6rem 0;
+    font-size: 0.7rem;
+    line-height: 1.6;
     color: #475569;
 }
 
@@ -548,9 +548,11 @@ body {
 .disclaimer-never-show {
     display: flex;
     align-items: center;
-    gap: 0.3rem;
-    font-size: 0.7rem;
-    color: #64748b;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #475569;
+    margin-top: 0.8rem;
 }
 
 
