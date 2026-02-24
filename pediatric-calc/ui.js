@@ -149,7 +149,7 @@ export function updatePrescriptionSheet() {
         }
 
         return `
-        <div class="rx-item" data-id="${drug.id}" style="position: relative; cursor: pointer;" onclick="window.handleRxItemClick('${drug.id}', event)">
+        <div class="rx-item" data-id="${drug.id}" style="position: relative;">
             <div class="rx-remove" onclick="removeDrug('${drug.id}'); event.stopPropagation();" style="position: absolute; top: 0.3rem; right: 0.3rem; font-size: 1.2rem; color: #94a3b8; cursor: pointer; padding: 4px; line-height: 1; z-index: 10;"><i class="fas fa-times"></i></div>
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0; pointer-events: none; padding-right: 1.5rem;">
@@ -157,7 +157,7 @@ export function updatePrescriptionSheet() {
                 </div>
             </div>
             <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;" onclick="event.stopPropagation()">${selectorsHtml}</div>
-            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem; pointer-events: none;">${resultMain}</div>
+            <div class="rx-result-box" style="padding: 0.5rem; margin: 0 0.5rem 0.5rem; font-size: 0.85rem; cursor: pointer;" onclick="window.viewDosageDetails('${drug.id}'); event.stopPropagation();" title="タップして詳細な用法・用量を確認">${resultMain}</div>
             <div class="rx-meta" style="padding: 0 0.6rem 0.6rem; pointer-events: none;">
                 <div style="font-size:0.7rem; color:#64748b; line-height: 1.2;">${calc.note || ''}</div>
             </div>
@@ -420,10 +420,6 @@ export function syncInputDisplays() {
 
 
 window.handleDrugClick = (drugId, e) => { window.toggleDrug(drugId); };
-
-window.handleRxItemClick = (drugId, e) => {
-    if (window.innerWidth <= 768) { window.viewDosageDetails(drugId); }
-};
 
 window.viewDosageDetails = (idOrYjCode) => {
     let drug = PEDIATRIC_DRUGS.find(d => d.id === idOrYjCode);
