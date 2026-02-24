@@ -404,8 +404,19 @@ window.viewDosageDetails = (idOrYjCode) => {
     content += `<div style="margin-top:1.5rem; line-height:1.7; color:#334155;">${data ? data.dosage : (drug ? (drug.piSnippet || 'データ未登録') : 'データ未登録')}</div>`;
     if (drug?.piUrl) content += `<div style="margin-top:1.5rem;"><a href="${drug.piUrl}" target="_blank" class="pmda-link"><i class="fas fa-external-link-alt"></i> PMDA情報を開く</a></div>`;
     body.innerHTML = content;
-    modal.style.display = 'flex';
-    document.getElementById('close-dosage-modal').onclick = () => { modal.style.display = 'none'; };
+    modal.style.display = ''; // Reset any inline style if present
+    modal.classList.add('active');
+
+    document.getElementById('close-dosage-modal').onclick = () => {
+        modal.classList.remove('active');
+    };
+
+    // Allow closing by clicking the semi-transparent background
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('active');
+        }
+    };
 };
 
 window.toggleDrug = (id) => {
