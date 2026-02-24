@@ -483,16 +483,26 @@ window.viewDosageDetails = (idOrYjCode) => {
     }
 
     body.innerHTML = content;
-    modal.style.display = '';
+
+    // Explicitly override CSS bugs by setting inline styles directly
+    modal.style.display = 'flex';
+    modal.style.opacity = '1';
+    modal.style.visibility = 'visible';
     modal.classList.add('active');
 
     document.getElementById('close-dosage-modal').onclick = () => {
         modal.classList.remove('active');
+        modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
     };
 
     modal.onclick = (e) => {
         if (e.target === modal) {
             modal.classList.remove('active');
+            modal.style.display = 'none';
+            modal.style.opacity = '0';
+            modal.style.visibility = 'hidden';
         }
     };
 };
