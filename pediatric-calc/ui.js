@@ -465,9 +465,11 @@ window.viewDosageDetails = (idOrYjCode) => {
 
     content += `<div style="font-weight: bold; color: #475569; margin-bottom: 1rem; display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-file-medical-alt" style="color: #64748b;"></i> 添付文書（用法・用量）</div>`;
 
-    let dosageText = data ? data.dosage : (drug ? (drug.piSnippet || 'データ未登録') : 'データ未登録');
+    let dosageText = data ? data.dosage : undefined;
+    if (!dosageText) dosageText = drug ? (drug.piSnippet || 'データ未登録') : 'データ未登録';
+
     // Replace newlines with <br> if it doesn't already have HTML block tags to preserve formatting.
-    if (!/<div|<p|<br/i.test(dosageText)) {
+    if (dosageText && typeof dosageText === 'string' && !/<div|<p|<br/i.test(dosageText)) {
         dosageText = dosageText.replace(/\n/g, '<br>');
     }
 
