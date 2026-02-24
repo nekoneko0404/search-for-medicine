@@ -44,6 +44,10 @@ const handler = {
         return value;
     },
     set(target, property, value, receiver) {
+        const oldValue = Reflect.get(target, property, receiver);
+        if (oldValue === value) {
+            return true; // value unchanged, do not trigger notify
+        }
         const result = Reflect.set(target, property, value, receiver);
         notifyListeners();
         return result;
