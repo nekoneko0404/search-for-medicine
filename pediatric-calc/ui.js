@@ -128,7 +128,7 @@ export function updatePrescriptionSheet() {
             <div class="rx-remove" onclick="removeDrug('${drug.id}'); event.stopPropagation();" style="position: absolute; top: 0.3rem; right: 0.3rem; font-size: 1.2rem; color: #94a3b8; cursor: pointer; padding: 4px; line-height: 1; z-index: 10;"><i class="fas fa-times"></i></div>
             <div class="rx-header" style="padding: 0.4rem 0.6rem; align-items: flex-start;">
                 <div style="flex:1; min-width:0; pointer-events: none; padding-right: 1.5rem;">
-                    <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
+                    <div class="rx-title" style="font-weight:bold; font-size:1.1rem; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; white-space: normal;">${displayName}</div>
                 </div>
             </div>
             <div class="rx-config" style="padding: 0.4rem; gap: 0.4rem;" onclick="event.stopPropagation()">${selectorsHtml}</div>
@@ -380,11 +380,11 @@ export function initPcSelects() {
 
 export function syncInputDisplays() {
     const { ageYear, ageMonth, weight } = state.params;
-    
+
     const ageSelect = document.getElementById('age-select');
     const monthSelect = document.getElementById('month-select');
     const weightSelect = document.getElementById('weight-select');
-    
+
     if (ageSelect) ageSelect.value = ageYear;
     if (monthSelect) monthSelect.value = ageMonth;
     if (weightSelect) weightSelect.value = Math.round(weight) || 10;
