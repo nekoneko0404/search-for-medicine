@@ -159,9 +159,7 @@ export function updatePrescriptionSheet() {
     }).join('');
 
     const finalHtml = itemsHtml.length ? itemsHtml : emptyHtml;
-    content.innerHTML = window.DOMPurify
-        ? window.DOMPurify.sanitize(finalHtml, { ADD_ATTR: ['onclick', 'onchange', 'data-id'] })
-        : finalHtml;
+    content.innerHTML = finalHtml;
 
     if (itemsHtml.length > 1 && window.Sortable) {
         if (window.rxSortable) window.rxSortable.destroy();
@@ -261,7 +259,7 @@ export function renderDrugList() {
             </div>
         </div>`;
     }).join('');
-    container.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(html, { ADD_ATTR: ['onclick', 'data-id'] }) : html;
+    container.innerHTML = html;
 }
 
 export function initDialPicker() {

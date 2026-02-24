@@ -1,11 +1,11 @@
 
 import { state, saveState, loadState, subscribe } from './state.js';
 import { getStandardWeight } from './logic.js';
-import { 
-    updatePrescriptionSheet, 
-    renderCategoryTabs, 
-    renderDrugList, 
-    initDialPicker, 
+import {
+    updatePrescriptionSheet,
+    renderCategoryTabs,
+    renderDrugList,
+    initDialPicker,
     syncInputDisplays,
     setSearchQuery,
     setCategory
@@ -46,22 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const searchInput = document.getElementById('drug-search');
-    if (searchInput) {
-        searchInput.addEventListener('input', (e) => {
-            setSearchQuery(e.target.value);
-        });
-    }
-
     // Auto-search from YJ param
     const urlParams = new URLSearchParams(window.location.search);
     const yjQuery = urlParams.get('yj');
     if (yjQuery) {
-        if (searchInput) {
-            searchInput.value = yjQuery;
-            setSearchQuery(yjQuery);
-            setCategory('all');
-        }
+        setSearchQuery(yjQuery);
+        setCategory('all');
     }
 
     setTimeout(() => {

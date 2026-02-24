@@ -193,10 +193,10 @@ export function calculateDrug(drug, years, months, weight) {
             }
 
             if (shouldCalculate) {
-                const roundProduct = (n) => Math.round(n * 100) / 100;
-                total = roundProduct(total);
+                const formatDose = (n) => n >= 10 ? Math.round(n * 10) / 10 : Math.round(n * 100) / 100;
+                total = formatDose(total);
 
-                const perTime = roundProduct(total / times);
+                const perTime = formatDose(total / times);
                 totalStr = `${total}`;
                 timeStr = `${perTime}`;
 
@@ -295,16 +295,16 @@ export function calculateDrug(drug, years, months, weight) {
 
     // Convert to Product Amount
     const roundProduct = (n) => Math.round(n * 10000) / 10000; // Using high precision for intermediate calculation
-    const roundDisplay = (n) => Math.round(n * 100) / 100; // 2 places for display
+    const formatDose = (n) => n >= 10 ? Math.round(n * 10) / 10 : Math.round(n * 100) / 100;
 
     let totalMin = roundProduct(mgPerDayMin / potency);
     let totalMax = roundProduct(mgPerDayMax / potency);
 
-    let timeMin = roundDisplay(totalMin / times);
-    let timeMax = roundDisplay(totalMax / times);
+    let timeMin = formatDose(totalMin / times);
+    let timeMax = formatDose(totalMax / times);
 
-    totalMin = roundDisplay(totalMin);
-    totalMax = roundDisplay(totalMax);
+    totalMin = formatDose(totalMin);
+    totalMax = formatDose(totalMax);
 
     // If max < min due to caps, clamp
     if (totalMax < totalMin) totalMax = totalMin;
