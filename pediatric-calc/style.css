@@ -63,7 +63,8 @@ body {
     box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
 }
 
-.input-group-enhanced input {
+.input-group-enhanced input,
+.input-group-enhanced select {
     width: 3.5rem;
     border: none;
     background: transparent;
@@ -72,6 +73,14 @@ body {
     font-size: 1rem;
     padding: 0;
     outline: none;
+    color: #1e293b;
+    cursor: pointer;
+    appearance: none; /* Hide default arrow to keep it clean like original input */
+}
+
+/* Ensure centering on standard select dropdowns */
+.input-group-enhanced select {
+    text-align-last: center; 
 }
 
 .input-icon {

@@ -6,6 +6,7 @@ import {
     renderCategoryTabs,
     renderDrugList,
     initDialPicker,
+    initPcSelects,
     syncInputDisplays,
     setSearchQuery,
     setCategory
@@ -14,27 +15,28 @@ import {
 document.addEventListener('DOMContentLoaded', () => {
     loadState();
     renderCategoryTabs();
+    initPcSelects();
     renderDrugList();
     updatePrescriptionSheet();
     initDialPicker();
     syncInputDisplays();
 
     // Event Listeners
-    const pcAgeIn = document.getElementById('age-input');
-    const pcMonthIn = document.getElementById('month-input');
-    const pcWeightIn = document.getElementById('weight-input');
+    const pcAgeSelect = document.getElementById('age-select');
+    const pcMonthSelect = document.getElementById('month-select');
+    const pcWeightSelect = document.getElementById('weight-select');
 
-    const handlePcInput = () => {
-        state.params.ageYear = pcAgeIn.value;
-        state.params.ageMonth = pcMonthIn.value;
-        state.params.weight = pcWeightIn.value;
+    const handlePcSelectChange = () => {
+        state.params.ageYear = parseInt(pcAgeSelect.value, 10);
+        state.params.ageMonth = parseInt(pcMonthSelect.value, 10);
+        state.params.weight = parseInt(pcWeightSelect.value, 10);
         syncInputDisplays();
         updatePrescriptionSheet();
     };
 
-    if (pcAgeIn) pcAgeIn.addEventListener('input', handlePcInput);
-    if (pcMonthIn) pcMonthIn.addEventListener('input', handlePcInput);
-    if (pcWeightIn) pcWeightIn.addEventListener('input', handlePcInput);
+    if (pcAgeSelect) pcAgeSelect.addEventListener('change', handlePcSelectChange);
+    if (pcMonthSelect) pcMonthSelect.addEventListener('change', handlePcSelectChange);
+    if (pcWeightSelect) pcWeightSelect.addEventListener('change', handlePcSelectChange);
 
     const autoBtn = document.getElementById('auto-weight-btn');
     if (autoBtn) {

@@ -348,14 +348,47 @@ export function initDialPicker() {
     overlay.onclick = (e) => { if (e.target === overlay) overlay.classList.remove('active'); };
 }
 
+export function initPcSelects() {
+    const ageSelect = document.getElementById('age-select');
+    const monthSelect = document.getElementById('month-select');
+    const weightSelect = document.getElementById('weight-select');
+
+    if (ageSelect) {
+        let ageHtml = '';
+        for (let i = 0; i <= 15; i++) {
+            ageHtml += `<option value="${i}">${i}</option>`;
+        }
+        ageSelect.innerHTML = ageHtml;
+    }
+
+    if (monthSelect) {
+        let monthHtml = '';
+        for (let i = 0; i <= 11; i++) {
+            monthHtml += `<option value="${i}">${i}</option>`;
+        }
+        monthSelect.innerHTML = monthHtml;
+    }
+
+    if (weightSelect) {
+        let weightHtml = '';
+        for (let i = 1; i <= 80; i++) {
+            weightHtml += `<option value="${i}">${i}</option>`;
+        }
+        weightSelect.innerHTML = weightHtml;
+    }
+}
+
 export function syncInputDisplays() {
     const { ageYear, ageMonth, weight } = state.params;
-    const ageIn = document.getElementById('age-input');
-    const monthIn = document.getElementById('month-input');
-    const weightIn = document.getElementById('weight-input');
-    if (ageIn) ageIn.value = ageYear;
-    if (monthIn) monthIn.value = ageMonth;
-    if (weightIn) weightIn.value = weight;
+    
+    const ageSelect = document.getElementById('age-select');
+    const monthSelect = document.getElementById('month-select');
+    const weightSelect = document.getElementById('weight-select');
+    
+    if (ageSelect) ageSelect.value = ageYear;
+    if (monthSelect) monthSelect.value = ageMonth;
+    if (weightSelect) weightSelect.value = Math.round(weight) || 10;
+
     const ageDisp = document.getElementById('age-val-display');
     const monthDisp = document.getElementById('month-val-display');
     const weightDisp = document.getElementById('weight-val-display');
