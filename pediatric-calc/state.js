@@ -3,7 +3,7 @@ export const STORAGE_KEY = 'kusuri_compass_calc_v25_state';
 
 const defaultState = {
     selectedDrugIds: [],
-    params: { ageYear: '', ageMonth: '', weight: '' },
+    params: { ageYear: '', ageMonth: '', weight: '10' },
     drugOptions: {}
 };
 

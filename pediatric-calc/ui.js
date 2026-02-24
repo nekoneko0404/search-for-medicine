@@ -12,6 +12,24 @@ window.saveState = saveState;
 window.loadState = loadState;
 window.calculateDrug = calculateDrug;
 
+window.showNotification = (message) => {
+    const container = document.getElementById('notification-container');
+    if (!container) return;
+    const notification = document.createElement('div');
+    notification.className = 'floating-notification';
+    const safeMessage = typeof message === 'string' ? message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
+    notification.innerHTML = `
+        <i class="fas fa-flask" style="color: #d97706; font-size: 0.9rem;"></i>
+        <div style="color: #92400e; font-size: 0.8rem; font-weight: 700; line-height: 1.4; flex:1;">${safeMessage}</div>
+        <button onclick="this.parentElement.remove()" style="background:none; border:none; cursor:pointer; color:#94a3b8; padding:2px;"><i class="fas fa-times"></i></button>
+    `;
+    container.appendChild(notification);
+    setTimeout(() => {
+        notification.style.animation = 'slideIn 0.3s ease reverse forwards';
+        setTimeout(() => notification.remove(), 300);
+    }, 8000);
+};
+
 export function setSearchQuery(q) {
     currentSearchQuery = q;
     renderDrugList();
@@ -48,7 +66,7 @@ export function updatePrescriptionSheet() {
 
     const y = state.params.ageYear;
     const m = state.params.ageMonth;
-    const w = parseFloat(state.params.weight);
+    const w = parseInt(state.params.weight) || 0;
 
     const itemsHtml = state.selectedDrugIds.map(id => {
         const drug = PEDIATRIC_DRUGS.find(d => d.id === id);
@@ -301,18 +319,19 @@ export function initDialPicker() {
         if (mode === 'age') {
             title.textContent = '年齢を選択';
             labelLeft.textContent = '歳';
-            labelRight.textContent = 'ヶ月';
+            labelRight.style.display = 'block';
+            wheelRight.style.display = 'block';
             tempValues = { left: parseInt(state.params.ageYear) || 0, right: parseInt(state.params.ageMonth) || 0 };
             populateWheel(wheelLeft, 0, 15, tempValues.left);
             populateWheel(wheelRight, 0, 11, tempValues.right);
         } else {
             title.textContent = '体重を選択';
-            labelLeft.textContent = 'kg (整数)';
-            labelRight.textContent = '.x (小数)';
-            const w = parseFloat(state.params.weight) || 0;
-            tempValues = { left: Math.floor(w), right: Math.round((w % 1) * 10) };
+            labelLeft.textContent = 'kg';
+            labelRight.style.display = 'none';
+            wheelRight.style.display = 'none';
+            const w = parseInt(state.params.weight) || 10;
+            tempValues = { left: w, right: 0 };
             populateWheel(wheelLeft, 0, 100, tempValues.left);
-            populateWheel(wheelRight, 0, 9, tempValues.right);
         }
         overlay.classList.add('active');
     };
@@ -324,7 +343,7 @@ export function initDialPicker() {
             state.params.ageYear = tempValues.left;
             state.params.ageMonth = tempValues.right;
         } else {
-            state.params.weight = tempValues.left + tempValues.right / 10;
+            state.params.weight = tempValues.left;
         }
         syncInputDisplays();
         updatePrescriptionSheet();
@@ -349,23 +368,6 @@ export function syncInputDisplays() {
     if (weightDisp) weightDisp.textContent = weight;
 }
 
-window.showNotification = (message) => {
-    const container = document.getElementById('notification-container');
-    if (!container) return;
-    const notification = document.createElement('div');
-    notification.className = 'floating-notification';
-    const safeMessage = typeof message === 'string' ? message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
-    notification.innerHTML = `
-        <i class="fas fa-flask" style="color: #856404; margin-top: 0.2rem;"></i>
-        <div style="color: #856404; font-size: 0.85rem; font-weight: 500; line-height: 1.4;">${safeMessage}</div>
-        <button class="notification-close"><i class="fas fa-times"></i></button>
-    `;
-    notification.querySelector('.notification-close').onclick = () => {
-        notification.style.animation = 'slideIn 0.3s ease reverse forwards';
-        setTimeout(() => notification.remove(), 300);
-    };
-    container.appendChild(notification);
-};
 
 window.handleDrugClick = (drugId, e) => { window.toggleDrug(drugId); };
 
