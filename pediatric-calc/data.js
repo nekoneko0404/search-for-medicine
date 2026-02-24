@@ -195,41 +195,6 @@ export const PEDIATRIC_DRUGS = [
             "absoluteMaxMinMgPerDay": 200,
             "note": "通常1回3mg/kgを1日2〜3回。重症時1回4.5mg/kgを1日3回。上限400mg(成人量)/日。"
         },
-        "calcType": "age-weight-switch",
-        "ageBranches": [
-            {
-                "ageMin": 0,
-                "ageMax": 15,
-                "label": "15歳未満 (体重換算/最大200mg)",
-                "dosage": {
-                    "isByTime": true,
-                    "timeMgKg": 3,
-                    "timesPerDay": 3,
-                    "absoluteMaxMgPerDay": 200,
-                    "note": "小児：通常1回3mg/kgを1日3回(または2回)。上限200mg/日。"
-                }
-            },
-            {
-                "ageMin": 15,
-                "ageMax": 100,
-                "label": "成人 (100〜200mg 1日2回)",
-                "dosage": {
-                    "calcType": "fixed-age",
-                    "fixedDoses": [
-                        {
-                            "ageMin": 15,
-                            "ageMax": 100,
-                            "doseMg": 100,
-                            "unit": "g",
-                            "times": 2,
-                            "label": "成人 100mg x 2回"
-                        }
-                    ],
-                    "timesPerDay": 2,
-                    "note": "成人：通常1回100〜200mg(力価)を1日2回。適宜増減。"
-                }
-            }
-        ],
         "piSnippet": "通常1回3mg/kgを1日3回。重症時、1回4.5mg(力価)/kgを1日3回経口投与する。ただし、1日量として200mg(力価)を超えないこと。",
         "category": "antibiotics"
     },
@@ -535,9 +500,9 @@ export const PEDIATRIC_DRUGS = [
             "timesPerDay": 2,
             "absoluteMaxMgPerDay": 200,
             "absoluteMaxMinMgPerDay": 100,
-            "note": "1日量2〜4mg/kg(製剤0.1〜0.2g/kg)を1〜2回。上限200mg/日。"
+            "note": "⚠️8歳未満非推奨。1日量2〜4mg/kg(製剤0.1〜0.2g/kg)を1〜2回。上限200mg/日。"
         },
-        "piSnippet": "通常、小児には体重1kgあたり、2〜4mg(力価)を1日量として、12あるいは24時間ごとに経口投与する。",
+        "piSnippet": "通常、小児には体重1kgあたり、2〜4mg(力価)を1日量として、12あるいは24時間ごとに経口投与する。他の薬剤が使用できないか、無効の場合にのみ適用を考慮すること。小児（特に歯牙形成期にある8歳未満の小児）に投与した場合、歯牙の着色・エナメル質形成不全、また、一過性の骨発育不全を起こすことがある。",
         "category": "antibiotics"
     },
     {
@@ -660,43 +625,40 @@ export const PEDIATRIC_DRUGS = [
     },
     {
         "id": "tamiflu-group",
-        "name": "タミフル／オセルタミビル (規格選択)",
+        "name": "タミフル／オセルタミビル",
         "brandName": "タミフル",
         "yjCode": "6250021R1024",
         "piUrl": "https://www.pmda.go.jp/PmdaSearch/iyakuDetail/GeneralList/6250021R1024",
         "potency": 30,
-        "hasSubOptions": true,
-        "autoSelectByAge": true,
-        "subOptions": [
+        "calcType": "age-weight-switch",
+        "ageBranches": [
             {
-                "id": "over1y",
-                "label": "幼小児 (1歳以上)",
-                "ageMin": 1,
-                "ageMax": 100,
-                "potency": 30,
-                "dosage": {
-                    "isByTime": true,
-                    "timeMgKg": 2,
-                    "timesPerDay": 2,
-                    "absoluteMaxMgPerTime": 75,
-                    "absoluteMaxMgPerDay": 150
-                },
-                "piSnippet": "通常、幼小児には1回2mg/kgを1日2回、5日間服用する、1回最高75mg。"
-            },
-            {
-                "id": "under1y",
-                "label": "新生児・乳児 (1歳未満)",
                 "ageMin": 0,
                 "ageMax": 1,
-                "potency": 30,
+                "label": "1歳未満",
                 "dosage": {
                     "isByTime": true,
                     "timeMgKg": 3,
                     "timesPerDay": 2,
                     "absoluteMaxMgPerTime": 75,
-                    "absoluteMaxMgPerDay": 150
+                    "absoluteMaxMgPerDay": 150,
+                    "note": "新生児・乳児(1歳未満): 1回3mg/kgを1日2回。上限75mg/回。"
                 },
                 "piSnippet": "通常、新生児・乳児には1回3mg/kgを1日2回、5日間服用する、1回最高75mg。"
+            },
+            {
+                "ageMin": 1,
+                "ageMax": 100,
+                "label": "1歳以上",
+                "dosage": {
+                    "isByTime": true,
+                    "timeMgKg": 2,
+                    "timesPerDay": 2,
+                    "absoluteMaxMgPerTime": 75,
+                    "absoluteMaxMgPerDay": 150,
+                    "note": "幼小児(1歳以上): 1回2mg/kgを1日2回。上限75mg/回。"
+                },
+                "piSnippet": "通常、幼小児には1回2mg/kgを1日2回、5日間服用する、1回最高75mg。"
             }
         ],
         "dosage": {
@@ -1101,7 +1063,7 @@ export const PEDIATRIC_DRUGS = [
         "isAdultOnly": false,
         "piSnippetSource": "通常、成人には1回2mg(0.2g)を1日1〜4回経口投与する。なお、年齢、症状により適宜増減する。",
         "dosage": {
-            "note": "成人1日6mg(2mg×3回)。小児用量記載なし、Augsberger式等で算出。"
+            "note": "成人1日6mg(2mg×3回)。"
         },
         "piSnippet": "通常、成人1回2mg(散1%:0.2g, DS0.2%:1g)を1日1〜4回。小児は年齢・症状により適宜増減。",
         "category": "allergy"
@@ -1118,7 +1080,7 @@ export const PEDIATRIC_DRUGS = [
         "isAdultOnly": true,
         "piSnippetSource": "通常、成人には1回4mg(0.4g)を1日1〜3回経口投与する。なお、年齢、症状により適宜増減する。",
         "dosage": {
-            "note": "成人1回4mg(0.4g)。小児用量記載なし、Augsberger式等で算出。"
+            "note": "成人1回4mg(0.4g)。"
         },
         "piSnippet": "通常、成人1回4mg(0.4g)を1日1〜3回。小児は年齢・症状により適宜増減。",
         "category": "allergy"

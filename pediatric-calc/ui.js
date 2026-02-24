@@ -338,7 +338,7 @@ export function initDialPicker() {
             labelLeft.textContent = '歳';
             labelRight.style.display = 'block';
             wheelRight.style.display = 'block';
-            tempValues = { left: parseInt(state.params.ageYear) || 0, right: parseInt(state.params.ageMonth) || 0 };
+            tempValues = { left: parseInt(state.params.ageYear) || 1, right: parseInt(state.params.ageMonth) || 0 };
             populateWheel(wheelLeft, 0, 15, tempValues.left);
             populateWheel(wheelRight, 0, 11, tempValues.right);
         } else {
