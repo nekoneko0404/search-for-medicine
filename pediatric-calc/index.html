@@ -31,14 +31,38 @@
 <body>
     <main-header base-dir="../" active-page=""></main-header>
 
-    <!-- Floating Notification Container -->
+    <!-- Usage Guide Banner -->
+    <div id="usage-guide-banner" class="floating-notification"
+        style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;">
+        <button class="disclaimer-close" id="usage-guide-close" title="閉じる"
+            style="position: absolute; top: 0.5rem; right: 0.5rem; font-size: 1.2rem; cursor: pointer; color: #94a3b8; background: none; border: none; padding: 0;">&times;</button>
+        <h4 style="margin: 0; font-size: 0.95rem; font-weight: 800; color: #1e293b;">💡 簡単な使い方ガイド</h4>
+        <ol style="margin: 0.2rem 0 0 1.2rem; padding: 0; font-size: 0.75rem; color: #475569; line-height: 1.6;">
+            <li><strong>年齢/体重の入力</strong>: 上部に入力。</li>
+            <li><strong>薬剤の選択</strong>: 分類から選択（複数可）。</li>
+            <li><strong>詳細の確認</strong>: 用法用量エリアをタップ。</li>
+        </ol>
+        <label class="disclaimer-never-show"
+            style="margin-top: 0.4rem; display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; font-weight: 700; color: #475569; cursor: pointer;">
+            <input type="checkbox" id="usage-guide-never-show-check"> 再表示しない
+        </label>
+    </div>
+
+    <!-- Floating Notification Container (Empty container for other runtime notifications) -->
     <div id="notification-container"
-        style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;">
+        style="position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9998; display: flex; flex-direction: column; gap: 0.75rem; pointer-events: none;">
     </div>
 
     <!-- Patient Info Bar (Top Stack) -->
     <div class="patient-info-bar">
         <div class="input-container">
+            <!-- Manual / Usage Guide Button -->
+            <button id="show-usage-btn" title="使い方ガイドを表示"
+                style="background: none; border: none; cursor: pointer; color: #475569; padding: 0.5rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;">
+                <i class="fas fa-question-circle" style="font-size: 1.1rem; color: #f59e0b;"></i>
+                <span style="font-size: 0.55rem; font-weight: bold;">取説</span>
+            </button>
+
             <div class="inputs-wrapper">
                 <!-- PC Select Inputs -->
                 <div class="age-inputs pc-only">

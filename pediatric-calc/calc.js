@@ -7,6 +7,7 @@ import {
     renderDrugList,
     initDialPicker,
     initPcSelects,
+    initUsageGuide,
     syncInputDisplays,
     setSearchQuery,
     setCategory
@@ -16,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadState();
     renderCategoryTabs();
     initPcSelects();
+    initUsageGuide();
     renderDrugList();
     updatePrescriptionSheet();
     initDialPicker();

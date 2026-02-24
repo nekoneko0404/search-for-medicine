@@ -13,22 +13,47 @@ window.loadState = loadState;
 window.calculateDrug = calculateDrug;
 
 window.showNotification = (message) => {
-    const container = document.getElementById('notification-container');
-    if (!container) return;
-    const notification = document.createElement('div');
-    notification.className = 'floating-notification';
-    const safeMessage = typeof message === 'string' ? message.replace(/</g, "&lt;").replace(/>/g, "&gt;") : '';
-    notification.innerHTML = `
-        <i class="fas fa-flask" style="color: #d97706; font-size: 0.9rem;"></i>
-        <div style="color: #92400e; font-size: 0.8rem; font-weight: 700; line-height: 1.4; flex:1;">${safeMessage}</div>
-        <button onclick="this.parentElement.remove()" style="background:none; border:none; cursor:pointer; color:#94a3b8; padding:2px;"><i class="fas fa-times"></i></button>
-    `;
-    container.appendChild(notification);
-    setTimeout(() => {
-        notification.style.animation = 'slideIn 0.3s ease reverse forwards';
-        setTimeout(() => notification.remove(), 300);
-    }, 8000);
+    // Deprecated: old orange notification banner removed.
 };
+
+export function initUsageGuide() {
+    const banner = document.getElementById('usage-guide-banner');
+    const closeBtn = document.getElementById('usage-guide-close');
+    const neverShowCheck = document.getElementById('usage-guide-never-show-check');
+    const showBtn = document.getElementById('show-usage-btn');
+
+    if (!banner || !closeBtn || !neverShowCheck || !showBtn) return;
+
+    if (!localStorage.getItem('pedCalcUsageGuideHidden')) {
+        setTimeout(() => {
+            banner.style.opacity = '1';
+            banner.style.pointerEvents = 'auto';
+        }, 1000);
+    }
+
+    if (showBtn) {
+        showBtn.addEventListener('click', () => {
+            banner.style.opacity = '1';
+            banner.style.pointerEvents = 'auto';
+        });
+    }
+
+    closeBtn.addEventListener('click', () => {
+        banner.style.opacity = '0';
+        banner.style.pointerEvents = 'none';
+        if (neverShowCheck.checked) {
+            localStorage.setItem('pedCalcUsageGuideHidden', 'true');
+        }
+    });
+
+    neverShowCheck.addEventListener('change', (e) => {
+        if (e.target.checked) {
+            localStorage.setItem('pedCalcUsageGuideHidden', 'true');
+        } else {
+            localStorage.removeItem('pedCalcUsageGuideHidden');
+        }
+    });
+}
 
 export function setSearchQuery(q) {
     currentSearchQuery = q;
@@ -148,10 +173,6 @@ export function updatePrescriptionSheet() {
                 if (usesWeight) badges += `<span class="param-badge-weight"><i class="fas fa-weight" style="font-size:0.6rem;"></i> 体重</span>`;
                 return badges;
             })()}
-                ${drug.piUrl ? `
-                    <button class="pi-link-badge pc-only" onclick="window.viewDosageDetails('${drug.id}'); event.stopPropagation();">
-                        添付文書
-                    </button>` : ''}
             </div>
         </div>`;
     }).join('');
