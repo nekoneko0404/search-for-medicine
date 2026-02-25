@@ -23,7 +23,17 @@ export class MainHeader extends HTMLElement {
         }
 
         const children = this.innerHTML;
+
+        // テスト環境用警告バナーの判定
+        const isDebugEnv = window.location.hostname === 'debug-deploy.search-for-medicine.pages.dev';
+        const debugBanner = isDebugEnv ? `
+            <div style="background-color: #ef4444; color: white; text-align: center; padding: 0.5rem 1rem; font-weight: bold; font-size: 0.875rem; z-index: 9999; position: relative; width: 100%;">
+                <i class="fas fa-exclamation-triangle"></i> 【テスト環境】現在テスト環境（debug-deploy）を表示しています。本番環境のデータには影響しません。
+            </div>
+        ` : '';
+
         this.innerHTML = `
+        ${debugBanner}
         <header>
             <div class="logo-wrapper">
                 <a href="${baseDir}index.html" class="logo">
