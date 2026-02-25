@@ -333,7 +333,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "通常1日40〜120mg/kgを3回。1日最大3000mg。"
         },
         "piSnippet": "通常、1日40〜120mg/kgを3〜4回に分けて服用する。1日最大3000mg。",
-        "category": "antibiotics"
+        "category": "antibiotics",
+        "categoryOverride": "ホスホマイシン系"
     },
     {
         "id": "yj-6139001R1032",
@@ -354,7 +355,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "通常1回5mg/kgを3回。最大1回10mg/kg。上限900mg(300mg×3)/日。"
         },
         "piSnippet": "通常1回5mg(力価)/kgを1日3回経口投与する。なお、年齢、体重、症状により適宜増減するが、増量は1回10mg(力価)/kgまでとする。",
-        "category": "antibiotics"
+        "category": "antibiotics",
+        "categoryOverride": "ペネム系"
     },
     {
         "id": "orapenem-group",
@@ -375,7 +377,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "通常1回4mg/kgを1日2回。必要に応じて1回6mg/kgまで。成人最大250mg/回。"
         },
         "piSnippet": "通常、小児にはテビペネム　ピボキシルとして1回4mg（力価）/kgを1日2回食後に経口投与する。なお、必要に応じて1回6mg（力価）/kgまで増量できる。",
-        "category": "antibiotics"
+        "category": "antibiotics",
+        "categoryOverride": "ペネム系"
     },
     {
         "id": "yj-6141001R2053",
@@ -665,7 +668,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "幼小児:1回2mg/kg、1歳未満:1回3mg/kg、1日2回。上限75mg/回。"
         },
         "piSnippet": "1回2mg/kg(1歳以上)または3mg/kg(1歳未満)を1日2回、1回最高用量は75mg。",
-        "category": "antiviral"
+        "category": "antiviral",
+        "categoryOverride": "抗インフルエンザ薬"
     },
     {
         "id": "zofluza-group",
@@ -718,7 +722,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "原則、12歳以上で80kg以上は80mg(4.0g)。"
         },
         "piSnippet": "通常、単回経口投与する。12歳以上の小児及び成人：80kg以上は80mg(4.0g)、80kg未満は40mg(2.0g)。12歳未満の小児：40kg以上は40mg(2.0g)、20kg以上40kg未満は20mg(1.0g)、10kg以上20kg未満は10mg(0.5g)。",
-        "category": "antiviral"
+        "category": "antiviral",
+        "categoryOverride": "抗インフルエンザ薬"
     },
     {
         "id": "inavir-group",
@@ -753,7 +758,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "単回吸入。10歳未満:20mg(1容器)、10歳以上:40mg(2容器)。"
         },
         "piSnippet": "通常、単回吸入投与する。10歳未満：20mg（1容器）、10歳以上：40mg（2容器）。",
-        "category": "antiviral"
+        "category": "antiviral",
+        "categoryOverride": "抗インフルエンザ薬"
     },
     {
         "id": "relenza-group",
@@ -774,7 +780,8 @@ export const PEDIATRIC_DRUGS = [
             "note": "1回10mg(2ブリスター)を1日2回、5日間。専用吸入器を使用。"
         },
         "piSnippet": "通常、1回10mg（2ブリスター）を、1日2回、5日間、専用の吸入器を用いて吸入する。",
-        "category": "antiviral"
+        "category": "antiviral",
+        "categoryOverride": "抗インフルエンザ薬"
     },
     {
         "id": "medicon-group",

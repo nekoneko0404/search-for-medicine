@@ -266,7 +266,7 @@ export function renderDrugList() {
         const isSelected = state.selectedDrugIds.includes(d.id);
         const potLabel = d.potency ? (d.unit === 'g' ? `${d.potency}mg/g` : `${d.potency}mg`) : '';
         const yjPrefix = d.yjCode ? d.yjCode.substring(0, 4) : '';
-        const categoryLabel = YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
+        const categoryLabel = d.categoryOverride || YJ_CATEGORY_MAP[yjPrefix] || DRUG_CATEGORIES[d.category] || d.category;
         return `
         <div class="drug-card ${isSelected ? 'selected' : ''}" data-id="${d.id}" onclick="window.handleDrugClick('${d.id}', event)">
             <div style="display:flex; justify-content:space-between; align-items:flex-start;">
