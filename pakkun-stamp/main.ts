@@ -64,17 +64,6 @@ const elements = {
 
 // Initialization
 function init() {
-    // テスト環境用警告バナーの判定と挿入
-    const isDebugEnv = window.location.hostname === 'debug-deploy.search-for-medicine.pages.dev';
-    if (isDebugEnv) {
-        const debugBanner = `
-            <div style="background-color: #ef4444; color: white; text-align: center; padding: 0.5rem 1rem; font-weight: bold; font-size: 0.875rem; z-index: 9999; position: relative; width: 100%;">
-                <i class="fas fa-exclamation-triangle"></i> 【テスト環境】現在テスト環境（debug-deploy）を表示しています。本番環境のデータには影響しません。
-            </div>
-        `;
-        document.body.insertAdjacentHTML('afterbegin', debugBanner);
-    }
-
     loadState();
     setupTabs();
     setupManual();
