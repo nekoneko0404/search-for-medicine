@@ -348,11 +348,15 @@
                     placeholder="例:&#10;123456701&#10;234567802"></textarea>
                 <div id="watchlist-count" class="mt-2 text-right text-gray-500 text-xs font-medium">現在の登録件数: 0件</div>
             </div>
-            <div class="p-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50">
+            <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-gray-50">
                 <button id="clear-watchlist"
                     class="px-4 py-2 text-red-600 font-bold hover:bg-red-50 rounded-lg transition-colors">全消去</button>
-                <button id="save-watchlist"
-                    class="px-6 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all shadow-md">保存して更新</button>
+                <div class="flex gap-3">
+                    <button id="update-snapshot"
+                        class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">現在の状態を記録（既読にする）</button>
+                    <button id="save-watchlist"
+                        class="px-6 py-2 bg-indigo-600 text-white font-bold rounded-lg hover:bg-indigo-700 transition-all shadow-md">保存して更新</button>
+                </div>
             </div>
         </div>
     </div>

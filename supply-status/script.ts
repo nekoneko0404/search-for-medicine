@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const watchlistInput = document.getElementById('watchlist-input') as HTMLTextAreaElement;
     const saveWatchlistBtn = document.getElementById('save-watchlist') as HTMLButtonElement;
     const clearWatchlistBtn = document.getElementById('clear-watchlist') as HTMLButtonElement;
+    const updateSnapshotBtn = document.getElementById('update-snapshot') as HTMLButtonElement;
     const watchlistCountDisplay = document.getElementById('watchlist-count') as HTMLDivElement;
     const watchlistOnlyCheckbox = document.getElementById('watchlistOnly') as HTMLInputElement;
 
@@ -57,6 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentRoute: string | null = null;
     let currentSort = { key: 'category', direction: 'asc' };
     let watchlistYJCodes: Set<string> = new Set();
+    let statusSnapshot: Record<string, string> = {};
 
     function getRouteFromYJCode(yjCode: string | number | null) {
         if (!yjCode) return null;
@@ -75,6 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function init() {
         restoreStateFromUrl();
         loadWatchlist();
+        loadStatusSnapshot();
         try {
             updateProgress('初期化中...', 10);
             const catResponse = await fetch(new URL('./data/category_data.json', import.meta.url).href);
@@ -135,6 +138,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (summaryResults) summaryResults.classList.remove('hidden');
 
                 showMessage(`データ(${result.date}) ${allData.length} 件を読み込みました。`, "success");
+
+                // Diff logic
+                applyDiffToData();
+
                 renderResults();
             }
         } catch (error) {
@@ -233,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     if (saveWatchlistBtn) saveWatchlistBtn.addEventListener('click', saveWatchlist);
+    if (updateSnapshotBtn) updateSnapshotBtn.addEventListener('click', saveStatusSnapshot);
     if (clearWatchlistBtn) {
         clearWatchlistBtn.addEventListener('click', () => {
             if (confirm('監視リストをすべて消去しますか？')) {
@@ -246,6 +254,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (watchlistOnlyCheckbox) {
         watchlistOnlyCheckbox.addEventListener('change', renderResults);
+    }
+
+    function loadStatusSnapshot() {
+        const saved = localStorage.getItem('supply_status_snapshot');
+        if (saved) {
+            try {
+                statusSnapshot = JSON.parse(saved);
+            } catch (e) {
+                console.error('Failed to load status snapshot', e);
+            }
+        }
+    }
+
+    function saveStatusSnapshot() {
+        const newSnapshot: Record<string, string> = {};
+        allData.forEach(item => {
+            if (item.yjCode) {
+                newSnapshot[item.yjCode] = item.shipmentStatus;
+            }
+        });
+        localStorage.setItem('supply_status_snapshot', JSON.stringify(newSnapshot));
+        statusSnapshot = newSnapshot;
+        applyDiffToData();
+        renderResults();
+        showMessage('現在の状態をベースラインとして保存しました。次回更新時に差分が表示されます。', 'success');
+    }
+
+    function applyDiffToData() {
+        allData.forEach(item => {
+            if (!item.yjCode) return;
+            const prev = statusSnapshot[item.yjCode];
+            if (prev && prev !== item.shipmentStatus) {
+                item.isStatusChanged = true;
+                item.previousStatus = prev;
+                // 通常出荷に戻ったか判定
+                const isNowNormal = item.shipmentStatus.includes('通常') || item.shipmentStatus.includes('通');
+                const wasNotNormal = !(prev.includes('通常') || prev.includes('通'));
+                item.isRestored = isNowNormal && wasNotNormal;
+
+                // 悪化したか判定（通常から限定・停止へ）
+                const isNowBad = (item.shipmentStatus.includes('限定') || item.shipmentStatus.includes('制限') || item.shipmentStatus.includes('限') || item.shipmentStatus.includes('停止'));
+                const wasNormal = prev.includes('通常') || prev.includes('通');
+                item.isWorsened = isNowBad && wasNormal;
+            } else {
+                item.isStatusChanged = false;
+                item.isRestored = false;
+                item.isWorsened = false;
+            }
+        });
     }
 
     function handleShare() {
@@ -604,6 +661,11 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (status.includes('停止') || status.includes('停')) {
                 grouped[groupKey].counts.stopped++;
             }
+
+            if (item.isStatusChanged) {
+                grouped[groupKey].hasChanges = true;
+                if (item.isRestored) grouped[groupKey].hasRestored = true;
+            }
         });
 
         const sortedIngredients = Object.keys(grouped).sort((a, b) => {
@@ -685,7 +747,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td class="px-4 py-2 text-sm text-gray-900 font-bold text-center">${stats.route || '-'}</td>
                 <td class="px-4 py-2 text-sm text-gray-700 text-center">${stats.drugClassCode}</td>
                 <td class="px-4 py-2 text-sm text-gray-700 max-w-[150px] truncate" title="${stats.drugClassName}">${stats.drugClassName}</td>
-                <td class="px-4 py-2 text-sm text-indigo-600 font-medium hover:underline">${stats.ingredientName}</td>
+                <td class="px-4 py-2 text-sm text-indigo-600 font-medium hover:underline">
+                    ${stats.ingredientName}
+                    ${stats.hasRestored ? '<span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</span>' : (stats.hasChanges ? '<span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</span>' : '')}
+                </td>
                  <td class="px-4 py-2 text-sm text-center">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         通常出荷 ${stats.counts.normal}
@@ -847,7 +912,19 @@ document.addEventListener('DOMContentLoaded', () => {
             drugNameCell.appendChild(flexContainer);
 
             const statusBtn = renderStatusButton(item.shipmentStatus);
-            row.cells[4].appendChild(statusBtn);
+            if (item.isStatusChanged) {
+                const changeBadge = document.createElement('div');
+                changeBadge.className = `mt-1 text-[10px] font-bold px-1.5 py-0.5 rounded text-center ${item.isRestored ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`;
+                changeBadge.innerHTML = `<i class="fas fa-arrow-right mr-1"></i>${item.isRestored ? '制限解除！' : '前回から変更'}`;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flex flex-col items-center';
+                wrapper.appendChild(statusBtn);
+                wrapper.appendChild(changeBadge);
+                row.cells[4].appendChild(wrapper);
+            } else {
+                row.cells[4].appendChild(statusBtn);
+            }
 
             tableBody.appendChild(row);
         });
@@ -872,9 +949,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div class="flex justify-between items-start">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                        カテゴリ ${item.category}
-                    </span>
+                    <div class="flex flex-col gap-1">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 w-fit">
+                            カテゴリ ${item.category}
+                        </span>
+                        ${item.isStatusChanged ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${item.isRestored ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'} w-fit">
+                            <i class="fas fa-bell mr-1"></i>${item.isRestored ? '通常出荷に復帰！' : 'ステータス変更あり'}
+                        </span>` : ''}
+                    </div>
                     <span id="status-placeholder"></span>
                 </div>
                 <div class="product-name-container">
