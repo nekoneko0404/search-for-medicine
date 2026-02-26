@@ -37,6 +37,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reloadDataBtn = document.getElementById('reload-data') as HTMLButtonElement;
     const shareBtn = document.getElementById('share-btn') as HTMLButtonElement;
+    const labBtn = document.getElementById('lab-btn') as HTMLButtonElement;
+    const labDropdown = document.getElementById('lab-dropdown') as HTMLDivElement;
+    const watchlistBtn = document.getElementById('watchlist-btn') as HTMLButtonElement;
+    const watchlistModal = document.getElementById('watchlist-modal') as HTMLDivElement;
+    const closeWatchlistModalBtn = document.getElementById('close-watchlist-modal') as HTMLButtonElement;
+    const watchlistInput = document.getElementById('watchlist-input') as HTMLTextAreaElement;
+    const saveWatchlistBtn = document.getElementById('save-watchlist') as HTMLButtonElement;
+    const clearWatchlistBtn = document.getElementById('clear-watchlist') as HTMLButtonElement;
+    const watchlistCountDisplay = document.getElementById('watchlist-count') as HTMLDivElement;
+    const watchlistOnlyCheckbox = document.getElementById('watchlistOnly') as HTMLInputElement;
 
     let allData: any[] = [];
     let categoryMap = new Map();
@@ -46,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIngredient: string | null = null;
     let currentRoute: string | null = null;
     let currentSort = { key: 'category', direction: 'asc' };
+    let watchlistYJCodes: Set<string> = new Set();
 
     function getRouteFromYJCode(yjCode: string | number | null) {
         if (!yjCode) return null;
@@ -63,6 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function init() {
         restoreStateFromUrl();
+        loadWatchlist();
         try {
             updateProgress('初期化中...', 10);
             const catResponse = await fetch(new URL('./data/category_data.json', import.meta.url).href);
@@ -197,6 +209,44 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (shareBtn) shareBtn.addEventListener('click', handleShare);
+
+    if (labBtn && labDropdown) {
+        labBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            labDropdown.classList.toggle('hidden');
+        });
+
+        window.addEventListener('click', () => {
+            labDropdown.classList.add('hidden');
+        });
+    }
+
+    if (watchlistBtn) {
+        watchlistBtn.addEventListener('click', () => {
+            labDropdown?.classList.add('hidden');
+            watchlistModal.classList.remove('hidden');
+        });
+    }
+    if (closeWatchlistModalBtn) {
+        closeWatchlistModalBtn.addEventListener('click', () => {
+            watchlistModal.classList.add('hidden');
+        });
+    }
+    if (saveWatchlistBtn) saveWatchlistBtn.addEventListener('click', saveWatchlist);
+    if (clearWatchlistBtn) {
+        clearWatchlistBtn.addEventListener('click', () => {
+            if (confirm('監視リストをすべて消去しますか？')) {
+                watchlistInput.value = '';
+                updateWatchlistCount();
+            }
+        });
+    }
+    if (watchlistInput) {
+        watchlistInput.addEventListener('input', updateWatchlistCount);
+    }
+    if (watchlistOnlyCheckbox) {
+        watchlistOnlyCheckbox.addEventListener('change', renderResults);
+    }
 
     function handleShare() {
         const url = generateShareUrl();
@@ -363,6 +413,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function loadWatchlist() {
+        const saved = localStorage.getItem('supply_watchlist_yjcodes');
+        if (saved) {
+            try {
+                const codes = JSON.parse(saved);
+                if (Array.isArray(codes)) {
+                    watchlistYJCodes = new Set(codes);
+                    watchlistInput.value = codes.join('\n');
+                    updateWatchlistCount();
+                }
+            } catch (e) {
+                console.error('Failed to load watchlist', e);
+            }
+        }
+    }
+
+    function saveWatchlist() {
+        const text = watchlistInput.value;
+        const codes = text.split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0 && /^[0-9]+$/.test(line));
+
+        watchlistYJCodes = new Set(codes);
+        localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(Array.from(watchlistYJCodes)));
+        updateWatchlistCount();
+        watchlistModal.classList.add('hidden');
+        renderResults();
+        showMessage(`${watchlistYJCodes.size}件の品目を監視リストに保存しました。`, 'success');
+    }
+
+    function updateWatchlistCount() {
+        if (watchlistCountDisplay) {
+            const currentText = watchlistInput.value;
+            const count = currentText.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
+            watchlistCountDisplay.textContent = `現在の登録件数: ${count}件`;
+        }
+    }
+
     function renderResults() {
         const drugQuery = drugNameInput?.value.trim() || '';
         const ingredientQuery = ingredientNameInput?.value.trim() || '';
@@ -414,6 +502,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const matchCat = selectedCats.includes(item.category);
             const matchRoute = selectedRoutes.includes(item.route);
 
+            if (watchlistOnlyCheckbox?.checked) {
+                if (!item.yjCode || !watchlistYJCodes.has(item.yjCode)) return false;
+            }
+
             const currentStatus = (item.shipmentStatus || '').trim();
             let matchStatus = false;
             if (selectedStatuses.includes('通常出荷') && (currentStatus.includes('通常') || currentStatus.includes('通'))) matchStatus = true;
@@ -427,7 +519,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentView === 'summary') {
             renderSummaryTable(filteredData);
-            // サマリー時は現在のフィルター条件に合致する全データを反映
             updateDashboardMetrics(filteredData);
         } else {
             const normalizedIng = normalizeString(currentIngredient!);
@@ -436,7 +527,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 (currentRoute === null || item.route === currentRoute)
             );
             renderDetailView(detailData);
-            // 詳細時はその成分のデータのみを反映
             updateDashboardMetrics(detailData);
         }
 
