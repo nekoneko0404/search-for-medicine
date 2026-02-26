@@ -167,13 +167,29 @@
                             </label>
                         </div>
                     </div>
-                    <label
-                        class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors mr-2">
-                        <input type="checkbox" id="watchlistOnly"
-                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                        <span class="ml-2 text-sm font-bold text-indigo-800"><i
-                                class="fas fa-star mr-1"></i>監視対象のみ</span>
-                    </label>
+                    <div class="flex flex-wrap items-center gap-3">
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
+                            <input type="checkbox" id="watchlistOnly"
+                                class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm font-bold text-indigo-800"><i
+                                    class="fas fa-star mr-1"></i>監視対象のみ</span>
+                        </label>
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
+                            <input type="checkbox" id="changesOnly"
+                                class="rounded border-gray-300 text-orange-600 shadow-sm focus:border-orange-300 focus:ring focus:ring-orange-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm font-bold text-orange-700"><i
+                                    class="fas fa-bell mr-1"></i>変化ありのみ</span>
+                        </label>
+                        <label
+                            class="inline-flex items-center cursor-pointer hover:bg-gray-50 rounded px-1 transition-colors">
+                            <input type="checkbox" id="restoredOnly"
+                                class="rounded border-gray-300 text-green-600 shadow-sm focus:border-green-300 focus:ring focus:ring-green-200 focus:ring-opacity-50">
+                            <span class="ml-2 text-sm font-bold text-green-700"><i
+                                    class="fas fa-check-circle mr-1"></i>制限解除のみ</span>
+                        </label>
+                    </div>
                     <div class="flex items-center gap-2 ml-auto">
                         <!-- Share Button -->
                         <button id="share-btn"

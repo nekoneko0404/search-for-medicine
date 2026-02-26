@@ -48,6 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateSnapshotBtn = document.getElementById('update-snapshot') as HTMLButtonElement;
     const watchlistCountDisplay = document.getElementById('watchlist-count') as HTMLDivElement;
     const watchlistOnlyCheckbox = document.getElementById('watchlistOnly') as HTMLInputElement;
+    const changesOnlyCheckbox = document.getElementById('changesOnly') as HTMLInputElement;
+    const restoredOnlyCheckbox = document.getElementById('restoredOnly') as HTMLInputElement;
 
     let allData: any[] = [];
     let categoryMap = new Map();
@@ -254,6 +256,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (watchlistOnlyCheckbox) {
         watchlistOnlyCheckbox.addEventListener('change', renderResults);
+    }
+    if (changesOnlyCheckbox) {
+        changesOnlyCheckbox.addEventListener('change', () => {
+            if (changesOnlyCheckbox.checked && restoredOnlyCheckbox) restoredOnlyCheckbox.checked = false;
+            renderResults();
+        });
+    }
+    if (restoredOnlyCheckbox) {
+        restoredOnlyCheckbox.addEventListener('change', () => {
+            if (restoredOnlyCheckbox.checked && changesOnlyCheckbox) changesOnlyCheckbox.checked = false;
+            renderResults();
+        });
     }
 
     function loadStatusSnapshot() {
@@ -561,6 +575,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (watchlistOnlyCheckbox?.checked) {
                 if (!item.yjCode || !watchlistYJCodes.has(item.yjCode)) return false;
+            }
+
+            if (changesOnlyCheckbox?.checked) {
+                if (!item.isStatusChanged) return false;
+            }
+
+            if (restoredOnlyCheckbox?.checked) {
+                if (!item.isRestored) return false;
             }
 
             const currentStatus = (item.shipmentStatus || '').trim();
