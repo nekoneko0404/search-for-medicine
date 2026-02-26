@@ -81,8 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadWatchlist();
         loadStatusSnapshot();
         try {
-            updateProgress('初期化中...', 10);
-            const catResponse = await fetch(new URL('../data/category_data.json', import.meta.url).href);
+            const catResponse = await fetch(new URL('../../supply-status/data/category_data.json', import.meta.url).href);
             categoryData = await catResponse.json();
 
             categoryMap = new Map();

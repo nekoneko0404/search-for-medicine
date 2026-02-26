@@ -65,7 +65,7 @@ export default defineConfig({
                 'lab/pmda-alerts': resolve(__dirname, 'lab/pmda-alerts/index.html'),
                 'lab/advanced-di': resolve(__dirname, 'lab/advanced-di/index.html'),
                 'lab/billing-nav': resolve(__dirname, 'lab/billing-nav/index.html'),
-                watchlist: resolve(__dirname, 'supply-status/watchlist/index.html'),
+                watchlist: resolve(__dirname, 'lab/watchlist/index.html'),
             },
         },
     },

@@ -60,7 +60,7 @@ export class MainHeader extends HTMLElement {
             { id: 'search', label: '出荷状況検索', path: '/search.html' },
             { id: 'update', label: '出荷状況更新', path: '/update/index.html' },
             { id: 'pakkun', label: '小児服薬支援', path: '/okuri_pakkun/' },
-            { id: 'pollen', label: '花粉飛散状況', path: '/pollen-app/index.html' }
+            { id: 'pediatric-calc', label: '小児用量力価計算', path: '/pediatric-calc/index.html' }
         ];
 
         const navLinks = links.map(link => {
@@ -73,7 +73,7 @@ export class MainHeader extends HTMLElement {
 
         // Lab Dropdown HTML
         const labPath = baseDir + 'lab/index.html';
-        const watchlistPath = baseDir + 'supply-status/watchlist/index.html';
+        const watchlistPath = baseDir + 'lab/watchlist/index.html';
         const isLabActive = activePage === 'lab';
         const labStyle = isLabActive ? 'border-bottom: 3px solid black;' : '';
 
@@ -85,9 +85,6 @@ export class MainHeader extends HTMLElement {
                 <div class="nav-dropdown-content">
                     <a href="${watchlistPath}" target="_blank" rel="noopener noreferrer">
                         <i class="fas fa-star mr-2 text-indigo-500"></i> 店舗在庫監視 (Watchlist)
-                    </a>
-                    <a href="${baseDir}lab/pediatric-calc/index.html" target="_blank" rel="noopener noreferrer">
-                        <i class="fas fa-calculator mr-2 text-gray-400"></i> 小児用量計算
                     </a>
                     <a href="${baseDir}lab/index.html" style="border-top: 1px solid #eee; margin-top: 5px; padding-top: 10px;">
                         <i class="fas fa-flask mr-2 text-gray-400"></i> すべての実験機能を見る
