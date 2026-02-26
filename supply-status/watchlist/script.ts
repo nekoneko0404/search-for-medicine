@@ -1,8 +1,8 @@
-import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../js/data';
-import { normalizeString, formatDate } from '../js/utils';
-import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../js/ui';
-import '../js/components/MainHeader';
-import '../js/components/MainFooter';
+import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../../js/data';
+import { normalizeString, formatDate } from '../../js/utils';
+import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../../js/ui';
+import '../../js/components/MainHeader';
+import '../../js/components/MainFooter';
 
 document.addEventListener('DOMContentLoaded', () => {
     const drugNameInput = document.getElementById('drugName') as HTMLInputElement;
@@ -37,6 +37,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const reloadDataBtn = document.getElementById('reload-data') as HTMLButtonElement;
     const shareBtn = document.getElementById('share-btn') as HTMLButtonElement;
+    const labBtn = document.getElementById('lab-btn') as HTMLButtonElement;
+    const labDropdown = document.getElementById('lab-dropdown') as HTMLDivElement;
+    const watchlistBtn = document.getElementById('watchlist-btn') as HTMLButtonElement;
+    const watchlistModal = document.getElementById('watchlist-modal') as HTMLDivElement;
+    const closeWatchlistModalBtn = document.getElementById('close-watchlist-modal') as HTMLButtonElement;
+    const watchlistInput = document.getElementById('watchlist-input') as HTMLTextAreaElement;
+    const saveWatchlistBtn = document.getElementById('save-watchlist') as HTMLButtonElement;
+    const clearWatchlistBtn = document.getElementById('clear-watchlist') as HTMLButtonElement;
+    const updateSnapshotBtn = document.getElementById('update-snapshot') as HTMLButtonElement;
+    const watchlistCountDisplay = document.getElementById('watchlist-count') as HTMLDivElement;
+    const watchlistOnlyCheckbox = document.getElementById('watchlistOnly') as HTMLInputElement;
+    const changesOnlyCheckbox = document.getElementById('changesOnly') as HTMLInputElement;
+    const restoredOnlyCheckbox = document.getElementById('restoredOnly') as HTMLInputElement;
 
     let allData: any[] = [];
     let categoryMap = new Map();
@@ -46,6 +59,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentIngredient: string | null = null;
     let currentRoute: string | null = null;
     let currentSort = { key: 'category', direction: 'asc' };
+    let watchlistYJCodes: Set<string> = new Set();
+    let statusSnapshot: Record<string, string> = {};
 
     function getRouteFromYJCode(yjCode: string | number | null) {
         if (!yjCode) return null;
@@ -63,9 +78,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function init() {
         restoreStateFromUrl();
+        loadWatchlist();
+        loadStatusSnapshot();
         try {
             updateProgress('初期化中...', 10);
-            const catResponse = await fetch(new URL('./data/category_data.json', import.meta.url).href);
+            const catResponse = await fetch(new URL('../data/category_data.json', import.meta.url).href);
             categoryData = await catResponse.json();
 
             categoryMap = new Map();
@@ -123,6 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (summaryResults) summaryResults.classList.remove('hidden');
 
                 showMessage(`データ(${result.date}) ${allData.length} 件を読み込みました。`, "success");
+
+                // Diff logic
+                applyDiffToData();
+
                 renderResults();
             }
         } catch (error) {
@@ -197,6 +218,106 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (shareBtn) shareBtn.addEventListener('click', handleShare);
+
+    if (labBtn && labDropdown) {
+        labBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            labDropdown.classList.toggle('hidden');
+        });
+
+        window.addEventListener('click', () => {
+            labDropdown.classList.add('hidden');
+        });
+    }
+
+    if (watchlistBtn) {
+        watchlistBtn.addEventListener('click', () => {
+            labDropdown?.classList.add('hidden');
+            watchlistModal.classList.remove('hidden');
+        });
+    }
+    if (closeWatchlistModalBtn) {
+        closeWatchlistModalBtn.addEventListener('click', () => {
+            watchlistModal.classList.add('hidden');
+        });
+    }
+    if (saveWatchlistBtn) saveWatchlistBtn.addEventListener('click', saveWatchlist);
+    if (updateSnapshotBtn) updateSnapshotBtn.addEventListener('click', saveStatusSnapshot);
+    if (clearWatchlistBtn) {
+        clearWatchlistBtn.addEventListener('click', () => {
+            if (confirm('監視リストをすべて消去しますか？')) {
+                watchlistInput.value = '';
+                updateWatchlistCount();
+            }
+        });
+    }
+    if (watchlistInput) {
+        watchlistInput.addEventListener('input', updateWatchlistCount);
+    }
+    if (watchlistOnlyCheckbox) {
+        watchlistOnlyCheckbox.addEventListener('change', renderResults);
+    }
+    if (changesOnlyCheckbox) {
+        changesOnlyCheckbox.addEventListener('change', () => {
+            if (changesOnlyCheckbox.checked && restoredOnlyCheckbox) restoredOnlyCheckbox.checked = false;
+            renderResults();
+        });
+    }
+    if (restoredOnlyCheckbox) {
+        restoredOnlyCheckbox.addEventListener('change', () => {
+            if (restoredOnlyCheckbox.checked && changesOnlyCheckbox) changesOnlyCheckbox.checked = false;
+            renderResults();
+        });
+    }
+
+    function loadStatusSnapshot() {
+        const saved = localStorage.getItem('supply_status_snapshot');
+        if (saved) {
+            try {
+                statusSnapshot = JSON.parse(saved);
+            } catch (e) {
+                console.error('Failed to load status snapshot', e);
+            }
+        }
+    }
+
+    function saveStatusSnapshot() {
+        const newSnapshot: Record<string, string> = {};
+        allData.forEach(item => {
+            if (item.yjCode) {
+                newSnapshot[item.yjCode] = item.shipmentStatus;
+            }
+        });
+        localStorage.setItem('supply_status_snapshot', JSON.stringify(newSnapshot));
+        statusSnapshot = newSnapshot;
+        applyDiffToData();
+        renderResults();
+        showMessage('現在の状態をベースラインとして保存しました。次回更新時に差分が表示されます。', 'success');
+    }
+
+    function applyDiffToData() {
+        allData.forEach(item => {
+            if (!item.yjCode) return;
+            const prev = statusSnapshot[item.yjCode];
+            if (prev && prev !== item.shipmentStatus) {
+                item.isStatusChanged = true;
+                item.previousStatus = prev;
+                // 通常出荷に戻ったか判定
+                const isNowNormal = item.shipmentStatus.includes('通常') || item.shipmentStatus.includes('通');
+                const wasNotNormal = !(prev.includes('通常') || prev.includes('通'));
+                item.isRestored = isNowNormal && wasNotNormal;
+
+                // 悪化したか判定（通常から限定・停止へ）
+                const isNowBad = (item.shipmentStatus.includes('限定') || item.shipmentStatus.includes('制限') || item.shipmentStatus.includes('限') || item.shipmentStatus.includes('停止'));
+                const wasNormal = prev.includes('通常') || prev.includes('通');
+                item.isWorsened = isNowBad && wasNormal;
+            } else {
+                item.isStatusChanged = false;
+                item.isRestored = false;
+                item.isWorsened = false;
+            }
+        });
+    }
 
     function handleShare() {
         const url = generateShareUrl();
@@ -363,6 +484,44 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function loadWatchlist() {
+        const saved = localStorage.getItem('supply_watchlist_yjcodes');
+        if (saved) {
+            try {
+                const codes = JSON.parse(saved);
+                if (Array.isArray(codes)) {
+                    watchlistYJCodes = new Set(codes);
+                    watchlistInput.value = codes.join('\n');
+                    updateWatchlistCount();
+                }
+            } catch (e) {
+                console.error('Failed to load watchlist', e);
+            }
+        }
+    }
+
+    function saveWatchlist() {
+        const text = watchlistInput.value;
+        const codes = text.split('\n')
+            .map(line => line.trim())
+            .filter(line => line.length > 0 && /^[0-9]+$/.test(line));
+
+        watchlistYJCodes = new Set(codes);
+        localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(Array.from(watchlistYJCodes)));
+        updateWatchlistCount();
+        watchlistModal.classList.add('hidden');
+        renderResults();
+        showMessage(`${watchlistYJCodes.size}件の品目を監視リストに保存しました。`, 'success');
+    }
+
+    function updateWatchlistCount() {
+        if (watchlistCountDisplay) {
+            const currentText = watchlistInput.value;
+            const count = currentText.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
+            watchlistCountDisplay.textContent = `現在の登録件数: ${count}件`;
+        }
+    }
+
     function renderResults() {
         const drugQuery = drugNameInput?.value.trim() || '';
         const ingredientQuery = ingredientNameInput?.value.trim() || '';
@@ -414,6 +573,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const matchCat = selectedCats.includes(item.category);
             const matchRoute = selectedRoutes.includes(item.route);
 
+            if (watchlistOnlyCheckbox?.checked) {
+                if (!item.yjCode || !watchlistYJCodes.has(item.yjCode)) return false;
+            }
+
+            if (changesOnlyCheckbox?.checked) {
+                if (!item.isStatusChanged) return false;
+            }
+
+            if (restoredOnlyCheckbox?.checked) {
+                if (!item.isRestored) return false;
+            }
+
             const currentStatus = (item.shipmentStatus || '').trim();
             let matchStatus = false;
             if (selectedStatuses.includes('通常出荷') && (currentStatus.includes('通常') || currentStatus.includes('通'))) matchStatus = true;
@@ -427,7 +598,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (currentView === 'summary') {
             renderSummaryTable(filteredData);
-            // サマリー時は現在のフィルター条件に合致する全データを反映
             updateDashboardMetrics(filteredData);
         } else {
             const normalizedIng = normalizeString(currentIngredient!);
@@ -436,7 +606,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 (currentRoute === null || item.route === currentRoute)
             );
             renderDetailView(detailData);
-            // 詳細時はその成分のデータのみを反映
             updateDashboardMetrics(detailData);
         }
 
@@ -513,6 +682,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 grouped[groupKey].counts.limited++;
             } else if (status.includes('停止') || status.includes('停')) {
                 grouped[groupKey].counts.stopped++;
+            }
+
+            if (item.isStatusChanged) {
+                grouped[groupKey].hasChanges = true;
+                if (item.isRestored) grouped[groupKey].hasRestored = true;
             }
         });
 
@@ -595,7 +769,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td class="px-4 py-2 text-sm text-gray-900 font-bold text-center">${stats.route || '-'}</td>
                 <td class="px-4 py-2 text-sm text-gray-700 text-center">${stats.drugClassCode}</td>
                 <td class="px-4 py-2 text-sm text-gray-700 max-w-[150px] truncate" title="${stats.drugClassName}">${stats.drugClassName}</td>
-                <td class="px-4 py-2 text-sm text-indigo-600 font-medium hover:underline">${stats.ingredientName}</td>
+                <td class="px-4 py-2 text-sm text-indigo-600 font-medium hover:underline">
+                    ${stats.ingredientName}
+                    ${stats.hasRestored ? '<span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</span>' : (stats.hasChanges ? '<span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</span>' : '')}
+                </td>
                  <td class="px-4 py-2 text-sm text-center">
                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                         通常出荷 ${stats.counts.normal}
@@ -757,7 +934,19 @@ document.addEventListener('DOMContentLoaded', () => {
             drugNameCell.appendChild(flexContainer);
 
             const statusBtn = renderStatusButton(item.shipmentStatus);
-            row.cells[4].appendChild(statusBtn);
+            if (item.isStatusChanged) {
+                const changeBadge = document.createElement('div');
+                changeBadge.className = `mt-1 text-[10px] font-bold px-1.5 py-0.5 rounded text-center ${item.isRestored ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`;
+                changeBadge.innerHTML = `<i class="fas fa-arrow-right mr-1"></i>${item.isRestored ? '制限解除！' : '前回から変更'}`;
+
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flex flex-col items-center';
+                wrapper.appendChild(statusBtn);
+                wrapper.appendChild(changeBadge);
+                row.cells[4].appendChild(wrapper);
+            } else {
+                row.cells[4].appendChild(statusBtn);
+            }
 
             tableBody.appendChild(row);
         });
@@ -782,9 +971,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             card.innerHTML = `
                 <div class="flex justify-between items-start">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
-                        カテゴリ ${item.category}
-                    </span>
+                    <div class="flex flex-col gap-1">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800 w-fit">
+                            カテゴリ ${item.category}
+                        </span>
+                        ${item.isStatusChanged ? `<span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold ${item.isRestored ? 'bg-green-500 text-white' : 'bg-orange-500 text-white'} w-fit">
+                            <i class="fas fa-bell mr-1"></i>${item.isRestored ? '通常出荷に復帰！' : 'ステータス変更あり'}
+                        </span>` : ''}
+                    </div>
                     <span id="status-placeholder"></span>
                 </div>
                 <div class="product-name-container">

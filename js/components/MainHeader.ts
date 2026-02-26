@@ -63,17 +63,100 @@ export class MainHeader extends HTMLElement {
             { id: 'pollen', label: '花粉飛散状況', path: '/pollen-app/index.html' }
         ];
 
-        return links.map(link => {
+        const navLinks = links.map(link => {
             const isActive = activePage === link.id;
-            // Force all top menu links to open in new tab as per user request
             const target = 'target="_blank" rel="noopener noreferrer"';
             const path = link.path.startsWith('http') || link.path.startsWith('#') || link.path.startsWith('/') ? link.path : baseDir + link.path;
-
-            // simple active style inline or rely on CSS
             const style = isActive ? 'style="border-bottom: 3px solid black;"' : '';
-
             return `<a href="${path}" ${target} ${style}>${link.label}</a>`;
         }).join('');
+
+        // Lab Dropdown HTML
+        const labPath = baseDir + 'lab/index.html';
+        const watchlistPath = baseDir + 'supply-status/watchlist/index.html';
+        const isLabActive = activePage === 'lab';
+        const labStyle = isLabActive ? 'border-bottom: 3px solid black;' : '';
+
+        const labDropdown = `
+            <div class="nav-dropdown" id="lab-dropdown-wrapper">
+                <a href="${labPath}" class="nav-dropdown-trigger" style="${labStyle}">
+                    Lab (実験室) <i class="fas fa-chevron-down" style="font-size: 0.7em; margin-left: 4px;"></i>
+                </a>
+                <div class="nav-dropdown-content">
+                    <a href="${watchlistPath}" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-star mr-2 text-indigo-500"></i> 店舗在庫監視 (Watchlist)
+                    </a>
+                    <a href="${baseDir}lab/pediatric-calc/index.html" target="_blank" rel="noopener noreferrer">
+                        <i class="fas fa-calculator mr-2 text-gray-400"></i> 小児用量計算
+                    </a>
+                    <a href="${baseDir}lab/index.html" style="border-top: 1px solid #eee; margin-top: 5px; padding-top: 10px;">
+                        <i class="fas fa-flask mr-2 text-gray-400"></i> すべての実験機能を見る
+                    </a>
+                </div>
+            </div>
+        `;
+
+        // Add CSS for dropdown if not already present
+        if (!document.getElementById('header-dropdown-css')) {
+            const style = document.createElement('style');
+            style.id = 'header-dropdown-css';
+            style.textContent = `
+                .nav-dropdown {
+                    position: relative;
+                    display: inline-block;
+                }
+                .nav-dropdown-content {
+                    display: none;
+                    position: absolute;
+                    background-color: #fff;
+                    min-width: 220px;
+                    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.1);
+                    z-index: 10001;
+                    padding: 10px 0;
+                    border: 1px solid #eee;
+                    top: 100%;
+                    right: 0;
+                }
+                .nav-dropdown:hover .nav-dropdown-content {
+                    display: block;
+                }
+                .nav-dropdown-content a {
+                    color: #333 !important;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    display: flex !important;
+                    align-items: center;
+                    font-size: 0.8rem !important;
+                    text-transform: none !important;
+                    letter-spacing: normal !important;
+                    font-weight: 500 !important;
+                    border-bottom: none !important;
+                }
+                .nav-dropdown-content a:hover {
+                    background-color: #f8fafc;
+                    color: #000 !important;
+                }
+                .nav-dropdown-content a::after {
+                    display: none !important;
+                }
+                @media (max-width: 768px) {
+                    .nav-dropdown-content {
+                        position: static;
+                        box-shadow: none;
+                        border: none;
+                        padding: 0;
+                        display: block;
+                        background: transparent;
+                    }
+                    .nav-dropdown-trigger i {
+                        display: none;
+                    }
+                }
+            `;
+            document.head.appendChild(style);
+        }
+
+        return navLinks + labDropdown;
     }
 }
 
