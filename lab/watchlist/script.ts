@@ -3,6 +3,7 @@ import { normalizeString, formatDate } from '../../js/utils';
 import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../../js/ui';
 import '../../js/components/MainHeader';
 import '../../js/components/MainFooter';
+import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient } from './logic';
 
 document.addEventListener('DOMContentLoaded', () => {
     const drugNameInput = document.getElementById('drugName') as HTMLInputElement;
@@ -62,17 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let watchlistYJCodes: Set<string> = new Set();
     let statusSnapshot: Record<string, string> = {};
 
-    function getRouteFromYJCode(yjCode: string | number | null) {
-        if (!yjCode) return null;
-        const yjStr = String(yjCode);
-        if (yjStr.length < 5) return null;
-        const digit = parseInt(yjStr.charAt(4));
-        if (isNaN(digit)) return null;
-        if (digit >= 0 && digit <= 3) return '内';
-        if (digit >= 4 && digit <= 6) return '注';
-        if (digit >= 7 && digit <= 9) return '外';
-        return null;
-    }
+    // getRouteFromYJCode is now imported from logic.ts
 
     init();
 
@@ -525,20 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const drugQuery = drugNameInput?.value.trim() || '';
         const ingredientQuery = ingredientNameInput?.value.trim() || '';
 
-        const processQuery = (query: string) => {
-            if (!query) return { include: [], exclude: [] };
-            const terms = query.split(/[\s　]+/).filter(t => t.length > 0);
-            const include: string[] = [];
-            const exclude: string[] = [];
-            terms.forEach(term => {
-                if (term.startsWith('ー') && term.length > 1) {
-                    exclude.push(normalizeString(term.substring(1)));
-                } else {
-                    include.push(normalizeString(term));
-                }
-            });
-            return { include, exclude };
-        };
+        // processQuery is now imported from logic.ts
 
         const drugFilter = processQuery(drugQuery);
         const ingredientFilter = processQuery(ingredientQuery);
@@ -585,13 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (!item.isRestored) return false;
             }
 
-            const currentStatus = (item.shipmentStatus || '').trim();
-            let matchStatus = false;
-            if (selectedStatuses.includes('通常出荷') && (currentStatus.includes('通常') || currentStatus.includes('通'))) matchStatus = true;
-            if (selectedStatuses.includes('限定出荷') && (currentStatus.includes('限定') || currentStatus.includes('制限') || currentStatus.includes('限') || currentStatus.includes('制'))) matchStatus = true;
-            if (selectedStatuses.includes('供給停止') && (currentStatus.includes('停止') || currentStatus.includes('停'))) matchStatus = true;
-
-            if (currentStatus === 'データなし') matchStatus = true;
+            const matchStatus = matchStatusFilter(item.shipmentStatus, selectedStatuses);
 
             return matchDrug && matchIngredient && matchCat && matchRoute && matchStatus;
         });
@@ -658,37 +630,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const grouped: Record<string, any> = {};
-        data.forEach(item => {
-            const ingredient = item.ingredientName || '不明';
-            const route = item.route || '-';
-            const groupKey = `${ingredient}|${route}`;
-
-            if (!grouped[groupKey]) {
-                grouped[groupKey] = {
-                    ingredientName: ingredient,
-                    route: route,
-                    category: item.category,
-                    drugClassCode: item.drugClassCode,
-                    drugClassName: item.drugClassName,
-                    counts: { normal: 0, limited: 0, stopped: 0 }
-                };
-            }
-
-            const status = (item.shipmentStatus || '').trim();
-            if (status.includes('通常') || status.includes('通')) {
-                grouped[groupKey].counts.normal++;
-            } else if (status.includes('限定') || status.includes('制限') || status.includes('限') || status.includes('制')) {
-                grouped[groupKey].counts.limited++;
-            } else if (status.includes('停止') || status.includes('停')) {
-                grouped[groupKey].counts.stopped++;
-            }
-
-            if (item.isStatusChanged) {
-                grouped[groupKey].hasChanges = true;
-                if (item.isRestored) grouped[groupKey].hasRestored = true;
-            }
-        });
+        const grouped = groupDataByIngredient(data);
 
         const sortedIngredients = Object.keys(grouped).sort((a, b) => {
             const statsA = grouped[a];
