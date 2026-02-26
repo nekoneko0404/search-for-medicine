@@ -638,11 +638,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateGauge(type: 'normal' | 'limited' | 'stopped', percent: number, color: string) {
         const valueEl = document.getElementById(`stat-${type}-value`);
-        const chartEl = document.getElementById(`stat-${type}-chart`);
+        const barEl = document.getElementById(`stat-${type}-bar`);
 
         if (valueEl) valueEl.textContent = `${percent}%`;
-        if (chartEl) {
-            chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
+        if (barEl) {
+            barEl.style.width = `${percent}%`;
         }
     }
 
@@ -763,29 +763,39 @@ document.addEventListener('DOMContentLoaded', () => {
             row.addEventListener('click', () => showDetailView(stats.ingredientName, stats.route));
 
 
+            const total = stats.counts.normal + stats.counts.limited + stats.counts.stopped;
+            const pNormal = total > 0 ? (stats.counts.normal / total) * 100 : 0;
+            const pLimited = total > 0 ? (stats.counts.limited / total) * 100 : 0;
+            const pStopped = total > 0 ? (stats.counts.stopped / total) * 100 : 0;
+
             row.innerHTML = `
-                <td class="px-4 py-2 text-sm text-gray-900 font-bold text-center">${stats.category}</td>
-                <td class="px-4 py-2 text-sm text-gray-900 font-bold text-center">${stats.route || '-'}</td>
-                <td class="px-4 py-2 text-sm text-gray-700 text-center">${stats.drugClassCode}</td>
-                <td class="px-4 py-2 text-sm text-gray-700 max-w-[150px] truncate" title="${stats.drugClassName}">${stats.drugClassName}</td>
-                <td class="px-4 py-2 text-sm text-indigo-600 font-medium hover:underline">
-                    ${stats.ingredientName}
-                    ${stats.hasRestored ? '<span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</span>' : (stats.hasChanges ? '<span class="ml-1 inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</span>' : '')}
+                <td class="px-6 py-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-gray-100 text-gray-800">${stats.category}</span>
                 </td>
-                 <td class="px-4 py-2 text-sm text-center">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                        通常出荷 ${stats.counts.normal}
-                    </span>
+                <td class="px-6 py-4 text-center">
+                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-indigo-50 text-indigo-700">${stats.route || '-'}</span>
                 </td>
-                <td class="px-4 py-2 text-sm text-center">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                        限定出荷 ${stats.counts.limited}
-                    </span>
+                <td class="px-6 py-4">
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">${stats.ingredientName}</span>
+                        <div class="flex gap-2 mt-1">
+                            ${stats.hasRestored ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</span>' : (stats.hasChanges ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</span>' : '')}
+                        </div>
+                    </div>
                 </td>
-                <td class="px-4 py-2 text-sm text-center">
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                        供給停止 ${stats.counts.stopped}
-                    </span>
+                <td class="px-6 py-4">
+                    <div class="flex flex-col gap-1.5">
+                        <div class="bar-container h-3">
+                            <div class="bar-segment bg-status-normal" style="width: ${pNormal}%"></div>
+                            <div class="bar-segment bg-status-limited" style="width: ${pLimited}%"></div>
+                            <div class="bar-segment bg-status-stopped" style="width: ${pStopped}%"></div>
+                        </div>
+                        <div class="flex justify-between text-[10px] font-bold text-gray-500">
+                             <span class="text-blue-600">通:${stats.counts.normal}</span>
+                             <span class="text-yellow-600">限:${stats.counts.limited}</span>
+                             <span class="text-red-600">停:${stats.counts.stopped}</span>
+                        </div>
+                    </div>
                 </td>
             `;
 
@@ -796,29 +806,26 @@ document.addEventListener('DOMContentLoaded', () => {
             card.addEventListener('click', () => showDetailView(stats.ingredientName, stats.route));
 
             card.innerHTML = `
-                <div class="flex justify-between items-start mb-2">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold bg-indigo-100 text-indigo-800">
-                        カテゴリ ${stats.category} / ${stats.route}
-                    </span>
-                    <span class="text-xs text-gray-500 font-medium truncate max-w-[150px]">
-                        ${stats.drugClassCode}: ${stats.drugClassName}
-                    </span>
-                </div>
-                <h3 class="text-lg font-bold text-indigo-900 mb-3">${stats.ingredientName}</h3>
-                <div class="grid grid-cols-3 gap-2 mt-2">
-                    <div class="text-center p-2 bg-blue-50 rounded-lg">
-                        <span class="block text-xs text-blue-600 font-bold mb-1">通常</span>
-                        <span class="text-lg font-bold text-blue-800">${stats.counts.normal}</span>
-                    </div>
-                    <div class="text-center p-2 bg-yellow-50 rounded-lg">
-                        <span class="block text-xs text-yellow-600 font-bold mb-1">限定</span>
-                        <span class="text-lg font-bold text-yellow-800">${stats.counts.limited}</span>
-                    </div>
-                    <div class="text-center p-2 bg-red-50 rounded-lg">
-                        <span class="block text-xs text-red-600 font-bold mb-1">停止</span>
-                        <span class="text-lg font-bold text-red-800">${stats.counts.stopped}</span>
+                <div class="flex justify-between items-start mb-3">
+                    <div class="flex gap-2">
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-gray-100 text-gray-800">${stats.category}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-indigo-50 text-indigo-700">${stats.route || '-'}</span>
                     </div>
                 </div>
+                <h3 class="text-base font-bold text-gray-900 mb-3">${stats.ingredientName}</h3>
+                <div class="flex flex-col gap-2">
+                    <div class="bar-container h-2.5">
+                        <div class="bar-segment bg-status-normal" style="width: ${pNormal}%"></div>
+                        <div class="bar-segment bg-status-limited" style="width: ${pLimited}%"></div>
+                        <div class="bar-segment bg-status-stopped" style="width: ${pStopped}%"></div>
+                    </div>
+                    <div class="flex justify-between text-[11px] font-bold">
+                         <span class="text-blue-600">通常:${stats.counts.normal}</span>
+                         <span class="text-yellow-600">限定:${stats.counts.limited}</span>
+                         <span class="text-red-600">停止:${stats.counts.stopped}</span>
+                    </div>
+                </div>
+                ${stats.hasRestored ? '<div class="mt-3 inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</div>' : (stats.hasChanges ? '<div class="mt-3 inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</div>' : '')}
             `;
             summaryCardContainer.appendChild(card);
         });
@@ -883,18 +890,17 @@ document.addEventListener('DOMContentLoaded', () => {
             const formattedDate = dateStr ? `${dateStr.substring(2, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}` : '';
 
             row.innerHTML = `
-                <td class="px-4 py-2 text-sm text-gray-900 font-bold text-center align-top">${item.category}</td>
-                <td class="px-4 py-2 text-sm text-gray-900 font-bold text-center align-top">${item.route || '-'}</td>
-                <td class="px-4 py-2 text-sm align-top"></td>
-                <td class="px-4 py-2 text-sm text-gray-500 align-top">${item.ingredientName || ''}</td>
-                <td class="px-4 py-2 text-sm align-top"></td>
-                <td class="px-4 py-2 text-sm text-gray-700 align-top">${item.reasonForLimitation || '-'}</td>
-                <td class="px-4 py-2 text-sm text-gray-700 align-top">${item.resolutionProspect || '-'}</td>
-                <td class="px-4 py-2 text-sm text-gray-700 align-top">${item.expectedDate || '-'}</td>
-                <td class="px-4 py-2 text-xs text-gray-500 whitespace-nowrap align-top">${formattedDate}</td>
+                <td class="px-4 py-4 text-sm align-top"></td>
+                <td class="px-4 py-4 text-sm align-top text-center"></td>
+                <td class="px-4 py-4 text-sm text-gray-600 align-top">
+                    <div class="line-clamp-2" title="${item.reasonForLimitation || '-'}">${item.reasonForLimitation || '-'}</div>
+                    <div class="text-[10px] text-gray-400 mt-1">${item.resolutionProspect || ''}</div>
+                </td>
+                <td class="px-4 py-4 text-xs text-gray-500 whitespace-nowrap align-top text-right">${formattedDate}</td>
             `;
 
-            const drugNameCell = row.cells[2];
+            const drugNameCell = row.cells[0];
+            const statusCell = row.cells[1];
 
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'vertical-labels-container';
@@ -942,9 +948,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 wrapper.className = 'flex flex-col items-center';
                 wrapper.appendChild(statusBtn);
                 wrapper.appendChild(changeBadge);
-                row.cells[4].appendChild(wrapper);
+                statusCell.appendChild(wrapper);
             } else {
-                row.cells[4].appendChild(statusBtn);
+                statusCell.appendChild(statusBtn);
             }
 
             tableBody.appendChild(row);
