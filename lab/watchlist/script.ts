@@ -503,7 +503,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = watchlistInput.value;
         const codes = text.split('\n')
             .map(line => line.trim())
-            .filter(line => line.length > 0 && /^[0-9]+$/.test(line));
+            .filter(line => line.length > 0); // Relax validation to just non-empty
 
         watchlistYJCodes = new Set(codes);
         localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(Array.from(watchlistYJCodes)));
@@ -544,19 +544,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const ingredientFilter = processQuery(ingredientQuery);
 
         const selectedCats: string[] = [];
-        if (catACheckbox?.checked) selectedCats.push('A');
-        if (catBCheckbox?.checked) selectedCats.push('B');
-        if (catCCheckbox?.checked) selectedCats.push('C');
+        if (!catACheckbox || catACheckbox.checked) selectedCats.push('A');
+        if (!catBCheckbox || catBCheckbox.checked) selectedCats.push('B');
+        if (!catCCheckbox || catCCheckbox.checked) selectedCats.push('C');
 
         const selectedRoutes: string[] = [];
-        if (routeInternalCheckbox?.checked) selectedRoutes.push('内');
-        if (routeInjectableCheckbox?.checked) selectedRoutes.push('注');
-        if (routeExternalCheckbox?.checked) selectedRoutes.push('外');
+        if (!routeInternalCheckbox || routeInternalCheckbox.checked) selectedRoutes.push('内');
+        if (!routeInjectableCheckbox || routeInjectableCheckbox.checked) selectedRoutes.push('注');
+        if (!routeExternalCheckbox || routeExternalCheckbox.checked) selectedRoutes.push('外');
 
         const selectedStatuses: string[] = [];
-        if (statusNormalCheckbox?.checked) selectedStatuses.push('通常出荷');
-        if (statusLimitedCheckbox?.checked) selectedStatuses.push('限定出荷');
-        if (statusStoppedCheckbox?.checked) selectedStatuses.push('供給停止');
+        if (!statusNormalCheckbox || statusNormalCheckbox.checked) selectedStatuses.push('通常出荷');
+        if (!statusLimitedCheckbox || statusLimitedCheckbox.checked) selectedStatuses.push('限定出荷');
+        if (!statusStoppedCheckbox || statusStoppedCheckbox.checked) selectedStatuses.push('供給停止');
 
 
         filteredData = allData.filter(item => {
@@ -573,7 +573,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const matchRoute = selectedRoutes.includes(item.route);
 
             if (watchlistOnlyCheckbox?.checked) {
-                if (!item.yjCode || !watchlistYJCodes.has(item.yjCode)) return false;
+                const yj = item.yjCode ? String(item.yjCode) : null;
+                if (!yj || !watchlistYJCodes.has(yj)) return false;
             }
 
             if (changesOnlyCheckbox?.checked) {
