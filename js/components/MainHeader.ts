@@ -60,7 +60,8 @@ export class MainHeader extends HTMLElement {
             { id: 'search', label: '出荷状況検索', path: '/search.html' },
             { id: 'update', label: '出荷状況更新', path: '/update/index.html' },
             { id: 'pakkun', label: '小児服薬支援', path: '/okuri_pakkun/' },
-            { id: 'pediatric-calc', label: '小児用量力価計算', path: '/pediatric-calc/index.html' }
+            { id: 'pediatric-calc', label: '小児用量力価計算', path: '/pediatric-calc/index.html' },
+            { id: 'pollen', label: '花粉飛散状況', path: '/pollen-app/index.html' }
         ];
 
         const navLinks = links.map(link => {
