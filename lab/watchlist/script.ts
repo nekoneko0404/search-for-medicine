@@ -280,6 +280,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (shareBtn) shareBtn.addEventListener('click', handleShare);
 
+    // クリアボタン: 検索欄をリセットして再描画
+    const clearBtn = document.getElementById('clear-btn') as HTMLButtonElement;
+    if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+            if (drugNameInput) drugNameInput.value = '';
+            if (ingredientNameInput) ingredientNameInput.value = '';
+            renderResults();
+        });
+    }
+
     if (labBtn && labDropdown) {
         labBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -627,7 +637,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 return matchInclude && matchExclude;
             };
 
-            const matchDrug = matchQuery(item.normalizedProductName, drugFilter);
+            // 品名・成分名・YJコードのいずれかにマッチすればOK（OR条件）
+            const yjCodeStr = item.yjCode ? normalizeString(String(item.yjCode)) : '';
+            const matchDrug = drugFilter.include.length === 0
+                ? true
+                : matchQuery(item.normalizedProductName, drugFilter)
+                || matchQuery(item.normalizedIngredientName, drugFilter)
+                || matchQuery(yjCodeStr, drugFilter);
             const matchIngredient = matchQuery(item.normalizedIngredientName, ingredientFilter);
             const matchRoute = selectedRoutes.includes(item.route);
 
@@ -853,6 +869,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ingSpan.addEventListener('click', () => {
                 if (drugNameInput) {
                     drugNameInput.value = item.ingredientName;
+                    if (ingredientNameInput) ingredientNameInput.value = '';
                     debouncedRender();
                 }
                 window.scrollTo(0, 0);
@@ -864,15 +881,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusCell = document.createElement('td');
             statusCell.className = 'px-4 py-4 align-top';
 
-            // ステータス変化（30日以内）の判定と表示
-            let isRecentChange = false;
-            if (item.isStatusChanged && item.updateDateObj) {
-                const diffTime = Math.abs(new Date().getTime() - item.updateDateObj.getTime());
-                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-                if (diffDays <= 30) {
-                    isRecentChange = true;
-                }
-            }
+            // ステータス変化（スナップショットと比較したもの）が30日以内の更新にある場合のみ強調
+            const isRecentChange = item.isStatusChanged === true;
 
             const statusFlex = document.createElement('div');
             statusFlex.className = 'flex flex-col items-start gap-1';
