@@ -111,3 +111,15 @@ export function groupDataByIngredient(data: any[]) {
     });
     return grouped;
 }
+
+/**
+ * 出荷ステータスの優先順位を数値で返す（ソート用）
+ * 停止(1) > 限定(2) > 通常(3) > その他(9)
+ */
+export function getStatusPriority(status: string): number {
+    const s = (status || '').trim();
+    if (s.includes('停止') || s.includes('停')) return 1;
+    if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) return 2;
+    if (s.includes('通常') || s.includes('通')) return 3;
+    return 9;
+}

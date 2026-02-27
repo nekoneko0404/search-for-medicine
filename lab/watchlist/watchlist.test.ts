@@ -1,7 +1,13 @@
 import { describe, it, expect } from 'vitest';
-import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ } from './logic';
+import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ, getStatusPriority } from './logic';
 
 describe('Watchlist Logic', () => {
+    it('getStatusPriority assigns correct values to statuses', () => {
+        expect(getStatusPriority('供給停止')).toBe(1);
+        expect(getStatusPriority('限定出荷・解除予定なし')).toBe(2);
+        expect(getStatusPriority('通常出荷')).toBe(3);
+        expect(getStatusPriority('データなし')).toBe(9);
+    });
     it('summarizeBy9DigitYJ groups items by first 9 digits and counts statuses', () => {
         const mockData = [
             { yjCode: '1234567011', shipmentStatus: '通常出荷' },

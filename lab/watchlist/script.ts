@@ -3,7 +3,7 @@ import { normalizeString, formatDate } from '../../js/utils';
 import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../../js/ui';
 import '../../js/components/MainHeader';
 import '../../js/components/MainFooter';
-import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ } from './logic';
+import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ, getStatusPriority } from './logic';
 
 document.addEventListener('DOMContentLoaded', () => {
     const drugNameInput = document.getElementById('drugName') as HTMLInputElement;
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusNormalCheckbox = document.getElementById('statusNormal') as HTMLInputElement;
     const statusLimitedCheckbox = document.getElementById('statusLimited') as HTMLInputElement;
     const statusStoppedCheckbox = document.getElementById('statusStopped') as HTMLInputElement;
+    const updatePeriodSelector = document.getElementById('updatePeriod') as HTMLSelectElement;
 
     const summaryTableBody = document.getElementById('summaryTableBody') as HTMLTableSectionElement;
     const tableBody = document.getElementById('searchResultTableBody') as HTMLTableSectionElement;
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentView: 'summary' | 'detail' = 'summary';
     let currentIngredient: string | null = null;
     let currentRoute: string | null = null;
-    let currentSort = { key: 'category', direction: 'asc' };
+    let currentSort = { key: 'updateDate', direction: 'desc' };
     let watchlistYJCodes: Set<string> = new Set();
     let statusSnapshot: Record<string, string> = {};
 
@@ -337,7 +338,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (status.length < 3) params.set('status', status.join(','));
 
 
-        if (currentSort.key !== 'category' || currentSort.direction !== 'asc') {
+        if (updatePeriodSelector?.value !== 'all') {
+            params.set('p', updatePeriodSelector.value);
+        }
+
+        if (currentSort.key !== 'updateDate' || currentSort.direction !== 'desc') {
             params.set('sort', currentSort.key);
             params.set('dir', currentSort.direction);
         }
@@ -368,6 +373,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (statusStoppedCheckbox) statusStoppedCheckbox.checked = status.includes('stopped');
         }
 
+
+        if (params.has('p') && updatePeriodSelector) {
+            updatePeriodSelector.value = params.get('p')!;
+        }
 
         if (params.has('sort')) {
             currentSort.key = params.get('sort')!;
@@ -448,6 +457,8 @@ document.addEventListener('DOMContentLoaded', () => {
         routeInternalCheckbox, routeInjectableCheckbox, routeExternalCheckbox,
         statusNormalCheckbox, statusLimitedCheckbox, statusStoppedCheckbox
     ];
+    if (updatePeriodSelector) updatePeriodSelector.addEventListener('change', renderResults);
+
     checkboxes.forEach(checkbox => {
         if (checkbox) checkbox.addEventListener('change', renderResults);
     });
@@ -546,7 +557,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const matchStatus = matchStatusFilter(item.shipmentStatus, selectedStatuses);
 
-            return matchDrug && matchIngredient && matchRoute && matchStatus;
+            // 期間フィルタ
+            let matchPeriod = true;
+            if (updatePeriodSelector && updatePeriodSelector.value !== 'all') {
+                const days = parseInt(updatePeriodSelector.value);
+                if (item.updateDateObj) {
+                    const diffTime = Math.abs(new Date().getTime() - item.updateDateObj.getTime());
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                    matchPeriod = diffDays <= days;
+                } else {
+                    matchPeriod = false;
+                }
+            }
+
+            return matchDrug && matchIngredient && matchRoute && matchStatus && matchPeriod;
+        });
+
+        // ソート処理
+        filteredData.sort((a, b) => {
+            let valA = a[currentSort.key];
+            let valB = b[currentSort.key];
+
+            const direction = currentSort.direction === 'asc' ? 1 : -1;
+
+            if (currentSort.key === 'updateDate') {
+                valA = a.updateDateObj ? a.updateDateObj.getTime() : 0;
+                valB = b.updateDateObj ? b.updateDateObj.getTime() : 0;
+            } else if (currentSort.key === 'shipmentStatus') {
+                valA = getStatusPriority(a.shipmentStatus);
+                valB = getStatusPriority(b.shipmentStatus);
+            }
+
+            if (typeof valA === 'string' && typeof valB === 'string') {
+                return valA.localeCompare(valB, 'ja') * direction;
+            }
+            if (valA < valB) return -1 * direction;
+            if (valA > valB) return 1 * direction;
+            return 0;
         });
 
         if (currentView === 'summary') {
@@ -622,6 +669,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const yj9 = item.yjCode ? String(item.yjCode).substring(0, 9) : null;
             const stats = yj9 ? yj9Summary[yj9] : null;
 
+            // 個別ステータスボタン
+            const statusBtn = renderStatusButton(item.shipmentStatus);
+            statusBtn.classList.add('scale-75', 'origin-left', 'mb-1');
+
             let stackedBarHtml = '';
             if (stats) {
                 const total = stats.normal + stats.limited + stats.stopped;
@@ -630,12 +681,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pS = (stats.stopped / total) * 100;
                 stackedBarHtml = `
                     <div class="flex flex-col gap-1 w-24">
-                        <div class="bar-container h-2 flex">
+                        <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100">
                             <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
                             <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
                             <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
                         </div>
-                        <div class="flex justify-between text-[8px] font-bold text-gray-400">
+                        <div class="flex justify-between text-[8px] font-bold text-gray-400 px-0.5">
                              <span>${stats.normal}</span>
                              <span>${stats.limited}</span>
                              <span>${stats.stopped}</span>
@@ -657,15 +708,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </td>
                 <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.ingredientName}</td>
-                <td class="px-4 py-4 align-top">${stackedBarHtml}</td>
-                <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.reasonForLimitation || '-'}</td>
-                <td class="px-4 py-4 text-xs text-center align-top font-bold text-red-500">${item.resolutionProspect || '-'}</td>
-                <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.expectedDate || '-'}</td>
-                <td class="px-4 py-4 text-xs text-gray-600 text-right align-top">${item.shipmentQuantityStatus || '-'}</td>
-                <td class="px-4 py-4 text-xs text-gray-400 text-right align-top">${formattedDate}</td>
+                <td class="px-4 py-4 align-top">
+                    <div class="flex flex-col items-start">
+                        <div id="status-btn-container-${index}"></div>
+                        ${stackedBarHtml}
+                    </div>
+                </td>
+                <td class="px-4 py-4 text-xs text-gray-600 align-top line-clamp-2 max-h-[4.5rem] overflow-hidden">${item.reasonForLimitation || '-'}</td>
+                <td class="px-4 py-4 text-[10px] text-center align-top font-bold text-red-500">${item.resolutionProspect || '-'}</td>
+                <td class="px-4 py-4 text-[10px] text-gray-600 align-top">${item.expectedDate || '-'}</td>
+                <td class="px-4 py-4 text-[10px] text-gray-600 text-right align-top">${item.shipmentQuantityStatus || '-'}</td>
+                <td class="px-4 py-4 text-[10px] text-gray-400 text-right align-top whitespace-nowrap">${formattedDate}</td>
             `;
 
             summaryTableBody.appendChild(row);
+
+            // Render the button explicitly to attach listeners if needed
+            const btnContainer = row.querySelector(`#status-btn-container-${index}`);
+            if (btnContainer) btnContainer.appendChild(statusBtn);
         });
     }
 
