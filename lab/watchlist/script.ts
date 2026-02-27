@@ -22,8 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusStoppedCheckbox = document.getElementById('statusStopped') as HTMLInputElement;
 
     const summaryTableBody = document.getElementById('summaryTableBody') as HTMLTableSectionElement;
-    const summaryCardContainer = document.getElementById('summaryCardContainer');
-    const summaryResults = document.getElementById('summaryResults');
     const tableBody = document.getElementById('searchResultTableBody') as HTMLTableSectionElement;
     const cardContainer = document.getElementById('cardContainer');
 
@@ -622,13 +620,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderSummaryTable(data: any[]) {
-        if (!summaryTableBody || !summaryCardContainer) return;
+        if (!summaryTableBody) return;
 
         summaryTableBody.innerHTML = '';
-        summaryCardContainer.innerHTML = '';
         if (data.length === 0) {
             summaryTableBody.innerHTML = '<tr><td colspan="8" class="px-4 py-4 text-center text-gray-500">該当するデータがありません</td></tr>';
-            summaryCardContainer.innerHTML = '<div class="col-span-full text-center py-8 text-gray-500">該当するデータがありません</div>';
             return;
         }
 
@@ -745,34 +741,6 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
 
             summaryTableBody.appendChild(row);
-
-            const card = document.createElement('div');
-            card.className = 'bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-4 cursor-pointer hover:bg-gray-50 transition-colors';
-            card.addEventListener('click', () => showDetailView(stats.ingredientName, stats.route));
-
-            card.innerHTML = `
-                <div class="flex justify-between items-start mb-3">
-                    <div class="flex gap-2">
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-gray-100 text-gray-800">${stats.category}</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-indigo-50 text-indigo-700">${stats.route || '-'}</span>
-                    </div>
-                </div>
-                <h3 class="text-base font-bold text-gray-900 mb-3">${stats.ingredientName}</h3>
-                <div class="flex flex-col gap-2">
-                    <div class="bar-container h-2.5">
-                        <div class="bar-segment bg-status-normal" style="width: ${pNormal}%"></div>
-                        <div class="bar-segment bg-status-limited" style="width: ${pLimited}%"></div>
-                        <div class="bar-segment bg-status-stopped" style="width: ${pStopped}%"></div>
-                    </div>
-                    <div class="flex justify-between text-[11px] font-bold">
-                         <span class="text-blue-600">通常:${stats.counts.normal}</span>
-                         <span class="text-yellow-600">限定:${stats.counts.limited}</span>
-                         <span class="text-red-600">停止:${stats.counts.stopped}</span>
-                    </div>
-                </div>
-                ${stats.hasRestored ? '<div class="mt-3 inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</div>' : (stats.hasChanges ? '<div class="mt-3 inline-flex items-center px-2 py-1 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</div>' : '')}
-            `;
-            summaryCardContainer.appendChild(card);
         });
     }
 
