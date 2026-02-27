@@ -64,6 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentSort = { key: 'updateDate', direction: 'desc' };
     let watchlistYJCodes: Set<string> = new Set();
     let statusSnapshot: Record<string, string> = {};
+    let displayedCount = 30;
+    const itemsPerLoad = 20;
+    let observer: IntersectionObserver | null = null;
 
     // getRouteFromYJCode is now imported from logic.ts
 
@@ -695,12 +698,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return matchDrug && matchIngredient && matchRoute && matchStatus && matchPeriod && matchClass;
         });
 
-        // 検索条件が空かつ採用薬のみがオフの場合、結果を表示しない
+        // 以前は検索条件が空かつ採用薬のみがオフの場合、結果を表示しないようにしていたが
+        // 速度改善（件数制限表示）を前提に、全件表示を許可するよう変更
+        /*
         const isSearchEmpty = drugQuery === '' && ingredientQuery === '';
         const isWatchlistOff = !watchlistOnlyCheckbox?.checked;
         if (isSearchEmpty && isWatchlistOff) {
             filteredData = [];
         }
+        */
 
         // ソート処理
         filteredData.sort((a, b) => {
@@ -726,6 +732,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (currentView === 'summary') {
+            displayedCount = 30; // 検索実行時は件数をリセット
             renderSummaryTable(filteredData);
             updateDashboardMetrics(filteredData);
         } else {
@@ -776,10 +783,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function renderSummaryTable(data: any[]) {
+    function renderSummaryTable(data: any[], append: boolean = false) {
         if (!summaryTableBody) return;
 
-        summaryTableBody.innerHTML = '';
+        if (!append) {
+            summaryTableBody.innerHTML = '';
+        }
+
         if (data.length === 0) {
             summaryTableBody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500 font-bold italic">該当するデータがありません</td></tr>';
             return;
@@ -788,7 +798,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // 9桁YJコードに基づく集計（全データから周辺状況を算出）
         const yj9Summary = summarizeBy9DigitYJ(allData);
 
-        data.forEach((item, index) => {
+        const start = append ? summaryTableBody.querySelectorAll('tr:not(.sentinel)').length : 0;
+        const end = Math.min(start + (append ? itemsPerLoad : 30), data.length);
+        const slice = data.slice(start, end);
+
+        slice.forEach((item, index) => {
             const row = document.createElement('tr');
             row.className = 'hover:bg-blue-50/30 transition-colors border-b border-gray-100 last:border-0';
 
@@ -938,6 +952,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
             summaryTableBody.appendChild(row);
         });
+
+        setupSentinel(data);
+    }
+
+    function setupSentinel(data: any[]) {
+        // 既存のセンチネルを削除
+        const oldSentinel = summaryTableBody?.querySelector('.sentinel');
+        if (oldSentinel) oldSentinel.remove();
+
+        // 全件表示済みなら終了
+        const currentCount = summaryTableBody?.querySelectorAll('tr:not(.sentinel)').length || 0;
+        if (currentCount >= data.length) return;
+
+        // 次の読み込み用のセンチネル行を追加
+        const sentinelRow = document.createElement('tr');
+        sentinelRow.className = 'sentinel';
+        sentinelRow.innerHTML = `<td colspan="8" class="py-4 text-center text-gray-400 text-xs">読み込み中...</td>`;
+        summaryTableBody?.appendChild(sentinelRow);
+
+        // Observerの設定
+        if (observer) observer.disconnect();
+        observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting) {
+                // センチネルが見えたら次を読み込む
+                displayedCount += itemsPerLoad;
+                renderSummaryTable(data, true);
+            }
+        }, {
+            rootMargin: '200px' // 早めに読み込みを開始（200px手前）
+        });
+        observer.observe(sentinelRow);
     }
 
     function showDetailView(ingredient: string, route: string) {
