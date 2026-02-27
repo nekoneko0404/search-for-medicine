@@ -1,0 +1,15 @@
+name = "watchlist-backend"
+main = "src/index.ts"
+compatibility_date = "2024-03-01"
+
+[vars]
+# 必要に応じて環境変数を追加
+
+[[d1_databases]]
+binding = "DB"
+database_name = "watchlist_db"
+database_id = "18f24c37-99dc-487d-8e3a-44ec4dda5364"
+migrations_dir = "migrations"
+
+[triggers]
+crons = ["0 */3 * * *"] # 3時間ごとに更新チェックを実行（不定時の更新に対応）

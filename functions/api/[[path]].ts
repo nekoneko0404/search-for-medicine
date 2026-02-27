@@ -1,9 +1,9 @@
-export async function onRequest(context) {
+export async function onRequest(context: any) {
     const url = new URL(context.request.url);
     const path = context.params.path ? context.params.path.join('/') : '';
     const search = url.search;
 
-    const backendBaseUrl = context.env.BACKEND_URL || "https://watchlist-backend.kiyoshi-23b.workers.dev";
+    const backendBaseUrl = context.env.BACKEND_URL || "https://watchlist-backend.neko-neko-0404.workers.dev";
     const targetUrl = `${backendBaseUrl}/api/${path}${search}`;
 
     console.log(`Proxying request: ${context.request.method} ${url.pathname} -> ${targetUrl}`);
@@ -23,7 +23,7 @@ export async function onRequest(context) {
             requestData.body = await context.request.arrayBuffer();
         }
 
-        const response = await fetch(targetUrl, requestData);
+        const response = await fetch(targetUrl, requestData as any);
         console.log(`Response from backend: ${response.status} ${response.statusText}`);
 
         // 新しい Response オブジェクトを作成して CORS ヘッダーを付与
@@ -38,8 +38,8 @@ export async function onRequest(context) {
         newResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
         return newResponse;
-    } catch (err) {
+    } catch (err: any) {
         console.error(`Proxy Error for ${targetUrl}:`, err);
-        return new Response(`Proxy Error: ${err.message}`, { status: 500 });
+        return new Response(`Proxy Error: ${err?.message || String(err)}`, { status: 500 });
     }
 }
