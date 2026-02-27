@@ -24,13 +24,39 @@ export function processQuery(query: string) {
     const include: string[] = [];
     const exclude: string[] = [];
     terms.forEach(term => {
-        if (term.startsWith('ー') && term.length > 1) {
+        if ((term.startsWith('ー') || term.startsWith('-') || term.startsWith('－')) && term.length > 1) {
             exclude.push(normalizeString(term.substring(1)));
         } else {
             include.push(normalizeString(term));
         }
     });
     return { include, exclude };
+}
+
+/**
+ * データをYJコード上9桁ごとに集計する（周辺品目の供給状況を算出するため）
+ */
+export function summarizeBy9DigitYJ(allFilteredData: any[]) {
+    const summary: Record<string, { normal: number, limited: number, stopped: number }> = {};
+
+    allFilteredData.forEach(item => {
+        if (!item.yjCode) return;
+        const yj9 = String(item.yjCode).substring(0, 9);
+        if (!summary[yj9]) {
+            summary[yj9] = { normal: 0, limited: 0, stopped: 0 };
+        }
+
+        const s = (item.shipmentStatus || '').trim();
+        if (s.includes('通常') || s.includes('通')) {
+            summary[yj9].normal++;
+        } else if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) {
+            summary[yj9].limited++;
+        } else if (s.includes('停止') || s.includes('停')) {
+            summary[yj9].stopped++;
+        }
+    });
+
+    return summary;
 }
 
 /**
@@ -48,7 +74,7 @@ export function matchStatusFilter(itemStatus: string, selectedStatuses: string[]
 }
 
 /**
- * データを成分・区分ごとにグループ化する
+ * データを成分・区分ごとにグループ化する（サマリー表示用 - 必要に応じて残すが、今回は9桁YJが主）
  */
 export function groupDataByIngredient(data: any[]) {
     const grouped: Record<string, any> = {};
@@ -62,8 +88,7 @@ export function groupDataByIngredient(data: any[]) {
                 ingredientName: ingredient,
                 route: route,
                 category: item.category,
-                drugClassCode: item.drugClassCode,
-                drugClassName: item.drugClassName,
+                yjCode9: item.yjCode ? String(item.yjCode).substring(0, 9) : null,
                 counts: { normal: 0, limited: 0, stopped: 0 },
                 hasChanges: false,
                 hasRestored: false

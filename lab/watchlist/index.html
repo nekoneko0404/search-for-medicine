@@ -152,7 +152,7 @@
                         </label>
                     </div>
 
-                    <!-- Status Filters (RESTORED) -->
+                    <!-- Status Filters -->
                     <div class="flex items-center gap-3 ml-0 md:ml-4">
                         <span class="font-bold text-gray-700">出荷区分:</span>
                         <div class="flex gap-2">
@@ -170,6 +170,28 @@
                                 <input type="checkbox" id="statusStopped" checked
                                     class="rounded border-gray-300 text-red-600">
                                 <span class="ml-1.5 text-gray-600 text-xs font-bold">停止</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Route Filters (NOW AS CHECKBOXES) -->
+                    <div class="flex items-center gap-3 ml-0 md:ml-4">
+                        <span class="font-bold text-gray-700">区分:</span>
+                        <div class="flex gap-2">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" id="routeInternal" checked
+                                    class="rounded border-gray-300 text-indigo-600">
+                                <span class="ml-1.5 text-gray-600 text-xs font-bold">内</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" id="routeInjectable" checked
+                                    class="rounded border-gray-300 text-indigo-600">
+                                <span class="ml-1.5 text-gray-600 text-xs font-bold">注</span>
+                            </label>
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" id="routeExternal" checked
+                                    class="rounded border-gray-300 text-indigo-600">
+                                <span class="ml-1.5 text-gray-600 text-xs font-bold">外</span>
                             </label>
                         </div>
                     </div>
@@ -212,17 +234,29 @@
                         <thead class="bg-gray-50">
                             <tr>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest w-16">
-                                    Cat</th>
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest min-w-[150px]">
+                                    品名</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest w-16">
-                                    区分</th>
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest min-w-[120px]">
+                                    成分名</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest">
-                                    成分名・薬効名</th>
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-32">
+                                    出荷状況</th>
                                 <th
-                                    class="px-6 py-4 text-left text-xs font-black text-gray-500 uppercase tracking-widest w-1/3">
-                                    同一成分内 供給バランス</th>
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest">
+                                    制限理由</th>
+                                <th
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-16 text-center">
+                                    解消</th>
+                                <th
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-20">
+                                    時期</th>
+                                <th
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-20 text-right">
+                                    出荷量</th>
+                                <th
+                                    class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-20 text-right">
+                                    更新日</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200" id="summaryTableBody"></tbody>

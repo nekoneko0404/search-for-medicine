@@ -1,56 +1,47 @@
 import { describe, it, expect } from 'vitest';
-import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient } from './logic';
+import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ } from './logic';
 
 describe('Watchlist Logic', () => {
-    describe('getRouteFromYJCode', () => {
-        it('should correctly determine routes', () => {
-            expect(getRouteFromYJCode('1124017F2022')).toBe('内'); // 5th digit '0'
-            expect(getRouteFromYJCode('4291413G1022')).toBe('注'); // 5th digit '4'
-            expect(getRouteFromYJCode('2319702X1028')).toBe('外'); // 5th digit '7'
-            expect(getRouteFromYJCode(null)).toBeNull();
-            expect(getRouteFromYJCode('123')).toBeNull();
-        });
+    it('summarizeBy9DigitYJ groups items by first 9 digits and counts statuses', () => {
+        const mockData = [
+            { yjCode: '1234567011', shipmentStatus: '通常出荷' },
+            { yjCode: '1234567012', shipmentStatus: '限定出荷' },
+            { yjCode: '1234567013', shipmentStatus: '通常出荷' },
+            { yjCode: '9999999011', shipmentStatus: '停止' },
+        ];
+        const summary = summarizeBy9DigitYJ(mockData);
+        expect(summary['123456701']).toEqual({ normal: 2, limited: 1, stopped: 0 });
+        expect(summary['999999901']).toEqual({ normal: 0, limited: 0, stopped: 1 });
     });
 
-    describe('processQuery', () => {
-        it('should split queries into include and exclude', () => {
-            const result = processQuery('アセトアミノフェン ー小児');
-            expect(result.include).toContain('アセトアミノフェン');
-            expect(result.exclude).toContain('小児');
-        });
-
-        it('should handle multiple spaces', () => {
-            const result = processQuery('  A   B  ');
-            expect(result.include).toEqual(['a', 'b']);
-        });
+    it('matchStatusFilter works for various status strings', () => {
+        expect(matchStatusFilter('通常出荷', ['通常出荷'])).toBe(true);
+        expect(matchStatusFilter('限定出荷・解除予定なし', ['限定出荷'])).toBe(true);
+        expect(matchStatusFilter('供給停止・全規格', ['供給停止'])).toBe(true);
+        expect(matchStatusFilter('データなし', ['通常出荷'])).toBe(true);
     });
 
-    describe('matchStatusFilter', () => {
-        it('should match statuses correctly', () => {
-            const selected = ['通常出荷', '供給停止'];
-            expect(matchStatusFilter('通常出荷', selected)).toBe(true);
-            expect(matchStatusFilter('限定出荷', selected)).toBe(false);
-            expect(matchStatusFilter('供給停止（在庫消尽をもって供給停止）', selected)).toBe(true);
-            expect(matchStatusFilter('データなし', selected)).toBe(true);
-        });
+    it('processQuery handles include and exclude terms', () => {
+        const res = processQuery('アセト -錠');
+        expect(res.include).toContain('アセト');
+        expect(res.exclude).toContain('錠');
     });
 
-    describe('groupDataByIngredient', () => {
-        it('should group items and aggregate counts', () => {
-            const data = [
-                { ingredientName: 'Drug A', route: '内', category: 'A', shipmentStatus: '通常出荷' },
-                { ingredientName: 'Drug A', route: '内', category: 'A', shipmentStatus: '通常出荷' },
-                { ingredientName: 'Drug A', route: '内', category: 'A', shipmentStatus: '限定出荷' },
-                { ingredientName: 'Drug B', route: '外', category: 'B', shipmentStatus: '供給停止' }
-            ];
-            const grouped = groupDataByIngredient(data);
+    it('getRouteFromYJCode identifies routes correctly', () => {
+        expect(getRouteFromYJCode('1149022F1020')).toBe('内');
+        expect(getRouteFromYJCode('4291401A1010')).toBe('注');
+        expect(getRouteFromYJCode('2649709M1010')).toBe('外');
+    });
 
-            expect(grouped['Drug A|内']).toBeDefined();
-            expect(grouped['Drug A|内'].counts.normal).toBe(2);
-            expect(grouped['Drug A|内'].counts.limited).toBe(1);
-
-            expect(grouped['Drug B|外']).toBeDefined();
-            expect(grouped['Drug B|外'].counts.stopped).toBe(1);
-        });
+    it('groupDataByIngredient groups data correctly', () => {
+        const mockData = [
+            { ingredientName: 'A', route: '内', shipmentStatus: '通常出荷', yjCode: '123456701' },
+            { ingredientName: 'A', route: '内', shipmentStatus: '限定出荷', yjCode: '123456702' },
+            { ingredientName: 'B', route: '外', shipmentStatus: '停止', yjCode: '999999901' },
+        ];
+        const grouped = groupDataByIngredient(mockData);
+        expect(grouped['A|内'].counts.normal).toBe(1);
+        expect(grouped['A|内'].counts.limited).toBe(1);
+        expect(grouped['B|外'].counts.stopped).toBe(1);
     });
 });

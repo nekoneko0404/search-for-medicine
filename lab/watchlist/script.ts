@@ -3,15 +3,13 @@ import { normalizeString, formatDate } from '../../js/utils';
 import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../../js/ui';
 import '../../js/components/MainHeader';
 import '../../js/components/MainFooter';
-import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient } from './logic';
+import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ } from './logic';
 
 document.addEventListener('DOMContentLoaded', () => {
     const drugNameInput = document.getElementById('drugName') as HTMLInputElement;
     const ingredientNameInput = document.getElementById('ingredientName') as HTMLInputElement;
 
-    const catACheckbox = document.getElementById('catA') as HTMLInputElement;
-    const catBCheckbox = document.getElementById('catB') as HTMLInputElement;
-    const catCCheckbox = document.getElementById('catC') as HTMLInputElement;
+    // CAT checkboxes removed
 
     const routeInternalCheckbox = document.getElementById('routeInternal') as HTMLInputElement;
     const routeInjectableCheckbox = document.getElementById('routeInjectable') as HTMLInputElement;
@@ -324,11 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (drugNameInput?.value) params.set('drug', drugNameInput.value);
         if (ingredientNameInput?.value) params.set('ing', ingredientNameInput.value);
 
-        const cats = [];
-        if (catACheckbox?.checked) cats.push('A');
-        if (catBCheckbox?.checked) cats.push('B');
-        if (catCCheckbox?.checked) cats.push('C');
-        if (cats.length < 3) params.set('cat', cats.join(','));
+        // CAT params removed
 
         const routes = [];
         if (routeInternalCheckbox?.checked) routes.push('internal');
@@ -358,12 +352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (params.has('drug') && drugNameInput) drugNameInput.value = params.get('drug')!;
         if (params.has('ing') && ingredientNameInput) ingredientNameInput.value = params.get('ing')!;
 
-        if (params.has('cat')) {
-            const cats = params.get('cat')!.split(',');
-            if (catACheckbox) catACheckbox.checked = cats.includes('A');
-            if (catBCheckbox) catBCheckbox.checked = cats.includes('B');
-            if (catCCheckbox) catCCheckbox.checked = cats.includes('C');
-        }
+        // CAT restore removed
 
         if (params.has('route')) {
             const routes = params.get('route')!.split(',');
@@ -456,7 +445,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     const checkboxes = [
-        catACheckbox, catBCheckbox, catCCheckbox,
         routeInternalCheckbox, routeInjectableCheckbox, routeExternalCheckbox,
         statusNormalCheckbox, statusLimitedCheckbox, statusStoppedCheckbox
     ];
@@ -521,21 +509,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const drugFilter = processQuery(drugQuery);
         const ingredientFilter = processQuery(ingredientQuery);
 
-        const selectedCats: string[] = [];
-        if (!catACheckbox || catACheckbox.checked) selectedCats.push('A');
-        if (!catBCheckbox || catBCheckbox.checked) selectedCats.push('B');
-        if (!catCCheckbox || catCCheckbox.checked) selectedCats.push('C');
-
         const selectedRoutes: string[] = [];
-        if (!routeInternalCheckbox || routeInternalCheckbox.checked) selectedRoutes.push('内');
-        if (!routeInjectableCheckbox || routeInjectableCheckbox.checked) selectedRoutes.push('注');
-        if (!routeExternalCheckbox || routeExternalCheckbox.checked) selectedRoutes.push('外');
+        if (routeInternalCheckbox?.checked) selectedRoutes.push('内');
+        if (routeInjectableCheckbox?.checked) selectedRoutes.push('注');
+        if (routeExternalCheckbox?.checked) selectedRoutes.push('外');
 
         const selectedStatuses: string[] = [];
         if (!statusNormalCheckbox || statusNormalCheckbox.checked) selectedStatuses.push('通常出荷');
         if (!statusLimitedCheckbox || statusLimitedCheckbox.checked) selectedStatuses.push('限定出荷');
         if (!statusStoppedCheckbox || statusStoppedCheckbox.checked) selectedStatuses.push('供給停止');
-
 
         filteredData = allData.filter(item => {
             const matchQuery = (text: string, filter: any) => {
@@ -547,7 +529,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const matchDrug = matchQuery(item.normalizedProductName, drugFilter);
             const matchIngredient = matchQuery(item.normalizedIngredientName, ingredientFilter);
-            const matchCat = selectedCats.includes(item.category);
             const matchRoute = selectedRoutes.includes(item.route);
 
             if (watchlistOnlyCheckbox?.checked) {
@@ -565,7 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const matchStatus = matchStatusFilter(item.shipmentStatus, selectedStatuses);
 
-            return matchDrug && matchIngredient && matchCat && matchRoute && matchStatus;
+            return matchDrug && matchIngredient && matchRoute && matchStatus;
         });
 
         if (currentView === 'summary') {
@@ -624,120 +605,64 @@ document.addEventListener('DOMContentLoaded', () => {
 
         summaryTableBody.innerHTML = '';
         if (data.length === 0) {
-            summaryTableBody.innerHTML = '<tr><td colspan="8" class="px-4 py-4 text-center text-gray-500">該当するデータがありません</td></tr>';
+            summaryTableBody.innerHTML = '<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500 font-bold italic">該当するデータがありません</td></tr>';
             return;
         }
 
-        const grouped = groupDataByIngredient(data);
+        // 9桁YJコードに基づく集計（全データから周辺状況を算出）
+        const yj9Summary = summarizeBy9DigitYJ(allData);
 
-        const sortedIngredients = Object.keys(grouped).sort((a, b) => {
-            const statsA = grouped[a];
-            const statsB = grouped[b];
-
-            const categoryPriority: Record<string, number> = { 'A': 1, 'B': 2, 'C': 3 };
-            const routePriority: Record<string, number> = { '内': 1, '注': 2, '外': 3 };
-
-            const compare = (valA: any, valB: any, key: string, dir: string = 'asc') => {
-                const direction = dir === 'asc' ? 1 : -1;
-
-                if (key === 'category') {
-                    const pA = categoryPriority[valA] || 99;
-                    const pB = categoryPriority[valB] || 99;
-                    if (pA !== pB) return (pA - pB) * direction;
-                } else if (key === 'route') {
-                    const pA = routePriority[valA] || 99;
-                    const pB = routePriority[valB] || 99;
-                    if (pA !== pB) return (pA - pB) * direction;
-                }
-
-                if (typeof valA === 'string' && typeof valB === 'string') {
-                    return valA.localeCompare(valB, 'ja') * direction;
-                }
-                if (valA < valB) return -1 * direction;
-                if (valA > valB) return 1 * direction;
-                return 0;
-            };
-
-            const hierarchy = [
-                { key: 'category', getVal: (s: any) => s.category },
-                { key: 'route', getVal: (s: any) => s.route },
-                { key: 'drugClassCode', getVal: (s: any) => s.drugClassCode },
-                { key: 'drugClassName', getVal: (s: any) => s.drugClassName },
-                { key: 'ingredientName', getVal: (s: any) => s.ingredientName },
-                { key: 'statusNormal', getVal: (s: any) => s.counts.normal },
-                { key: 'statusLimited', getVal: (s: any) => s.counts.limited },
-                { key: 'statusStopped', getVal: (s: any) => s.counts.stopped }
-            ];
-
-            let getPrimaryVal;
-            switch (currentSort.key) {
-                case 'category': getPrimaryVal = (s: any) => s.category; break;
-                case 'route': getPrimaryVal = (s: any) => s.route; break;
-                case 'drugClassCode': getPrimaryVal = (s: any) => s.drugClassCode; break;
-                case 'drugClassName': getPrimaryVal = (s: any) => s.drugClassName; break;
-                case 'ingredientName': getPrimaryVal = (s: any) => s.ingredientName; break;
-                case 'statusNormal': getPrimaryVal = (s: any) => s.counts.normal; break;
-                case 'statusLimited': getPrimaryVal = (s: any) => s.counts.limited; break;
-                case 'statusStopped': getPrimaryVal = (s: any) => s.counts.stopped; break;
-                default: getPrimaryVal = (s: any) => s.ingredientName;
-            }
-
-            const primaryDiff = compare(getPrimaryVal(statsA), getPrimaryVal(statsB), currentSort.key, currentSort.direction);
-            if (primaryDiff !== 0) return primaryDiff;
-
-            for (const item of hierarchy) {
-                if (item.key === currentSort.key) continue;
-
-                const valA = item.getVal(statsA);
-                const valB = item.getVal(statsB);
-                const diff = compare(valA, valB, item.key, 'asc');
-                if (diff !== 0) return diff;
-            }
-
-            return 0;
-        });
-
-        sortedIngredients.forEach(groupKey => {
-            const stats = grouped[groupKey];
+        data.forEach((item, index) => {
             const row = document.createElement('tr');
-            row.className = 'hover:bg-gray-50 transition-colors cursor-pointer';
-            row.addEventListener('click', () => showDetailView(stats.ingredientName, stats.route));
+            row.className = 'hover:bg-blue-50/30 transition-colors border-b border-gray-100 last:border-0';
 
+            const dateStr = item.updateDateObj ? formatDate(item.updateDateObj) : '';
+            const formattedDate = dateStr ? `${dateStr.substring(2, 4)}-${dateStr.substring(4, 6)}-${dateStr.substring(6, 8)}` : '';
 
-            const total = stats.counts.normal + stats.counts.limited + stats.counts.stopped;
-            const pNormal = total > 0 ? (stats.counts.normal / total) * 100 : 0;
-            const pLimited = total > 0 ? (stats.counts.limited / total) * 100 : 0;
-            const pStopped = total > 0 ? (stats.counts.stopped / total) * 100 : 0;
+            const yj9 = item.yjCode ? String(item.yjCode).substring(0, 9) : null;
+            const stats = yj9 ? yj9Summary[yj9] : null;
+
+            let stackedBarHtml = '';
+            if (stats) {
+                const total = stats.normal + stats.limited + stats.stopped;
+                const pN = (stats.normal / total) * 100;
+                const pL = (stats.limited / total) * 100;
+                const pS = (stats.stopped / total) * 100;
+                stackedBarHtml = `
+                    <div class="flex flex-col gap-1 w-24">
+                        <div class="bar-container h-2 flex">
+                            <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
+                            <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
+                            <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
+                        </div>
+                        <div class="flex justify-between text-[8px] font-bold text-gray-400">
+                             <span>${stats.normal}</span>
+                             <span>${stats.limited}</span>
+                             <span>${stats.stopped}</span>
+                        </div>
+                    </div>
+                `;
+            }
+
+            const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
 
             row.innerHTML = `
-                <td class="px-6 py-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-gray-100 text-gray-800">${stats.category}</span>
-                </td>
-                <td class="px-6 py-4 text-center">
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-black bg-indigo-50 text-indigo-700">${stats.route || '-'}</span>
-                </td>
-                <td class="px-6 py-4">
-                    <div class="flex flex-col">
-                        <span class="text-sm font-bold text-gray-900 group-hover:text-indigo-600 transition-colors">${stats.ingredientName}</span>
-                        <div class="flex gap-2 mt-1">
-                            ${stats.hasRestored ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-green-500 text-white animate-pulse">復活品目あり</span>' : (stats.hasChanges ? '<span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold bg-orange-500 text-white">変化あり</span>' : '')}
+                <td class="px-4 py-4 text-xs font-medium align-top">
+                    <div class="flex items-start gap-1">
+                        ${isGeneric ? '<span class="px-1 py-0.5 rounded text-[10px] bg-green-100 text-green-800 font-bold shrink-0">後</span>' : ''}
+                        <div class="flex flex-col gap-1">
+                            <span class="text-blue-600 font-bold hover:underline cursor-pointer" onclick="window.openDetails('${item.yjCode}')">${item.productName}</span>
+                            <span class="text-[10px] text-gray-400 font-mono">${item.yjCode || ''}</span>
                         </div>
                     </div>
                 </td>
-                <td class="px-6 py-4">
-                    <div class="flex flex-col gap-1.5">
-                        <div class="bar-container h-3">
-                            <div class="bar-segment bg-status-normal" style="width: ${pNormal}%"></div>
-                            <div class="bar-segment bg-status-limited" style="width: ${pLimited}%"></div>
-                            <div class="bar-segment bg-status-stopped" style="width: ${pStopped}%"></div>
-                        </div>
-                        <div class="flex justify-between text-[10px] font-bold text-gray-500">
-                             <span class="text-blue-600">通:${stats.counts.normal}</span>
-                             <span class="text-yellow-600">限:${stats.counts.limited}</span>
-                             <span class="text-red-600">停:${stats.counts.stopped}</span>
-                        </div>
-                    </div>
-                </td>
+                <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.ingredientName}</td>
+                <td class="px-4 py-4 align-top">${stackedBarHtml}</td>
+                <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.reasonForLimitation || '-'}</td>
+                <td class="px-4 py-4 text-xs text-center align-top font-bold text-red-500">${item.resolutionProspect || '-'}</td>
+                <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.expectedDate || '-'}</td>
+                <td class="px-4 py-4 text-xs text-gray-600 text-right align-top">${item.shipmentQuantityStatus || '-'}</td>
+                <td class="px-4 py-4 text-xs text-gray-400 text-right align-top">${formattedDate}</td>
             `;
 
             summaryTableBody.appendChild(row);
@@ -967,4 +892,11 @@ document.addEventListener('DOMContentLoaded', () => {
             cardContainer.appendChild(card);
         });
     }
+
+    (window as any).openDetails = (yjCode: string) => {
+        const item = allData.find(d => d.yjCode === yjCode);
+        if (item) {
+            showDetailView(item.ingredientName, item.route);
+        }
+    };
 });
