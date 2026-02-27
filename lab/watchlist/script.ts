@@ -127,7 +127,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const loadingIndicator = document.getElementById('loadingIndicator');
                 if (loadingIndicator) loadingIndicator.classList.add('hidden');
-                if (summaryResults) summaryResults.classList.remove('hidden');
+
+                // summaryContainerを表示
+                if (summaryContainer) summaryContainer.classList.remove('hidden');
 
                 showMessage(`データ(${result.date}) ${allData.length} 件を読み込みました。`, "success");
 
