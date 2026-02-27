@@ -917,7 +917,7 @@ document.addEventListener('DOMContentLoaded', () => {
             row.appendChild(reasonCell);
 
             const prospectCell = document.createElement('td');
-            prospectCell.className = 'px-4 py-4 text-[10px] text-center align-top font-bold text-red-500';
+            prospectCell.className = 'px-4 py-4 text-[10px] text-gray-600 align-top';
             prospectCell.textContent = item.resolutionProspect || '-';
             row.appendChild(prospectCell);
 
