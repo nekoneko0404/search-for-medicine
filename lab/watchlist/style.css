@@ -1,8 +1,8 @@
 /* Watchlist specific styles */
 
-/* 供給バーのスタイル調整 */
+/* 供給バーのスタイル調整 (スリム化: 4px) */
 .bar-container {
-    height: 8px !important; /* バーを細くする */
+    height: 4px !important;
 }
 
 /* ステータスボタンの拡大（個別ページに合わせる） */
@@ -11,11 +11,44 @@
     padding: 0.35rem 0.75rem !important;
 }
 
+/* 医薬品名ドロップダウンを前面に表示 */
+.group\/dropdown {
+    position: relative;
+    z-index: 50;
+}
+
+.group\/dropdown [id^="dropdown-content-"] {
+    z-index: 100 !important;
+}
+
+/* ステータス変化（30日以内）の強調スタイル */
+.status-changed-box {
+    border: 2px solid #ef4444;
+    /* red-500 */
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    background-color: #fef2f2;
+    /* red-50 */
+}
+
+.status-changed-text {
+    color: #ef4444;
+    /* red-500 */
+    font-weight: 800;
+    font-size: 0.75rem;
+}
+
 /* 成分名クリック検索用のカーソル */
 .ingredient-link {
     cursor: pointer;
-    color: #4f46e5; /* indigo-600 */
+    color: #4f46e5;
+    /* indigo-600 */
 }
+
 .ingredient-link:hover {
     text-decoration: underline;
 }

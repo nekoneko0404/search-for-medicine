@@ -153,7 +153,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         category: catItem ? catItem.category : '-',
                         route: route || (catItem ? catItem.route : '-'),
                         drugClassCode: catItem ? catItem.drug_class_code : '-',
-                        drugClassName: catItem ? catItem.drug_class_name : '-'
+                        drugClassName: catItem ? catItem.drug_class_name : '-',
+                        isStatusChanged: false,
+                        isRestored: false,
+                        isWorsened: false
                     };
                 });
 
@@ -192,7 +195,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 showMessage(`データ(${result.date}) ${allData.length} 件を読み込みました。`, "success");
 
-                // Diff logic
+                // 差分検知ロジックを適用
                 applyDiffToData();
 
                 renderResults();
@@ -250,11 +253,18 @@ document.addEventListener('DOMContentLoaded', () => {
                                 route: c.route,
                                 drugClassCode: c.drug_class_code,
                                 drugClassName: c.drug_class_name,
-                                updateDateObj: null
+                                updateDateObj: null,
+                                isStatusChanged: false,
+                                isRestored: false,
+                                isWorsened: false
                             });
                             seenKeys.add(key);
                         }
                     });
+
+                    // 差分検知ロジックを適用
+                    applyDiffToData();
+
                     showMessage(`データを更新しました: ${allData.length}件`, 'success');
                     renderResults();
                 }
@@ -782,9 +792,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pN = (stats.normal / total) * 100;
                 const pL = (stats.limited / total) * 100;
                 const pS = (stats.stopped / total) * 100;
+                const tooltipText = `通常: ${stats.normal}件, 限定: ${stats.limited}件, 停止: ${stats.stopped}件`;
                 stackedBarHtml = `
                 <div class="flex flex-col gap-1 w-24">
-                    <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100">
+                    <div class="bar-container h-1 flex rounded-full overflow-hidden bg-gray-100" title="${tooltipText}">
                         <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
                         <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
                         <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
@@ -837,12 +848,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const ingCell = document.createElement('td');
             ingCell.className = 'px-4 py-4 text-xs text-gray-600 align-top';
             const ingSpan = document.createElement('span');
-            ingSpan.className = 'ingredient-link';
+            ingSpan.className = 'ingredient-link text-blue-600';
             ingSpan.textContent = item.ingredientName;
             ingSpan.addEventListener('click', () => {
-                if (drugNameInput) drugNameInput.value = '';
-                if (ingredientNameInput) ingredientNameInput.value = item.ingredientName;
-                renderResults();
+                if (drugNameInput) {
+                    drugNameInput.value = item.ingredientName;
+                    debouncedRender();
+                }
                 window.scrollTo(0, 0);
             });
             ingCell.appendChild(ingSpan);
@@ -851,9 +863,44 @@ document.addEventListener('DOMContentLoaded', () => {
             // 出荷状況セル
             const statusCell = document.createElement('td');
             statusCell.className = 'px-4 py-4 align-top';
+
+            // ステータス変化（30日以内）の判定と表示
+            let isRecentChange = false;
+            if (item.isStatusChanged && item.updateDateObj) {
+                const diffTime = Math.abs(new Date().getTime() - item.updateDateObj.getTime());
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (diffDays <= 30) {
+                    isRecentChange = true;
+                }
+            }
+
             const statusFlex = document.createElement('div');
-            statusFlex.className = 'flex flex-col items-start';
-            statusFlex.appendChild(statusBtn);
+            statusFlex.className = 'flex flex-col items-start gap-1';
+
+            if (isRecentChange) {
+                const changeBox = document.createElement('div');
+                changeBox.className = 'status-changed-box';
+
+                const btnRow = document.createElement('div');
+                btnRow.className = 'flex items-center gap-1';
+                btnRow.appendChild(statusBtn);
+
+                const icon = document.createElement('span');
+                icon.className = 'text-lg';
+                icon.textContent = item.isRestored ? '⤴️' : (item.isWorsened ? '⤵️' : '🔄');
+                btnRow.appendChild(icon);
+
+                const text = document.createElement('span');
+                text.className = 'status-changed-text';
+                text.textContent = item.isRestored ? '通常復帰' : '更新あり';
+
+                changeBox.appendChild(btnRow);
+                changeBox.appendChild(text);
+                statusFlex.appendChild(changeBox);
+            } else {
+                statusFlex.appendChild(statusBtn);
+            }
+
             if (stackedBarHtml) {
                 const barWrapper = document.createElement('div');
                 barWrapper.innerHTML = stackedBarHtml;
