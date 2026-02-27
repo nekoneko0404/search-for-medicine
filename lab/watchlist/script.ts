@@ -798,9 +798,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const yj9 = item.yjCode ? String(item.yjCode).substring(0, 9) : null;
             const stats = yj9 ? yj9Summary[yj9] : null;
 
-            // 個別ステータスボタン
-            const statusBtn = renderStatusButton(item.shipmentStatus);
-            statusBtn.classList.add('origin-left', 'mb-1'); // scale-75 removed
 
             let stackedBarHtml = '';
             if (stats) {
@@ -881,32 +878,26 @@ document.addEventListener('DOMContentLoaded', () => {
             const statusCell = document.createElement('td');
             statusCell.className = 'px-4 py-4 align-top';
 
-            // ステータス変化（スナップショットと比較したもの）が30日以内の更新にある場合のみ強調
-            const isRecentChange = item.isStatusChanged === true;
+            // 詳細ビューと同じ仕組み: isStatusChanged=true のとき renderStatusButton に渡して赤枠を付ける
+            const statusBtn = renderStatusButton(item.shipmentStatus, item.isStatusChanged === true);
+            statusBtn.classList.add('origin-left', 'mb-1');
 
             const statusFlex = document.createElement('div');
             statusFlex.className = 'flex flex-col items-start gap-1';
 
-            if (isRecentChange) {
-                const changeBox = document.createElement('div');
-                changeBox.className = 'status-changed-box';
-
-                const btnRow = document.createElement('div');
-                btnRow.className = 'flex items-center gap-1';
-                btnRow.appendChild(statusBtn);
-
+            if (item.isStatusChanged) {
+                // バッジ（詳細ビューと同じスタイル）
+                const changeBadge = document.createElement('div');
+                changeBadge.className = `mt-1 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 ${item.isRestored ? 'bg-green-100 text-green-800' : 'bg-orange-100 text-orange-800'}`;
                 const icon = document.createElement('span');
-                icon.className = 'text-lg';
                 icon.textContent = item.isRestored ? '⤴️' : (item.isWorsened ? '⤵️' : '🔄');
-                btnRow.appendChild(icon);
+                const label = document.createElement('span');
+                label.textContent = item.isRestored ? '制限解除' : '前回から変更';
+                changeBadge.appendChild(icon);
+                changeBadge.appendChild(label);
 
-                const text = document.createElement('span');
-                text.className = 'status-changed-text';
-                text.textContent = item.isRestored ? '通常復帰' : '更新あり';
-
-                changeBox.appendChild(btnRow);
-                changeBox.appendChild(text);
-                statusFlex.appendChild(changeBox);
+                statusFlex.appendChild(statusBtn);
+                statusFlex.appendChild(changeBadge);
             } else {
                 statusFlex.appendChild(statusBtn);
             }
