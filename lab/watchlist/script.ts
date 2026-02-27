@@ -52,6 +52,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const watchlistOnlyCheckbox = document.getElementById('watchlistOnly') as HTMLInputElement;
     const changesOnlyCheckbox = document.getElementById('changesOnly') as HTMLInputElement;
     const restoredOnlyCheckbox = document.getElementById('restoredOnly') as HTMLInputElement;
+    const storeIdInput = document.getElementById('store-id-input') as HTMLInputElement;
+    const passcodeInput = document.getElementById('passcode-input') as HTMLInputElement;
+    const notifyFilterInput = document.getElementById('notify-filter-input') as HTMLSelectElement;
+    const notifyChannelInput = document.getElementById('notify-channel-input') as HTMLSelectElement;
+    const notifyEndpointInput = document.getElementById('notify-endpoint-input') as HTMLInputElement;
+    const notifyEndpointLabel = document.getElementById('notify-endpoint-label') as HTMLLabelElement;
 
     let allData: any[] = [];
     let categoryMap = new Map();
@@ -125,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         restoreStateFromUrl();
         loadWatchlist();
         loadStatusSnapshot();
+        loadCloudSettings();
         try {
             const catResponse = await fetch(new URL('../../supply-status/data/category_data.json', import.meta.url).href);
             categoryData = await catResponse.json();
@@ -591,25 +598,122 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    function saveWatchlist() {
+    saveWatchlistBtn?.addEventListener('click', saveWatchlist);
+
+    clearWatchlistBtn?.addEventListener('click', () => {
+        if (confirm('監視リストをすべて消去しますか？')) {
+            watchlistInput.value = '';
+            updateWatchlistCount();
+        }
+    });
+
+    updateSnapshotBtn?.addEventListener('click', () => {
+        saveStatusSnapshot();
+        showMessage('現在の状態を記録しました。', 'success');
+        renderResults();
+    });
+
+    async function saveWatchlist() {
         const text = watchlistInput.value;
         const codes = text.split('\n')
             .map(line => line.trim())
-            .filter(line => line.length > 0); // Relax validation to just non-empty
+            .filter(line => line.length > 0);
 
         watchlistYJCodes = new Set(codes);
         localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(Array.from(watchlistYJCodes)));
+
+        // クラウド同期
+        const storeId = storeIdInput?.value.trim();
+        const passcode = passcodeInput?.value.trim();
+        const notifyFilter = notifyFilterInput?.value || 'all';
+        const notifyChannel = notifyChannelInput?.value || 'line';
+        const notifyEndpoint = notifyEndpointInput?.value.trim() || '';
+
+        if (storeId && passcode) {
+            localStorage.setItem('supply_store_id', storeId);
+            localStorage.setItem('supply_passcode', passcode);
+            localStorage.setItem('supply_notify_filter', notifyFilter);
+            localStorage.setItem('supply_notify_channel', notifyChannel);
+            localStorage.setItem('supply_notify_endpoint', notifyEndpoint);
+
+            try {
+                showMessage('クラウドと同期中...', 'info');
+                const response = await fetch('/api/watch-items/batch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        storeId,
+                        passcode,
+                        yjCodes: codes,
+                        notifyFilter,
+                        notifyChannel,
+                        notifyEndpoint
+                    })
+                });
+
+                if (response.ok) {
+                    showMessage('設定を保存し、クラウド同期を完了しました。', 'success');
+                } else {
+                    const error = await response.text();
+                    showMessage(`ローカル保存完了（クラウド同期失敗: ${error}）`, 'error');
+                }
+            } catch (e) {
+                showMessage('ローカル保存完了（ネットワークエラーにより同期失敗）', 'error');
+            }
+        } else {
+            showMessage(`${watchlistYJCodes.size}件の品目を監視リストに保存しました。`, 'success');
+        }
+
         updateWatchlistCount();
         watchlistModal.classList.add('hidden');
         renderResults();
-        showMessage(`${watchlistYJCodes.size}件の品目を監視リストに保存しました。`, 'success');
+    }
+
+    function loadCloudSettings() {
+        if (storeIdInput) storeIdInput.value = localStorage.getItem('supply_store_id') || '';
+        if (passcodeInput) passcodeInput.value = localStorage.getItem('supply_passcode') || '';
+        if (notifyFilterInput) notifyFilterInput.value = localStorage.getItem('supply_notify_filter') || 'all';
+        if (notifyChannelInput) {
+            notifyChannelInput.value = localStorage.getItem('supply_notify_channel') || 'line';
+            updateNotifyEndpointUI();
+        }
+        if (notifyEndpointInput) notifyEndpointInput.value = localStorage.getItem('supply_notify_endpoint') || '';
+    }
+
+    function updateNotifyEndpointUI() {
+        if (!notifyChannelInput || !notifyEndpointInput) return;
+
+        const label = document.getElementById('notify-endpoint-label');
+        const notifyHint = document.getElementById('notify-hint-text');
+        const channel = notifyChannelInput.value;
+
+        switch (channel) {
+            case 'line':
+                if (label) label.innerHTML = '<i class="fab fa-line text-[#00B900] mr-1"></i> LINE ID / グループID';
+                notifyEndpointInput.placeholder = 'U123456789..., G987654321...';
+                if (notifyHint) notifyHint.innerHTML = '<i class="fas fa-info-circle mr-1"></i> LINEの「宛先ID」を入力してください。複数ある場合はカンマ( , )で区切ります。';
+                break;
+            case 'email':
+                if (label) label.innerHTML = '<i class="fas fa-envelope text-blue-400 mr-1"></i> 通知先メールアドレス';
+                notifyEndpointInput.placeholder = 'pharmacist@mail.com, pharmacist2@mail.com';
+                if (notifyHint) notifyHint.innerHTML = '<i class="fas fa-info-circle mr-1"></i> 普段お使いのメールアドレスを入力してください。最大3名まで登録可能です。';
+                break;
+            case 'webhook':
+                if (label) label.innerHTML = '<i class="fas fa-plug text-gray-400 mr-1"></i> Webhook URL (Slack/Discord)';
+                notifyEndpointInput.placeholder = 'https://hooks.slack.com/services/T.../B.../W...';
+                if (notifyHint) notifyHint.innerHTML = '<i class="fas fa-info-circle mr-1"></i> SlackやDiscordのWebhook URLを貼り付けてください。チーム全員で共有できます。';
+                break;
+        }
+    }
+
+    if (notifyChannelInput) {
+        notifyChannelInput.addEventListener('change', updateNotifyEndpointUI);
     }
 
     function updateWatchlistCount() {
-        if (watchlistCountDisplay) {
-            const currentText = watchlistInput.value;
-            const count = currentText.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
-            watchlistCountDisplay.textContent = `現在の登録件数: ${count}件`;
+        if (watchlistCountDisplay && watchlistInput) {
+            const count = watchlistInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
+            watchlistCountDisplay.textContent = `現在の登録数: ${count} 件 (テスト期間中: 無制限)`;
         }
     }
 
@@ -819,10 +923,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pN = (stats.normal / total) * 100;
                 const pL = (stats.limited / total) * 100;
                 const pS = (stats.stopped / total) * 100;
-                const tooltipText = `通常: ${stats.normal}件, 限定: ${stats.limited}件, 停止: ${stats.stopped}件`;
+                const tooltipText = `同規格(9桁YJ)状況 - 通常: ${stats.normal}, 限定: ${stats.limited}, 停止: ${stats.stopped}`;
                 stackedBarHtml = `
-                <div class="flex flex-col gap-1 w-[70px]">
-                    <div class="bar-container h-1 flex rounded-full overflow-hidden bg-gray-100" title="${tooltipText}">
+                <div class="flex flex-col gap-1 w-full max-w-[120px]" title="${tooltipText}">
+                    <div class="flex justify-between text-[10px] text-gray-400 mb-0.5">
+                        <span class="font-bold">周辺状況</span>
+                        <span>${total}品目</span>
+                    </div>
+                    <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100 shadow-inner">
                         <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
                         <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
                         <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>

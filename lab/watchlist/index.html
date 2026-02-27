@@ -364,16 +364,145 @@
                 </button>
             </div>
             <div class="p-6 overflow-y-auto flex-grow">
-                <div class="bg-blue-50 border-l-4 border-blue-400 p-4 mb-6">
-                    <p class="text-blue-700 text-sm font-medium">
-                        レセコンや在庫管理システムから抽出した「YJコード」を貼り付けてください。
-                        改行区切りで最大4000件まで登録可能です。
+                <!-- Medicine Registration Section -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center gap-2">
+                            <span
+                                class="bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-tighter">Plan</span>
+                            <span class="text-sm font-bold text-gray-700">医薬品登録</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <span
+                                class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-200">
+                                フリー: 20件
+                            </span>
+                            <span
+                                class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-100">
+                                スタンダード: 3,000件
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
+                        <div class="flex items-start gap-3">
+                            <i class="fas fa-flask-potion text-amber-500 mt-0.5"></i>
+                            <div>
+                                <p class="text-amber-800 text-xs font-black mb-1">【テスト期間中の特別仕様】</p>
+                                <ul class="text-amber-700 text-[11px] font-medium list-disc list-inside space-y-0.5">
+                                    <li>現在はスタンダード登録なしで<span class="font-black underline">登録件数無制限</span>で試用可能です。</li>
+                                    <li>本番移行時には、テスト登録されたデータは<span class="font-black text-red-600">全てクリア</span>されます。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="text-gray-500 text-[11px] mb-3 leading-relaxed">
+                        レセコンや在庫管理システムから抽出した「YJコード」または「レセ電算コード」を貼り付けてください。改行区切りで入力可能です。
                     </p>
                 </div>
-                <textarea id="watchlist-input" rows="12"
-                    class="w-full rounded-xl border-gray-200 shadow-inner focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm p-4 h-64 bg-gray-50"
+                <textarea id="watchlist-input" rows="8"
+                    class="w-full rounded-xl border-gray-200 shadow-inner focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm p-4 h-48 bg-gray-50 mb-4"
                     placeholder="例:&#10;123456701&#10;234567802"></textarea>
-                <div id="watchlist-count" class="mt-2 text-right text-gray-500 text-xs font-bold">現在の登録件数: 0件</div>
+                <div id="watchlist-count" class="mt-2 text-right text-gray-500 text-xs font-bold mb-6">現在の登録件数: 0件</div>
+
+                <!-- Cloud Sync (B2B) Section -->
+                <div class="border-t border-gray-100 pt-8 mt-6">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                            <i class="fas fa-cloud-check text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-base font-black text-gray-900 leading-none">自動通知設定 (B2Pharmacy)</h4>
+                                <span
+                                    class="bg-indigo-100 text-indigo-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Standard
+                                    Only</span>
+                            </div>
+                            <p class="text-[10px] text-gray-400 font-bold">契約情報を入力して、スマホへの通知を有効にします</p>
+                        </div>
+                    </div>
+
+                    <!-- Test Mode Warning for Notification -->
+                    <div class="bg-gray-100 rounded-xl p-4 mb-6 border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <i class="fas fa-bell-slash text-gray-400"></i>
+                            <p class="text-gray-500 text-[11px] font-bold">
+                                <span class="text-amber-600">※ テスト期間中のお知らせ:</span><br>
+                                現在、自動通知システムは準備中のため、設定を保存しても実際の通知は行われません。
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-6">
+                        <!-- Account Info -->
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div>
+                                <label
+                                    class="flex items-center gap-2 text-xs font-black text-gray-600 mb-2 uppercase tracking-wider">
+                                    <i class="fas fa-id-badge text-indigo-400"></i> ご利用店ID
+                                </label>
+                                <input type="text" id="store-id-input"
+                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2.5"
+                                    placeholder="例: pharmacy-01">
+                            </div>
+                            <div>
+                                <label
+                                    class="flex items-center gap-2 text-xs font-black text-gray-600 mb-2 uppercase tracking-wider">
+                                    <i class="fas fa-key text-indigo-400"></i> パスコード
+                                </label>
+                                <input type="password" id="passcode-input"
+                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2.5"
+                                    placeholder="契約時のパスコード">
+                            </div>
+                        </div>
+
+                        <!-- Notification Settings -->
+                        <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-6">
+                            <div class="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label id="notify-endpoint-label"
+                                        class="flex items-center gap-2 text-xs font-black text-indigo-900/60 mb-3 uppercase tracking-wider">
+                                        <i class="fas fa-paper-plane"></i> 通知の受け取り先
+                                    </label>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                        <select id="notify-channel-input"
+                                            class="w-full text-sm font-bold border-gray-200 rounded-xl focus:ring-indigo-500 py-2.5">
+                                            <option value="line">LINE で受け取る</option>
+                                            <option value="email">メールで受け取る</option>
+                                            <option value="webhook">Slack / Discord (Webhook)</option>
+                                        </select>
+                                        <div class="relative">
+                                            <input type="text" id="notify-endpoint-input"
+                                                class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2.5"
+                                                placeholder="宛先を入力">
+                                            <p id="notify-hint-text"
+                                                class="text-[9px] text-indigo-400 mt-1.5 font-bold italic">
+                                                <i class="fas fa-info-circle mr-1"></i>最大3件までカンマ区切りで入力可能です
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">
+                                            <i class="fas fa-filter mr-1"></i> 通知する条件:
+                                        </span>
+                                    </div>
+                                    <select id="notify-filter-input"
+                                        class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-2 px-3 bg-white">
+                                        <option value="all">すべての変化を知らせる</option>
+                                        <option value="restored_only">制限が解除された時のみ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white">
                 <button id="clear-watchlist"
