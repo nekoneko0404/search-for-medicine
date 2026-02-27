@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusStoppedCheckbox = document.getElementById('statusStopped') as HTMLInputElement;
     const updatePeriodSelector = document.getElementById('updatePeriod') as HTMLSelectElement;
 
+    const class2Select = document.getElementById('class2') as HTMLSelectElement;
+    const class3Select = document.getElementById('class3') as HTMLSelectElement;
+    const class4Select = document.getElementById('class4') as HTMLSelectElement;
+
     const summaryTableBody = document.getElementById('summaryTableBody') as HTMLTableSectionElement;
     const tableBody = document.getElementById('searchResultTableBody') as HTMLTableSectionElement;
     const cardContainer = document.getElementById('cardContainer');
@@ -56,11 +60,61 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentView: 'summary' | 'detail' = 'summary';
     let currentIngredient: string | null = null;
     let currentRoute: string | null = null;
+    let drugClassificationData: any = null;
     let currentSort = { key: 'updateDate', direction: 'desc' };
     let watchlistYJCodes: Set<string> = new Set();
     let statusSnapshot: Record<string, string> = {};
 
     // getRouteFromYJCode is now imported from logic.ts
+
+    function populateClass2() {
+        if (!class2Select || !drugClassificationData) return;
+        class2Select.innerHTML = '<option value="">大分類 (全て)</option>';
+        const data2 = drugClassificationData['2'];
+        Object.keys(data2).sort().forEach(code => {
+            const option = document.createElement('option');
+            option.value = code;
+            option.textContent = `${code} ${data2[code]}`;
+            class2Select.appendChild(option);
+        });
+    }
+
+    function populateClass3() {
+        if (!class3Select || !drugClassificationData) return;
+        class3Select.innerHTML = '<option value="">中分類 (全て)</option>';
+        if (class4Select) class4Select.innerHTML = '<option value="">小分類 (全て)</option>';
+
+        const c2 = class2Select.value;
+        if (!c2) return;
+
+        const data3 = drugClassificationData['3'];
+        Object.keys(data3).sort().forEach(code => {
+            if (code.startsWith(c2)) {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = `${code} ${data3[code]}`;
+                class3Select.appendChild(option);
+            }
+        });
+    }
+
+    function populateClass4() {
+        if (!class4Select || !drugClassificationData) return;
+        class4Select.innerHTML = '<option value="">小分類 (全て)</option>';
+
+        const c3 = class3Select.value;
+        if (!c3) return;
+
+        const data4 = drugClassificationData['4'];
+        Object.keys(data4).sort().forEach(code => {
+            if (code.startsWith(c3)) {
+                const option = document.createElement('option');
+                option.value = code;
+                option.textContent = `${code} ${data4[code]}`;
+                class4Select.appendChild(option);
+            }
+        });
+    }
 
     init();
 
@@ -80,6 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             updateProgress('カテゴリデータ読み込み完了', 30);
+
+            try {
+                const classResponse = await fetch(new URL('../../supply-status/data/drug_classification.json', import.meta.url).href);
+                drugClassificationData = await classResponse.json();
+                populateClass2();
+            } catch (e) {
+                console.error('Failed to load drug classification data', e);
+            }
 
             const result = await loadAndCacheData(updateProgress);
             if (result && result.data) {
@@ -453,6 +515,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    if (class2Select) {
+        class2Select.addEventListener('change', () => {
+            populateClass3();
+            debouncedRender();
+        });
+    }
+    if (class3Select) {
+        class3Select.addEventListener('change', () => {
+            populateClass4();
+            debouncedRender();
+        });
+    }
+    if (class4Select) {
+        class4Select.addEventListener('change', debouncedRender);
+    }
+
+
     const checkboxes = [
         routeInternalCheckbox, routeInjectableCheckbox, routeExternalCheckbox,
         statusNormalCheckbox, statusLimitedCheckbox, statusStoppedCheckbox
@@ -557,6 +636,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const matchStatus = matchStatusFilter(item.shipmentStatus, selectedStatuses);
 
+            // 薬効分類フィルタ
+            let matchClass = true;
+            if (class2Select?.value) {
+                const c2 = class2Select.value;
+                const c3 = class3Select?.value;
+                const c4 = class4Select?.value;
+                const itemYJ = item.yjCode ? String(item.yjCode) : '';
+
+                if (c4) {
+                    matchClass = itemYJ.startsWith(c4);
+                } else if (c3) {
+                    matchClass = itemYJ.startsWith(c3);
+                } else {
+                    matchClass = itemYJ.startsWith(c2);
+                }
+            }
+
             // 期間フィルタ
             let matchPeriod = true;
             if (updatePeriodSelector && updatePeriodSelector.value !== 'all') {
@@ -570,8 +666,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
 
-            return matchDrug && matchIngredient && matchRoute && matchStatus && matchPeriod;
+            return matchDrug && matchIngredient && matchRoute && matchStatus && matchPeriod && matchClass;
         });
+
+        // 検索条件が空かつ採用薬のみがオフの場合、結果を表示しない
+        const isSearchEmpty = drugQuery === '' && ingredientQuery === '';
+        const isWatchlistOff = !watchlistOnlyCheckbox?.checked;
+        if (isSearchEmpty && isWatchlistOff) {
+            filteredData = [];
+        }
 
         // ソート処理
         filteredData.sort((a, b) => {
@@ -671,7 +774,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 個別ステータスボタン
             const statusBtn = renderStatusButton(item.shipmentStatus);
-            statusBtn.classList.add('scale-75', 'origin-left', 'mb-1');
+            statusBtn.classList.add('origin-left', 'mb-1'); // scale-75 removed
 
             let stackedBarHtml = '';
             if (stats) {
@@ -680,52 +783,112 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pL = (stats.limited / total) * 100;
                 const pS = (stats.stopped / total) * 100;
                 stackedBarHtml = `
-                    <div class="flex flex-col gap-1 w-24">
-                        <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100">
-                            <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
-                            <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
-                            <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
-                        </div>
-                        <div class="flex justify-between text-[8px] font-bold text-gray-400 px-0.5">
-                             <span>${stats.normal}</span>
-                             <span>${stats.limited}</span>
-                             <span>${stats.stopped}</span>
-                        </div>
+                <div class="flex flex-col gap-1 w-24">
+                    <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100">
+                        <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
+                        <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
+                        <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
                     </div>
-                `;
+                </div>
+            `;
             }
 
             const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
 
-            row.innerHTML = `
-                <td class="px-4 py-4 text-xs font-medium align-top">
-                    <div class="flex items-start gap-1">
-                        ${isGeneric ? '<span class="px-1 py-0.5 rounded text-[10px] bg-green-100 text-green-800 font-bold shrink-0">後</span>' : ''}
-                        <div class="flex flex-col gap-1">
-                            <span class="text-blue-600 font-bold hover:underline cursor-pointer" onclick="window.openDetails('${item.yjCode}')">${item.productName}</span>
-                            <span class="text-[10px] text-gray-400 font-mono">${item.yjCode || ''}</span>
-                        </div>
-                    </div>
-                </td>
-                <td class="px-4 py-4 text-xs text-gray-600 align-top">${item.ingredientName}</td>
-                <td class="px-4 py-4 align-top">
-                    <div class="flex flex-col items-start">
-                        <div id="status-btn-container-${index}"></div>
-                        ${stackedBarHtml}
-                    </div>
-                </td>
-                <td class="px-4 py-4 text-xs text-gray-600 align-top line-clamp-2 max-h-[4.5rem] overflow-hidden">${item.reasonForLimitation || '-'}</td>
-                <td class="px-4 py-4 text-[10px] text-center align-top font-bold text-red-500">${item.resolutionProspect || '-'}</td>
-                <td class="px-4 py-4 text-[10px] text-gray-600 align-top">${item.expectedDate || '-'}</td>
-                <td class="px-4 py-4 text-[10px] text-gray-600 text-right align-top">${item.shipmentQuantityStatus || '-'}</td>
-                <td class="px-4 py-4 text-[10px] text-gray-400 text-right align-top whitespace-nowrap">${formattedDate}</td>
-            `;
+            // 品名セル (ホバーメニュー)
+            const nameCell = document.createElement('td');
+            nameCell.className = 'px-4 py-4 text-xs font-medium align-top';
+
+            const labelsContainer = document.createElement('div');
+            labelsContainer.className = 'flex flex-col gap-0.5 mr-1';
+            if (isGeneric) {
+                const span = document.createElement('span');
+                span.className = 'px-1 py-0.5 rounded text-[10px] bg-green-100 text-green-800 font-bold w-fit';
+                span.textContent = '後';
+                labelsContainer.appendChild(span);
+            }
+
+            const nameFlex = document.createElement('div');
+            nameFlex.className = 'flex items-start';
+            nameFlex.appendChild(labelsContainer);
+
+            if (item.yjCode) {
+                nameFlex.appendChild(createDropdown(item, `summary-${index}`));
+            } else {
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'text-blue-600 font-bold';
+                nameSpan.textContent = item.productName;
+                nameFlex.appendChild(nameSpan);
+            }
+
+            const yjCodeSpan = document.createElement('span');
+            yjCodeSpan.className = 'text-[10px] text-gray-400 font-mono block mt-1';
+            yjCodeSpan.textContent = item.yjCode || '';
+
+            const nameColumn = document.createElement('div');
+            nameColumn.className = 'flex flex-col';
+            nameColumn.appendChild(nameFlex);
+            nameColumn.appendChild(yjCodeSpan);
+            nameCell.appendChild(nameColumn);
+
+            row.appendChild(nameCell);
+
+            // 成分名セル
+            const ingCell = document.createElement('td');
+            ingCell.className = 'px-4 py-4 text-xs text-gray-600 align-top';
+            const ingSpan = document.createElement('span');
+            ingSpan.className = 'ingredient-link';
+            ingSpan.textContent = item.ingredientName;
+            ingSpan.addEventListener('click', () => {
+                if (drugNameInput) drugNameInput.value = '';
+                if (ingredientNameInput) ingredientNameInput.value = item.ingredientName;
+                renderResults();
+                window.scrollTo(0, 0);
+            });
+            ingCell.appendChild(ingSpan);
+            row.appendChild(ingCell);
+
+            // 出荷状況セル
+            const statusCell = document.createElement('td');
+            statusCell.className = 'px-4 py-4 align-top';
+            const statusFlex = document.createElement('div');
+            statusFlex.className = 'flex flex-col items-start';
+            statusFlex.appendChild(statusBtn);
+            if (stackedBarHtml) {
+                const barWrapper = document.createElement('div');
+                barWrapper.innerHTML = stackedBarHtml;
+                statusFlex.appendChild(barWrapper.firstElementChild!);
+            }
+            statusCell.appendChild(statusFlex);
+            row.appendChild(statusCell);
+
+            // その他
+            const reasonCell = document.createElement('td');
+            reasonCell.className = 'px-4 py-4 text-xs text-gray-600 align-top line-clamp-2 max-h-[4.5rem] overflow-hidden';
+            reasonCell.textContent = item.reasonForLimitation || '-';
+            row.appendChild(reasonCell);
+
+            const prospectCell = document.createElement('td');
+            prospectCell.className = 'px-4 py-4 text-[10px] text-center align-top font-bold text-red-500';
+            prospectCell.textContent = item.resolutionProspect || '-';
+            row.appendChild(prospectCell);
+
+            const expectedCell = document.createElement('td');
+            expectedCell.className = 'px-4 py-4 text-[10px] text-gray-600 align-top';
+            expectedCell.textContent = item.expectedDate || '-';
+            row.appendChild(expectedCell);
+
+            const quantityCell = document.createElement('td');
+            quantityCell.className = 'px-4 py-4 text-[10px] text-gray-600 text-right align-top';
+            quantityCell.textContent = item.shipmentQuantityStatus || '-';
+            row.appendChild(quantityCell);
+
+            const dateCell = document.createElement('td');
+            dateCell.className = 'px-4 py-4 text-[10px] text-gray-400 text-right align-top whitespace-nowrap';
+            dateCell.textContent = formattedDate;
+            row.appendChild(dateCell);
 
             summaryTableBody.appendChild(row);
-
-            // Render the button explicitly to attach listeners if needed
-            const btnContainer = row.querySelector(`#status-btn-container-${index}`);
-            if (btnContainer) btnContainer.appendChild(statusBtn);
         });
     }
 

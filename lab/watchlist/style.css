@@ -1,0 +1,36 @@
+/* Watchlist specific styles */
+
+/* 供給バーのスタイル調整 */
+.bar-container {
+    height: 8px !important; /* バーを細くする */
+}
+
+/* ステータスボタンの拡大（個別ページに合わせる） */
+.status-button {
+    font-size: 0.875rem !important;
+    padding: 0.35rem 0.75rem !important;
+}
+
+/* 成分名クリック検索用のカーソル */
+.ingredient-link {
+    cursor: pointer;
+    color: #4f46e5; /* indigo-600 */
+}
+.ingredient-link:hover {
+    text-decoration: underline;
+}
+
+/* ソートアイコンの常時表示用調整（index.htmlのopacityと合わせて使用） */
+.sort-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+}
+
+/* 医薬品名ホバーメニュー用 */
+.product-name-dropdown {
+    position: relative;
+    display: inline-block;
+}

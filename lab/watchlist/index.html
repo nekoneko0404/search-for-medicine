@@ -21,6 +21,7 @@
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
 
     <style>
         .bar-container {
@@ -208,6 +209,25 @@
                             <option value="90">90日以内</option>
                         </select>
                     </div>
+
+                    <!-- Drug Classification Filters -->
+                    <div class="flex flex-wrap items-center gap-3 ml-0 md:ml-4 mt-2 md:mt-0">
+                        <span class="font-bold text-gray-700">薬効分類:</span>
+                        <div class="flex gap-2">
+                            <select id="class2"
+                                class="bg-white border border-gray-200 rounded-lg text-[10px] font-bold py-1 px-2 focus:ring-indigo-500 focus:border-indigo-500 max-w-[120px]">
+                                <option value="">大分類 (全て)</option>
+                            </select>
+                            <select id="class3"
+                                class="bg-white border border-gray-200 rounded-lg text-[10px] font-bold py-1 px-2 focus:ring-indigo-500 focus:border-indigo-500 max-w-[120px]">
+                                <option value="">中分類 (全て)</option>
+                            </select>
+                            <select id="class4"
+                                class="bg-white border border-gray-200 rounded-lg text-[10px] font-bold py-1 px-2 focus:ring-indigo-500 focus:border-indigo-500 max-w-[120px]">
+                                <option value="">小分類 (全て)</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex gap-2 shrink-0">
                     <button id="watchlist-btn"
@@ -249,19 +269,25 @@
                                 <th data-sort="productName"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest min-w-[150px] cursor-pointer group">
                                     <div class="flex items-center gap-1">
-                                        品名 <span class="sort-icon text-gray-400"></span>
+                                        品名 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                                 <th data-sort="ingredientName"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest min-w-[120px] cursor-pointer group">
                                     <div class="flex items-center gap-1">
-                                        成分名 <span class="sort-icon text-gray-400"></span>
+                                        成分名 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                                 <th data-sort="shipmentStatus"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-32 cursor-pointer group">
                                     <div class="flex items-center gap-1">
-                                        出荷状況 <span class="sort-icon text-gray-400"></span>
+                                        出荷状況 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                                 <th
@@ -270,25 +296,33 @@
                                 <th data-sort="resolutionProspect"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-16 text-center cursor-pointer group">
                                     <div class="flex items-center justify-center gap-1">
-                                        解消 <span class="sort-icon text-gray-400"></span>
+                                        解消 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                                 <th data-sort="expectedDate"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-20 cursor-pointer group">
                                     <div class="flex items-center gap-1">
-                                        時期 <span class="sort-icon text-gray-400"></span>
+                                        時期 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                                 <th data-sort="shipmentQuantityStatus"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-20 text-right cursor-pointer group">
                                     <div class="flex items-center justify-end gap-1">
-                                        出荷量 <span class="sort-icon text-gray-400"></span>
+                                        出荷量 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                                 <th data-sort="updateDate"
                                     class="px-4 py-4 text-left text-[10px] font-black text-gray-500 uppercase tracking-widest w-20 text-right cursor-pointer group">
                                     <div class="flex items-center justify-end gap-1">
-                                        更新日 <span class="sort-icon text-gray-400"></span>
+                                        更新日 <span
+                                            class="sort-icon text-gray-400 opacity-30 group-hover:opacity-100 transition-opacity"><i
+                                                class="fas fa-sort"></i></span>
                                     </div>
                                 </th>
                             </tr>
