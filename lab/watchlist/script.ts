@@ -821,7 +821,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pS = (stats.stopped / total) * 100;
                 const tooltipText = `通常: ${stats.normal}件, 限定: ${stats.limited}件, 停止: ${stats.stopped}件`;
                 stackedBarHtml = `
-                <div class="flex flex-col gap-1 w-full">
+                <div class="flex flex-col gap-1 w-20">
                     <div class="bar-container h-1 flex rounded-full overflow-hidden bg-gray-100" title="${tooltipText}">
                         <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
                         <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
