@@ -623,19 +623,42 @@ document.addEventListener('DOMContentLoaded', () => {
         watchlistYJCodes = new Set(codes);
         localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(Array.from(watchlistYJCodes)));
 
-        // クラウド同期
-        const storeId = storeIdInput?.value.trim();
-        const passcode = passcodeInput?.value.trim();
-        const notifyFilter = notifyFilterInput?.value || 'all';
-        const notifyChannel = notifyChannelInput?.value || 'line';
-        const notifyEndpoint = notifyEndpointInput?.value.trim() || '';
+        // クラウド同期設定の取得
+        const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
+        const passcode = (document.getElementById('passcode-input') as HTMLInputElement)?.value.trim();
+        const notifyFilter = (document.getElementById('notify-filter-input') as HTMLSelectElement)?.value || 'all';
+
+        const lineEnable = (document.getElementById('notify-line-enable') as HTMLInputElement)?.checked;
+        const lineEndpoints = (document.getElementById('notify-line-input') as HTMLInputElement)?.value.trim() || '';
+        const emailEnable = (document.getElementById('notify-email-enable') as HTMLInputElement)?.checked;
+        const emailEndpoints = (document.getElementById('notify-email-input') as HTMLInputElement)?.value.trim() || '';
+        const webhookEnable = (document.getElementById('notify-webhook-enable') as HTMLInputElement)?.checked;
+        const webhookEndpoints = (document.getElementById('notify-webhook-input') as HTMLInputElement)?.value.trim() || '';
 
         if (storeId && passcode) {
+            // バリデーション
+            const lineCount = lineEndpoints.split(',').filter(e => e.trim().length > 0).length;
+            const emailCount = emailEndpoints.split(',').filter(e => e.trim().length > 0).length;
+
+            if (lineEnable && lineCount > 3) {
+                showMessage('LINE通知先は最大3件までです', 'error');
+                return;
+            }
+            if (emailEnable && emailCount > 3) {
+                showMessage('メール通知先は最大3件までです', 'error');
+                return;
+            }
+
+            // ローカル保存
             localStorage.setItem('supply_store_id', storeId);
             localStorage.setItem('supply_passcode', passcode);
             localStorage.setItem('supply_notify_filter', notifyFilter);
-            localStorage.setItem('supply_notify_channel', notifyChannel);
-            localStorage.setItem('supply_notify_endpoint', notifyEndpoint);
+            localStorage.setItem('supply_notify_line_endpoints', lineEndpoints);
+            localStorage.setItem('supply_notify_line_enable', String(lineEnable));
+            localStorage.setItem('supply_notify_email_endpoints', emailEndpoints);
+            localStorage.setItem('supply_notify_email_enable', String(emailEnable));
+            localStorage.setItem('supply_notify_webhook_endpoints', webhookEndpoints);
+            localStorage.setItem('supply_notify_webhook_enable', String(webhookEnable));
 
             try {
                 showMessage('クラウドと同期中...', 'info');
@@ -645,24 +668,25 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({
                         storeId,
                         passcode,
-                        yjCodes: codes,
+                        yjCodes: Array.from(watchlistYJCodes),
                         notifyFilter,
-                        notifyChannel,
-                        notifyEndpoint
+                        notifyLineEndpoints: lineEnable ? lineEndpoints : '',
+                        notifyEmailEndpoints: emailEnable ? emailEndpoints : '',
+                        notifyWebhookEndpoints: webhookEnable ? webhookEndpoints : ''
                     })
                 });
 
                 if (response.ok) {
-                    showMessage('設定を保存し、クラウド同期を完了しました。', 'success');
+                    showMessage('設定と監視リストを保存しました', 'success');
                 } else {
-                    const error = await response.text();
-                    showMessage(`ローカル保存完了（クラウド同期失敗: ${error}）`, 'error');
+                    const errText = await response.text();
+                    showMessage(`同期失敗: ${errText}`, 'error');
                 }
-            } catch (e) {
-                showMessage('ローカル保存完了（ネットワークエラーにより同期失敗）', 'error');
+            } catch (err) {
+                showMessage('ネットワークエラーにより同期に失敗しました', 'error');
             }
         } else {
-            showMessage(`${watchlistYJCodes.size}件の品目を監視リストに保存しました。`, 'success');
+            showMessage(`${watchlistYJCodes.size}件の品目を監視リストに保存しました（同期設定なし）`, 'success');
         }
 
         updateWatchlistCount();
@@ -671,45 +695,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadCloudSettings() {
-        if (storeIdInput) storeIdInput.value = localStorage.getItem('supply_store_id') || '';
-        if (passcodeInput) passcodeInput.value = localStorage.getItem('supply_passcode') || '';
-        if (notifyFilterInput) notifyFilterInput.value = localStorage.getItem('supply_notify_filter') || 'all';
-        if (notifyChannelInput) {
-            notifyChannelInput.value = localStorage.getItem('supply_notify_channel') || 'line';
-            updateNotifyEndpointUI();
-        }
-        if (notifyEndpointInput) notifyEndpointInput.value = localStorage.getItem('supply_notify_endpoint') || '';
+        const setVal = (id: string, key: string, def = '') => {
+            const el = document.getElementById(id) as HTMLInputElement | HTMLSelectElement;
+            if (el) el.value = localStorage.getItem(key) || def;
+        };
+        const setChecked = (id: string, key: string) => {
+            const el = document.getElementById(id) as HTMLInputElement;
+            if (el) el.checked = localStorage.getItem(key) === 'true';
+        };
+
+        setVal('store-id-input', 'supply_store_id');
+        setVal('passcode-input', 'supply_passcode');
+        setVal('notify-filter-input', 'supply_notify_filter', 'all');
+
+        setChecked('notify-line-enable', 'supply_notify_line_enable');
+        setVal('notify-line-input', 'supply_notify_line_endpoints');
+        setChecked('notify-email-enable', 'supply_notify_email_enable');
+        setVal('notify-email-input', 'supply_notify_email_endpoints');
+        setChecked('notify-webhook-enable', 'supply_notify_webhook_enable');
+        setVal('notify-webhook-input', 'supply_notify_webhook_endpoints');
     }
 
-    function updateNotifyEndpointUI() {
-        if (!notifyChannelInput || !notifyEndpointInput) return;
+    // テスト送信ボタンのイベント設定
+    const setupTestButton = (btnId: string, channel: string, inputId: string, enableId: string) => {
+        const btn = document.getElementById(btnId);
+        btn?.addEventListener('click', async (e) => {
+            e.preventDefault();
+            const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
+            const passcode = (document.getElementById('passcode-input') as HTMLInputElement)?.value.trim();
+            const target = (document.getElementById(inputId) as HTMLInputElement)?.value.trim();
+            const enable = (document.getElementById(enableId) as HTMLInputElement)?.checked;
 
-        const label = document.getElementById('notify-endpoint-label');
-        const notifyHint = document.getElementById('notify-hint-text');
-        const channel = notifyChannelInput.value;
+            if (!storeId || !passcode) {
+                showMessage('店舗IDとパスコードを入力してください', 'error');
+                return;
+            }
+            if (!enable || !target) {
+                showMessage('チャネルを有効にし、宛先を入力してください', 'error');
+                return;
+            }
 
-        switch (channel) {
-            case 'line':
-                if (label) label.innerHTML = '<i class="fab fa-line text-[#00B900] mr-1"></i> LINE ID / グループID';
-                notifyEndpointInput.placeholder = 'U123456789..., G987654321...';
-                if (notifyHint) notifyHint.innerHTML = '<i class="fas fa-info-circle mr-1"></i> LINEの「宛先ID」を入力してください。複数ある場合はカンマ( , )で区切ります。';
-                break;
-            case 'email':
-                if (label) label.innerHTML = '<i class="fas fa-envelope text-blue-400 mr-1"></i> 通知先メールアドレス';
-                notifyEndpointInput.placeholder = 'pharmacist@mail.com, pharmacist2@mail.com';
-                if (notifyHint) notifyHint.innerHTML = '<i class="fas fa-info-circle mr-1"></i> 普段お使いのメールアドレスを入力してください。最大3名まで登録可能です。';
-                break;
-            case 'webhook':
-                if (label) label.innerHTML = '<i class="fas fa-plug text-gray-400 mr-1"></i> Webhook URL (Slack/Discord)';
-                notifyEndpointInput.placeholder = 'https://hooks.slack.com/services/T.../B.../W...';
-                if (notifyHint) notifyHint.innerHTML = '<i class="fas fa-info-circle mr-1"></i> SlackやDiscordのWebhook URLを貼り付けてください。チーム全員で共有できます。';
-                break;
-        }
-    }
+            try {
+                const originalText = btn.textContent;
+                btn.textContent = '送信中...';
+                (btn as HTMLButtonElement).disabled = true;
 
-    if (notifyChannelInput) {
-        notifyChannelInput.addEventListener('change', updateNotifyEndpointUI);
-    }
+                const response = await fetch('/api/notifications/test', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ storeId, passcode, channel, target })
+                });
+
+                const result = await response.json() as { success: boolean, error?: string };
+                if (result.success) {
+                    showMessage(`${channel.toUpperCase()} テスト送信に成功しました`, 'success');
+                } else {
+                    showMessage(`テスト送信失敗: ${result.error}`, 'error');
+                }
+
+                btn.textContent = originalText;
+                (btn as HTMLButtonElement).disabled = false;
+            } catch (err) {
+                showMessage('通信エラーが発生しました', 'error');
+                btn.textContent = 'テスト送信';
+                (btn as HTMLButtonElement).disabled = false;
+            }
+        });
+    };
+
+    setupTestButton('test-line-btn', 'line', 'notify-line-input', 'notify-line-enable');
+    setupTestButton('test-email-btn', 'email', 'notify-email-input', 'notify-email-enable');
+    setupTestButton('test-webhook-btn', 'webhook', 'notify-webhook-input', 'notify-webhook-enable');
 
     function updateWatchlistCount() {
         if (watchlistCountDisplay && watchlistInput) {

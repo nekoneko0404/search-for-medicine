@@ -1,0 +1,26 @@
+
+ 笵・ｸ・wrangler 3.114.17 (update available 4.69.0)
+-----------------------------------------------
+
+笆ｲ [WARNING] The version of Wrangler you are using is now out-of-date.
+
+  Please update to the latest version to prevent critical errors.
+  Run `npm install --save-dev wrangler@4` to update to the latest version.
+  After installation, run Wrangler with `npx wrangler`.
+
+
+Total Upload: 187.67 KiB / gzip: 36.20 KiB
+Your worker has access to the following bindings:
+- D1 Databases:
+  - DB: watchlist_db (a8fd165d-4521-4d32-8411-dcf38bf8238b)
+
+X [ERROR] A request to the Cloudflare API (/accounts/6bbd2aa5c37506628dda09c7741eed69/workers/scripts/watchlist-backend) failed.
+
+  D1 binding 'DB' references database 'a8fd165d-4521-4d32-8411-dcf38bf8238b' which was not found. Verify the database exists in your account and that the database_id in your configuration is correct. [code: 10181]
+  To learn more about this error, visit: https://developers.cloudflare.com/d1/get-started/
+
+  
+  If you think this is a bug, please open an issue at: https://github.com/cloudflare/workers-sdk/issues/new/choose
+
+
+ｪｵ  Logs were written to "C:\Users\kiyoshi\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-02-27_16-54-29_126.log"

@@ -459,31 +459,64 @@
                             </div>
                         </div>
 
-                        <!-- Notification Settings -->
-                        <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-6">
-                            <div class="grid grid-cols-1 gap-6">
-                                <div>
-                                    <label id="notify-endpoint-label"
-                                        class="flex items-center gap-2 text-xs font-black text-indigo-900/60 mb-3 uppercase tracking-wider">
-                                        <i class="fas fa-paper-plane"></i> 通知の受け取り先
-                                    </label>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <select id="notify-channel-input"
-                                            class="w-full text-sm font-bold border-gray-200 rounded-xl focus:ring-indigo-500 py-2.5">
-                                            <option value="line">LINE で受け取る</option>
-                                            <option value="email">メールで受け取る</option>
-                                            <option value="webhook">Slack / Discord (Webhook)</option>
-                                        </select>
-                                        <div class="relative">
-                                            <input type="text" id="notify-endpoint-input"
-                                                class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2.5"
-                                                placeholder="宛先を入力">
-                                            <p id="notify-hint-text"
-                                                class="text-[9px] text-indigo-400 mt-1.5 font-bold italic">
-                                                <i class="fas fa-info-circle mr-1"></i>最大3件までカンマ区切りで入力可能です
-                                            </p>
-                                        </div>
+                        <div class="space-y-4">
+                            <!-- Notification Channels -->
+                            <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-5 space-y-5">
+                                <label
+                                    class="flex items-center gap-2 text-xs font-black text-indigo-900/60 uppercase tracking-wider mb-2">
+                                    <i class="fas fa-paper-plane"></i> 通知チャネル設定（複数選択可）
+                                </label>
+
+                                <!-- LINE -->
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" id="notify-line-enable"
+                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                            <span class="text-sm font-bold text-gray-700"><i
+                                                    class="fab fa-line text-[#06C755] mr-1"></i> LINE 通知</span>
+                                        </label>
+                                        <button type="button" id="test-line-btn"
+                                            class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50">テスト送信</button>
                                     </div>
+                                    <input type="text" id="notify-line-input"
+                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2 px-3"
+                                        placeholder="LINE ID (最大3件、カンマ区切り)">
+                                </div>
+
+                                <!-- Email -->
+                                <div class="flex flex-col gap-2 pt-3 border-t border-indigo-100/30">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" id="notify-email-enable"
+                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                            <span class="text-sm font-bold text-gray-700"><i
+                                                    class="fas fa-envelope text-gray-400 mr-1"></i> メール通知</span>
+                                        </label>
+                                        <button type="button" id="test-email-btn"
+                                            class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50">テスト送信</button>
+                                    </div>
+                                    <input type="text" id="notify-email-input"
+                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2 px-3"
+                                        placeholder="メールアドレス (最大3件、カンマ区切り)">
+                                </div>
+
+                                <!-- Webhook -->
+                                <div class="flex flex-col gap-2 pt-3 border-t border-indigo-100/30">
+                                    <div class="flex items-center justify-between">
+                                        <label class="flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" id="notify-webhook-enable"
+                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                            <span class="text-sm font-bold text-gray-700"><i
+                                                    class="fas fa-link text-gray-400 mr-1"></i> Webhook
+                                                (Slack/Discord)</span>
+                                        </label>
+                                        <button type="button" id="test-webhook-btn"
+                                            class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50">テスト送信</button>
+                                    </div>
+                                    <input type="text" id="notify-webhook-input"
+                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2 px-3"
+                                        placeholder="Webhook URL (カンマ区切り)">
                                 </div>
 
                                 <div

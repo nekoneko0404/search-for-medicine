@@ -1,0 +1,31 @@
+
+ 笵・ｸ・wrangler 3.114.17 (update available 4.69.0)
+-----------------------------------------------
+
+笆ｲ [WARNING] The version of Wrangler you are using is now out-of-date.
+
+  Please update to the latest version to prevent critical errors.
+  Run `npm install --save-dev wrangler@4` to update to the latest version.
+  After installation, run Wrangler with `npx wrangler`.
+
+
+--------------------
+庁 Recommendation: for development, use a preview D1 database rather than the one you'd use in production.
+庁 Create a new D1 database with "wrangler d1 create <name>" and add its id as preview_database_id to the d1_database "DB" in your wrangler.toml file
+--------------------
+
+Your worker has access to the following bindings:
+- D1 Databases:
+  - DB: watchlist_db (18f24c37-99dc-487d-8e3a-44ec4dda5364)
+[wrangler:inf] Ready on http://127.0.0.1:8900
+竡・Starting remote preview...
+Total Upload: 193.38 KiB / gzip: 37.71 KiB
+竡・Starting remote preview...
+X [ERROR] Failed to fetch auth token: 400 Bad Request
+
+
+
+X [ERROR] In a non-interactive environment, it's necessary to set a CLOUDFLARE_API_TOKEN environment variable for wrangler to work. Please go to https://developers.cloudflare.com/fundamentals/api/get-started/create-token/ for instructions on how to create an api token, and assign its value to CLOUDFLARE_API_TOKEN.
+
+
+ｪｵ  Logs were written to "C:\Users\kiyoshi\AppData\Roaming\xdg.config\.wrangler\logs\wrangler-2026-02-27_17-05-53_459.log"

@@ -10,6 +10,9 @@ CREATE TABLE IF NOT EXISTS stores (
     stripe_customer_id TEXT,               -- Stripe 顧客ID
     stripe_subscription_id TEXT,           -- Stripe サブスクリプションID
     subscription_status TEXT DEFAULT 'none', -- サブスクステータス
+    notify_line_endpoints TEXT,            -- LINE 通知先（カンマ区切り、最大3件）
+    notify_email_endpoints TEXT,           -- メール通知先（カンマ区切り、最大3件）
+    notify_webhook_endpoints TEXT,          -- Webhook 通知先（カンマ区切り）
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

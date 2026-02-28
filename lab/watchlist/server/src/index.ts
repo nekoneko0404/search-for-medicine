@@ -37,13 +37,22 @@ export default {
         // --- 監視リストの一括登録 & 設定更新 API ---
         if (url.pathname === "/api/watch-items/batch" && request.method === "POST") {
             try {
-                const { storeId, passcode, yjCodes, notifyFilter, notifyChannel, notifyEndpoint } = await request.json() as {
+                const {
+                    storeId,
+                    passcode,
+                    yjCodes,
+                    notifyFilter,
+                    notifyLineEndpoints,
+                    notifyEmailEndpoints,
+                    notifyWebhookEndpoints
+                } = await request.json() as {
                     storeId: string,
                     passcode: string,
                     yjCodes: string[],
                     notifyFilter?: string,
-                    notifyChannel?: string,
-                    notifyEndpoint?: string
+                    notifyLineEndpoints?: string,
+                    notifyEmailEndpoints?: string,
+                    notifyWebhookEndpoints?: string
                 };
 
                 // 1. 店舗認証の検証
@@ -75,16 +84,22 @@ export default {
                             .bind(notifyFilter, storeId)
                     );
                 }
-                if (notifyChannel) {
+                if (notifyLineEndpoints !== undefined) {
                     statements.push(
-                        env.DB.prepare("UPDATE stores SET notify_channel = ? WHERE id = ?")
-                            .bind(notifyChannel, storeId)
+                        env.DB.prepare("UPDATE stores SET notify_line_endpoints = ? WHERE id = ?")
+                            .bind(notifyLineEndpoints, storeId)
                     );
                 }
-                if (notifyEndpoint !== undefined) {
+                if (notifyEmailEndpoints !== undefined) {
                     statements.push(
-                        env.DB.prepare("UPDATE stores SET notify_endpoint = ? WHERE id = ?")
-                            .bind(notifyEndpoint, storeId)
+                        env.DB.prepare("UPDATE stores SET notify_email_endpoints = ? WHERE id = ?")
+                            .bind(notifyEmailEndpoints, storeId)
+                    );
+                }
+                if (notifyWebhookEndpoints !== undefined) {
+                    statements.push(
+                        env.DB.prepare("UPDATE stores SET notify_webhook_endpoints = ? WHERE id = ?")
+                            .bind(notifyWebhookEndpoints, storeId)
                     );
                 }
 
@@ -110,54 +125,38 @@ export default {
             }
         }
 
-        // --- Stripe Webhook エンドポイント (決済完了通知) ---
-        if (url.pathname === "/api/stripe/webhook" && request.method === "POST") {
-            if (!env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET) {
-                return new Response("Stripe configuration missing", { status: 500 });
-            }
-
-            const signature = request.headers.get("stripe-signature");
-            if (!signature) {
-                return new Response("Missing signature", { status: 400 });
-            }
-
-            const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
-                apiVersion: "2025-02-24.clover" as any,
-                httpClient: Stripe.createFetchHttpClient(),
-            });
-
+        // --- テスト通知送信 API ---
+        if (url.pathname === "/api/notifications/test" && request.method === "POST") {
             try {
-                const body = await request.text();
-                // 非同期版の検証メソッドを使用 (CF Worker 環境向け)
-                const event = await stripe.webhooks.constructEventAsync(
-                    body,
-                    signature,
-                    env.STRIPE_WEBHOOK_SECRET
-                );
+                const { storeId, passcode, channel, target } = await request.json() as {
+                    storeId: string, passcode: string, channel: string, target: string
+                };
 
-                // 各イベントに応じた処理 (スタブ)
-                switch (event.type) {
-                    case "checkout.session.completed":
-                        // サブスクリプション開始時の処理
-                        const session = event.data.object as Stripe.Checkout.Session;
-                        console.log(`Checkout completed: ${session.id}`);
-                        break;
-                    case "customer.subscription.deleted":
-                        // 解約時の処理
-                        break;
-                    case "invoice.payment_failed":
-                        // 支払い失敗時の処理
-                        break;
-                    default:
-                        console.log(`Unhandled event type: ${event.type}`);
+                const store = await env.DB.prepare(
+                    "SELECT passcode, name FROM stores WHERE id = ?"
+                ).bind(storeId).first<{ passcode: string, name: string }>();
+
+                if (!store || store.passcode !== passcode) {
+                    return new Response("Unauthorized", { status: 401 });
                 }
 
-                return new Response(JSON.stringify({ received: true }), {
+                const notifier = NotificationFactory.getNotifier(channel, env);
+                await notifier.send(target, {
+                    title: `【テスト送信】${store.name}様、設定の確認です。`,
+                    message: "このメッセージが表示されていれば、通知設定は正常です。",
+                    items: [
+                        { yj_code: "TEST-CODE", old_status: "不明", new_status: "正常動作中" }
+                    ]
+                });
+
+                return new Response(JSON.stringify({ success: true }), {
                     headers: { "Content-Type": "application/json" }
                 });
             } catch (err: any) {
-                console.error("Webhook Error:", err.message);
-                return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+                return new Response(JSON.stringify({ success: false, error: err.message }), {
+                    status: 500,
+                    headers: { "Content-Type": "application/json" }
+                });
             }
         }
 
@@ -181,10 +180,11 @@ export default {
         const changes = await env.DB.prepare(`
             SELECT 
                 s.id as store_id,
-                s.notify_endpoint, 
                 s.name as store_name,
-                s.notify_channel,
                 s.notify_filter,
+                s.notify_line_endpoints,
+                s.notify_email_endpoints,
+                s.notify_webhook_endpoints,
                 w.yj_code, 
                 m.status as new_status,
                 w.last_notified_status as old_status
@@ -212,38 +212,49 @@ export default {
         for (const [storeId, items] of Object.entries(notificationsByStore)) {
             const firstItem = items[0];
             const filter = firstItem.notify_filter;
-            const channel = firstItem.notify_channel || 'line';
-            const endpoint = firstItem.notify_endpoint;
-
-            if (!endpoint) continue;
 
             const filteredItems = filter === 'restored_only'
                 ? items.filter(i => i.new_status === '通常')
                 : items;
 
-            if (filteredItems.length > 0) {
-                // カンマ区切りで最大3件の宛先に送信
-                const endpoints = (endpoint || '').split(',').map((e: string) => e.trim()).filter((e: string) => e.length > 0).slice(0, 3);
+            if (filteredItems.length === 0) continue;
 
-                for (const target of endpoints) {
+            const payload: NotificationPayload = {
+                title: `${firstItem.store_name}様、以下の採用薬のステータスが変化しました：`,
+                message: "",
+                items: filteredItems.map(i => ({
+                    yj_code: i.yj_code,
+                    old_status: i.old_status,
+                    new_status: i.new_status
+                }))
+            };
+
+            // 各チャネルごとに送信
+            const channels = [
+                { type: 'line', data: firstItem.notify_line_endpoints, limit: 3 },
+                { type: 'email', data: firstItem.notify_email_endpoints, limit: 3 },
+                { type: 'webhook', data: firstItem.notify_webhook_endpoints, limit: 0 }
+            ];
+
+            for (const ch of channels) {
+                if (!ch.data) continue;
+                const endpoints = ch.data.split(',')
+                    .map((e: string) => e.trim())
+                    .filter((e: string) => e.length > 0);
+
+                const targets = ch.limit > 0 ? endpoints.slice(0, ch.limit) : endpoints;
+
+                for (const target of targets) {
                     try {
-                        const notifier = NotificationFactory.getNotifier(channel, env);
-                        await notifier.send(target, {
-                            title: `${firstItem.store_name}様、以下の採用薬のステータスが変化しました：`,
-                            message: "",
-                            items: filteredItems.map(i => ({
-                                yj_code: i.yj_code,
-                                old_status: i.old_status,
-                                new_status: i.new_status
-                            }))
-                        });
+                        const notifier = NotificationFactory.getNotifier(ch.type, env);
+                        await notifier.send(target, payload);
                     } catch (err: any) {
-                        console.error(`Failed to notify store ${storeId} via ${channel} at ${target}:`, err?.message || err);
+                        console.error(`Failed to notify store ${storeId} via ${ch.type} at ${target}:`, err?.message || err);
                     }
                 }
             }
 
-            // 5. 通知後、ステータスを更新して次回の変化検知に備える
+            // 5. 通知後、商品ごとにステータスを更新
             for (const item of items) {
                 await env.DB.prepare(
                     "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"

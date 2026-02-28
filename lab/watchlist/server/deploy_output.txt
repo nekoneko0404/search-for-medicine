@@ -1,0 +1,21 @@
+
+ 笵・ｸ・wrangler 3.114.17 (update available 4.69.0)
+-----------------------------------------------
+
+笆ｲ [WARNING] The version of Wrangler you are using is now out-of-date.
+
+  Please update to the latest version to prevent critical errors.
+  Run `npm install --save-dev wrangler@4` to update to the latest version.
+  After installation, run Wrangler with `npx wrangler`.
+
+
+Total Upload: 187.67 KiB / gzip: 36.20 KiB
+Worker Startup Time: 2 ms
+Your worker has access to the following bindings:
+- D1 Databases:
+  - DB: watchlist_db (18f24c37-99dc-487d-8e3a-44ec4dda5364)
+Uploaded watchlist-backend (9.64 sec)
+Deployed watchlist-backend triggers (16.46 sec)
+  https://watchlist-backend.neko-neko-0404.workers.dev
+  schedule: 0 */3 * * *
+Current Version ID: 10d7e588-26fa-49c8-9b72-afb04b7f5a4a
