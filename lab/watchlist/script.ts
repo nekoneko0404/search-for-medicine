@@ -1,3 +1,4 @@
+// DEPLOY_ID: 2026-02-28-v1
 import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../../js/data';
 import { normalizeString, formatDate } from '../../js/utils';
 import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../../js/ui';
