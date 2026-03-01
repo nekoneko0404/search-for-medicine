@@ -677,6 +677,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
 
                 if (response.ok) {
+                    const result = await response.json() as { success: boolean, codes?: string[] };
+                    if (result.success && result.codes) {
+                        // サーバー側で正規化・変換されたコードでローカルを更新
+                        watchlistYJCodes = new Set(result.codes);
+                        watchlistInput.value = result.codes.join('\n');
+                        localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(result.codes));
+                        updateWatchlistCount();
+                        renderResults();
+                    }
                     showMessage('設定と監視リストを保存しました', 'success');
                 } else {
                     const errText = await response.text();

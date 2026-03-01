@@ -1,7 +1,18 @@
 import { LineClient } from "./line.js";
 import { CodeNormalizer } from "./normalizer.js";
 import { NotificationFactory } from "./notify.js";
+import { importMasterData } from "./import_master.js";
 import Stripe from "stripe";
+
+interface NotificationPayload {
+    title: string;
+    message: string;
+    items: {
+        yj_code: string;
+        old_status: string;
+        new_status: string;
+    }[];
+}
 
 export interface Env {
     DB: D1Database;
@@ -13,30 +24,36 @@ export interface Env {
 
 export default {
     async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-        const url = new URL(request.url);
+        try {
+            const url = new URL(request.url);
 
-        // --- 店舗登録 API (管理者/初期セットアップ用) ---
-        if (url.pathname === "/api/stores/register" && request.method === "POST") {
-            try {
-                const { id, name, passcode, planType } = await request.json() as {
-                    id: string, name: string, passcode: string, planType?: string
-                };
-
-                await env.DB.prepare(
-                    "INSERT INTO stores (id, name, passcode, plan_type) VALUES (?, ?, ?, ?)"
-                ).bind(id, name, passcode, planType || 'free').run();
-
-                return new Response(JSON.stringify({ success: true }), {
-                    headers: { "Content-Type": "application/json" }
-                });
-            } catch (err) {
-                return new Response("Conflict or Error", { status: 409 });
+            // --- 疎通確認用 API ---
+            if (url.pathname === "/api/ping") {
+                return new Response("pong");
             }
-        }
 
-        // --- 監視リストの一括登録 & 設定更新 API ---
-        if (url.pathname === "/api/watch-items/batch" && request.method === "POST") {
-            try {
+            // --- 店舗登録 API (管理者/初期セットアップ用) ---
+            if (url.pathname === "/api/stores/register" && request.method === "POST") {
+                try {
+                    const { id, name, passcode, planType } = await request.json() as {
+                        id: string, name: string, passcode: string, planType?: string
+                    };
+
+                    await env.DB.prepare(
+                        "INSERT INTO stores (id, name, passcode, plan_type) VALUES (?, ?, ?, ?)"
+                    ).bind(id, name, passcode, planType || 'free').run();
+
+                    return new Response(JSON.stringify({ success: true }), {
+                        headers: { "Content-Type": "application/json" }
+                    });
+                } catch (err: any) {
+                    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 409 });
+                }
+            }
+
+            // --- 監視リストの一括登録 & 設定更新 API ---
+            if (url.pathname === "/api/watch-items/batch" && request.method === "POST") {
+                const body = await request.json() as any;
                 const {
                     storeId,
                     passcode,
@@ -45,20 +62,12 @@ export default {
                     notifyLineEndpoints,
                     notifyEmailEndpoints,
                     notifyWebhookEndpoints
-                } = await request.json() as {
-                    storeId: string,
-                    passcode: string,
-                    yjCodes: string[],
-                    notifyFilter?: string,
-                    notifyLineEndpoints?: string,
-                    notifyEmailEndpoints?: string,
-                    notifyWebhookEndpoints?: string
-                };
+                } = body;
 
                 // 1. 店舗認証の検証
                 const store = await env.DB.prepare(
                     "SELECT plan_type, passcode FROM stores WHERE id = ?"
-                ).bind(storeId).first<{ plan_type: string, passcode: string }>();
+                ).bind(storeId || "").first<{ plan_type: string, passcode: string }>();
 
                 if (!store || store.passcode !== passcode) {
                     return new Response("Unauthorized", { status: 401 });
@@ -66,44 +75,56 @@ export default {
 
                 // 2. プランに基づいた上限チェック
                 const limit = store.plan_type === 'standard' ? 3000 : 20;
-                if (yjCodes.length > limit) {
-                    return new Response(`Limit exceeded. ${store.plan_type} plan limit is ${limit}.`, { status: 403 });
-                }
+                const codesToProcess = (yjCodes || []).slice(0, limit);
 
                 // 3. コードの正規化（名寄せ）
-                const normalizedCodes = CodeNormalizer.batchNormalize(yjCodes);
-                const uniqueCodes = Array.from(new Set(normalizedCodes)).slice(0, limit);
+                const normalizedCodes = CodeNormalizer.batchNormalize(codesToProcess);
+
+                // 3.5 9桁コード（レセ電算）を12桁（YJ）に変換
+                // ループ内のクエリを避け、一括で取得する
+                const receiptCodes = normalizedCodes.filter(c => c.length === 9);
+                const mappingMap = new Map<string, string>();
+
+                if (receiptCodes.length > 0) {
+                    // IN 句を使って一括取得 (D1のパラメータ上限を考慮し100件ずつ)
+                    const chunkSize = 100;
+                    for (let i = 0; i < receiptCodes.length; i += chunkSize) {
+                        const chunk = receiptCodes.slice(i, i + chunkSize);
+                        const placeholders = chunk.map(() => "?").join(",");
+                        const results = await env.DB.prepare(
+                            `SELECT receipt_code, yj_code FROM code_mappings WHERE receipt_code IN (${placeholders})`
+                        ).bind(...chunk).all<{ receipt_code: string, yj_code: string }>();
+
+                        if (results.results) {
+                            for (const row of results.results) {
+                                mappingMap.set(row.receipt_code, row.yj_code);
+                            }
+                        }
+                    }
+                }
+
+                const finalCodes = normalizedCodes.map(code =>
+                    code.length === 9 ? (mappingMap.get(code) || code) : code
+                );
+
+                const uniqueCodes = Array.from(new Set(finalCodes)).slice(0, limit);
 
                 // 4. 既存リストをクリアして一括挿入 & 設定更新
                 const statements = [];
 
-                // 通知設定の更新
                 if (notifyFilter) {
-                    statements.push(
-                        env.DB.prepare("UPDATE stores SET notify_filter = ? WHERE id = ?")
-                            .bind(notifyFilter, storeId)
-                    );
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_filter = ? WHERE id = ?").bind(notifyFilter, storeId));
                 }
                 if (notifyLineEndpoints !== undefined) {
-                    statements.push(
-                        env.DB.prepare("UPDATE stores SET notify_line_endpoints = ? WHERE id = ?")
-                            .bind(notifyLineEndpoints, storeId)
-                    );
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_line_endpoints = ? WHERE id = ?").bind(notifyLineEndpoints, storeId));
                 }
                 if (notifyEmailEndpoints !== undefined) {
-                    statements.push(
-                        env.DB.prepare("UPDATE stores SET notify_email_endpoints = ? WHERE id = ?")
-                            .bind(notifyEmailEndpoints, storeId)
-                    );
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_email_endpoints = ? WHERE id = ?").bind(notifyEmailEndpoints, storeId));
                 }
                 if (notifyWebhookEndpoints !== undefined) {
-                    statements.push(
-                        env.DB.prepare("UPDATE stores SET notify_webhook_endpoints = ? WHERE id = ?")
-                            .bind(notifyWebhookEndpoints, storeId)
-                    );
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_webhook_endpoints = ? WHERE id = ?").bind(notifyWebhookEndpoints, storeId));
                 }
 
-                // 監視リストの更新 (全削除後に再挿入)
                 statements.push(env.DB.prepare("DELETE FROM watch_items WHERE store_id = ?").bind(storeId));
 
                 for (const code of uniqueCodes) {
@@ -113,28 +134,31 @@ export default {
                     );
                 }
 
-                await env.DB.batch(statements);
+                // D1 のバッチ制限（通常10,000ステートメント）を考慮し、1000件ずつ実行
+                const batchSize = 1000;
+                for (let i = 0; i < statements.length; i += batchSize) {
+                    const chunk = statements.slice(i, i + batchSize);
+                    await env.DB.batch(chunk);
+                }
 
-                return new Response(JSON.stringify({ success: true, count: uniqueCodes.length }), {
+                return new Response(JSON.stringify({
+                    success: true,
+                    count: uniqueCodes.length,
+                    codes: uniqueCodes
+                }), {
                     headers: { "Content-Type": "application/json" }
                 });
-
-            } catch (err) {
-                console.error("Batch update error:", err);
-                return new Response("Internal Server Error", { status: 500 });
             }
-        }
 
-        // --- テスト通知送信 API ---
-        if (url.pathname === "/api/notifications/test" && request.method === "POST") {
-            try {
+            // --- テスト通知送信 API ---
+            if (url.pathname === "/api/notifications/test" && request.method === "POST") {
                 const { storeId, passcode, channel, target } = await request.json() as {
                     storeId: string, passcode: string, channel: string, target: string
                 };
 
                 const store = await env.DB.prepare(
                     "SELECT passcode, name FROM stores WHERE id = ?"
-                ).bind(storeId).first<{ passcode: string, name: string }>();
+                ).bind(storeId || "").first<{ passcode: string, name: string }>();
 
                 if (!store || store.passcode !== passcode) {
                     return new Response("Unauthorized", { status: 401 });
@@ -152,15 +176,57 @@ export default {
                 return new Response(JSON.stringify({ success: true }), {
                     headers: { "Content-Type": "application/json" }
                 });
-            } catch (err: any) {
-                return new Response(JSON.stringify({ success: false, error: err.message }), {
-                    status: 500,
+            }
+
+            // --- LINE Webhook API (ID取得サポート用) ---
+            if (url.pathname === "/api/notifications/line-webhook" && request.method === "POST") {
+                const body = await request.json() as any;
+                const events = body.events || [];
+
+                for (const event of events) {
+                    if ((event.type === "message" || event.type === "follow") && event.replyToken) {
+                        const userId = event.source.userId;
+                        const client = new LineClient(env.LINE_ACCESS_TOKEN);
+
+                        await client.replyMessage(event.replyToken, [{
+                            type: "text",
+                            text: `あなたのLINEユーザーID：\n\n${userId}`
+                        }]);
+                    }
+                }
+                return new Response("OK");
+            }
+
+            // --- マスタデータ更新 API (管理者用) ---
+            if (url.pathname === "/api/admin/update-master" && request.method === "POST") {
+                // セキュリティ: ヘッダーのパスコードチェック
+                const adminPasscode = request.headers.get("X-Admin-Passcode");
+                // TODO: 本番では環境変数等で管理することを推奨
+                if (adminPasscode !== "ADMIN_SECRET_KEY") {
+                    return new Response("Unauthorized", { status: 401 });
+                }
+
+                const csvText = await request.text();
+                const result = await importMasterData(csvText, env);
+
+                return new Response(JSON.stringify(result), {
                     headers: { "Content-Type": "application/json" }
                 });
             }
-        }
 
-        return new Response("Not Found", { status: 404 });
+            return new Response("Not Found", { status: 404 });
+
+        } catch (err: any) {
+            console.error("Global Error:", err.message, err.stack);
+            return new Response(JSON.stringify({
+                success: false,
+                error: err.message,
+                stack: err.stack
+            }), {
+                status: 500,
+                headers: { "Content-Type": "application/json" }
+            });
+        }
     },
 
     async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
@@ -254,11 +320,22 @@ export default {
                 }
             }
 
-            // 5. 通知後、商品ごとにステータスを更新
-            for (const item of items) {
-                await env.DB.prepare(
-                    "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"
-                ).bind(item.new_status, storeId, item.yj_code).run();
+            // 5. 通知後、一括でステータスを更新
+            const updateStatements = [];
+            for (const [storeId, items] of Object.entries(notificationsByStore)) {
+                for (const item of items) {
+                    updateStatements.push(
+                        env.DB.prepare(
+                            "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"
+                        ).bind(item.new_status, storeId, item.yj_code)
+                    );
+                }
+            }
+            if (updateStatements.length > 0) {
+                const batchSize = 500;
+                for (let i = 0; i < updateStatements.length; i += batchSize) {
+                    await env.DB.batch(updateStatements.slice(i, i + batchSize));
+                }
             }
         }
     }
@@ -306,8 +383,8 @@ async function updateMarketStatusSnapshot(env: Env) {
         }
     }
 
-    // D1 のバッチ制限（通常100KB、または数千KB/数千ステートメント）を考慮し、分割実行
-    const chunkSize = 100;
+    // D1 のバッチ制限を考慮し、1000件ずつ実行
+    const chunkSize = 1000;
     for (let i = 0; i < statements.length; i += chunkSize) {
         await env.DB.batch(statements.slice(i, i + chunkSize));
     }

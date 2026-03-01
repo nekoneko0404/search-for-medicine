@@ -43,3 +43,12 @@ CREATE TABLE IF NOT EXISTS system_config (
     value TEXT,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- code_mappings: レセプト電算コードとYJコードのマッピング
+CREATE TABLE IF NOT EXISTS code_mappings (
+    receipt_code TEXT PRIMARY KEY, -- 9桁のレセプト電算コード
+    yj_code TEXT NOT NULL,         -- 12桁のYJコード
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_code_mappings_yj ON code_mappings(yj_code);

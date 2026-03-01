@@ -80,7 +80,7 @@ export class EmailNotifier implements Notifier {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                from: "Medicine Alert <alerts@medicine-scanner.pages.dev>",
+                from: "onboarding@resend.dev",
                 to: [endpoint],
                 subject: `供給状況アラート: ${payload.items.length}件の変化`,
                 html: html
@@ -88,8 +88,13 @@ export class EmailNotifier implements Notifier {
         });
 
         if (!response.ok) {
-            throw new Error(`Email failed: ${response.status} ${await response.text()}`);
+            const errorText = await response.text();
+            console.error(`Resend API Error: ${response.status}`, errorText);
+            throw new Error(`Email failed: ${response.status} ${errorText}`);
         }
+
+        const result = await response.json();
+        console.log("Resend API Success:", result);
     }
 }
 
