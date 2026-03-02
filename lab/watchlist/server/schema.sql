@@ -13,6 +13,8 @@ CREATE TABLE IF NOT EXISTS stores (
     notify_line_endpoints TEXT,            -- LINE 通知先（カンマ区切り、最大3件）
     notify_email_endpoints TEXT,           -- メール通知先（カンマ区切り、最大3件）
     notify_webhook_endpoints TEXT,          -- Webhook 通知先（カンマ区切り）
+    notify_time TEXT,                      -- 通知希望時間 (HH:mm)
+    last_notified_at DATETIME,             -- 最後に通知を送った日時
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
@@ -30,6 +32,7 @@ CREATE TABLE IF NOT EXISTS watch_items (
 -- market_status_snapshots: 市場全体の供給状況スナップショット
 CREATE TABLE IF NOT EXISTS market_status_snapshots (
     yj_code TEXT PRIMARY KEY,
+    name TEXT,
     status TEXT NOT NULL,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );

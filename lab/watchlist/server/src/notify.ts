@@ -6,6 +6,7 @@ export interface NotificationPayload {
     message: string;
     items: Array<{
         yj_code: string;
+        name: string;
         old_status: string;
         new_status: string;
     }>;
@@ -24,7 +25,7 @@ export class LineNotifier implements Notifier {
     async send(endpoint: string, payload: NotificationPayload): Promise<void> {
         const client = new LineClient(this.accessToken);
         const text = `【供給状況アラート】\n${payload.title}\n\n` +
-            payload.items.map(i => `・コード: ${i.yj_code}\n  ${i.old_status || '不明'} → ${i.new_status}`).join("\n\n");
+            payload.items.map(i => `・${i.name}\n  (${i.yj_code})\n  ${i.old_status || '不明'} → ${i.new_status}`).join("\n\n");
 
         await client.pushMessage(endpoint, [{ type: "text", text }]);
     }
@@ -36,7 +37,7 @@ export class LineNotifier implements Notifier {
 export class WebhookNotifier implements Notifier {
     async send(endpoint: string, payload: NotificationPayload): Promise<void> {
         const text = `*【供給状況アラート】*\n${payload.title}\n\n` +
-            payload.items.map(i => `• コード: \`${i.yj_code}\`\n  ${i.old_status || '不明'} → *${i.new_status}*`).join("\n\n");
+            payload.items.map(i => `• *${i.name}*\n  (\`${i.yj_code}\`)\n  ${i.old_status || '不明'} → *${i.new_status}*`).join("\n\n");
 
         const response = await fetch(endpoint, {
             method: "POST",
@@ -63,11 +64,14 @@ export class EmailNotifier implements Notifier {
         const html = `
             <h3>【供給状況アラート】</h3>
             <p>${payload.title}</p>
-            <ul>
+            <ul style="list-style: none; padding-left: 0;">
                 ${payload.items.map(i => `
-                    <li>
-                        <strong>コード: ${i.yj_code}</strong><br>
-                        ${i.old_status || '不明'} &rarr; <span style="color: red;">${i.new_status}</span>
+                    <li style="margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                        <strong style="font-size: 1.1em;">${i.name}</strong><br>
+                        <small style="color: #666;">コード: ${i.yj_code}</small><br>
+                        <div style="margin-top: 5px;">
+                            ${i.old_status || '不明'} &rarr; <span style="color: red; font-weight: bold;">${i.new_status}</span>
+                        </div>
                     </li>
                 `).join("")}
             </ul>

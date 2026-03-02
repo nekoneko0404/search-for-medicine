@@ -9,6 +9,7 @@ interface NotificationPayload {
     message: string;
     items: {
         yj_code: string;
+        name: string;
         old_status: string;
         new_status: string;
     }[];
@@ -61,7 +62,8 @@ export default {
                     notifyFilter,
                     notifyLineEndpoints,
                     notifyEmailEndpoints,
-                    notifyWebhookEndpoints
+                    notifyWebhookEndpoints,
+                    notifyTime
                 } = body;
 
                 // 1. 店舗認証の検証
@@ -124,13 +126,18 @@ export default {
                 if (notifyWebhookEndpoints !== undefined) {
                     statements.push(env.DB.prepare("UPDATE stores SET notify_webhook_endpoints = ? WHERE id = ?").bind(notifyWebhookEndpoints, storeId));
                 }
+                if (notifyTime !== undefined) {
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_time = ? WHERE id = ?").bind(notifyTime, storeId));
+                }
 
                 statements.push(env.DB.prepare("DELETE FROM watch_items WHERE store_id = ?").bind(storeId));
 
                 for (const code of uniqueCodes) {
                     statements.push(
-                        env.DB.prepare("INSERT INTO watch_items (store_id, yj_code) VALUES (?, ?)")
-                            .bind(storeId, code)
+                        env.DB.prepare(`
+                            INSERT INTO watch_items (store_id, yj_code, last_notified_status) 
+                            VALUES (?, ?, (SELECT status FROM market_status_snapshots WHERE yj_code = ?))
+                        `).bind(storeId, code, code)
                     );
                 }
 
@@ -169,7 +176,7 @@ export default {
                     title: `【テスト送信】${store.name}様、設定の確認です。`,
                     message: "このメッセージが表示されていれば、通知設定は正常です。",
                     items: [
-                        { yj_code: "TEST-CODE", old_status: "不明", new_status: "正常動作中" }
+                        { yj_code: "TEST-CODE", name: "テスト用医薬品", old_status: "不明", new_status: "正常動作中" }
                     ]
                 });
 
@@ -251,7 +258,10 @@ export default {
                 s.notify_line_endpoints,
                 s.notify_email_endpoints,
                 s.notify_webhook_endpoints,
+                s.notify_time,
+                s.last_notified_at,
                 w.yj_code, 
+                m.name as drug_name,
                 m.status as new_status,
                 w.last_notified_status as old_status
             FROM watch_items w
@@ -278,6 +288,34 @@ export default {
         for (const [storeId, items] of Object.entries(notificationsByStore)) {
             const firstItem = items[0];
             const filter = firstItem.notify_filter;
+            const notifyTime = firstItem.notify_time; // HH:mm format
+            const lastNotifiedAt = firstItem.last_notified_at;
+
+            // 通知時間判定ロジック
+            if (notifyTime) {
+                const now = new Date();
+                const [targetHour, targetMin] = notifyTime.split(':').map(Number);
+
+                // 現在時刻（JST想定、現在がJSTならそのまま）と比較
+                // Cloudflare WorkersのDateはUTCなので調整が必要な場合があるが、
+                // ここでは単純に「前回通知から一定時間経過」かつ「指定時間を過ぎている」かを見る。
+                // 3時間ごとの実行なので、指定時間の「直後の実行」で送るようにする。
+
+                const targetTimeToday = new Date(now);
+                targetTimeToday.setHours(targetHour, targetMin, 0, 0);
+
+                const lastNotifiedDate = lastNotifiedAt ? new Date(lastNotifiedAt) : new Date(0);
+
+                // 1. 指定時間を過ぎている
+                // 2. 今日まだ通知していない（最後に通知したのが指定時間より前）
+                const isAfterTargetTime = now >= targetTimeToday;
+                const notYetNotifiedToday = lastNotifiedDate < targetTimeToday;
+
+                if (!(isAfterTargetTime && notYetNotifiedToday)) {
+                    console.log(`Skipping store ${storeId}: notifyTime is ${notifyTime}, now is ${now.toISOString()}`);
+                    continue;
+                }
+            }
 
             const filteredItems = filter === 'restored_only'
                 ? items.filter(i => i.new_status === '通常')
@@ -290,6 +328,7 @@ export default {
                 message: "",
                 items: filteredItems.map(i => ({
                     yj_code: i.yj_code,
+                    name: i.drug_name || '名称不明',
                     old_status: i.old_status,
                     new_status: i.new_status
                 }))
@@ -322,15 +361,19 @@ export default {
 
             // 5. 通知後、一括でステータスを更新
             const updateStatements = [];
-            for (const [storeId, items] of Object.entries(notificationsByStore)) {
-                for (const item of items) {
-                    updateStatements.push(
-                        env.DB.prepare(
-                            "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"
-                        ).bind(item.new_status, storeId, item.yj_code)
-                    );
-                }
+            // ステータス更新
+            for (const item of items) {
+                updateStatements.push(
+                    env.DB.prepare(
+                        "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"
+                    ).bind(item.new_status, storeId, item.yj_code)
+                );
             }
+            // 通知日時更新
+            updateStatements.push(
+                env.DB.prepare("UPDATE stores SET last_notified_at = CURRENT_TIMESTAMP WHERE id = ?").bind(storeId)
+            );
+
             if (updateStatements.length > 0) {
                 const batchSize = 500;
                 for (let i = 0; i < updateStatements.length; i += batchSize) {
@@ -346,7 +389,7 @@ export default {
  */
 async function updateMarketStatusSnapshot(env: Env) {
     const FILE_ID_MAIN = '1ZyjtfiRjGoV9xHSA5Go4rJZr281gqfMFW883Y7s9mQU';
-    const columns = 'E,L'; // YJコード (E), 出荷状況 (L)
+    const columns = 'E,F,L'; // YJコード (E), 品名 (F), 出荷状況 (L)
     const csvUrl = `https://docs.google.com/spreadsheets/d/${FILE_ID_MAIN}/gviz/tq?tqx=out:csv&t=${Date.now()}&tq=${encodeURIComponent('SELECT ' + columns)}`;
 
     const response = await fetch(csvUrl);
@@ -369,16 +412,17 @@ async function updateMarketStatusSnapshot(env: Env) {
     const statements = [];
     for (const rowText of rows) {
         const row = parseCSVLine(rowText);
-        if (row.length < 2) continue;
+        if (row.length < 3) continue;
 
         const yjCode = row[0].replace(/"/g, '').trim();
-        const status = row[1].replace(/"/g, '').trim();
+        const name = row[1].replace(/"/g, '').trim();
+        const status = row[2].replace(/"/g, '').trim();
 
         if (yjCode && status) {
             statements.push(
                 env.DB.prepare(
-                    "INSERT INTO market_status_snapshots (yj_code, status, last_updated) VALUES (?, ?, CURRENT_TIMESTAMP) ON CONFLICT(yj_code) DO UPDATE SET status = EXCLUDED.status, last_updated = CURRENT_TIMESTAMP"
-                ).bind(yjCode, status)
+                    "INSERT INTO market_status_snapshots (yj_code, name, status, last_updated) VALUES (?, ?, ?, CURRENT_TIMESTAMP) ON CONFLICT(yj_code) DO UPDATE SET name = EXCLUDED.name, status = EXCLUDED.status, last_updated = CURRENT_TIMESTAMP"
+                ).bind(yjCode, name, status)
             );
         }
     }

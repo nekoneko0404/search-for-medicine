@@ -532,6 +532,24 @@
                                         <option value="restored_only">制限が解除された時のみ</option>
                                     </select>
                                 </div>
+
+                                <div
+                                    class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">
+                                            <i class="fas fa-clock mr-1"></i> 通知時間:
+                                        </span>
+                                    </div>
+                                    <select id="notify-time-input"
+                                        class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-2 px-3 bg-white">
+                                        <option value="">即時（変化があった時）</option>
+                                        <option value="09:00">09:00頃</option>
+                                        <option value="12:00">12:00頃</option>
+                                        <option value="15:00">15:00頃</option>
+                                        <option value="18:00">18:00頃</option>
+                                        <option value="21:00">21:00頃</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
