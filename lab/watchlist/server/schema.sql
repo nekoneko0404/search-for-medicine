@@ -13,7 +13,9 @@ CREATE TABLE IF NOT EXISTS stores (
     notify_line_endpoints TEXT,            -- LINE 通知先（カンマ区切り、最大3件）
     notify_email_endpoints TEXT,           -- メール通知先（カンマ区切り、最大3件）
     notify_webhook_endpoints TEXT,          -- Webhook 通知先（カンマ区切り）
-    notify_time TEXT,                      -- 通知希望時間 (HH:mm)
+    notify_time TEXT,                      -- (Legacy) 通知希望時間 (HH:mm)
+    notify_allowed_start TEXT DEFAULT '00:00', -- 通知許可開始時間 (HH:mm)
+    notify_allowed_end TEXT DEFAULT '24:00',   -- 通知許可終了時間 (HH:mm)
     last_notified_at DATETIME,             -- 最後に通知を送った日時
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP

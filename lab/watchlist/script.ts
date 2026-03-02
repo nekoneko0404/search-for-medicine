@@ -627,7 +627,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
         const passcode = (document.getElementById('passcode-input') as HTMLInputElement)?.value.trim();
         const notifyFilter = (document.getElementById('notify-filter-input') as HTMLSelectElement)?.value || 'all';
-        const notifyTime = (document.getElementById('notify-time-input') as HTMLSelectElement)?.value || '';
+        const notifyAllowedStart = (document.getElementById('notify-start-input') as HTMLSelectElement)?.value || '00:00';
+        const notifyAllowedEnd = (document.getElementById('notify-end-input') as HTMLSelectElement)?.value || '24:00';
 
         const lineEnable = (document.getElementById('notify-line-enable') as HTMLInputElement)?.checked;
         const lineEndpoints = (document.getElementById('notify-line-input') as HTMLInputElement)?.value.trim() || '';
@@ -654,7 +655,8 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('supply_store_id', storeId);
             localStorage.setItem('supply_passcode', passcode);
             localStorage.setItem('supply_notify_filter', notifyFilter);
-            localStorage.setItem('supply_notify_time', notifyTime);
+            localStorage.setItem('supply_notify_allowed_start', notifyAllowedStart);
+            localStorage.setItem('supply_notify_allowed_end', notifyAllowedEnd);
             localStorage.setItem('supply_notify_line_endpoints', lineEndpoints);
             localStorage.setItem('supply_notify_line_enable', String(lineEnable));
             localStorage.setItem('supply_notify_email_endpoints', emailEndpoints);
@@ -672,7 +674,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         passcode,
                         yjCodes: Array.from(watchlistYJCodes),
                         notifyFilter,
-                        notifyTime,
+                        notifyAllowedStart,
+                        notifyAllowedEnd,
                         notifyLineEndpoints: lineEnable ? lineEndpoints : '',
                         notifyEmailEndpoints: emailEnable ? emailEndpoints : '',
                         notifyWebhookEndpoints: webhookEnable ? webhookEndpoints : ''
@@ -719,7 +722,8 @@ document.addEventListener('DOMContentLoaded', () => {
         setVal('store-id-input', 'supply_store_id');
         setVal('passcode-input', 'supply_passcode');
         setVal('notify-filter-input', 'supply_notify_filter', 'all');
-        setVal('notify-time-input', 'supply_notify_time', '');
+        setVal('notify-start-input', 'supply_notify_allowed_start', '00:00');
+        setVal('notify-end-input', 'supply_notify_allowed_end', '24:00');
 
         setChecked('notify-line-enable', 'supply_notify_line_enable');
         setVal('notify-line-input', 'supply_notify_line_endpoints');

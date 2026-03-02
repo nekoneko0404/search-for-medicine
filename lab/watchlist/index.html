@@ -533,21 +533,32 @@
                                     </select>
                                 </div>
 
-                                <div
-                                    class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">
-                                            <i class="fas fa-clock mr-1"></i> 通知時間:
-                                        </span>
-                                    </div>
-                                    <select id="notify-time-input"
-                                        class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-2 px-3 bg-white">
-                                        <option value="">即時（変化があった時）</option>
-                                        <option value="09:00">09:00頃</option>
-                                        <option value="12:00">12:00頃</option>
-                                        <option value="15:00">15:00頃</option>
-                                        <option value="18:00">18:00頃</option>
-                                        <option value="21:00">21:00頃</option>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">
+                                        <i class="fas fa-clock mr-1"></i> 通知可能時間:
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <select id="notify-start-input"
+                                        class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-1.5 px-2 bg-white">
+                                        <option value="00:00">00:00</option>
+                                        <option value="06:00">06:00</option>
+                                        <option value="07:00">07:00</option>
+                                        <option value="08:00">08:00</option>
+                                        <option value="09:00">09:00</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="21:00">21:00</option>
+                                    </select>
+                                    <span class="text-gray-400 text-xs font-bold">〜</span>
+                                    <select id="notify-end-input"
+                                        class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-1.5 px-2 bg-white">
+                                        <option value="24:00">24:00 (終日)</option>
+                                        <option value="18:00">18:00</option>
+                                        <option value="20:00">20:00</option>
+                                        <option value="21:00">21:00</option>
+                                        <option value="22:00">22:00</option>
+                                        <option value="23:00">23:00</option>
+                                        <option value="00:00">00:00</option>
                                     </select>
                                 </div>
                             </div>
@@ -555,17 +566,18 @@
                     </div>
                 </div>
             </div>
-            <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white">
-                <button id="clear-watchlist"
-                    class="px-4 py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition-colors">全消去</button>
-                <div class="flex gap-3">
-                    <button id="update-snapshot"
-                        class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">現在の状態を記録（既読）</button>
-                    <button id="save-watchlist"
-                        class="px-8 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">設定を保存</button>
-                </div>
+        </div>
+        <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white">
+            <button id="clear-watchlist"
+                class="px-4 py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition-colors">全消去</button>
+            <div class="flex gap-3">
+                <button id="update-snapshot"
+                    class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">現在の状態を記録（既読）</button>
+                <button id="save-watchlist"
+                    class="px-8 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">設定を保存</button>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Toast Message -->

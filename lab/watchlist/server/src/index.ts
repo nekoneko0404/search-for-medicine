@@ -63,7 +63,9 @@ export default {
                     notifyLineEndpoints,
                     notifyEmailEndpoints,
                     notifyWebhookEndpoints,
-                    notifyTime
+                    notifyTime,
+                    notifyAllowedStart,
+                    notifyAllowedEnd
                 } = body;
 
                 // 1. 店舗認証の検証
@@ -128,6 +130,12 @@ export default {
                 }
                 if (notifyTime !== undefined) {
                     statements.push(env.DB.prepare("UPDATE stores SET notify_time = ? WHERE id = ?").bind(notifyTime, storeId));
+                }
+                if (notifyAllowedStart !== undefined) {
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_allowed_start = ? WHERE id = ?").bind(notifyAllowedStart, storeId));
+                }
+                if (notifyAllowedEnd !== undefined) {
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_allowed_end = ? WHERE id = ?").bind(notifyAllowedEnd, storeId));
                 }
 
                 statements.push(env.DB.prepare("DELETE FROM watch_items WHERE store_id = ?").bind(storeId));
@@ -259,6 +267,8 @@ export default {
                 s.notify_email_endpoints,
                 s.notify_webhook_endpoints,
                 s.notify_time,
+                s.notify_allowed_start,
+                s.notify_allowed_end,
                 s.last_notified_at,
                 w.yj_code, 
                 m.name as drug_name,
@@ -291,28 +301,52 @@ export default {
             const notifyTime = firstItem.notify_time; // HH:mm format
             const lastNotifiedAt = firstItem.last_notified_at;
 
-            // 通知時間判定ロジック
+            const notifyStart = firstItem.notify_allowed_start || "00:00";
+            const notifyEnd = firstItem.notify_allowed_end || "24:00";
+
+            // --- 通知時間判定ロジック ---
+            const now = new Date();
+            // JSTに変換（Cloudflare WorkersはUTC）
+            const jstNow = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+            const currentHour = jstNow.getUTCHours();
+            const currentMin = jstNow.getUTCMinutes();
+            const currentTimeVal = currentHour * 60 + currentMin;
+
             if (notifyTime) {
-                const now = new Date();
+                // 1. 固定時間設定 (Legacy / 指定時間ちょうど付近で送る)
                 const [targetHour, targetMin] = notifyTime.split(':').map(Number);
+                const targetTimeToday = new Date(jstNow);
+                targetTimeToday.setUTCHours(targetHour, targetMin, 0, 0);
 
-                // 現在時刻（JST想定、現在がJSTならそのまま）と比較
-                // Cloudflare WorkersのDateはUTCなので調整が必要な場合があるが、
-                // ここでは単純に「前回通知から一定時間経過」かつ「指定時間を過ぎている」かを見る。
-                // 3時間ごとの実行なので、指定時間の「直後の実行」で送るようにする。
+                const lastNotifiedDate = lastNotifiedAt ? new Date(new Date(lastNotifiedAt).getTime() + (9 * 60 * 60 * 1000)) : new Date(0);
 
-                const targetTimeToday = new Date(now);
-                targetTimeToday.setHours(targetHour, targetMin, 0, 0);
-
-                const lastNotifiedDate = lastNotifiedAt ? new Date(lastNotifiedAt) : new Date(0);
-
-                // 1. 指定時間を過ぎている
-                // 2. 今日まだ通知していない（最後に通知したのが指定時間より前）
-                const isAfterTargetTime = now >= targetTimeToday;
+                const isAfterTargetTime = jstNow >= targetTimeToday;
                 const notYetNotifiedToday = lastNotifiedDate < targetTimeToday;
 
                 if (!(isAfterTargetTime && notYetNotifiedToday)) {
-                    console.log(`Skipping store ${storeId}: notifyTime is ${notifyTime}, now is ${now.toISOString()}`);
+                    console.log(`Skipping store ${storeId}: notifyTime is ${notifyTime}, JST is ${jstNow.toISOString()}`);
+                    continue;
+                }
+            } else {
+                // 2. 範囲判定 (通知許可時間帯)
+                const [startH, startM] = notifyStart.split(':').map(Number);
+                const [endH, endM] = notifyEnd.split(':').map(Number);
+                const startTimeVal = startH * 60 + startM;
+                const endTimeVal = endH * 60 + endM;
+
+                let isAllowed = false;
+                if (startTimeVal < endTimeVal) {
+                    // 同一日内 (例: 09:00 - 21:00)
+                    isAllowed = currentTimeVal >= startTimeVal && currentTimeVal < endTimeVal;
+                } else if (startTimeVal > endTimeVal) {
+                    // 夜間許可 (例: 21:00 - 06:00)
+                    isAllowed = currentTimeVal >= startTimeVal || currentTimeVal < endTimeVal;
+                } else {
+                    isAllowed = true; // 00:00 - 00:00 など
+                }
+
+                if (!isAllowed) {
+                    console.log(`Skipping store ${storeId}: Out of allowed range ${notifyStart}-${notifyEnd}, JST is ${currentHour}:${currentMin}`);
                     continue;
                 }
             }
