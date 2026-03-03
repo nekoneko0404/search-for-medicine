@@ -664,6 +664,12 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('supply_notify_webhook_endpoints', webhookEndpoints);
             localStorage.setItem('supply_notify_webhook_enable', String(webhookEnable));
 
+            if (storeId) {
+                if (!confirm('【同期の確認】\n保存すると、クラウド上の設定も更新されます。他のデバイスでこのIDを使用している場合、そちらの設定も上書きされますが、よろしいですか？')) {
+                    return;
+                }
+            }
+
             try {
                 showMessage('クラウドと同期中...', 'info');
                 const response = await fetch('/api/watch-items/batch', {
@@ -731,6 +737,12 @@ document.addEventListener('DOMContentLoaded', () => {
         setVal('notify-email-input', 'supply_notify_email_endpoints');
         setChecked('notify-webhook-enable', 'supply_notify_webhook_enable');
         setVal('notify-webhook-input', 'supply_notify_webhook_endpoints');
+
+        const storeId = localStorage.getItem('supply_store_id');
+        const passcode = localStorage.getItem('supply_passcode');
+        if (storeId && passcode) {
+            updateLoginUI(true);
+        }
     }
 
     // テスト送信ボタンのイベント設定
@@ -784,34 +796,60 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTestButton('test-email-btn', 'email', 'notify-email-input', 'notify-email-enable');
     setupTestButton('test-webhook-btn', 'webhook', 'notify-webhook-input', 'notify-webhook-enable');
 
-    const restoreSettings = async () => {
-        const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
-        const passcode = (document.getElementById('passcode-input') as HTMLInputElement)?.value.trim();
+    const updateLoginUI = (isLoggedIn: boolean) => {
+        const badge = document.getElementById('login-status-badge');
+        const notice = document.getElementById('sync-notice-area');
+        if (badge) {
+            badge.innerText = isLoggedIn ? 'Linked' : 'Guest Mode';
+            badge.className = isLoggedIn
+                ? 'bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase transition-all'
+                : 'bg-gray-100 text-gray-500 text-[9px] font-black px-1.5 py-0.5 rounded uppercase transition-all';
+        }
+        if (notice) {
+            if (isLoggedIn) {
+                notice.classList.remove('hidden');
+            } else {
+                notice.classList.add('hidden');
+            }
+        }
+    };
+
+    const restoreSettings = async (isAuto: boolean = false) => {
+        const storeIdInput = document.getElementById('store-id-input') as HTMLInputElement;
+        const passcodeInput = document.getElementById('passcode-input') as HTMLInputElement;
+        const storeId = storeIdInput?.value.trim();
+        const passcode = passcodeInput?.value.trim();
 
         if (!storeId || !passcode) {
-            showMessage('設定を読み込むには店舗IDとパスコードを入力してください', 'error');
+            if (!isAuto) showMessage('店舗IDとパスコードを入力してください', 'error');
+            updateLoginUI(false);
             return;
         }
 
+        // Avoid redundant sync if already logged in with same credentials
+        const lastId = localStorage.getItem('supply_store_id');
+        const lastPw = localStorage.getItem('supply_passcode');
+        if (isAuto && storeId === lastId && passcode === lastPw) return;
+
         try {
-            showMessage('クラウドから設定を読み込み中...', 'info');
+            if (!isAuto) showMessage('クラウドから同期中...', 'info');
             const response = await fetch(`/api/watch-items/get?storeId=${encodeURIComponent(storeId)}&passcode=${encodeURIComponent(passcode)}`);
 
             if (response.ok) {
-                const data = await response.json() as {
-                    success: boolean,
-                    store: {
-                        notifyFilter: string,
-                        notifyLineEndpoints: string,
-                        notifyEmailEndpoints: string,
-                        notifyWebhookEndpoints: string,
-                        notifyAllowedStart: string,
-                        notifyAllowedEnd: string
-                    },
-                    yjCodes: string[]
-                };
-
+                const data = await response.json() as any;
                 if (data.success) {
+                    // Confirmation for auto-sync overwrite
+                    if (isAuto && watchlistInput && watchlistInput.value.trim().length > 0) {
+                        const currentInput = watchlistInput.value.trim();
+                        const cloudInput = data.yjCodes.join('\n');
+                        if (currentInput !== cloudInput) {
+                            if (!confirm('クラウド上に保存された設定が見つかりました。\n現在入力されている内容を上書きして同期しますか？')) {
+                                updateLoginUI(true); // Treat as logged in but skip overwrite
+                                return;
+                            }
+                        }
+                    }
+
                     if (watchlistInput) watchlistInput.value = data.yjCodes.join('\n');
 
                     const setVal = (id: string, val: string) => {
@@ -836,31 +874,29 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('supply_store_id', storeId);
                     localStorage.setItem('supply_passcode', passcode);
                     localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(data.yjCodes));
-                    localStorage.setItem('supply_notify_filter', data.store.notifyFilter);
-                    localStorage.setItem('supply_notify_allowed_start', data.store.notifyAllowedStart);
-                    localStorage.setItem('supply_notify_allowed_end', data.store.notifyAllowedEnd);
-                    localStorage.setItem('supply_notify_line_endpoints', data.store.notifyLineEndpoints);
-                    localStorage.setItem('supply_notify_line_enable', String(!!data.store.notifyLineEndpoints));
-                    localStorage.setItem('supply_notify_email_endpoints', data.store.notifyEmailEndpoints);
-                    localStorage.setItem('supply_notify_email_enable', String(!!data.store.notifyEmailEndpoints));
-                    localStorage.setItem('supply_notify_webhook_endpoints', data.store.notifyWebhookEndpoints);
-                    localStorage.setItem('supply_notify_webhook_enable', String(!!data.store.notifyWebhookEndpoints));
 
                     watchlistYJCodes = new Set(data.yjCodes);
                     updateWatchlistCount();
                     renderResults();
-                    showMessage('設定と監視リストを復元しました', 'success');
+                    updateLoginUI(true);
+                    if (!isAuto) showMessage('クラウド設定を同期しました', 'success');
                 }
             } else {
-                const errText = await response.text();
-                showMessage(`読み込み失敗: ${errText || '認証エラー'}`, 'error');
+                if (!isAuto) showMessage('認証に失敗しました。IDまたはパスコードを確認してください', 'error');
+                updateLoginUI(false);
             }
         } catch (err) {
-            showMessage('ネットワークエラーにより読み込みに失敗しました', 'error');
+            if (!isAuto) showMessage('クラウドとの接続に失敗しました', 'error');
+            updateLoginUI(false);
         }
     };
 
-    document.getElementById('restore-settings-btn')?.addEventListener('click', restoreSettings);
+    // Auto-sync trigger on blur
+    ['store-id-input', 'passcode-input'].forEach(id => {
+        document.getElementById(id)?.addEventListener('blur', () => restoreSettings(true));
+    });
+    // Support manual restore button just in case
+    document.getElementById('restore-settings-btn')?.addEventListener('click', () => restoreSettings(false));
 
     function updateWatchlistCount() {
         if (watchlistCountDisplay && watchlistInput) {

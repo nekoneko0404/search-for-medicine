@@ -364,216 +364,149 @@
                 </button>
             </div>
             <div class="p-6 overflow-y-auto flex-grow">
+                <!-- Account Info Section (Top) -->
+                <div class="mb-8 p-6 bg-indigo-50/30 rounded-2xl border border-indigo-100/50">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div
+                            class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-indigo-600">
+                            <i class="fas fa-user-circle text-xl"></i>
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h4 class="text-base font-black text-gray-900 leading-none">アカウント連携 (B2Pharmacy)</h4>
+                                <span id="login-status-badge"
+                                    class="bg-gray-100 text-gray-500 text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Guest
+                                    Mode</span>
+                            </div>
+                            <p class="text-[10px] text-gray-400 font-bold">契約情報を入力すると、薬品リストと通知設定が自動同期されます</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                class="flex items-center gap-2 text-[10px] font-black text-gray-500 mb-1.5 uppercase tracking-wider">ご利用店ID</label>
+                            <input type="text" id="store-id-input"
+                                class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2"
+                                placeholder="pharmacy-01">
+                        </div>
+                        <div>
+                            <label
+                                class="flex items-center gap-2 text-[10px] font-black text-gray-500 mb-1.5 uppercase tracking-wider">パスコード</label>
+                            <input type="password" id="passcode-input"
+                                class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2"
+                                placeholder="契約パスコード">
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Medicine Registration Section -->
                 <div class="mb-8">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center gap-2">
                             <span
-                                class="bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-tighter">Plan</span>
-                            <span class="text-sm font-bold text-gray-700">医薬品登録</span>
-                        </div>
-                        <div class="flex gap-2">
-                            <span
-                                class="bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-0.5 rounded border border-gray-200">
-                                フリー: 20件
-                            </span>
-                            <span
-                                class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2 py-0.5 rounded border border-indigo-100">
-                                スタンダード: 3,000件
-                            </span>
+                                class="bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 rounded uppercase tracking-tighter">List</span>
+                            <span class="text-sm font-bold text-gray-700">監視する医薬品の登録</span>
                         </div>
                     </div>
-
-                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 mb-4">
-                        <div class="flex items-start gap-3">
-                            <i class="fas fa-flask-potion text-amber-500 mt-0.5"></i>
-                            <div>
-                                <p class="text-amber-800 text-xs font-black mb-1">【テスト期間中の特別仕様】</p>
-                                <ul class="text-amber-700 text-[11px] font-medium list-disc list-inside space-y-0.5">
-                                    <li>現在はスタンダード登録なしで<span class="font-black underline">登録件数無制限</span>で試用可能です。</li>
-                                    <li>本番移行時には、テスト登録されたデータは<span class="font-black text-red-600">全てクリア</span>されます。</li>
-                                </ul>
-                            </div>
-                        </div>
+                    <textarea id="watchlist-input" rows="6"
+                        class="w-full rounded-xl border-gray-200 shadow-inner focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm p-4 h-40 bg-gray-50 mb-3"
+                        placeholder="YJコードまたはレセ電算コードを改行区切りで入力"></textarea>
+                    <div id="watchlist-count" class="text-right text-gray-500 text-[11px] font-bold mb-6">現在の登録件数: 0件
                     </div>
-
-                    <p class="text-gray-500 text-[11px] mb-3 leading-relaxed">
-                        レセコンや在庫管理システムから抽出した「YJコード」または「レセ電算コード」を貼り付けてください。改行区切りで入力可能です。
-                    </p>
                 </div>
-                <textarea id="watchlist-input" rows="8"
-                    class="w-full rounded-xl border-gray-200 shadow-inner focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm p-4 h-48 bg-gray-50 mb-4"
-                    placeholder="例:&#10;123456701&#10;234567802"></textarea>
-                <div id="watchlist-count" class="mt-2 text-right text-gray-500 text-xs font-bold mb-6">現在の登録件数: 0件</div>
 
-                <!-- Cloud Sync (B2B) Section -->
+                <!-- Notification Settings Section -->
                 <div class="border-t border-gray-100 pt-8 mt-6">
                     <div class="flex items-center gap-3 mb-6">
                         <div
                             class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
-                            <i class="fas fa-cloud-check text-xl"></i>
+                            <i class="fas fa-paper-plane text-xl"></i>
                         </div>
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-base font-black text-gray-900 leading-none">自動通知設定 (B2Pharmacy)</h4>
+                            <h4 class="text-base font-black text-gray-900 leading-none mb-1">通知設定</h4>
+                            <p class="text-[10px] text-gray-400 font-bold">チャネルと通知スケジュールをカスタマイズします</p>
+                        </div>
+                    </div>
+
+                    <!-- Test Mode Warning -->
+                    <div
+                        class="bg-gray-100 rounded-xl p-3 mb-6 border border-gray-200 text-[11px] text-gray-500 leading-relaxed font-bold">
+                        <span class="text-amber-600 font-black">【テスト期間中】</span>実際の通知送信は準備中です
+                    </div>
+
+                    <div class="space-y-4">
+                        <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-5 space-y-5">
+                            <!-- LINE -->
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="notify-line-enable"
+                                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-sm font-bold text-gray-700">LINE 通知</span>
+                                    </label>
+                                    <button type="button" id="test-line-btn"
+                                        class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
+                                </div>
+                                <input type="text" id="notify-line-input"
+                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 py-2 px-3"
+                                    placeholder="LINE ID">
+                            </div>
+
+                            <!-- Email -->
+                            <div class="flex flex-col gap-2 pt-3 border-t border-indigo-100/30">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="notify-email-enable"
+                                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-sm font-bold text-gray-700">メール通知</span>
+                                    </label>
+                                    <button type="button" id="test-email-btn"
+                                        class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
+                                </div>
+                                <input type="text" id="notify-email-input"
+                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 py-2 px-3"
+                                    placeholder="メールアドレス">
+                            </div>
+                            <!-- (Other channels and filters kept as before, just more compact tags) -->
+                            <div
+                                class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">通知条件</span>
+                                <select id="notify-filter-input"
+                                    class="text-xs font-bold border-gray-200 rounded-lg py-2 px-3 bg-white">
+                                    <option value="all">すべての変化</option>
+                                    <option value="restored_only">解除時のみ</option>
+                                </select>
+                            </div>
+                            <div
+                                class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <span
-                                    class="bg-indigo-100 text-indigo-700 text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Standard
-                                    Only</span>
-                            </div>
-                            <p class="text-[10px] text-gray-400 font-bold">契約情報を入力して、スマホへの通知を有効にします</p>
-                        </div>
-                    </div>
-
-                    <!-- Test Mode Warning for Notification -->
-                    <div class="bg-gray-100 rounded-xl p-4 mb-6 border border-gray-200">
-                        <div class="flex items-center gap-3">
-                            <i class="fas fa-bell-slash text-gray-400"></i>
-                            <p class="text-gray-500 text-[11px] font-bold">
-                                <span class="text-amber-600">※ テスト期間中のお知らせ:</span><br>
-                                現在、自動通知システムは準備中のため、設定を保存しても実際の通知は行われません。
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="space-y-6">
-                        <!-- Account Info -->
-                        <div
-                            class="grid grid-cols-1 sm:grid-cols-2 gap-5 p-5 bg-gray-50 rounded-2xl border border-gray-100">
-                            <div>
-                                <label
-                                    class="flex items-center gap-2 text-xs font-black text-gray-600 mb-2 uppercase tracking-wider">
-                                    <i class="fas fa-id-badge text-indigo-400"></i> ご利用店ID
-                                </label>
-                                <input type="text" id="store-id-input"
-                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2.5"
-                                    placeholder="例: pharmacy-01">
-                            </div>
-                            <div>
-                                <label
-                                    class="flex items-center gap-2 text-xs font-black text-gray-600 mb-2 uppercase tracking-wider">
-                                    <i class="fas fa-key text-indigo-400"></i> パスコード
-                                </label>
-                                <input type="password" id="passcode-input"
-                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2.5"
-                                    placeholder="契約時のパスコード">
-                            </div>
-                        </div>
-
-                        <div class="flex justify-end">
-                            <button id="restore-settings-btn" type="button"
-                                class="flex items-center gap-2 text-[11px] font-black text-indigo-600 hover:text-indigo-700 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-all border border-indigo-100/50">
-                                <i class="fas fa-sync-alt"></i> クラウドから設定を読み込む（復元）
-                            </button>
-                        </div>
-
-                        <div class="space-y-4">
-                            <!-- Notification Channels -->
-                            <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-5 space-y-5">
-                                <label
-                                    class="flex items-center gap-2 text-xs font-black text-indigo-900/60 uppercase tracking-wider mb-2">
-                                    <i class="fas fa-paper-plane"></i> 通知チャネル設定（複数選択可）
-                                </label>
-
-                                <!-- LINE -->
-                                <div class="flex flex-col gap-2">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="notify-line-enable"
-                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                            <span class="text-sm font-bold text-gray-700"><i
-                                                    class="fab fa-line text-[#06C755] mr-1"></i> LINE 通知</span>
-                                        </label>
-                                        <button type="button" id="test-line-btn"
-                                            class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50">テスト送信</button>
-                                    </div>
-                                    <input type="text" id="notify-line-input"
-                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2 px-3"
-                                        placeholder="LINE ID (最大3件、カンマ区切り)">
-                                </div>
-
-                                <!-- Email -->
-                                <div class="flex flex-col gap-2 pt-3 border-t border-indigo-100/30">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="notify-email-enable"
-                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                            <span class="text-sm font-bold text-gray-700"><i
-                                                    class="fas fa-envelope text-gray-400 mr-1"></i> メール通知</span>
-                                        </label>
-                                        <button type="button" id="test-email-btn"
-                                            class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50">テスト送信</button>
-                                    </div>
-                                    <input type="text" id="notify-email-input"
-                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2 px-3"
-                                        placeholder="メールアドレス (最大3件、カンマ区切り)">
-                                </div>
-
-                                <!-- Webhook -->
-                                <div class="flex flex-col gap-2 pt-3 border-t border-indigo-100/30">
-                                    <div class="flex items-center justify-between">
-                                        <label class="flex items-center gap-2 cursor-pointer">
-                                            <input type="checkbox" id="notify-webhook-enable"
-                                                class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                            <span class="text-sm font-bold text-gray-700"><i
-                                                    class="fas fa-link text-gray-400 mr-1"></i> Webhook
-                                                (Slack/Discord)</span>
-                                        </label>
-                                        <button type="button" id="test-webhook-btn"
-                                            class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50 disabled:opacity-50">テスト送信</button>
-                                    </div>
-                                    <input type="text" id="notify-webhook-input"
-                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2 px-3"
-                                        placeholder="Webhook URL (カンマ区切り)">
-                                </div>
-
-                                <div
-                                    class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">
-                                            <i class="fas fa-filter mr-1"></i> 通知する条件:
-                                        </span>
-                                    </div>
-                                    <select id="notify-filter-input"
-                                        class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-2 px-3 bg-white">
-                                        <option value="all">すべての変化を知らせる</option>
-                                        <option value="restored_only">制限が解除された時のみ</option>
+                                    class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">許可時間帯</span>
+                                <div class="flex items-center gap-2">
+                                    <select id="notify-start-input"
+                                        class="text-xs font-bold border-gray-200 rounded-lg py-1.5 px-2 bg-white">
+                                        <option value="00:00">00:00</option>
+                                        <option value="08:00">08:00</option>
+                                        <option value="09:00">09:00</option>
                                     </select>
-                                </div>
-                                <div
-                                    class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                    <div class="flex items-center gap-2">
-                                        <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">
-                                            <i class="fas fa-clock mr-1"></i> 通知可能時間:
-                                        </span>
-                                    </div>
-                                    <div class="flex items-center gap-2">
-                                        <select id="notify-start-input"
-                                            class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-1.5 px-2 bg-white">
-                                            <option value="00:00">00:00</option>
-                                            <option value="06:00">06:00</option>
-                                            <option value="07:00">07:00</option>
-                                            <option value="08:00">08:00</option>
-                                            <option value="09:00">09:00</option>
-                                            <option value="10:00">10:00</option>
-                                            <option value="21:00">21:00</option>
-                                        </select>
-                                        <span class="text-gray-400 text-xs font-bold">〜</span>
-                                        <select id="notify-end-input"
-                                            class="text-xs font-bold border-gray-200 rounded-lg focus:ring-indigo-500 py-1.5 px-2 bg-white">
-                                            <option value="24:00">24:00 (終日)</option>
-                                            <option value="18:00">18:00</option>
-                                            <option value="20:00">20:00</option>
-                                            <option value="21:00">21:00</option>
-                                            <option value="22:00">22:00</option>
-                                            <option value="23:00">23:00</option>
-                                            <option value="00:00">00:00</option>
-                                        </select>
-                                    </div>
+                                    <span class="text-gray-400 text-xs font-bold">〜</span>
+                                    <select id="notify-end-input"
+                                        class="text-xs font-bold border-gray-200 rounded-lg py-1.5 px-2 bg-white">
+                                        <option value="20:00">20:00</option>
+                                        <option value="21:00">21:00</option>
+                                        <option value="24:00">24:00</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div id="sync-notice-area" class="px-6 py-2 bg-indigo-50 border-t border-indigo-100 hidden">
+                <p class="text-indigo-700 text-[10px] font-black leading-tight flex items-center gap-2">
+                    <i class="fas fa-sync-alt animate-spin-slow"></i>
+                    <span>クラウド同期中: ここでの変更は全デバイスに反映されます</span>
+                </p>
             </div>
             <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white">
                 <button id="clear-watchlist"
