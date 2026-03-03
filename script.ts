@@ -738,6 +738,7 @@ const initApp = async function () {
             const result = await loadAndCacheData(updateProgress);
             if (result && result.data) {
                 excelData = result.data;
+                yj9Summary = summarizeBy9DigitYJ(excelData);
                 showMessage(`データを再読み込みしました: ${excelData.length}件`, 'success');
             }
         }).catch((err: any) => {
@@ -749,6 +750,7 @@ const initApp = async function () {
     const result = await loadAndCacheData(updateProgress);
     if (result && result.data) {
         excelData = result.data;
+        yj9Summary = summarizeBy9DigitYJ(excelData);
         renderTable([]);
         const resultsWrapper = getEl('resultsWrapper');
         if (resultsWrapper) resultsWrapper.classList.add('hidden');
