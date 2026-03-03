@@ -14,6 +14,8 @@ let sortStates: { [key: string]: 'asc' | 'desc' } = {
     ingredientName: 'asc'
 };
 
+let yj9Summary: Record<string, { normal: number, limited: number, stopped: number }> = {};
+
 // DOM Elements (Lazy loaded or used in function scope)
 const getEl = (id: string) => document.getElementById(id);
 
@@ -151,6 +153,7 @@ function searchData() {
 
     renderTable(filteredResults);
     updateDashboardMetrics(filteredResults);
+    yj9Summary = summarizeBy9DigitYJ(excelData);
 
     // Control header/footer visibility based on results
     document.body.classList.toggle('search-mode', filteredResults.length > 0);
@@ -213,6 +216,54 @@ function updateGauge(idPrefix: string, percent: number, color: string) {
     if (chartEl) {
         chartEl.style.background = `conic-gradient(${color} ${percent}%, #e2e8f0 0)`;
     }
+}
+
+function summarizeBy9DigitYJ(data: MedicineData[]) {
+    const summary: Record<string, { normal: number, limited: number, stopped: number }> = {};
+
+    data.forEach(item => {
+        if (!item.yjCode) return;
+        const yj9 = String(item.yjCode).substring(0, 9);
+        if (!summary[yj9]) {
+            summary[yj9] = { normal: 0, limited: 0, stopped: 0 };
+        }
+
+        const s = (item.shipmentStatus || '').trim();
+        if (s.includes('通常') || s.includes('通')) {
+            summary[yj9].normal++;
+        } else if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) {
+            summary[yj9].limited++;
+        } else if (s.includes('停止') || s.includes('停')) {
+            summary[yj9].stopped++;
+        }
+    });
+
+    return summary;
+}
+
+function createStackedBarHtml(yjCode: string | null) {
+    if (!yjCode || yjCode.length < 9) return '';
+    const yj9 = yjCode.substring(0, 9);
+    const stats = yj9Summary[yj9];
+    if (!stats) return '';
+
+    const total = stats.normal + stats.limited + stats.stopped;
+    if (total === 0) return '';
+
+    const pN = (stats.normal / total) * 100;
+    const pL = (stats.limited / total) * 100;
+    const pS = (stats.stopped / total) * 100;
+    const tooltipText = `同規格(9桁YJ)状況 - 通常: ${stats.normal}, 限定: ${stats.limited}, 停止: ${stats.stopped}`;
+
+    return `
+        <div class="w-full max-w-[70px] mt-1" title="${tooltipText}">
+            <div class="bar-container h-1 flex rounded-full overflow-hidden bg-gray-100 shadow-inner" style="height: 4px;">
+                <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
+                <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
+                <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
+            </div>
+        </div>
+    `;
 }
 
 
@@ -366,6 +417,11 @@ function renderTable(data: MedicineData[]) {
         }
         statusCell.appendChild(statusContainer);
 
+        // Add Stacked Bar Graph
+        const barContainer = document.createElement('div');
+        barContainer.innerHTML = createStackedBarHtml(item.yjCode);
+        statusCell.appendChild(barContainer);
+
         // 4. Reason Cell
         const reasonCell = newRow.insertCell(3);
         reasonCell.textContent = item.reasonForLimitation || "";
@@ -475,6 +531,12 @@ function renderTable(data: MedicineData[]) {
             statusRow.appendChild(volDiv);
         }
         card.appendChild(statusRow);
+
+        // Add Stacked Bar Graph for Card
+        const cardBarContainer = document.createElement('div');
+        cardBarContainer.className = "mt-[-8px] mb-1"; // Adjust spacing
+        cardBarContainer.innerHTML = createStackedBarHtml(item.yjCode);
+        card.appendChild(cardBarContainer);
 
         // Reason
         if (item.reasonForLimitation) {
