@@ -1112,12 +1112,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const pS = (stats.stopped / total) * 100;
                 const tooltipText = `同規格(9桁YJ)状況 - 通常: ${stats.normal}, 限定: ${stats.limited}, 停止: ${stats.stopped}`;
                 stackedBarHtml = `
-                <div class="flex flex-col gap-1 w-[70px] shrink-0" title="${tooltipText}">
-                    <div class="flex justify-between text-[10px] text-gray-400 mb-0.5">
-                        <span class="font-bold">同規品</span>
-                        <span>${total}品目</span>
-                    </div>
-                    <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100 shadow-inner">
+                <div class="w-full max-w-[70px] mt-0.5" title="${tooltipText}">
+                    <div class="bar-container h-1 flex rounded-full overflow-hidden bg-gray-100 shadow-inner">
                         <div class="bar-segment bg-status-normal" style="width: ${pN}%"></div>
                         <div class="bar-segment bg-status-limited" style="width: ${pL}%"></div>
                         <div class="bar-segment bg-status-stopped" style="width: ${pS}%"></div>
@@ -1189,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // 詳細ビューと同じ仕組み: isStatusChanged=true のとき renderStatusButton に渡して赤枠を付ける
             const statusBtn = renderStatusButton(item.shipmentStatus, item.isStatusChanged === true);
-            statusBtn.classList.add('origin-left', 'mb-1');
+            statusBtn.classList.add('origin-left');
 
             const statusFlex = document.createElement('div');
             statusFlex.className = 'flex flex-col items-start gap-1 w-fit';
