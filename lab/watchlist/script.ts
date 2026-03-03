@@ -742,6 +742,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const passcode = localStorage.getItem('supply_passcode');
         if (storeId && passcode) {
             updateLoginUI(true);
+            // Trigger cloud sync on load
+            setTimeout(() => restoreSettings(true), 100);
         }
     }
 
@@ -826,10 +828,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Avoid redundant sync if already logged in with same credentials
-        const lastId = localStorage.getItem('supply_store_id');
-        const lastPw = localStorage.getItem('supply_passcode');
-        if (isAuto && storeId === lastId && passcode === lastPw) return;
+        // Fetch latest from cloud regardless of previous local state to ensure multi-device sync
 
         try {
             if (!isAuto) showMessage('クラウドから同期中...', 'info');
