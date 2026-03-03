@@ -784,6 +784,84 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTestButton('test-email-btn', 'email', 'notify-email-input', 'notify-email-enable');
     setupTestButton('test-webhook-btn', 'webhook', 'notify-webhook-input', 'notify-webhook-enable');
 
+    const restoreSettings = async () => {
+        const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
+        const passcode = (document.getElementById('passcode-input') as HTMLInputElement)?.value.trim();
+
+        if (!storeId || !passcode) {
+            showMessage('設定を読み込むには店舗IDとパスコードを入力してください', 'error');
+            return;
+        }
+
+        try {
+            showMessage('クラウドから設定を読み込み中...', 'info');
+            const response = await fetch(`/api/watch-items/get?storeId=${encodeURIComponent(storeId)}&passcode=${encodeURIComponent(passcode)}`);
+
+            if (response.ok) {
+                const data = await response.json() as {
+                    success: boolean,
+                    store: {
+                        notifyFilter: string,
+                        notifyLineEndpoints: string,
+                        notifyEmailEndpoints: string,
+                        notifyWebhookEndpoints: string,
+                        notifyAllowedStart: string,
+                        notifyAllowedEnd: string
+                    },
+                    yjCodes: string[]
+                };
+
+                if (data.success) {
+                    if (watchlistInput) watchlistInput.value = data.yjCodes.join('\n');
+
+                    const setVal = (id: string, val: string) => {
+                        const el = document.getElementById(id) as HTMLInputElement | HTMLSelectElement;
+                        if (el) el.value = val || '';
+                    };
+                    const setChecked = (id: string, val: boolean) => {
+                        const el = document.getElementById(id) as HTMLInputElement;
+                        if (el) el.checked = val;
+                    };
+
+                    setVal('notify-filter-input', data.store.notifyFilter);
+                    setVal('notify-line-input', data.store.notifyLineEndpoints);
+                    setChecked('notify-line-enable', !!data.store.notifyLineEndpoints);
+                    setVal('notify-email-input', data.store.notifyEmailEndpoints);
+                    setChecked('notify-email-enable', !!data.store.notifyEmailEndpoints);
+                    setVal('notify-webhook-input', data.store.notifyWebhookEndpoints);
+                    setChecked('notify-webhook-enable', !!data.store.notifyWebhookEndpoints);
+                    setVal('notify-start-input', data.store.notifyAllowedStart || '00:00');
+                    setVal('notify-end-input', data.store.notifyAllowedEnd || '24:00');
+
+                    localStorage.setItem('supply_store_id', storeId);
+                    localStorage.setItem('supply_passcode', passcode);
+                    localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(data.yjCodes));
+                    localStorage.setItem('supply_notify_filter', data.store.notifyFilter);
+                    localStorage.setItem('supply_notify_allowed_start', data.store.notifyAllowedStart);
+                    localStorage.setItem('supply_notify_allowed_end', data.store.notifyAllowedEnd);
+                    localStorage.setItem('supply_notify_line_endpoints', data.store.notifyLineEndpoints);
+                    localStorage.setItem('supply_notify_line_enable', String(!!data.store.notifyLineEndpoints));
+                    localStorage.setItem('supply_notify_email_endpoints', data.store.notifyEmailEndpoints);
+                    localStorage.setItem('supply_notify_email_enable', String(!!data.store.notifyEmailEndpoints));
+                    localStorage.setItem('supply_notify_webhook_endpoints', data.store.notifyWebhookEndpoints);
+                    localStorage.setItem('supply_notify_webhook_enable', String(!!data.store.notifyWebhookEndpoints));
+
+                    watchlistYJCodes = new Set(data.yjCodes);
+                    updateWatchlistCount();
+                    renderResults();
+                    showMessage('設定と監視リストを復元しました', 'success');
+                }
+            } else {
+                const errText = await response.text();
+                showMessage(`読み込み失敗: ${errText || '認証エラー'}`, 'error');
+            }
+        } catch (err) {
+            showMessage('ネットワークエラーにより読み込みに失敗しました', 'error');
+        }
+    };
+
+    document.getElementById('restore-settings-btn')?.addEventListener('click', restoreSettings);
+
     function updateWatchlistCount() {
         if (watchlistCountDisplay && watchlistInput) {
             const count = watchlistInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;

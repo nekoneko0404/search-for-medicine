@@ -52,6 +52,46 @@ export default {
                 }
             }
 
+            // --- 医薬品登録・設定 取得 API (デバイス間同期用) ---
+            if (url.pathname === "/api/watch-items/get" && request.method === "GET") {
+                const storeId = url.searchParams.get("storeId");
+                const passcode = url.searchParams.get("passcode");
+
+                if (!storeId || !passcode) {
+                    return new Response("Missing parameters", { status: 400 });
+                }
+
+                // 1. 店舗認証
+                const store = await env.DB.prepare(
+                    "SELECT * FROM stores WHERE id = ?"
+                ).bind(storeId).first<any>();
+
+                if (!store || store.passcode !== passcode) {
+                    return new Response("Unauthorized", { status: 401 });
+                }
+
+                // 2. 監視リストの取得
+                const items = await env.DB.prepare(
+                    "SELECT yj_code FROM watch_items WHERE store_id = ?"
+                ).bind(storeId).all<{ yj_code: string }>();
+
+                return new Response(JSON.stringify({
+                    success: true,
+                    store: {
+                        name: store.name,
+                        notifyFilter: store.notify_filter,
+                        notifyLineEndpoints: store.notify_line_endpoints,
+                        notifyEmailEndpoints: store.notify_email_endpoints,
+                        notifyWebhookEndpoints: store.notify_webhook_endpoints,
+                        notifyAllowedStart: store.notify_allowed_start,
+                        notifyAllowedEnd: store.notify_allowed_end
+                    },
+                    yjCodes: items.results.map(i => i.yj_code)
+                }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
             // --- 監視リストの一括登録 & 設定更新 API ---
             if (url.pathname === "/api/watch-items/batch" && request.method === "POST") {
                 const body = await request.json() as any;
