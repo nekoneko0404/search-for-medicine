@@ -796,7 +796,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTestButton('test-email-btn', 'email', 'notify-email-input', 'notify-email-enable');
     setupTestButton('test-webhook-btn', 'webhook', 'notify-webhook-input', 'notify-webhook-enable');
 
-    const updateLoginUI = (isLoggedIn: boolean) => {
+    function updateLoginUI(isLoggedIn: boolean) {
         const badge = document.getElementById('login-status-badge');
         const notice = document.getElementById('sync-notice-area');
         if (badge) {
@@ -812,9 +812,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 notice.classList.add('hidden');
             }
         }
-    };
+    }
 
-    const restoreSettings = async (isAuto: boolean = false) => {
+    async function restoreSettings(isAuto: boolean = false) {
         const storeIdInput = document.getElementById('store-id-input') as HTMLInputElement;
         const passcodeInput = document.getElementById('passcode-input') as HTMLInputElement;
         const storeId = storeIdInput?.value.trim();
@@ -889,7 +889,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!isAuto) showMessage('クラウドとの接続に失敗しました', 'error');
             updateLoginUI(false);
         }
-    };
+    }
 
     // Auto-sync trigger on blur
     ['store-id-input', 'passcode-input'].forEach(id => {
