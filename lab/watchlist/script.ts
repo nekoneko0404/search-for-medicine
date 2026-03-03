@@ -1086,7 +1086,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // 9桁YJコードに基づく集計（全データから周辺状況を算出）
+        // 9桁YJコードに基づく集計（全データから同規品を算出）
         const yj9Summary = summarizeBy9DigitYJ(allData);
 
         const start = append ? summaryTableBody.querySelectorAll('tr:not(.sentinel)').length : 0;
@@ -1114,7 +1114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 stackedBarHtml = `
                 <div class="flex flex-col gap-1 w-[70px] shrink-0" title="${tooltipText}">
                     <div class="flex justify-between text-[10px] text-gray-400 mb-0.5">
-                        <span class="font-bold">周辺状況</span>
+                        <span class="font-bold">同規品</span>
                         <span>${total}品目</span>
                     </div>
                     <div class="bar-container h-1.5 flex rounded-full overflow-hidden bg-gray-100 shadow-inner">
