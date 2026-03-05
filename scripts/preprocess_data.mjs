@@ -14,6 +14,8 @@ const OUTPUT_FILE = "price-comparison/data/drug_prices.json";
 const EXCEL_YJ_COL = 2; // B
 const EXCEL_NAME_COL = 8; // H
 const EXCEL_PRICE_COL = 13; // M
+const EXCEL_KEIKA_COL = 14; // N
+
 
 // CSV headers/indices for HOT master
 // H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept based on user instruction
@@ -61,6 +63,7 @@ async function getPricesFromDir(dirPath) {
             const yj = row.getCell(EXCEL_YJ_COL).value?.toString()?.trim();
             const name = row.getCell(EXCEL_NAME_COL).value?.toString()?.trim();
             const priceVal = row.getCell(EXCEL_PRICE_COL).value;
+            const keikaVal = row.getCell(EXCEL_KEIKA_COL).value;
 
             let price = NaN;
             if (typeof priceVal === 'number') {
@@ -72,10 +75,16 @@ async function getPricesFromDir(dirPath) {
                 price = parseFloat(priceVal);
             }
 
+            let hasKeika = false;
+            if (keikaVal) {
+                const kStr = keikaVal.toString().trim();
+                if (kStr.length > 0) hasKeika = true;
+            }
+
             if (yj && !isNaN(price) && yj.length >= 12) {
                 // Update map. If name exists, keep it.
                 if (!prices.has(yj) || name) {
-                    prices.set(yj, { name: name || prices.get(yj)?.name, price });
+                    prices.set(yj, { name: name || prices.get(yj)?.name, price, hasKeika });
                 }
             }
         });
@@ -125,7 +134,8 @@ async function main() {
         const data2026 = prices2026.get(yj);
         const recept = yjToRecept.get(yj);
 
-        const name = data2026?.name || data2025?.name || "Unknown";
+        const nameRaw = data2026?.name || data2025?.name || "Unknown";
+        const hasKeika = data2026?.hasKeika || data2025?.hasKeika || false;
         const oldPrice = data2025 ? data2025.price : null;
         let newPrice = data2026 ? data2026.price : null;
         let isFallback = false;
@@ -147,10 +157,15 @@ async function main() {
             ratio = oldPrice !== 0 ? Number(((newPrice / oldPrice - 1) * 100).toFixed(2)) : null;
         }
 
+        let finalName = nameRaw;
+        if (hasKeika) {
+            finalName += "【経過措置】";
+        }
+
         combined.push({
             yj,
             recept: recept || null,
-            name: isFallback ? `${name} (代替最安値)` : name,
+            name: finalName,
             oldPrice,
             newPrice,
             diff,
