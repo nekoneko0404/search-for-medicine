@@ -10,6 +10,10 @@ const DIR_2026 = "C:\\Users\\kiyoshi\\Downloads\\2026";
 const DIR_2025 = "C:\\Users\\kiyoshi\\Downloads\\2025";
 const OUTPUT_FILE = "price-comparison/data/drug_prices.json";
 
+// Shipment Search App Data Source (Google Sheet)
+const SHIPMENT_SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/1ZyjtfiRjGoV9xHSA5Go4rJZr281gqfMFW883Y7s9mQU/gviz/tq?tqx=out:csv&tq=SELECT%20C%2CE%2CF%2CG%2CH%2CI%2CL%2CN%2CO%2CP%2CQ%2CT%2CW%2CX";
+// Columns: C (0: Ingredient), E (1: YJ), F (2: Product), ...
+
 // Indices (1-based for ExcelJS cell access)
 const EXCEL_YJ_COL = 2; // B
 const EXCEL_NAME_COL = 8; // H
@@ -17,15 +21,44 @@ const EXCEL_PRICE_COL = 13; // M
 const EXCEL_KEIKA_COL = 14; // N
 
 // CSV headers/indices for HOT master
-// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept, J column (0-indexed 9) is Generic Name / Ingredient
+// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept
 const CSV_YJ_IDX = 7;
 const CSV_RECEPT_IDX = 8;
-const CSV_INGREDIENT_IDX = 9; // J column (一般名)
 const CSV_NAME_IDX = 11; // L column (医薬品名)
 
 const OLD_PRICE_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
 const CSV_OLD_PRICE_RECEPT_IDX = 2; // C
 const CSV_OLD_PRICE_VAL_IDX = 11; // L
+
+async function getIngredientMapFromShipmentApp() {
+    console.log("Fetching ingredient names from shipment search data source...");
+    try {
+        const response = await fetch(SHIPMENT_SHEET_CSV_URL);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        const csvText = await response.text();
+
+        const map = new Map();
+        const lines = csvText.split('\n');
+
+        // Skip header if any
+        for (const line of lines) {
+            // Rough CSV parse (handle quotes)
+            const parts = line.split('","').map(p => p.replace(/"/g, '').trim());
+            if (parts.length >= 2) {
+                const ingredient = parts[0];
+                const yj = parts[1];
+                if (yj && ingredient && yj !== 'YJコード') {
+                    map.set(yj, ingredient);
+                }
+            }
+        }
+        console.log(`Loaded ${map.size} ingredient mappings from shipment data.`);
+        return map;
+    } catch (e) {
+        console.error("Failed to fetch shipment data:", e);
+        return new Map();
+    }
+}
 
 async function getOldPricesFromCSV() {
     const prices = new Map();
@@ -57,14 +90,12 @@ async function getHOTMaster() {
             .on('data', (row) => {
                 const yj = row[CSV_YJ_IDX]?.trim();
                 const recept = row[CSV_RECEPT_IDX]?.trim();
-                const ingredient = row[CSV_INGREDIENT_IDX]?.trim();
                 const name = row[CSV_NAME_IDX]?.trim();
                 if (yj || recept) {
                     master.push({
                         yj: yj || null,
                         recept: recept || null,
-                        name: name || "Unknown Name",
-                        ingredient: ingredient || ""
+                        name: name || "Unknown Name"
                     });
                 }
             })
@@ -122,11 +153,14 @@ async function getPricesFromDir(dirPath) {
 }
 
 async function main() {
-    console.log("Starting TOTAL refactor based on HOT Master (Ingredient Support)...");
+    console.log("Starting TOTAL refactor based on HOT Master (Synced Ingredients)...");
 
     if (!fs.existsSync("price-comparison/data")) {
         fs.mkdirSync("price-comparison/data", { recursive: true });
     }
+
+    // 0. Load Ingredient Mapping from Shipment Search App
+    const ingredientMap = await getIngredientMapFromShipmentApp();
 
     // 1. Load Master (Baseline)
     const hotMaster = await getHOTMaster();
@@ -147,7 +181,7 @@ async function main() {
 
     // 3. Iterate over HOT Master as Truth
     for (const drug of hotMaster) {
-        const { yj, recept, name, ingredient } = drug;
+        const { yj, recept, name } = drug;
 
         // Skip if we've already processed this exact pair to avoid extreme duplicates if any in master
         const key = `${yj || ''}-${recept || ''}`;
@@ -181,6 +215,9 @@ async function main() {
             finalName += "【経過措置】";
         }
 
+        // Use synced ingredient name if available
+        const ingredient = (yj && ingredientMap.has(yj)) ? ingredientMap.get(yj) : "";
+
         // Only include if we have at least one price or if it's explicitly sought
         // To keep file size manageable, we check if it has any price info
         if (oldPrice !== null || newPrice !== null) {
@@ -188,7 +225,7 @@ async function main() {
                 yj,
                 recept,
                 name: finalName,
-                ingredient: ingredient || "",
+                ingredient: ingredient,
                 oldPrice,
                 newPrice,
                 diff,
