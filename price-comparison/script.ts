@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let currentResults: any[] = [];
 
     // Infinite Scroll State
-    const PAGE_SIZE = 30;
+    const PAGE_SIZE = 50;
     let displayedCount = 0;
     let observer: IntersectionObserver | null = null;
 
@@ -207,8 +207,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             resultBody.appendChild(row);
 
-            // Set up intersection observer target (when 10 hidden items left)
-            if (index === Math.max(0, nextBatch.length - 10)) {
+            // Set up intersection observer target (when 20 hidden items left)
+            if (index === Math.max(0, nextBatch.length - 20)) {
                 if (observer) observer.observe(row);
             }
         });
