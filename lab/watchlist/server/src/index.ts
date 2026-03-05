@@ -21,6 +21,70 @@ export interface Env {
     RESEND_API_KEY?: string;
     STRIPE_SECRET_KEY?: string;
     STRIPE_WEBHOOK_SECRET?: string;
+    ADMIN_PASSCODE: string; // Cloudflare Secret経由で設定 (wrangler secret put ADMIN_PASSCODE)
+}
+
+// ============================================================
+//  パスコードのハッシュ化ユーティリティ (PBKDF2 + SHA-256)
+//  Cloudflare Workers の Web Crypto API を使用
+// ============================================================
+
+const PBKDF2_ITERATIONS = 100_000;
+const SALT_LENGTH = 16; // bytes
+
+/**
+ * パスコードをPBKDF2でハッシュ化して "salt:hash" 形式の文字列を返す
+ */
+async function hashPasscode(passcode: string): Promise<string> {
+    const salt = crypto.getRandomValues(new Uint8Array(SALT_LENGTH));
+    const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(passcode),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits']
+    );
+    const hashBuffer = await crypto.subtle.deriveBits(
+        { name: 'PBKDF2', salt, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+        keyMaterial,
+        256
+    );
+    const saltHex = Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
+    const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    return `${saltHex}:${hashHex}`;
+}
+
+/**
+ * 入力パスコードとDBに保存されたハッシュ文字列を定数時間で比較する
+ * 旧来の平文パスコードにも後方互換で対応（移行期間用）
+ */
+async function verifyPasscode(input: string, stored: string): Promise<boolean> {
+    // 平文との後方互換（移行期間中のみ）
+    if (!stored.includes(':')) {
+        return input === stored;
+    }
+    const [saltHex, hashHex] = stored.split(':');
+    const salt = new Uint8Array(saltHex.match(/.{2}/g)!.map(b => parseInt(b, 16)));
+    const keyMaterial = await crypto.subtle.importKey(
+        'raw',
+        new TextEncoder().encode(input),
+        { name: 'PBKDF2' },
+        false,
+        ['deriveBits']
+    );
+    const hashBuffer = await crypto.subtle.deriveBits(
+        { name: 'PBKDF2', salt, iterations: PBKDF2_ITERATIONS, hash: 'SHA-256' },
+        keyMaterial,
+        256
+    );
+    const computedHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    // 定数時間比較（タイミング攻撃対策）
+    if (computedHex.length !== hashHex.length) return false;
+    let diff = 0;
+    for (let i = 0; i < computedHex.length; i++) {
+        diff |= computedHex.charCodeAt(i) ^ hashHex.charCodeAt(i);
+    }
+    return diff === 0;
 }
 
 export default {
@@ -28,9 +92,39 @@ export default {
         try {
             const url = new URL(request.url);
 
-            // --- 疎通確認用 API ---
+            // --- CORS設定 ---
+            // 許可オリジンを本番ドメインのみに制限（ワイルドカード「*」を禁止）
+            const ALLOWED_ORIGINS = [
+                'https://search-for-medicine.pages.dev',
+                'https://debug-deploy.search-for-medicine.pages.dev',
+                'http://localhost:5173',  // Vite 開発サーバー
+                'http://127.0.0.1:5173'
+            ];
+            const origin = request.headers.get('Origin') || '';
+            const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+
+            const corsHeaders = {
+                'Access-Control-Allow-Origin': allowedOrigin,
+                'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Passcode',
+                'Vary': 'Origin'
+            };
+
+            // OPTIONSプリフライトリクエストに対応
+            if (request.method === 'OPTIONS') {
+                return new Response(null, { status: 204, headers: corsHeaders });
+            }
+
+            // 全レスポンスにCORSヘッダーを一括で付加するヘルパー
+            const withCors = (response: Response): Response => {
+                const newHeaders = new Headers(response.headers);
+                for (const [k, v] of Object.entries(corsHeaders)) newHeaders.set(k, v);
+                return new Response(response.body, { status: response.status, headers: newHeaders });
+            };
+
+            // --- 疏通確認用 API ---
             if (url.pathname === "/api/ping") {
-                return new Response("pong");
+                return withCors(new Response("pong"));
             }
 
             // --- 店舗登録 API (管理者/初期セットアップ用) ---
@@ -40,16 +134,40 @@ export default {
                         id: string, name: string, passcode: string, planType?: string
                     };
 
+                    // パスコードをハッシュ化してから保存
+                    const hashedPasscode = await hashPasscode(passcode);
+
                     await env.DB.prepare(
                         "INSERT INTO stores (id, name, passcode, plan_type) VALUES (?, ?, ?, ?)"
-                    ).bind(id, name, passcode, planType || 'free').run();
+                    ).bind(id, name, hashedPasscode, planType || 'free').run();
 
-                    return new Response(JSON.stringify({ success: true }), {
+                    return withCors(new Response(JSON.stringify({ success: true }), {
                         headers: { "Content-Type": "application/json" }
-                    });
+                    }));
                 } catch (err: any) {
-                    return new Response(JSON.stringify({ success: false, error: err.message }), { status: 409 });
+                    return withCors(new Response(JSON.stringify({ success: false, error: err.message }), { status: 409 }));
                 }
+            }
+
+            // --- 店舗退会・データ削除 API (個人情報保護法対応) ---
+            if (url.pathname === "/api/stores/delete" && request.method === "POST") {
+                const { storeId, passcode } = await request.json() as { storeId: string, passcode: string };
+
+                const store = await env.DB.prepare(
+                    "SELECT passcode FROM stores WHERE id = ?"
+                ).bind(storeId || "").first<{ passcode: string }>();
+
+                if (!store || !(await verifyPasscode(passcode, store.passcode))) {
+                    return withCors(new Response("Unauthorized", { status: 401 }));
+                }
+
+                // watch_items は CASCADE削除されるので、stores削除だけでOK
+                await env.DB.prepare("DELETE FROM stores WHERE id = ?").bind(storeId).run();
+
+                return withCors(new Response(JSON.stringify({
+                    success: true,
+                    message: "連携された全データ（店舗情報・採用薬リスト・通知設定）を削除しました。"
+                }), { headers: { "Content-Type": "application/json" } }));
             }
 
             // --- 医薬品登録・設定 取得 API (デバイス間同期用) ---
@@ -66,7 +184,7 @@ export default {
                     "SELECT * FROM stores WHERE id = ?"
                 ).bind(storeId).first<any>();
 
-                if (!store || store.passcode !== passcode) {
+                if (!store || !(await verifyPasscode(passcode, store.passcode))) {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
@@ -113,7 +231,7 @@ export default {
                     "SELECT plan_type, passcode FROM stores WHERE id = ?"
                 ).bind(storeId || "").first<{ plan_type: string, passcode: string }>();
 
-                if (!store || store.passcode !== passcode) {
+                if (!store || !(await verifyPasscode(passcode, store.passcode))) {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
@@ -215,7 +333,7 @@ export default {
                     "SELECT passcode, name FROM stores WHERE id = ?"
                 ).bind(storeId || "").first<{ passcode: string, name: string }>();
 
-                if (!store || store.passcode !== passcode) {
+                if (!store || !(await verifyPasscode(passcode, store.passcode))) {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
@@ -252,19 +370,18 @@ export default {
                 return new Response("OK");
             }
 
-            // --- マスタデータ更新 API (管理者用) ---
-            if (url.pathname === "/api/admin/update-master" && request.method === "POST") {
-                // セキュリティ: ヘッダーのパスコードチェック
+            // --- 即時同期トリガー API (管理者用) ---
+            if (url.pathname === "/api/admin/trigger-sync" && request.method === "POST") {
                 const adminPasscode = request.headers.get("X-Admin-Passcode");
-                // TODO: 本番では環境変数等で管理することを推奨
-                if (adminPasscode !== "ADMIN_SECRET_KEY") {
+                // 環境変数から取得（Cloudflare Secret: wrangler secret put ADMIN_PASSCODE）
+                if (!adminPasscode || adminPasscode !== env.ADMIN_PASSCODE) {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
-                const csvText = await request.text();
-                const result = await importMasterData(csvText, env);
+                // waitUntil を使用して、レスポンス返却後にバックグラウンドで実行
+                ctx.waitUntil(performSyncAndNotify(env));
 
-                return new Response(JSON.stringify(result), {
+                return new Response(JSON.stringify({ success: true, message: "Sync triggered" }), {
                     headers: { "Content-Type": "application/json" }
                 });
             }
@@ -272,11 +389,11 @@ export default {
             return new Response("Not Found", { status: 404 });
 
         } catch (err: any) {
+            // スタックトレースはサーバーログにのみ記録し、クライアントには返さない
             console.error("Global Error:", err.message, err.stack);
             return new Response(JSON.stringify({
                 success: false,
-                error: err.message,
-                stack: err.stack
+                error: "Internal Server Error"
             }), {
                 status: 500,
                 headers: { "Content-Type": "application/json" }
@@ -285,178 +402,185 @@ export default {
     },
 
     async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
-        console.log("Cron Running: Updating market status and sending notifications...");
+        ctx.waitUntil(performSyncAndNotify(env));
+    }
+};
 
-        // 1. 市場全体のステータスを外部ソースから更新
-        try {
-            await updateMarketStatusSnapshot(env);
-            console.log("Market status snapshot updated successfully.");
-        } catch (err) {
-            console.error("Failed to update market status snapshot:", err);
-            // スナップショット更新に失敗しても、既存データでの通知は試みる
+/**
+ * 市場ステータスの更新と通知送信のコアロジック
+ */
+async function performSyncAndNotify(env: Env) {
+    console.log("Sync Task Starting: Updating market status and sending notifications...");
+
+    // 1. 市場全体のステータスを外部ソースから更新
+    try {
+        await updateMarketStatusSnapshot(env);
+        console.log("Market status snapshot updated successfully.");
+    } catch (err) {
+        console.error("Failed to update market status snapshot:", err);
+        // スナップショット更新に失敗しても、既存データでの通知は試みる
+    }
+
+
+    // 2. ステータスが変化した品目を監視している店舗とその品目を取得
+    const changes = await env.DB.prepare(`
+        SELECT 
+            s.id as store_id,
+            s.name as store_name,
+            s.notify_filter,
+            s.notify_line_endpoints,
+            s.notify_email_endpoints,
+            s.notify_webhook_endpoints,
+            s.notify_time,
+            s.notify_allowed_start,
+            s.notify_allowed_end,
+            s.last_notified_at,
+            w.yj_code, 
+            m.name as drug_name,
+            m.status as new_status,
+            w.last_notified_status as old_status
+        FROM watch_items w
+        JOIN stores s ON w.store_id = s.id
+        JOIN market_status_snapshots m ON w.yj_code = m.yj_code
+        WHERE m.status != COALESCE(w.last_notified_status, '')
+    `).all();
+
+    if (changes.results.length === 0) {
+        console.log("No status changes detected.");
+        return;
+    }
+
+    // 3. 店舗ごとに通知を集約
+    const notificationsByStore: Record<string, any[]> = {};
+    for (const row of changes.results as any[]) {
+        if (!notificationsByStore[row.store_id]) {
+            notificationsByStore[row.store_id] = [];
         }
+        notificationsByStore[row.store_id].push(row);
+    }
 
+    // 4. 通知送信
+    for (const [storeId, items] of Object.entries(notificationsByStore)) {
+        const firstItem = items[0];
+        const filter = firstItem.notify_filter;
+        const notifyTime = firstItem.notify_time; // HH:mm format
+        const lastNotifiedAt = firstItem.last_notified_at;
 
-        // 2. ステータスが変化した品目を監視している店舗とその品目を取得
-        const changes = await env.DB.prepare(`
-            SELECT 
-                s.id as store_id,
-                s.name as store_name,
-                s.notify_filter,
-                s.notify_line_endpoints,
-                s.notify_email_endpoints,
-                s.notify_webhook_endpoints,
-                s.notify_time,
-                s.notify_allowed_start,
-                s.notify_allowed_end,
-                s.last_notified_at,
-                w.yj_code, 
-                m.name as drug_name,
-                m.status as new_status,
-                w.last_notified_status as old_status
-            FROM watch_items w
-            JOIN stores s ON w.store_id = s.id
-            JOIN market_status_snapshots m ON w.yj_code = m.yj_code
-            WHERE m.status != COALESCE(w.last_notified_status, '')
-        `).all();
+        const notifyStart = firstItem.notify_allowed_start || "00:00";
+        const notifyEnd = firstItem.notify_allowed_end || "24:00";
 
-        if (changes.results.length === 0) {
-            console.log("No status changes detected.");
-            return;
-        }
+        // --- 通知時間判定ロジック ---
+        const now = new Date();
+        // JSTに変換（Cloudflare WorkersはUTC）
+        const jstNow = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+        const currentHour = jstNow.getUTCHours();
+        const currentMin = jstNow.getUTCMinutes();
+        const currentTimeVal = currentHour * 60 + currentMin;
 
-        // 3. 店舗ごとに通知を集約
-        const notificationsByStore: Record<string, any[]> = {};
-        for (const row of changes.results as any[]) {
-            if (!notificationsByStore[row.store_id]) {
-                notificationsByStore[row.store_id] = [];
+        if (notifyTime) {
+            // 1. 固定時間設定 (Legacy / 指定時間ちょうど付近で送る)
+            const [targetHour, targetMin] = notifyTime.split(':').map(Number);
+            const targetTimeToday = new Date(jstNow);
+            targetTimeToday.setUTCHours(targetHour, targetMin, 0, 0);
+
+            const lastNotifiedDate = lastNotifiedAt ? new Date(new Date(lastNotifiedAt).getTime() + (9 * 60 * 60 * 1000)) : new Date(0);
+
+            const isAfterTargetTime = jstNow >= targetTimeToday;
+            const notYetNotifiedToday = lastNotifiedDate < targetTimeToday;
+
+            if (!(isAfterTargetTime && notYetNotifiedToday)) {
+                console.log(`Skipping store ${storeId}: notifyTime is ${notifyTime}, JST is ${jstNow.toISOString()}`);
+                continue;
             }
-            notificationsByStore[row.store_id].push(row);
-        }
+        } else {
+            // 2. 範囲判定 (通知許可時間帯)
+            const [startH, startM] = notifyStart.split(':').map(Number);
+            const [endH, endM] = notifyEnd.split(':').map(Number);
+            const startTimeVal = startH * 60 + startM;
+            const endTimeVal = endH * 60 + endM;
 
-        // 4. 通知送信
-        for (const [storeId, items] of Object.entries(notificationsByStore)) {
-            const firstItem = items[0];
-            const filter = firstItem.notify_filter;
-            const notifyTime = firstItem.notify_time; // HH:mm format
-            const lastNotifiedAt = firstItem.last_notified_at;
-
-            const notifyStart = firstItem.notify_allowed_start || "00:00";
-            const notifyEnd = firstItem.notify_allowed_end || "24:00";
-
-            // --- 通知時間判定ロジック ---
-            const now = new Date();
-            // JSTに変換（Cloudflare WorkersはUTC）
-            const jstNow = new Date(now.getTime() + (9 * 60 * 60 * 1000));
-            const currentHour = jstNow.getUTCHours();
-            const currentMin = jstNow.getUTCMinutes();
-            const currentTimeVal = currentHour * 60 + currentMin;
-
-            if (notifyTime) {
-                // 1. 固定時間設定 (Legacy / 指定時間ちょうど付近で送る)
-                const [targetHour, targetMin] = notifyTime.split(':').map(Number);
-                const targetTimeToday = new Date(jstNow);
-                targetTimeToday.setUTCHours(targetHour, targetMin, 0, 0);
-
-                const lastNotifiedDate = lastNotifiedAt ? new Date(new Date(lastNotifiedAt).getTime() + (9 * 60 * 60 * 1000)) : new Date(0);
-
-                const isAfterTargetTime = jstNow >= targetTimeToday;
-                const notYetNotifiedToday = lastNotifiedDate < targetTimeToday;
-
-                if (!(isAfterTargetTime && notYetNotifiedToday)) {
-                    console.log(`Skipping store ${storeId}: notifyTime is ${notifyTime}, JST is ${jstNow.toISOString()}`);
-                    continue;
-                }
+            let isAllowed = false;
+            if (startTimeVal < endTimeVal) {
+                // 同一日内 (例: 09:00 - 21:00)
+                isAllowed = currentTimeVal >= startTimeVal && currentTimeVal < endTimeVal;
+            } else if (startTimeVal > endTimeVal) {
+                // 夜間許可 (例: 21:00 - 06:00)
+                isAllowed = currentTimeVal >= startTimeVal || currentTimeVal < endTimeVal;
             } else {
-                // 2. 範囲判定 (通知許可時間帯)
-                const [startH, startM] = notifyStart.split(':').map(Number);
-                const [endH, endM] = notifyEnd.split(':').map(Number);
-                const startTimeVal = startH * 60 + startM;
-                const endTimeVal = endH * 60 + endM;
-
-                let isAllowed = false;
-                if (startTimeVal < endTimeVal) {
-                    // 同一日内 (例: 09:00 - 21:00)
-                    isAllowed = currentTimeVal >= startTimeVal && currentTimeVal < endTimeVal;
-                } else if (startTimeVal > endTimeVal) {
-                    // 夜間許可 (例: 21:00 - 06:00)
-                    isAllowed = currentTimeVal >= startTimeVal || currentTimeVal < endTimeVal;
-                } else {
-                    isAllowed = true; // 00:00 - 00:00 など
-                }
-
-                if (!isAllowed) {
-                    console.log(`Skipping store ${storeId}: Out of allowed range ${notifyStart}-${notifyEnd}, JST is ${currentHour}:${currentMin}`);
-                    continue;
-                }
+                isAllowed = true; // 00:00 - 00:00 など
             }
 
-            const filteredItems = filter === 'restored_only'
-                ? items.filter(i => i.new_status === '通常')
-                : items;
+            if (!isAllowed) {
+                console.log(`Skipping store ${storeId}: Out of allowed range ${notifyStart}-${notifyEnd}, JST is ${currentHour}:${currentMin}`);
+                continue;
+            }
+        }
 
-            if (filteredItems.length === 0) continue;
+        const filteredItems = filter === 'restored_only'
+            ? items.filter(i => i.new_status === '通常')
+            : items;
 
-            const payload: NotificationPayload = {
-                title: `${firstItem.store_name}様、以下の採用薬のステータスが変化しました：`,
-                message: "",
-                items: filteredItems.map(i => ({
-                    yj_code: i.yj_code,
-                    name: i.drug_name || '名称不明',
-                    old_status: i.old_status,
-                    new_status: i.new_status
-                }))
-            };
+        if (filteredItems.length === 0) continue;
 
-            // 各チャネルごとに送信
-            const channels = [
-                { type: 'line', data: firstItem.notify_line_endpoints, limit: 3 },
-                { type: 'email', data: firstItem.notify_email_endpoints, limit: 3 },
-                { type: 'webhook', data: firstItem.notify_webhook_endpoints, limit: 0 }
-            ];
+        const payload: NotificationPayload = {
+            title: `${firstItem.store_name}様、以下の採用薬のステータスが変化しました：`,
+            message: "",
+            items: filteredItems.map(i => ({
+                yj_code: i.yj_code,
+                name: i.drug_name || '名称不明',
+                old_status: i.old_status,
+                new_status: i.new_status
+            }))
+        };
 
-            for (const ch of channels) {
-                if (!ch.data) continue;
-                const endpoints = ch.data.split(',')
-                    .map((e: string) => e.trim())
-                    .filter((e: string) => e.length > 0);
+        // 各チャネルごとに送信
+        const channels = [
+            { type: 'line', data: firstItem.notify_line_endpoints, limit: 3 },
+            { type: 'email', data: firstItem.notify_email_endpoints, limit: 3 },
+            { type: 'webhook', data: firstItem.notify_webhook_endpoints, limit: 0 }
+        ];
 
-                const targets = ch.limit > 0 ? endpoints.slice(0, ch.limit) : endpoints;
+        for (const ch of channels) {
+            if (!ch.data) continue;
+            const endpoints = ch.data.split(',')
+                .map((e: string) => e.trim())
+                .filter((e: string) => e.length > 0);
 
-                for (const target of targets) {
-                    try {
-                        const notifier = NotificationFactory.getNotifier(ch.type, env);
-                        await notifier.send(target, payload);
-                    } catch (err: any) {
-                        console.error(`Failed to notify store ${storeId} via ${ch.type} at ${target}:`, err?.message || err);
-                    }
+            const targets = ch.limit > 0 ? endpoints.slice(0, ch.limit) : endpoints;
+
+            for (const target of targets) {
+                try {
+                    const notifier = NotificationFactory.getNotifier(ch.type, env);
+                    await notifier.send(target, payload);
+                } catch (err: any) {
+                    console.error(`Failed to notify store ${storeId} via ${ch.type} at ${target}:`, err?.message || err);
                 }
             }
+        }
 
-            // 5. 通知後、一括でステータスを更新
-            const updateStatements = [];
-            // ステータス更新
-            for (const item of items) {
-                updateStatements.push(
-                    env.DB.prepare(
-                        "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"
-                    ).bind(item.new_status, storeId, item.yj_code)
-                );
-            }
-            // 通知日時更新
+        // 5. 通知後、一括でステータスを更新
+        const updateStatements = [];
+        // ステータス更新
+        for (const item of items) {
             updateStatements.push(
-                env.DB.prepare("UPDATE stores SET last_notified_at = CURRENT_TIMESTAMP WHERE id = ?").bind(storeId)
+                env.DB.prepare(
+                    "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"
+                ).bind(item.new_status, storeId, item.yj_code)
             );
+        }
+        // 通知日時更新
+        updateStatements.push(
+            env.DB.prepare("UPDATE stores SET last_notified_at = CURRENT_TIMESTAMP WHERE id = ?").bind(storeId)
+        );
 
-            if (updateStatements.length > 0) {
-                const batchSize = 500;
-                for (let i = 0; i < updateStatements.length; i += batchSize) {
-                    await env.DB.batch(updateStatements.slice(i, i + batchSize));
-                }
+        if (updateStatements.length > 0) {
+            const batchSize = 500;
+            for (let i = 0; i < updateStatements.length; i += batchSize) {
+                await env.DB.batch(updateStatements.slice(i, i + batchSize));
             }
         }
     }
-};
+}
 
 /**
  * 外部データソース（Google Spreadsheet）から供給状況をフェッチし、D1を更新する

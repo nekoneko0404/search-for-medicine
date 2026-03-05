@@ -34,7 +34,7 @@
         <!-- Title Card -->
         <div class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 mb-8">
             <h2 class="text-3xl font-bold text-gray-900 mb-4">プライバシーポリシー</h2>
-            <p class="text-gray-500">最終更新日: 2026年1月9日</p>
+            <p class="text-gray-500">最終更新日: 2026年3月4日</p>
         </div>
 
         <!-- Content Cards -->
@@ -65,6 +65,18 @@
                         <li>AIツールへの入力内容（個人情報は入力しないでください）</li>
                         <li>お問い合わせ時に提供いただく情報（メールアドレスなど）</li>
                     </ul>
+                    <div class="mt-6 p-4 bg-indigo-50 rounded-xl border border-indigo-100">
+                        <p class="text-sm font-bold text-indigo-800 mb-3"><i
+                                class="fas fa-store mr-2"></i>供給監視サービス（B2Pharmacy）ご利用店舗に限り、追加で以下の情報を取得します</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4 text-sm">
+                            <li><strong>店舗ID・店舗名</strong>（ご登録時に入力いただくもの）</li>
+                            <li><strong>パスコード</strong>（PBKDF2ハッシュ形式で保存。原文は保持しません）</li>
+                            <li><strong>LINEユーザーID</strong>（LINE通知を設定された場合）</li>
+                            <li><strong>メールアドレス</strong>（メール通知を設定された場合）</li>
+                            <li><strong>YJコード（採用薬コード）</strong>（監視対象として登録された医薬品のコード）</li>
+                            <li><strong>Stripe顧客ID・サブスクリプションID</strong>（有料プランをご利用の場合）</li>
+                        </ul>
+                    </div>
                 </div>
             </section>
 
@@ -75,6 +87,9 @@
                 </h3>
                 <p class="text-gray-600 leading-relaxed">
                     収集した情報は、本サービスの提供、維持、改善、および新機能の開発のために利用されます。具体的には、利用状況の分析によるUI/UXの改善や、AIの応答精度の向上（匿名化されたデータとして）、不具合の調査などに役立てられます。
+                </p>
+                <p class="text-gray-600 leading-relaxed mt-4">
+                    供給監視サービスにおいて収集した店舗情報・通知先情報は、<strong>登録店舗への供給状況変化の通知のみ</strong>を目的として利用します。それ以外の目的で利用することはありません。
                 </p>
             </section>
 
@@ -109,6 +124,15 @@
                 <p class="text-gray-600 leading-relaxed">
                     本サービスは、法令に基づく場合を除き、利用者の同意なく個人情報を第三者に提供することはありません。
                 </p>
+                <div class="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                    <p class="text-sm font-bold text-gray-700 mb-3">供給監視サービスでは、以下の外部サービスに対し、業務委託の範囲内で必要な情報を提供します：</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-2 ml-4 text-sm">
+                        <li><strong>LINE株式会社</strong>（LINEユーザーID） — 通知メッセージの送信のため</li>
+                        <li><strong>Resend Inc.</strong>（メールアドレス） — 通知メールの送信のため</li>
+                        <li><strong>Stripe, Inc.</strong>（メールアドレス等課金処理に必要な情報）— 決済処理のため</li>
+                    </ul>
+                    <p class="text-xs text-gray-500 mt-3">各社のプライバシーポリシーについては、それぞれの公式サイトをご確認ください。</p>
+                </div>
             </section>
 
             <section class="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
@@ -117,7 +141,7 @@
                     7. お問い合わせ
                 </h3>
                 <p class="text-gray-600 leading-relaxed">
-                    プライバシーポリシーに関するお問い合わせは、本サービスの管理者までご連絡ください。
+                    プライバシーポリシーに関するお問い合わせ、または登録データの削除・開示請求は、本サービスの管理者までご連絡ください。供給監視サービスのご解約時には、登録された店舗情報・採用薬リスト・通知設定をすみやかに削除いたします。
                 </p>
             </section>
         </div>

@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS stores (
     notify_channel TEXT DEFAULT 'none',    -- 'none', 'line', 'email'
     notify_endpoint TEXT,                 -- LINE ID or Email address
     notify_filter TEXT DEFAULT 'all',      -- 'all', 'restored_only'
-    passcode TEXT NOT NULL,                -- 簡易認証用パスコード
+    passcode TEXT NOT NULL,                -- PBKDF2+SHA-256ハッシュ値 "salt:hash" 形式（平文不可）
     stripe_customer_id TEXT,               -- Stripe 顧客ID
     stripe_subscription_id TEXT,           -- Stripe サブスクリプションID
     subscription_status TEXT DEFAULT 'none', -- サブスクステータス

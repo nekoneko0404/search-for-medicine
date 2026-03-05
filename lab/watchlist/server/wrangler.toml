@@ -3,7 +3,20 @@ main = "src/index.ts"
 compatibility_date = "2024-03-01"
 
 [vars]
-# 必要に応じて環境変数を追加
+# 公開しても問題のない設定値のみここに記載する
+
+# ============================================================
+# 【重要】シークレット情報はここに書かず、Cloudflare Secretsで管理すること
+# 以下のコマンドで設定する（一度だけ実行すれば本番環境に永続保存される）:
+#
+#   wrangler secret put ADMIN_PASSCODE     # GAS→Worker認証用パスコード
+#   wrangler secret put LINE_ACCESS_TOKEN  # LINE Messaging APIトークン
+#   wrangler secret put RESEND_API_KEY     # Resend メールAPIキー
+#   wrangler secret put STRIPE_SECRET_KEY  # Stripe シークレットキー
+#   wrangler secret put STRIPE_WEBHOOK_SECRET  # Stripe Webhookシークレット
+#
+# 設定済みのシークレット確認: wrangler secret list
+# ============================================================
 
 [[d1_databases]]
 binding = "DB"
