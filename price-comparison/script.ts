@@ -177,8 +177,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             // Handle fallback display
             const newPriceDisplay = item.isFallback
-                ? `<span class="text-slate-400 font-normal">ー</span><br><span class="text-[9px] text-slate-400 font-normal whitespace-nowrap">（代替最安値: ${item.newPrice.toFixed(2)}）</span>`
-                : (item.newPrice !== null ? item.newPrice.toFixed(2) : '-');
+                ? `<span class="text-slate-400 font-normal text-xs whitespace-nowrap">（${item.newPrice.toFixed(2)} ？）</span>`
+                : (item.newPrice !== null ? `<span class="font-bold">${item.newPrice.toFixed(2)}</span>` : '-');
 
             row.innerHTML = `
                 <td class="px-4 py-4 text-xs font-mono text-slate-400">${displayedCount + index + 1}</td>
