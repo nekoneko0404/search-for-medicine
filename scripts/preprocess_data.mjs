@@ -224,9 +224,10 @@ async function main() {
         // Use synced ingredient name if available (using YJ/H-column)
         const ingredient = (yj && ingredientMap.has(yj)) ? ingredientMap.get(yj) : "";
 
-        // Only include if we have at least one price or if it's explicitly sought
-        // To keep file size manageable, we check if it has any price info
-        if (oldPrice !== null || newPrice !== null) {
+        // Only include if we have an old price (2025). 
+        // If oldPrice is null, it means it's not in the 2025 Excel or the fallback CSV,
+        // which implies it was deleted or doesn't exist in the base year.
+        if (oldPrice !== null) {
             combined.push({
                 yj,
                 recept,
