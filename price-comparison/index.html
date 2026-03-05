@@ -148,33 +148,32 @@
                 </table>
             </div>
         </div>
-    </div>
 
-    <main-footer></main-footer>
+        <main-footer></main-footer>
 
-    <!-- UI Components for JS cloning -->
-    <template id="barGraphTemplate">
-        <div class="flex flex-col gap-1 w-full">
-            <div class="flex h-3 w-full rounded-full overflow-hidden bg-slate-100">
-                <div class="bar-normal bg-blue-500 transition-all duration-500"></div>
-                <div class="bar-limited bg-amber-400 transition-all duration-500"></div>
-                <div class="bar-stopped bg-rose-500 transition-all duration-500"></div>
+        <!-- UI Components for JS cloning -->
+        <template id="barGraphTemplate">
+            <div class="flex flex-col gap-1 w-full">
+                <div class="flex h-3 w-full rounded-full overflow-hidden bg-slate-100">
+                    <div class="bar-normal bg-blue-500 transition-all duration-500"></div>
+                    <div class="bar-limited bg-amber-400 transition-all duration-500"></div>
+                    <div class="bar-stopped bg-rose-500 transition-all duration-500"></div>
+                </div>
+                <div class="flex justify-between text-[9px] text-slate-400 font-mono leading-none">
+                    <span class="label-normal">通:0</span>
+                    <span class="label-limited">限:0</span>
+                    <span class="label-stopped">停:0</span>
+                </div>
             </div>
-            <div class="flex justify-between text-[9px] text-slate-400 font-mono leading-none">
-                <span class="label-normal">通:0</span>
-                <span class="label-limited">限:0</span>
-                <span class="label-stopped">停:0</span>
-            </div>
+        </template>
+
+        <div id="loadingOverlay"
+            class="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center hidden transition-opacity duration-300">
+            <div class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+            <div class="mt-4 text-slate-800 font-bold tracking-widest uppercase text-xs">Processing Data</div>
         </div>
-    </template>
 
-    <div id="loadingOverlay"
-        class="fixed inset-0 bg-white/80 backdrop-blur-sm z-50 flex flex-col items-center justify-center hidden transition-opacity duration-300">
-        <div class="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-        <div class="mt-4 text-slate-800 font-bold tracking-widest uppercase text-xs">Processing Data</div>
-    </div>
-
-    <script type="module" src="./script.ts"></script>
+        <script type="module" src="./script.ts"></script>
 </body>
 
 </html>
