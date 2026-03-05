@@ -5,7 +5,7 @@ import path from 'path';
 import csv from 'csv-parser';
 import iconv from 'iconv-lite';
 
-const RECEPT_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
+const HOT_CSV = "C:\\Users\\kiyoshi\\Downloads\\医薬品HOT コードマスター (1).TXT";
 const DIR_2026 = "C:\\Users\\kiyoshi\\Downloads\\2026";
 const DIR_2025 = "C:\\Users\\kiyoshi\\Downloads\\2025";
 const OUTPUT_FILE = "price-comparison/data/drug_prices.json";
@@ -15,20 +15,21 @@ const EXCEL_YJ_COL = 2; // B
 const EXCEL_NAME_COL = 8; // H
 const EXCEL_PRICE_COL = 13; // M
 
-// CSV headers/indices
-const CSV_RECEPT_IDX = 2; // C
-const CSV_YJ_IDX = 31; // AF
+// CSV headers/indices for HOT master
+// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept based on user instruction
+const CSV_YJ_IDX = 7;
+const CSV_RECEPT_IDX = 8;
 
 async function getReceptToYJMap() {
     const map = new Map();
     const yjToRecept = new Map();
     return new Promise((resolve, reject) => {
-        fs.createReadStream(RECEPT_CSV)
+        fs.createReadStream(HOT_CSV)
             .pipe(iconv.decodeStream('Shift_JIS'))
             .pipe(csv({ headers: false }))
             .on('data', (row) => {
-                const recept = row[CSV_RECEPT_IDX];
                 const yj = row[CSV_YJ_IDX];
+                const recept = row[CSV_RECEPT_IDX];
                 if (recept && yj) {
                     map.set(recept.trim(), yj.trim());
                     yjToRecept.set(yj.trim(), recept.trim());
@@ -104,6 +105,21 @@ async function main() {
     const allYJs = new Set([...prices2025.keys(), ...prices2026.keys()]);
     console.log(`Total unique YJ codes across both years: ${allYJs.size}`);
 
+    // First pass: collect all valid 2026 prices grouped by 10-digit YJ code
+    const yj10CheapestPrices = new Map();
+    for (const yj of prices2026.keys()) {
+        if (yj.length >= 10) {
+            const yj10 = yj.substring(0, 10);
+            const price = prices2026.get(yj).price;
+            if (!isNaN(price) && price > 0) {
+                if (!yj10CheapestPrices.has(yj10) || price < yj10CheapestPrices.get(yj10)) {
+                    yj10CheapestPrices.set(yj10, price);
+                }
+            }
+        }
+    }
+
+    // Second pass: build combined array with fallback logic
     for (const yj of allYJs) {
         const data2025 = prices2025.get(yj);
         const data2026 = prices2026.get(yj);
@@ -111,7 +127,17 @@ async function main() {
 
         const name = data2026?.name || data2025?.name || "Unknown";
         const oldPrice = data2025 ? data2025.price : null;
-        const newPrice = data2026 ? data2026.price : null;
+        let newPrice = data2026 ? data2026.price : null;
+        let isFallback = false;
+
+        // Fallback to cheapest 10-digit YJ code if new price is missing
+        if ((newPrice === null || isNaN(newPrice)) && yj.length >= 10) {
+            const yj10 = yj.substring(0, 10);
+            if (yj10CheapestPrices.has(yj10)) {
+                newPrice = yj10CheapestPrices.get(yj10);
+                isFallback = true;
+            }
+        }
 
         let diff = null;
         let ratio = null;
@@ -124,11 +150,12 @@ async function main() {
         combined.push({
             yj,
             recept: recept || null,
-            name,
+            name: isFallback ? `${name} (代替最安値)` : name,
             oldPrice,
             newPrice,
             diff,
-            ratio
+            ratio,
+            isFallback
         });
     }
 
