@@ -16,11 +16,11 @@ const EXCEL_NAME_COL = 8; // H
 const EXCEL_PRICE_COL = 13; // M
 const EXCEL_KEIKA_COL = 14; // N
 
-
 // CSV headers/indices for HOT master
-// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept based on user instruction
+// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept, J column (0-indexed 9) is Generic Name / Product Name
 const CSV_YJ_IDX = 7;
 const CSV_RECEPT_IDX = 8;
+const CSV_NAME_IDX = 10; // K column is usually the 漢字名称 (10-indexed) based on typical HOT structure inspection
 
 const OLD_PRICE_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
 const CSV_OLD_PRICE_RECEPT_IDX = 2; // C
@@ -47,22 +47,25 @@ async function getOldPricesFromCSV() {
     });
 }
 
-async function getReceptToYJMap() {
-    const map = new Map();
-    const yjToRecept = new Map();
+async function getHOTMaster() {
+    const master = [];
     return new Promise((resolve, reject) => {
         fs.createReadStream(HOT_CSV)
             .pipe(iconv.decodeStream('Shift_JIS'))
             .pipe(csv({ headers: false }))
             .on('data', (row) => {
-                const yj = row[CSV_YJ_IDX];
-                const recept = row[CSV_RECEPT_IDX];
-                if (recept && yj) {
-                    map.set(recept.trim(), yj.trim());
-                    yjToRecept.set(yj.trim(), recept.trim());
+                const yj = row[CSV_YJ_IDX]?.trim();
+                const recept = row[CSV_RECEPT_IDX]?.trim();
+                const name = row[CSV_NAME_IDX]?.trim();
+                if (yj || recept) {
+                    master.push({
+                        yj: yj || null,
+                        recept: recept || null,
+                        name: name || "Unknown Name"
+                    });
                 }
             })
-            .on('end', () => resolve({ receptToYj: map, yjToRecept }))
+            .on('end', () => resolve(master))
             .on('error', reject);
     });
 }
@@ -82,7 +85,6 @@ async function getPricesFromDir(dirPath) {
         const worksheet = workbook.worksheets[0];
 
         worksheet.eachRow((row, rowNumber) => {
-            // Data usually starts after row 1 (headers)
             if (rowNumber < 2) return;
 
             const yj = row.getCell(EXCEL_YJ_COL).value?.toString()?.trim();
@@ -94,10 +96,9 @@ async function getPricesFromDir(dirPath) {
             if (typeof priceVal === 'number') {
                 price = priceVal;
             } else if (typeof priceVal === 'object' && priceVal !== null) {
-                // Handle calculated cells or rich text if any
                 price = priceVal.result !== undefined ? parseFloat(priceVal.result) : NaN;
             } else if (typeof priceVal === 'string') {
-                price = parseFloat(priceVal);
+                price = parseFloat(priceVal.replace(/,/g, ''));
             }
 
             let hasKeika = false;
@@ -106,10 +107,10 @@ async function getPricesFromDir(dirPath) {
                 if (kStr.length > 0) hasKeika = true;
             }
 
-            if (yj && !isNaN(price) && yj.length >= 12) {
-                // Update map. If name exists, keep it.
+            if (yj && !isNaN(price)) {
+                // We use YJ as primary key from Excel
                 if (!prices.has(yj) || name) {
-                    prices.set(yj, { name: name || prices.get(yj)?.name, price, hasKeika });
+                    prices.set(yj, { price, hasKeika });
                 }
             }
         });
@@ -118,41 +119,44 @@ async function getPricesFromDir(dirPath) {
 }
 
 async function main() {
-    console.log("Starting preprocessing...");
+    console.log("Starting TOTAL refactor based on HOT Master...");
 
     if (!fs.existsSync("price-comparison/data")) {
         fs.mkdirSync("price-comparison/data", { recursive: true });
     }
 
-    const { receptToYj, yjToRecept } = await getReceptToYJMap();
-    console.log(`Loaded ${receptToYj.size} mappings from CSV.`);
+    // 1. Load Master (Baseline)
+    const hotMaster = await getHOTMaster();
+    console.log(`Loaded ${hotMaster.size || hotMaster.length} items from HOT Master.`);
 
+    // 2. Load Price Data
     const prices2025 = await getPricesFromDir(DIR_2025);
-    console.log(`Loaded ${prices2025.size} drug prices from 2025 data.`);
+    console.log(`Loaded ${prices2025.size} drug prices from 2025 data (Excel).`);
 
     const oldPricesFallback = await getOldPricesFromCSV();
-    console.log(`Loaded ${oldPricesFallback.size} old prices from CSV.`);
+    console.log(`Loaded ${oldPricesFallback.size} old prices from Fallback CSV.`);
 
     const prices2026 = await getPricesFromDir(DIR_2026);
-    console.log(`Loaded ${prices2026.size} drug prices from 2026 data.`);
+    console.log(`Loaded ${prices2026.size} drug prices from 2026 data (Excel).`);
 
     const combined = [];
+    const processedYJs = new Set();
+    const processedRecepts = new Set();
 
-    // Use all YJ codes found in both 2025 and 2026
-    const allYJs = new Set([...prices2025.keys(), ...prices2026.keys()]);
-    console.log(`Total unique YJ codes across both years: ${allYJs.size}`);
+    // 3. Iterate over HOT Master as Truth
+    for (const drug of hotMaster) {
+        const { yj, recept, name } = drug;
 
-    // Build combined array with old price fallback logic
-    for (const yj of allYJs) {
-        const data2025 = prices2025.get(yj);
-        const data2026 = prices2026.get(yj);
-        const recept = yjToRecept.get(yj);
+        // Skip if we've already processed this exact pair to avoid extreme duplicates if any in master
+        const key = `${yj || ''}-${recept || ''}`;
+        if (processedYJs.has(key)) continue;
+        processedYJs.add(key);
 
-        const nameRaw = data2026?.name || data2025?.name || "Unknown";
-        const hasKeika = data2026?.hasKeika || data2025?.hasKeika || false;
+        const data2025 = yj ? prices2025.get(yj) : null;
+        const data2026 = yj ? prices2026.get(yj) : null;
 
         let oldPrice = data2025 ? data2025.price : null;
-        // Fallback to CSV for old price if missing
+        // Fallback for old price
         if ((oldPrice === null || isNaN(oldPrice)) && recept) {
             if (oldPricesFallback.has(recept)) {
                 oldPrice = oldPricesFallback.get(recept);
@@ -160,6 +164,7 @@ async function main() {
         }
 
         const newPrice = data2026 ? data2026.price : null;
+        const hasKeika = data2026?.hasKeika || data2025?.hasKeika || false;
 
         let diff = null;
         let ratio = null;
@@ -169,21 +174,28 @@ async function main() {
             ratio = oldPrice !== 0 ? Number(((newPrice / oldPrice - 1) * 100).toFixed(2)) : null;
         }
 
-        let finalName = nameRaw;
+        let finalName = name;
         if (hasKeika) {
             finalName += "【経過措置】";
         }
 
-        combined.push({
-            yj,
-            recept: recept || null,
-            name: finalName,
-            oldPrice,
-            newPrice,
-            diff,
-            ratio
-        });
+        // Only include if we have at least one price or if it's explicitly sought
+        // To keep file size manageable, we check if it has any price info
+        if (oldPrice !== null || newPrice !== null) {
+            combined.push({
+                yj,
+                recept,
+                name: finalName,
+                oldPrice,
+                newPrice,
+                diff,
+                ratio
+            });
+        }
     }
+
+    // Optional: Add YJs from Excel that WEREN'T in HOT master just in case (though highly unlikely)
+    // But since user requested HOT as base, we might strictly stick to HOT master.
 
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify(combined, null, 2));
     console.log(`Finished! Saved ${combined.length} items to ${OUTPUT_FILE}`);
