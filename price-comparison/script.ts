@@ -175,6 +175,11 @@ document.addEventListener('DOMContentLoaded', async () => {
             const diffClass = item.diff > 0 ? 'price-up' : item.diff < 0 ? 'price-down' : 'price-neutral';
             const diffPrefix = item.diff > 0 ? '+' : '';
 
+            // Handle fallback display
+            const newPriceDisplay = item.isFallback
+                ? `<span class="text-slate-400 font-normal">ー</span><br><span class="text-[9px] text-slate-400 font-normal whitespace-nowrap">（代替最安値: ${item.newPrice.toFixed(2)}）</span>`
+                : (item.newPrice !== null ? item.newPrice.toFixed(2) : '-');
+
             row.innerHTML = `
                 <td class="px-4 py-4 text-xs font-mono text-slate-400">${displayedCount + index + 1}</td>
                 <td class="px-4 py-4">
@@ -185,7 +190,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                     </div>
                 </td>
                 <td class="px-4 py-4 text-right font-mono text-sm text-slate-600">${item.oldPrice !== null ? item.oldPrice.toFixed(2) : '-'}</td>
-                <td class="px-4 py-4 text-right font-mono text-sm text-slate-800 font-bold">${item.newPrice !== null ? item.newPrice.toFixed(2) : '-'}</td>
+                <td class="px-4 py-4 text-right font-mono text-sm text-slate-800 font-bold leading-tight">${newPriceDisplay}</td>
                 <td class="px-4 py-4 text-right">
                     <div class="${diffClass} font-mono text-sm">${item.diff !== null ? diffPrefix + item.diff.toFixed(2) : '-'}</div>
                     <div class="${diffClass} text-[10px] font-bold">${item.ratio !== null ? diffPrefix + item.ratio.toFixed(2) + '%' : ''}</div>
