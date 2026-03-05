@@ -27,8 +27,8 @@ const CSV_RECEPT_IDX = 8; // I column (レセプト電算コード)
 const CSV_NAME_IDX = 11; // L column (医薬品名)
 
 const OLD_PRICE_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
-const CSV_OLD_PRICE_RECEPT_IDX = 2; // C
-const CSV_OLD_PRICE_VAL_IDX = 11; // L
+const CSV_OLD_PRICE_YJ_IDX = 31; // AF column (YJ Code)
+const CSV_OLD_PRICE_VAL_IDX = 11; // L column (Price)
 
 async function getIngredientMapFromShipmentApp() {
     console.log("Fetching ingredient names from shipment search data source...");
@@ -62,17 +62,18 @@ async function getIngredientMapFromShipmentApp() {
 
 async function getOldPricesFromCSV() {
     const prices = new Map();
+    console.log("Loading fallback old prices from CSV (keyed by YJ)...");
     return new Promise((resolve, reject) => {
         fs.createReadStream(OLD_PRICE_CSV)
             .pipe(iconv.decodeStream('Shift_JIS'))
             .pipe(csv({ headers: false }))
             .on('data', (row) => {
-                const recept = row[CSV_OLD_PRICE_RECEPT_IDX];
+                const yj = row[CSV_OLD_PRICE_YJ_IDX];
                 const priceStr = row[CSV_OLD_PRICE_VAL_IDX];
-                if (recept && priceStr) {
+                if (yj && priceStr) {
                     const price = parseFloat(priceStr.replace(/,/g, ''));
                     if (!isNaN(price)) {
-                        prices.set(recept.trim(), price);
+                        prices.set(yj.trim(), price);
                     }
                 }
             })
@@ -185,28 +186,30 @@ async function main() {
     for (const drug of hotMaster) {
         const { priceStd, yj, recept, name } = drug;
 
-        // Skip if we've already processed this exact pair to avoid extreme duplicates if any in master
         const key = `${priceStd || ''}-${yj || ''}-${recept || ''}`;
         if (processedKeys.has(key)) continue;
         processedKeys.add(key);
 
-        // Matching Logic:
-        // Old Price (2025) matches by YJ Code (H column)
-        const data2025 = yj ? prices2025.get(yj) : null;
+        // Matching Logic (Refined Priority):
+        // 1. Old Price (2025) matches by Price Standard Code (G column) from Excel
+        let oldPrice = (priceStd && prices2025.has(priceStd)) ? prices2025.get(priceStd).price : null;
 
-        // New Price (2026) matches by Price Standard Code (G column)
-        const data2026 = priceStd ? prices2026.get(priceStd) : null;
-
-        let oldPrice = data2025 ? data2025.price : null;
-        // Fallback for old price using Recept code
-        if ((oldPrice === null || isNaN(oldPrice)) && recept) {
-            if (oldPricesFallback.has(recept)) {
-                oldPrice = oldPricesFallback.get(recept);
-            }
+        // 2. Fallback: Match by YJ Code (H column) from y_20260219.csv
+        if (oldPrice === null && yj && oldPricesFallback.has(yj)) {
+            oldPrice = oldPricesFallback.get(yj);
         }
 
+        // Filter: Only include if we found an old price (2025). 
+        // If oldPrice is still null, the drug is considered "deleted" or invalid for comparison.
+        if (oldPrice === null) continue;
+
+        // New Price (2026) matches by Price Standard Code (G column) from Excel
+        const data2026 = priceStd ? prices2026.get(priceStd) : null;
         const newPrice = data2026 ? data2026.price : null;
-        const hasKeika = data2026?.hasKeika || data2025?.hasKeika || false;
+
+        // Finalize flag
+        const data2025Obj = (priceStd && prices2025.has(priceStd)) ? prices2025.get(priceStd) : null;
+        const hasKeika = data2026?.hasKeika || data2025Obj?.hasKeika || false;
 
         let diff = null;
         let ratio = null;
@@ -224,21 +227,16 @@ async function main() {
         // Use synced ingredient name if available (using YJ/H-column)
         const ingredient = (yj && ingredientMap.has(yj)) ? ingredientMap.get(yj) : "";
 
-        // Only include if we have an old price (2025). 
-        // If oldPrice is null, it means it's not in the 2025 Excel or the fallback CSV,
-        // which implies it was deleted or doesn't exist in the base year.
-        if (oldPrice !== null) {
-            combined.push({
-                yj,
-                recept,
-                name: finalName,
-                ingredient: ingredient,
-                oldPrice,
-                newPrice,
-                diff,
-                ratio
-            });
-        }
+        combined.push({
+            yj,
+            recept,
+            name: finalName,
+            ingredient: ingredient,
+            oldPrice,
+            newPrice,
+            diff,
+            ratio
+        });
     }
 
     // Optional: Add YJs from Excel that WEREN'T in HOT master just in case (though highly unlikely)
