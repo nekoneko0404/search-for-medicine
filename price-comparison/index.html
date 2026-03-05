@@ -43,8 +43,12 @@
                         </div>
                     </div>
                     <div>
-                        <label for="codeInput" class="block text-sm font-semibold text-slate-700 mb-2">コード一覧 (YJ または
-                            レセプト電算)</label>
+                        <div class="flex items-center justify-between mb-2">
+                            <label for="codeInput" class="block text-sm font-semibold text-slate-700">コード一覧 (YJ または
+                                レセプト電算)</label>
+                            <span
+                                class="text-[10px] text-slate-400 bg-slate-100 px-2 py-0.5 rounded-full border border-slate-200">最大3000件</span>
+                        </div>
                         <textarea id="codeInput" rows="4"
                             class="w-full rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm font-mono p-4"
                             placeholder="コードを1行ずつ貼り付けてください...（空欄で全件表示）"></textarea>
@@ -56,6 +60,13 @@
                     </div>
                 </div>
                 <div class="md:w-64 flex flex-col justify-center gap-3">
+                    <div class="bg-indigo-50 p-3 rounded-xl border border-indigo-100 mb-2">
+                        <ul class="text-[10px] text-indigo-800 space-y-1.5 list-disc list-inside">
+                            <li><span class="font-bold">コード・名称ともに未記入</span>で全件表示。</li>
+                            <li>全件表示時は結果の読み込みに<span class="text-rose-600 font-bold">時間がかかります</span>。</li>
+                            <li>名称はスペース区切りで<span class="font-bold">AND検索</span>が可能。</li>
+                        </ul>
+                    </div>
                     <button id="searchBtn"
                         class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all shadow-lg shadow-indigo-200 flex items-center justify-center gap-2 transform active:scale-95">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -65,78 +76,79 @@
                         比較実行
                     </button>
                     <div class="text-center text-[10px] text-slate-400 leading-tight">
-                        貼り付けたコードはデバイス内でのみ処理されます。クラウドへは送信されません。</div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Quick Sort Buttons -->
-        <div id="sortControls" class="mb-6 hidden flex flex-wrap gap-2 items-center">
-            <span class="text-sm font-bold text-slate-500 mr-2 uppercase tracking-wider">Quick Sort:</span>
-            <button id="sortPriceUp"
-                class="px-4 py-2 rounded-full bg-rose-50 text-rose-700 border border-rose-100 text-sm font-bold hover:bg-rose-100 transition-colors flex items-center gap-1">
-                値上がり(金額) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                </svg>
-            </button>
-            <button id="sortRatioUp"
-                class="px-4 py-2 rounded-full bg-rose-50 text-rose-700 border border-rose-100 text-sm font-bold hover:bg-rose-100 transition-colors flex items-center gap-1">
-                値上がり(率) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                </svg>
-            </button>
-            <div class="w-px h-6 bg-slate-200 mx-2"></div>
-            <button id="sortPriceDown"
-                class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-sm font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1">
-                値下がり(金額) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
-            <button id="sortRatioDown"
-                class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-sm font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1">
-                値下がり(率) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                </svg>
-            </button>
-        </div>
+    <!-- Quick Sort Buttons -->
+    <div id="sortControls" class="mb-6 hidden flex flex-wrap gap-2 items-center">
+        <span class="text-sm font-bold text-slate-500 mr-2 uppercase tracking-wider">Quick Sort:</span>
+        <button id="sortPriceUp"
+            class="px-4 py-2 rounded-full bg-rose-50 text-rose-700 border border-rose-100 text-sm font-bold hover:bg-rose-100 transition-colors flex items-center gap-1">
+            値上がり(金額) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+            </svg>
+        </button>
+        <button id="sortRatioUp"
+            class="px-4 py-2 rounded-full bg-rose-50 text-rose-700 border border-rose-100 text-sm font-bold hover:bg-rose-100 transition-colors flex items-center gap-1">
+            値上がり(率) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
+            </svg>
+        </button>
+        <div class="w-px h-6 bg-slate-200 mx-2"></div>
+        <button id="sortPriceDown"
+            class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-sm font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1">
+            値下がり(金額) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+        <button id="sortRatioDown"
+            class="px-4 py-2 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-100 text-sm font-bold hover:bg-emerald-100 transition-colors flex items-center gap-1">
+            値下がり(率) <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+        </button>
+    </div>
 
-        <!-- Result Table -->
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse table-fixed min-w-[1000px]">
-                    <thead class="bg-slate-50 border-b border-slate-200">
-                        <tr>
-                            <th class="w-[50px] px-4 py-4 text-xs font-bold text-slate-500 uppercase">#</th>
-                            <th class="px-4 py-4 text-xs font-bold text-slate-500 uppercase">医薬品名 / コード</th>
-                            <th class="w-[110px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-right">
-                                旧薬価(25)</th>
-                            <th class="w-[110px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-right">
-                                新薬価(26)</th>
-                            <th class="w-[140px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-right">差額 /
-                                変動率</th>
-                            <th class="w-[160px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-center">供給状況
-                            </th>
-                            <th class="w-[220px] px-4 py-4 text-xs font-bold text-slate-500 uppercase">供給バランス(同規品)</th>
-                        </tr>
-                    </thead>
-                    <tbody id="resultBody" class="divide-y divide-slate-100">
-                        <tr>
-                            <td colspan="7" class="px-4 py-24 text-center">
-                                <div class="flex flex-col items-center">
-                                    <svg class="w-12 h-12 text-slate-200 mb-4" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                                        </path>
-                                    </svg>
-                                    <p class="text-slate-400">比較するコードを貼り付けて「比較実行」を押してください。</p>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+    <!-- Result Table -->
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse table-fixed min-w-[1000px]">
+                <thead class="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                        <th class="w-[50px] px-4 py-4 text-xs font-bold text-slate-500 uppercase">#</th>
+                        <th class="px-4 py-4 text-xs font-bold text-slate-500 uppercase">医薬品名 / コード</th>
+                        <th class="w-[110px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-right">
+                            旧薬価(25)</th>
+                        <th class="w-[110px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-right">
+                            新薬価(26)</th>
+                        <th class="w-[140px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-right">差額 /
+                            変動率</th>
+                        <th class="w-[160px] px-4 py-4 text-xs font-bold text-slate-500 uppercase text-center">供給状況
+                        </th>
+                        <th class="w-[220px] px-4 py-4 text-xs font-bold text-slate-500 uppercase">供給バランス(同規品)</th>
+                    </tr>
+                </thead>
+                <tbody id="resultBody" class="divide-y divide-slate-100">
+                    <tr>
+                        <td colspan="7" class="px-4 py-24 text-center">
+                            <div class="flex flex-col items-center">
+                                <svg class="w-12 h-12 text-slate-200 mb-4" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                <p class="text-slate-400">比較するコードを貼り付けて「比較実行」を押してください。</p>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
+    </div>
     </div>
 
     <main-footer></main-footer>

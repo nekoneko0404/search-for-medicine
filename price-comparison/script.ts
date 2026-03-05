@@ -75,21 +75,29 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     function updateCodeCount() {
-        const lines = codeInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        let lines = codeInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+        if (lines.length > 3000) {
+            alert('入力できるコードは最大3000件です。3001件目以降は除外されました。');
+            lines = lines.slice(0, 3000);
+            codeInput.value = lines.join('\n');
+        }
         codeCountDisplay.textContent = `${lines.length} 件の入力`;
     }
 
     async function handleSearch() {
         const codeText = codeInput.value.trim();
         const nameText = drugNameInput.value.trim();
-        const normalizedName = normalizeString(nameText);
+
+        // Prepare AND search terms
+        const searchTerms = nameText.split(/[\s　]+/).map(t => normalizeString(t)).filter(t => t.length > 0);
 
         showOverlay(true);
 
         // Use setTimeout to allow overlay to show
         setTimeout(() => {
             const lines = codeText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
-            const codes = new Set(lines);
+            // hard limit inside search as well just in case
+            const codes = new Set(lines.slice(0, 3000));
 
             // Filter master data
             const matched = priceMaster.filter(item => {
@@ -99,8 +107,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
 
                 let nameMatch = true;
-                if (normalizedName) {
-                    nameMatch = normalizeString(item.name).includes(normalizedName);
+                if (searchTerms.length > 0) {
+                    const normalizedItemName = normalizeString(item.name);
+                    // ALL terms must be included
+                    nameMatch = searchTerms.every(term => normalizedItemName.includes(term));
                 }
 
                 return codeMatch && nameMatch;
