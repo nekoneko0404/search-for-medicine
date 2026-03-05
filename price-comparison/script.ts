@@ -18,6 +18,7 @@ interface PriceData {
 
 document.addEventListener('DOMContentLoaded', async () => {
     const codeInput = document.getElementById('codeInput') as HTMLTextAreaElement;
+    const drugNameInput = document.getElementById('drugNameInput') as HTMLInputElement;
     const searchBtn = document.getElementById('searchBtn') as HTMLButtonElement;
     const clearBtn = document.getElementById('clearBtn') as HTMLButtonElement;
     const resultBody = document.getElementById('resultBody') as HTMLTableSectionElement;
@@ -30,6 +31,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     let supplyData: MedicineData[] = [];
     let supplySummary: Record<string, any> = {};
     let currentResults: any[] = [];
+
+    // Infinite Scroll State
+    const PAGE_SIZE = 30;
+    let displayedCount = 0;
+    let observer: IntersectionObserver | null = null;
 
     // Initialize
     async function init() {
@@ -60,9 +66,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     searchBtn.addEventListener('click', handleSearch);
     clearBtn.addEventListener('click', () => {
         codeInput.value = '';
+        drugNameInput.value = '';
         updateCodeCount();
     });
     codeInput.addEventListener('input', updateCodeCount);
+    drugNameInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') handleSearch();
+    });
 
     function updateCodeCount() {
         const lines = codeInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0);
@@ -70,23 +80,31 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     async function handleSearch() {
-        const input = codeInput.value.trim();
-        if (!input) {
-            alert('コードを入力してください。');
-            return;
-        }
+        const codeText = codeInput.value.trim();
+        const nameText = drugNameInput.value.trim();
+        const normalizedName = normalizeString(nameText);
 
         showOverlay(true);
 
         // Use setTimeout to allow overlay to show
         setTimeout(() => {
-            const lines = input.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            const lines = codeText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
             const codes = new Set(lines);
 
             // Filter master data
-            const matched = priceMaster.filter(item =>
-                codes.has(item.yj) || (item.recept && codes.has(item.recept))
-            );
+            const matched = priceMaster.filter(item => {
+                let codeMatch = true;
+                if (codes.size > 0) {
+                    codeMatch = codes.has(item.yj) || (item.recept !== null && codes.has(item.recept));
+                }
+
+                let nameMatch = true;
+                if (normalizedName) {
+                    nameMatch = normalizeString(item.name).includes(normalizedName);
+                }
+
+                return codeMatch && nameMatch;
+            });
 
             // Enhance with supply info
             currentResults = matched.map(item => {
@@ -99,33 +117,56 @@ document.addEventListener('DOMContentLoaded', async () => {
                 };
             });
 
-            renderTable(currentResults);
-            sortControls.classList.remove('hidden');
-            showOverlay(false);
+            // Reset infinite scroll and render
+            displayedCount = 0;
+            if (observer) {
+                observer.disconnect();
+                observer = null;
+            }
+            resultBody.innerHTML = '';
 
             if (currentResults.length === 0) {
-                alert('マッチするデータが見つかりませんでした。');
+                resultBody.innerHTML = '<tr><td colspan="7" class="px-4 py-24 text-center text-slate-400">条件に一致するデータが見つかりませんでした</td></tr>';
+                sortControls.classList.add('hidden');
+            } else {
+                sortControls.classList.remove('hidden');
+                setupObserver();
+                renderNextBatch();
             }
+
+            showOverlay(false);
         }, 100);
     }
 
-    function renderTable(data: any[]) {
-        resultBody.innerHTML = '';
-        if (data.length === 0) {
-            resultBody.innerHTML = '<tr><td colspan="7" class="px-4 py-20 text-center text-slate-400">結果がありません</td></tr>';
-            return;
-        }
+    function setupObserver() {
+        if (observer) observer.disconnect();
+        observer = new IntersectionObserver((entries) => {
+            const entry = entries[0];
+            if (entry.isIntersecting) {
+                if (observer) observer.unobserve(entry.target);
+                renderNextBatch();
+            }
+        }, {
+            root: null,
+            rootMargin: '200px',
+            threshold: 0
+        });
+    }
 
-        data.forEach((item, index) => {
+    function renderNextBatch() {
+        const nextBatch = currentResults.slice(displayedCount, displayedCount + PAGE_SIZE);
+        if (nextBatch.length === 0) return;
+
+        nextBatch.forEach((item, index) => {
             const row = document.createElement('tr');
             row.className = 'animate-fade-in group';
-            row.style.animationDelay = `${Math.min(index * 0.05, 1)}s`;
+            row.style.animationDelay = `${Math.min(index * 0.05, 0.5)}s`;
 
             const diffClass = item.diff > 0 ? 'price-up' : item.diff < 0 ? 'price-down' : 'price-neutral';
             const diffPrefix = item.diff > 0 ? '+' : '';
 
             row.innerHTML = `
-                <td class="px-4 py-4 text-xs font-mono text-slate-400">${index + 1}</td>
+                <td class="px-4 py-4 text-xs font-mono text-slate-400">${displayedCount + index + 1}</td>
                 <td class="px-4 py-4">
                     <div class="font-bold text-slate-800 line-clamp-2">${item.name}</div>
                     <div class="flex gap-2 mt-1">
@@ -153,7 +194,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             renderBalanceBar(balanceCell, item.balance);
 
             resultBody.appendChild(row);
+
+            // Set up intersection observer target (when 10 hidden items left)
+            if (index === Math.max(0, nextBatch.length - 10)) {
+                if (observer) observer.observe(row);
+            }
         });
+
+        displayedCount += nextBatch.length;
     }
 
     function renderBalanceBar(container: HTMLElement, balance: any) {
@@ -194,7 +242,14 @@ document.addEventListener('DOMContentLoaded', async () => {
             const valB = b[key] ?? (dir === 'asc' ? Infinity : -Infinity);
             return dir === 'asc' ? valA - valB : valB - valA;
         });
-        renderTable(currentResults);
+
+        displayedCount = 0;
+        resultBody.innerHTML = '';
+        if (observer) {
+            observer.disconnect();
+            setupObserver();
+        }
+        renderNextBatch();
     }
 
     function showOverlay(show: boolean) {

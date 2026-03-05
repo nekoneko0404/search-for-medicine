@@ -26,15 +26,33 @@
         <!-- Search Area -->
         <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-8">
             <div class="flex flex-col md:flex-row gap-6">
-                <div class="flex-1">
-                    <label for="codeInput" class="block text-sm font-semibold text-slate-700 mb-2">コード一覧 (YJ または
-                        レセプト電算)</label>
-                    <textarea id="codeInput" rows="5"
-                        class="w-full rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm font-mono p-4"
-                        placeholder="コードを1行ずつ貼り付けてください..."></textarea>
-                    <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
-                        <span id="codeCount">0 件の入力</span>
-                        <button id="clearBtn" class="text-indigo-600 hover:text-indigo-800 font-medium">入力クリア</button>
+                <div class="flex-1 flex flex-col gap-4">
+                    <div>
+                        <label for="drugNameInput"
+                            class="block text-sm font-semibold text-slate-700 mb-2">医薬品名検索</label>
+                        <div class="relative">
+                            <input type="text" id="drugNameInput" placeholder="品名の一部を入力...（空欄で全件表示）"
+                                class="w-full rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm font-medium p-3 pl-10">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label for="codeInput" class="block text-sm font-semibold text-slate-700 mb-2">コード一覧 (YJ または
+                            レセプト電算)</label>
+                        <textarea id="codeInput" rows="4"
+                            class="w-full rounded-xl border-slate-200 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm font-mono p-4"
+                            placeholder="コードを1行ずつ貼り付けてください...（空欄で全件表示）"></textarea>
+                        <div class="mt-2 flex items-center justify-between text-xs text-slate-500">
+                            <span id="codeCount">0 件の入力</span>
+                            <button id="clearBtn"
+                                class="text-indigo-600 hover:text-indigo-800 font-medium">条件クリア</button>
+                        </div>
                     </div>
                 </div>
                 <div class="md:w-64 flex flex-col justify-center gap-3">
