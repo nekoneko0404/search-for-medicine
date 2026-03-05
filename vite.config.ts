@@ -24,6 +24,10 @@ export default defineConfig({
                 {
                     src: 'supply-status/data/*',
                     dest: 'supply-status/data'
+                },
+                {
+                    src: 'price-comparison/data/*',
+                    dest: 'price-comparison/data'
                 }
             ]
         })

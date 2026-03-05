@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         showOverlay(true);
         try {
             // Load Price Data
-            const priceRes = await fetch('./data/drug_prices.json');
+            const priceRes = await fetch('/price-comparison/data/drug_prices.json');
             priceMaster = await priceRes.json();
             console.log(`Loaded ${priceMaster.length} price records.`);
 
