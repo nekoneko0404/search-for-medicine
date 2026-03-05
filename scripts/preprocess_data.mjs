@@ -27,6 +27,7 @@ const CSV_RECEPT_IDX = 8; // I column (レセプト電算コード)
 const CSV_NAME_IDX = 11; // L column (医薬品名)
 
 const OLD_PRICE_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
+const CSV_OLD_PRICE_RECEPT_IDX = 2; // C column (Recept Code)
 const CSV_OLD_PRICE_YJ_IDX = 31; // AF column (YJ Code)
 const CSV_OLD_PRICE_VAL_IDX = 11; // L column (Price)
 
@@ -61,23 +62,26 @@ async function getIngredientMapFromShipmentApp() {
 }
 
 async function getOldPricesFromCSV() {
-    const prices = new Map();
-    console.log("Loading fallback old prices from CSV (keyed by YJ)...");
+    const yjToPrice = new Map();
+    const receptToPrice = new Map();
+    console.log("Loading fallback old prices from CSV (keyed by YJ and Recept)...");
     return new Promise((resolve, reject) => {
         fs.createReadStream(OLD_PRICE_CSV)
             .pipe(iconv.decodeStream('Shift_JIS'))
             .pipe(csv({ headers: false }))
             .on('data', (row) => {
-                const yj = row[CSV_OLD_PRICE_YJ_IDX];
+                const recept = row[CSV_OLD_PRICE_RECEPT_IDX]?.trim();
+                const yj = row[CSV_OLD_PRICE_YJ_IDX]?.trim();
                 const priceStr = row[CSV_OLD_PRICE_VAL_IDX];
-                if (yj && priceStr) {
+                if (priceStr) {
                     const price = parseFloat(priceStr.replace(/,/g, ''));
                     if (!isNaN(price)) {
-                        prices.set(yj.trim(), price);
+                        if (yj) yjToPrice.set(yj, price);
+                        if (recept) receptToPrice.set(recept, price);
                     }
                 }
             })
-            .on('end', () => resolve(prices))
+            .on('end', () => resolve({ yjToPrice, receptToPrice }))
             .on('error', reject);
     });
 }
@@ -190,20 +194,27 @@ async function main() {
         if (processedKeys.has(key)) continue;
         processedKeys.add(key);
 
-        // Matching Logic (Refined Priority):
+        const { yjToPrice, receptToPrice } = oldPricesFallback;
 
-        // 1. Display Gatekeeper: Check existence in y_20260219.csv using H-column (YJ Code).
-        // If not found in CSV, we don't display it (considered "completely deleted" or invalid).
-        const existsInCsv = yj && oldPricesFallback.has(yj);
-        if (!existsInCsv) continue;
+        // 1. Display Gatekeeper: Check existence in y_20260219.csv.
+        // Priority 1: H-column (YJ Code) in HOT matches AF-column in CSV.
+        // Priority 2: I-column (Recept Code) in HOT matches C-column in CSV.
+        const existsByYj = yj && yjToPrice.has(yj);
+        const existsByRecept = recept && receptToPrice.has(recept);
+
+        if (!existsByYj && !existsByRecept) continue;
 
         // 2. Old Price (2025) Determination:
         // Priority 1: Match by Price Standard Code (G column) from Excel
         let oldPrice = (priceStd && prices2025.has(priceStd)) ? prices2025.get(priceStd).price : null;
 
-        // Priority 2 (Fallback): Match by YJ Code (H column) from y_20260219.csv
+        // Priority 2 (Fallback): Match from CSV
         if (oldPrice === null) {
-            oldPrice = oldPricesFallback.get(yj);
+            if (existsByYj) {
+                oldPrice = yjToPrice.get(yj);
+            } else if (existsByRecept) {
+                oldPrice = receptToPrice.get(recept);
+            }
         }
 
         // New Price (2026) matches by Price Standard Code (G column) from Excel
