@@ -191,17 +191,20 @@ async function main() {
         processedKeys.add(key);
 
         // Matching Logic (Refined Priority):
-        // 1. Old Price (2025) matches by Price Standard Code (G column) from Excel
+
+        // 1. Display Gatekeeper: Check existence in y_20260219.csv using H-column (YJ Code).
+        // If not found in CSV, we don't display it (considered "completely deleted" or invalid).
+        const existsInCsv = yj && oldPricesFallback.has(yj);
+        if (!existsInCsv) continue;
+
+        // 2. Old Price (2025) Determination:
+        // Priority 1: Match by Price Standard Code (G column) from Excel
         let oldPrice = (priceStd && prices2025.has(priceStd)) ? prices2025.get(priceStd).price : null;
 
-        // 2. Fallback: Match by YJ Code (H column) from y_20260219.csv
-        if (oldPrice === null && yj && oldPricesFallback.has(yj)) {
+        // Priority 2 (Fallback): Match by YJ Code (H column) from y_20260219.csv
+        if (oldPrice === null) {
             oldPrice = oldPricesFallback.get(yj);
         }
-
-        // Filter: Only include if we found an old price (2025). 
-        // If oldPrice is still null, the drug is considered "deleted" or invalid for comparison.
-        if (oldPrice === null) continue;
 
         // New Price (2026) matches by Price Standard Code (G column) from Excel
         const data2026 = priceStd ? prices2026.get(priceStd) : null;
