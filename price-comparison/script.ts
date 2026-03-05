@@ -10,6 +10,7 @@ interface PriceData {
     yj: string;
     recept: string | null;
     name: string;
+    ingredient: string;
     oldPrice: number | null;
     newPrice: number | null;
     diff: number | null;
@@ -109,8 +110,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 let nameMatch = true;
                 if (searchTerms.length > 0) {
                     const normalizedItemName = normalizeString(item.name);
-                    // ALL terms must be included
-                    nameMatch = searchTerms.every(term => normalizedItemName.includes(term));
+                    const normalizedIngredient = normalizeString(item.ingredient || '');
+                    const combinedSearchSource = `${normalizedItemName} ${normalizedIngredient}`;
+                    // ALL terms must be included in either name or ingredient
+                    nameMatch = searchTerms.every(term => combinedSearchSource.includes(term));
                 }
 
                 return codeMatch && nameMatch;
@@ -181,9 +184,10 @@ document.addEventListener('DOMContentLoaded', async () => {
                 <td class="px-4 py-4 text-xs font-mono text-slate-400">${displayedCount + index + 1}</td>
                 <td class="px-4 py-4">
                     <div class="font-bold text-slate-800 line-clamp-2">${item.name}</div>
-                    <div class="flex gap-2 mt-1">
-                        <span class="text-[10px] text-slate-400 font-mono">YJ: ${item.yj}</span>
-                        ${item.recept ? `<span class="text-[10px] text-slate-400 font-mono">電: ${item.recept}</span>` : ''}
+                    ${item.ingredient ? `<div class="text-[10px] text-slate-500 font-medium line-clamp-1 mt-0.5">${item.ingredient}</div>` : ''}
+                    <div class="flex gap-2 mt-1.5 align-middle">
+                        <span class="text-[10px] text-slate-400 font-mono bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100">YJ: ${item.yj}</span>
+                        ${item.recept ? `<span class="text-[10px] text-slate-400 font-mono bg-slate-50 px-1.5 py-0.5 rounded border border-slate-100">電: ${item.recept}</span>` : ''}
                     </div>
                 </td>
                 <td class="px-4 py-4 text-right font-mono text-sm text-slate-600">${item.oldPrice !== null ? item.oldPrice.toFixed(2) : '-'}</td>

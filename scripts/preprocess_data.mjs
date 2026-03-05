@@ -17,10 +17,11 @@ const EXCEL_PRICE_COL = 13; // M
 const EXCEL_KEIKA_COL = 14; // N
 
 // CSV headers/indices for HOT master
-// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept, J column (0-indexed 9) is Generic Name / Product Name
+// H column (0-indexed 7) is YJ, I column (0-indexed 8) is Recept, J column (0-indexed 9) is Generic Name / Ingredient
 const CSV_YJ_IDX = 7;
 const CSV_RECEPT_IDX = 8;
-const CSV_NAME_IDX = 10; // K column is usually the 漢字名称 (10-indexed) based on typical HOT structure inspection
+const CSV_INGREDIENT_IDX = 9; // J column (一般名)
+const CSV_NAME_IDX = 11; // L column (医薬品名)
 
 const OLD_PRICE_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
 const CSV_OLD_PRICE_RECEPT_IDX = 2; // C
@@ -56,12 +57,14 @@ async function getHOTMaster() {
             .on('data', (row) => {
                 const yj = row[CSV_YJ_IDX]?.trim();
                 const recept = row[CSV_RECEPT_IDX]?.trim();
+                const ingredient = row[CSV_INGREDIENT_IDX]?.trim();
                 const name = row[CSV_NAME_IDX]?.trim();
                 if (yj || recept) {
                     master.push({
                         yj: yj || null,
                         recept: recept || null,
-                        name: name || "Unknown Name"
+                        name: name || "Unknown Name",
+                        ingredient: ingredient || ""
                     });
                 }
             })
@@ -119,7 +122,7 @@ async function getPricesFromDir(dirPath) {
 }
 
 async function main() {
-    console.log("Starting TOTAL refactor based on HOT Master...");
+    console.log("Starting TOTAL refactor based on HOT Master (Ingredient Support)...");
 
     if (!fs.existsSync("price-comparison/data")) {
         fs.mkdirSync("price-comparison/data", { recursive: true });
@@ -127,7 +130,7 @@ async function main() {
 
     // 1. Load Master (Baseline)
     const hotMaster = await getHOTMaster();
-    console.log(`Loaded ${hotMaster.size || hotMaster.length} items from HOT Master.`);
+    console.log(`Loaded ${hotMaster.length} items from HOT Master.`);
 
     // 2. Load Price Data
     const prices2025 = await getPricesFromDir(DIR_2025);
@@ -140,17 +143,16 @@ async function main() {
     console.log(`Loaded ${prices2026.size} drug prices from 2026 data (Excel).`);
 
     const combined = [];
-    const processedYJs = new Set();
-    const processedRecepts = new Set();
+    const processedKeys = new Set();
 
     // 3. Iterate over HOT Master as Truth
     for (const drug of hotMaster) {
-        const { yj, recept, name } = drug;
+        const { yj, recept, name, ingredient } = drug;
 
         // Skip if we've already processed this exact pair to avoid extreme duplicates if any in master
         const key = `${yj || ''}-${recept || ''}`;
-        if (processedYJs.has(key)) continue;
-        processedYJs.add(key);
+        if (processedKeys.has(key)) continue;
+        processedKeys.add(key);
 
         const data2025 = yj ? prices2025.get(yj) : null;
         const data2026 = yj ? prices2026.get(yj) : null;
@@ -186,6 +188,7 @@ async function main() {
                 yj,
                 recept,
                 name: finalName,
+                ingredient: ingredient || "",
                 oldPrice,
                 newPrice,
                 diff,
