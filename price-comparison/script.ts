@@ -268,6 +268,45 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderNextBatch();
     }
 
+    // CSV Export Handler
+    const exportCsvBtn = document.getElementById('exportCsvBtn') as HTMLButtonElement;
+    exportCsvBtn?.addEventListener('click', () => {
+        if (currentResults.length === 0) {
+            alert('エクスポートするデータがありません。');
+            return;
+        }
+
+        const headers = ['医薬品名', 'YJコード', 'レセプト電算コード', '旧薬価(2025)', '新薬価(2026)'];
+        const csvRows = [headers.join(',')];
+
+        currentResults.forEach(item => {
+            const row = [
+                `"${item.name.replace(/"/g, '""')}"`,
+                `"${item.yj}"`,
+                `"${item.recept ?? ''}"`,
+                item.oldPrice !== null ? item.oldPrice.toFixed(2) : '',
+                item.newPrice !== null ? item.newPrice.toFixed(2) : ''
+            ];
+            csvRows.push(row.join(','));
+        });
+
+        const csvString = csvRows.join('\r\n');
+        // Add BOM for Excel compatibility in Windows
+        const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+        const blob = new Blob([bom, csvString], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement('a');
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+        link.setAttribute('href', url);
+        link.setAttribute('download', `yakka_export_${timestamp}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    });
+
     function showOverlay(show: boolean) {
         overlay.classList.toggle('hidden', !show);
     }
