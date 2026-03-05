@@ -217,8 +217,10 @@ async function main() {
             }
         }
 
-        // New Price (2026) matches by Price Standard Code (G column) from Excel
-        const data2026 = priceStd ? prices2026.get(priceStd) : null;
+        // New Price (2026) Determination:
+        // Priority 1: Match by YJ Code (H column) from Excel
+        // Priority 2: Match by Price Standard Code (G column) from Excel
+        const data2026 = (yj && prices2026.has(yj)) ? prices2026.get(yj) : (priceStd ? prices2026.get(priceStd) : null);
         const newPrice = data2026 ? data2026.price : null;
 
         // Finalize flag

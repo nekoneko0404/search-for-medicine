@@ -875,9 +875,9 @@
     "name": "ブロマゼパム錠５ｍｇ「サンド」",
     "ingredient": "ブロマゼパム",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "1124020F4032",
@@ -955,9 +955,9 @@
     "name": "ロラゼパム錠１ｍｇ「サワイ」",
     "ingredient": "ロラゼパム",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "1124022F2071",
@@ -2695,9 +2695,9 @@
     "name": "イブプロフェン顆粒２０％「ツルハラ」",
     "ingredient": "イブプロフェン",
     "oldPrice": 6.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.9,
+    "diff": 0.4,
+    "ratio": 6.15
   },
   {
     "yj": "1149001F1498",
@@ -3105,9 +3105,9 @@
     "name": "ケトプロフェン筋注５０ｍｇ「日新」",
     "ingredient": "ケトプロフェン",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 63,
+    "diff": 2,
+    "ratio": 3.28
   },
   {
     "yj": "1149403A1050",
@@ -3885,9 +3885,9 @@
     "name": "ドパコール配合錠Ｌ１００",
     "ingredient": "レボドパ・カルビドパ水和物",
     "oldPrice": 8.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7.9,
+    "diff": -0.2,
+    "ratio": -2.47
   },
   {
     "yj": "1169101F2045",
@@ -4575,9 +4575,9 @@
     "name": "マプロチリン塩酸塩錠１０ｍｇ「アメル」",
     "ingredient": "マプロチリン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "1179008F2029",
@@ -4595,9 +4595,9 @@
     "name": "マプロチリン塩酸塩錠２５ｍｇ「アメル」",
     "ingredient": "マプロチリン塩酸塩",
     "oldPrice": 8.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7.2,
+    "diff": -1.5,
+    "ratio": -17.24
   },
   {
     "yj": "1179009F1035",
@@ -5645,9 +5645,9 @@
     "name": "２０％ブドウ糖注射液「ニッシン」",
     "ingredient": "ブドウ糖",
     "oldPrice": 100,
-    "newPrice": 100,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 104,
+    "diff": 4,
+    "ratio": 4
   },
   {
     "yj": "3231401H1238",
@@ -5725,9 +5725,9 @@
     "name": "５０％ブドウ糖注射液「ニッシン」",
     "ingredient": "ブドウ糖",
     "oldPrice": 100,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 104,
+    "diff": 4,
+    "ratio": 4
   },
   {
     "yj": "3231401H7139",
@@ -5755,9 +5755,9 @@
     "name": "セチプチリンマレイン酸塩錠１ｍｇ「サワイ」",
     "ingredient": "セチプチリンマレイン酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "1179035D1029",
@@ -5835,9 +5835,9 @@
     "name": "トラゾドン塩酸塩錠２５ｍｇ「アメル」",
     "ingredient": "トラゾドン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "1179037F2025",
@@ -5855,9 +5855,9 @@
     "name": "トラゾドン塩酸塩錠５０ｍｇ「アメル」",
     "ingredient": "トラゾドン塩酸塩",
     "oldPrice": 7.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": -0.9,
+    "ratio": -12.5
   },
   {
     "yj": "1179038C1027",
@@ -6115,9 +6115,9 @@
     "name": "チアプリド細粒１０％「サワイ」",
     "ingredient": "チアプリド塩酸塩",
     "oldPrice": 10.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.1,
+    "diff": -0.6,
+    "ratio": -5.61
   },
   {
     "yj": "1190004F1021",
@@ -6275,9 +6275,9 @@
     "name": "プロカイン塩酸塩注射液０．５％「日医工」",
     "ingredient": "プロカイン塩酸塩",
     "oldPrice": 100,
-    "newPrice": 104,
-    "diff": 4,
-    "ratio": 4
+    "newPrice": 130,
+    "diff": 30,
+    "ratio": 30
   },
   {
     "yj": "1211401A4040",
@@ -7105,9 +7105,9 @@
     "name": "チメピジウム臭化物錠３０ｍｇ「サワイ」",
     "ingredient": "チメピジウム臭化物水和物",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "1249005M1083",
@@ -7845,9 +7845,9 @@
     "name": "フルオロメトロン点眼液０．０５％「センジュ」",
     "ingredient": "フルオロメトロン",
     "oldPrice": 18.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 19.1,
+    "diff": 0.6,
+    "ratio": 3.24
   },
   {
     "yj": "1315704Q2065",
@@ -8095,9 +8095,9 @@
     "name": "カルテオロール塩酸塩点眼液２％「ニットー」",
     "ingredient": "カルテオロール塩酸塩",
     "oldPrice": 71.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 65.2,
+    "diff": -6.7,
+    "ratio": -9.32
   },
   {
     "yj": "1319701Q2117",
@@ -8745,9 +8745,9 @@
     "name": "ノルフロキサシン点眼液０．３％「杏林」【経過措置】",
     "ingredient": "ノルフロキサシン",
     "oldPrice": 77.6,
-    "newPrice": 76,
-    "diff": -1.6,
-    "ratio": -2.06
+    "newPrice": 76.1,
+    "diff": -1.5,
+    "ratio": -1.93
   },
   {
     "yj": "1319727Q1255",
@@ -9755,9 +9755,9 @@
     "name": "ユビデカレノンカプセル５ｍｇ「ツルハラ」",
     "ingredient": "ユビデカレノン",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2119003F2332",
@@ -10285,9 +10285,9 @@
     "name": "アテノロール錠５０ｍｇ「ツルハラ」",
     "ingredient": "アテノロール",
     "oldPrice": 6.1,
-    "newPrice": 6.3,
-    "diff": 0.2,
-    "ratio": 3.28
+    "newPrice": 6.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2123011F2550",
@@ -10305,9 +10305,9 @@
     "name": "アルセノール錠５０",
     "ingredient": "アテノロール",
     "oldPrice": 6.1,
-    "newPrice": 6.3,
-    "diff": 0.2,
-    "ratio": 3.28
+    "newPrice": 6.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2123011F2607",
@@ -10465,9 +10465,9 @@
     "name": "メキシレチン塩酸塩錠５０ｍｇ「杏林」",
     "ingredient": "メキシレチン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2129003M2192",
@@ -10485,9 +10485,9 @@
     "name": "メキシレチン塩酸塩カプセル１００ｍｇ「トーワ」【経過措置】",
     "ingredient": "メキシレチン塩酸塩",
     "oldPrice": 6.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.6,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2129003M2249",
@@ -10515,9 +10515,9 @@
     "name": "メキシレチン塩酸塩錠１００ｍｇ「杏林」",
     "ingredient": "メキシレチン塩酸塩",
     "oldPrice": 6.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": -0.3,
+    "ratio": -4.55
   },
   {
     "yj": "2129003M1021",
@@ -10545,9 +10545,9 @@
     "name": "メキシレチン塩酸塩カプセル５０ｍｇ「トーワ」【経過措置】",
     "ingredient": "メキシレチン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2129003M1226",
@@ -10585,9 +10585,9 @@
     "name": "アプリンジン塩酸塩カプセル１０ｍｇ「ＮＰ」",
     "ingredient": "アプリンジン塩酸塩",
     "oldPrice": 12,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.1,
+    "diff": -0.9,
+    "ratio": -7.5
   },
   {
     "yj": "2129004M2022",
@@ -10605,9 +10605,9 @@
     "name": "アプリンジン塩酸塩カプセル２０ｍｇ「ＮＰ」",
     "ingredient": "アプリンジン塩酸塩",
     "oldPrice": 18.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 17,
+    "diff": -1.6,
+    "ratio": -8.6
   },
   {
     "yj": "2129005F1129",
@@ -10655,9 +10655,9 @@
     "name": "プロパフェノン塩酸塩錠１５０ｍｇ「オーハラ」",
     "ingredient": "プロパフェノン塩酸塩",
     "oldPrice": 14.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.8,
+    "diff": -1.4,
+    "ratio": -9.86
   },
   {
     "yj": "2129006F2022",
@@ -11065,9 +11065,9 @@
     "name": "カンレノ酸カリウム静注用２００ｍｇ「サワイ」",
     "ingredient": "カンレノ酸カリウム",
     "oldPrice": 185,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 183,
+    "diff": -2,
+    "ratio": -1.08
   },
   {
     "yj": "2133400D2097",
@@ -11715,9 +11715,9 @@
     "name": "ラベタロール塩酸塩錠１００ｍｇ「トーワ」【経過措置】",
     "ingredient": "ラベタロール塩酸塩",
     "oldPrice": 10.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.7,
+    "ratio": 6.93
   },
   {
     "yj": "2149010F1025",
@@ -12445,9 +12445,9 @@
     "name": "ジラゼプ塩酸塩錠５０ｍｇ「サワイ」",
     "ingredient": "ジラゼプ塩酸塩水和物",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "2171005F1068",
@@ -12745,9 +12745,9 @@
     "name": "硝酸イソソルビド徐放カプセル２０ｍｇ「Ｓｔ」",
     "ingredient": "硝酸イソソルビド",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2171011N1050",
@@ -13295,9 +13295,9 @@
     "name": "硝酸イソソルビド注５０ｍｇ／１００ｍＬ「タカタ」",
     "ingredient": "硝酸イソソルビド",
     "oldPrice": 1659,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1597,
+    "diff": -62,
+    "ratio": -3.74
   },
   {
     "yj": "2171404A5056",
@@ -13335,9 +13335,9 @@
     "name": "ジルチアゼム塩酸塩注射用２５０ｍｇ「サワイ」",
     "ingredient": "ジルチアゼム塩酸塩",
     "oldPrice": 1009,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 946,
+    "diff": -63,
+    "ratio": -6.24
   },
   {
     "yj": "2171405D4069",
@@ -13345,9 +13345,9 @@
     "name": "ジルチアゼム塩酸塩注射用１０ｍｇ「サワイ」",
     "ingredient": "ジルチアゼム塩酸塩",
     "oldPrice": 104,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 104,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2171405D5065",
@@ -13355,9 +13355,9 @@
     "name": "ジルチアゼム塩酸塩注射用５０ｍｇ「サワイ」",
     "ingredient": "ジルチアゼム塩酸塩",
     "oldPrice": 282,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 274,
+    "diff": -8,
+    "ratio": -2.84
   },
   {
     "yj": "2171406D1021",
@@ -13435,9 +13435,9 @@
     "name": "硝酸イソソルビドテープ４０ｍｇ「ＥＭＥＣ」",
     "ingredient": "硝酸イソソルビド",
     "oldPrice": 22.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 20,
+    "diff": -2.2,
+    "ratio": -9.91
   },
   {
     "yj": "2171700S1150",
@@ -13705,9 +13705,9 @@
     "name": "プロブコール錠２５０ｍｇ「サワイ」",
     "ingredient": "プロブコール",
     "oldPrice": 7.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 3,
+    "ratio": 38.46
   },
   {
     "yj": "2189009R1032",
@@ -14005,9 +14005,9 @@
     "name": "ポリスチレンスルホン酸Ｎａ「フソー」原末",
     "ingredient": "ポリスチレンスルホン酸ナトリウム",
     "oldPrice": 8.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 8,
+    "diff": -0.2,
+    "ratio": -2.44
   },
   {
     "yj": "2190016X1113",
@@ -14155,9 +14155,9 @@
     "name": "アルプロスタジルアルファデクス点滴静注用５００μｇ「タカタ」",
     "ingredient": "アルプロスタジル　アルファデクス",
     "oldPrice": 3996,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 3956,
+    "diff": -40,
+    "ratio": -1
   },
   {
     "yj": "2190404A1340",
@@ -14965,9 +14965,9 @@
     "name": "ブロムヘキシン塩酸塩吸入液０．２％「タイヨー」",
     "ingredient": "ブロムヘキシン塩酸塩",
     "oldPrice": 5.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 5.3,
+    "diff": -0.3,
+    "ratio": -5.36
   },
   {
     "yj": "2239001F1815",
@@ -15965,9 +15965,9 @@
     "name": "ポビドンヨードガーグル７％「メタル」",
     "ingredient": "ポビドンヨード",
     "oldPrice": 3.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 3.7,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2260701F1344",
@@ -16405,9 +16405,9 @@
     "name": "ロペラミド塩酸塩錠１ｍｇ「あすか」",
     "ingredient": "ロペラミド塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2319001M1353",
@@ -16755,9 +16755,9 @@
     "name": "スクラルファート内用液１０％「ＮＩＧ」",
     "ingredient": "スクラルファート水和物",
     "oldPrice": 1.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1.5,
+    "diff": -0.2,
+    "ratio": -11.76
   },
   {
     "yj": "2329009C2080",
@@ -18775,9 +18775,9 @@
     "name": "ウルソデオキシコール酸錠５０ｍｇ「ＪＧ」",
     "ingredient": "ウルソデオキシコール酸",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2362001F1142",
@@ -18785,9 +18785,9 @@
     "name": "ウルソデオキシコール酸錠５０ｍｇ「ＮＩＧ」",
     "ingredient": "ウルソデオキシコール酸",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2362001F2149",
@@ -20205,9 +20205,9 @@
     "name": "プレドニゾロン錠５ｍｇ（旭化成）",
     "ingredient": "プレドニゾロン",
     "oldPrice": 10.1,
-    "newPrice": 10.5,
-    "diff": 0.4,
-    "ratio": 3.96
+    "newPrice": 10.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2456001F1400",
@@ -20645,9 +20645,9 @@
     "name": "クロルマジノン酢酸エステル錠２５ｍｇ「ＹＤ」",
     "ingredient": "クロルマジノン酢酸エステル",
     "oldPrice": 11.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.4,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2478001F2179",
@@ -20735,9 +20735,9 @@
     "name": "メドロキシプロゲステロン酢酸エステル錠２００ｍｇ「Ｆ」",
     "ingredient": "メドロキシプロゲステロン酢酸エステル",
     "oldPrice": 64.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 52.8,
+    "diff": -12,
+    "ratio": -18.52
   },
   {
     "yj": "2478003F1031",
@@ -20825,9 +20825,9 @@
     "name": "カリジノゲナーゼ錠２５単位「日医工」",
     "ingredient": "カリジノゲナーゼ",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2491001F5056",
@@ -21055,9 +21055,9 @@
     "name": "ジノプロスト注射液１０００μｇ「Ｆ」",
     "ingredient": "ジノプロスト",
     "oldPrice": 232,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 228,
+    "diff": -4,
+    "ratio": -1.72
   },
   {
     "yj": "2499401A3081",
@@ -21065,9 +21065,9 @@
     "name": "ジノプロスト注射液２０００μｇ「Ｆ」",
     "ingredient": "ジノプロスト",
     "oldPrice": 500,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 500,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2499403A1037",
@@ -21335,9 +21335,9 @@
     "name": "イソコナゾール硝酸塩腟錠３００ｍｇ「Ｆ」",
     "ingredient": "イソコナゾール硝酸塩",
     "oldPrice": 142.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 139.4,
+    "diff": -3.2,
+    "ratio": -2.24
   },
   {
     "yj": "2529709H1046",
@@ -21625,9 +21625,9 @@
     "name": "オキシブチニン塩酸塩錠３ｍｇ「サワイ」",
     "ingredient": "オキシブチニン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2590005F3025",
@@ -21645,9 +21645,9 @@
     "name": "オキシブチニン塩酸塩錠１ｍｇ「サワイ」",
     "ingredient": "オキシブチニン塩酸塩",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "2590007F1021",
@@ -21735,9 +21735,9 @@
     "name": "リトドリン塩酸塩点滴静注液５０ｍｇ「Ｆ」【経過措置】",
     "ingredient": "リトドリン塩酸塩",
     "oldPrice": 200,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 200,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2590402A1288",
@@ -23425,9 +23425,9 @@
     "name": "ベンザルコニウム塩化物消毒液１０ｗ／ｖ％「昭和」",
     "ingredient": "ベンザルコニウム塩化物",
     "oldPrice": 6.7,
-    "newPrice": 10.7,
-    "diff": 4,
-    "ratio": 59.7
+    "newPrice": 10.3,
+    "diff": 3.6,
+    "ratio": 53.73
   },
   {
     "yj": "2616700Q1751",
@@ -25335,9 +25335,9 @@
     "name": "フルオシノニド軟膏０．０５％「テイコク」",
     "ingredient": "フルオシノニド",
     "oldPrice": 10.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.2,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2646708N1238",
@@ -25365,9 +25365,9 @@
     "name": "フルオシノニドクリーム０．０５％「テイコク」",
     "ingredient": "フルオシノニド",
     "oldPrice": 10.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.2,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2646708Q1030",
@@ -27535,9 +27535,9 @@
     "name": "尿素クリーム２０％「ＳＵＮ」",
     "ingredient": "尿素",
     "oldPrice": 3.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 3.3,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2669701Q1040",
@@ -27745,9 +27745,9 @@
     "name": "ガンマオリザノール細粒２０％「ツルハラ」",
     "ingredient": "ガンマオリザノール",
     "oldPrice": 6.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.9,
+    "diff": 0.4,
+    "ratio": 6.15
   },
   {
     "yj": "2900002F4065",
@@ -30435,9 +30435,9 @@
     "name": "５％ブドウ糖注射液「ニッシン」",
     "ingredient": "ブドウ糖",
     "oldPrice": 100,
-    "newPrice": 100,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 104,
+    "diff": 4,
+    "ratio": 4
   },
   {
     "yj": "3231401A1132",
@@ -30745,9 +30745,9 @@
     "name": "ブドウ糖注５％「ＮＰ」",
     "ingredient": "ブドウ糖",
     "oldPrice": 243,
-    "newPrice": 331,
-    "diff": 88,
-    "ratio": 36.21
+    "newPrice": 282,
+    "diff": 39,
+    "ratio": 16.05
   },
   {
     "yj": "3231401Q3125",
@@ -30755,9 +30755,9 @@
     "name": "ブドウ糖注５％バッグ「フソー」",
     "ingredient": "ブドウ糖",
     "oldPrice": 243,
-    "newPrice": 331,
-    "diff": 88,
-    "ratio": 36.21
+    "newPrice": 282,
+    "diff": 39,
+    "ratio": 16.05
   },
   {
     "yj": "3231401Q3117",
@@ -30935,9 +30935,9 @@
     "name": "キシリトール注５％「フソー」",
     "ingredient": "キシリトール",
     "oldPrice": 228,
-    "newPrice": 228,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 296,
+    "diff": 68,
+    "ratio": 29.82
   },
   {
     "yj": "3234400H2045",
@@ -31452,7 +31452,7 @@
   {
     "yj": "3311400A1092",
     "recept": "620005818",
-    "name": "塩化ナトリウム注１０％「日新」【経過措置】",
+    "name": "塩化ナトリウム注１０％「日新」",
     "ingredient": "塩化ナトリウム",
     "oldPrice": 100,
     "newPrice": 104,
@@ -31535,9 +31535,9 @@
     "name": "生食液ＮＳ",
     "ingredient": "生理食塩液",
     "oldPrice": 100,
-    "newPrice": 100,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 104,
+    "diff": 4,
+    "ratio": 4
   },
   {
     "yj": "3311401A2190",
@@ -31675,9 +31675,9 @@
     "name": "大塚生食注",
     "ingredient": "生理食塩液",
     "oldPrice": 356,
-    "newPrice": 355,
-    "diff": -1,
-    "ratio": -0.28
+    "newPrice": 356,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3311401A8040",
@@ -31685,9 +31685,9 @@
     "name": "生理食塩液「ヒカリ」",
     "ingredient": "生理食塩液",
     "oldPrice": 356,
-    "newPrice": 355,
-    "diff": -1,
-    "ratio": -0.28
+    "newPrice": 356,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3311401A8091",
@@ -31825,9 +31825,9 @@
     "name": "大塚生食注",
     "ingredient": "生理食塩液",
     "oldPrice": 141,
-    "newPrice": 143,
-    "diff": 2,
-    "ratio": 1.42
+    "newPrice": 152,
+    "diff": 11,
+    "ratio": 7.8
   },
   {
     "yj": "3311401H2032",
@@ -33135,9 +33135,9 @@
     "name": "カルバゾクロムスルホン酸ナトリウム静注液２５ｍｇ「日医工」",
     "ingredient": "カルバゾクロムスルホン酸ナトリウム水和物",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 89,
+    "diff": 28,
+    "ratio": 45.9
   },
   {
     "yj": "3321401A2138",
@@ -33155,9 +33155,9 @@
     "name": "カルバゾクロムスルホン酸Ｎａ静注２５ｍｇ「フソー」",
     "ingredient": "カルバゾクロムスルホン酸ナトリウム水和物",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 89,
+    "diff": 28,
+    "ratio": 45.9
   },
   {
     "yj": "3321401A3185",
@@ -33165,9 +33165,9 @@
     "name": "カルバゾクロムスルホン酸ナトリウム静注液５０ｍｇ「日医工」",
     "ingredient": "カルバゾクロムスルホン酸ナトリウム水和物",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 89,
+    "diff": 28,
+    "ratio": 45.9
   },
   {
     "yj": "3321401A3142",
@@ -33185,9 +33185,9 @@
     "name": "カルバゾクロムスルホン酸Ｎａ静注５０ｍｇ「フソー」",
     "ingredient": "カルバゾクロムスルホン酸ナトリウム水和物",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 89,
+    "diff": 28,
+    "ratio": 45.9
   },
   {
     "yj": "3321401A4246",
@@ -33195,9 +33195,9 @@
     "name": "カルバゾクロムスルホン酸ナトリウム静注液１００ｍｇ「日医工」",
     "ingredient": "カルバゾクロムスルホン酸ナトリウム水和物",
     "oldPrice": 61,
-    "newPrice": 63,
-    "diff": 2,
-    "ratio": 3.28
+    "newPrice": 132,
+    "diff": 71,
+    "ratio": 116.39
   },
   {
     "yj": "3321401A4181",
@@ -33225,9 +33225,9 @@
     "name": "カルバゾクロムスルホン酸Ｎａ静注１００ｍｇ「フソー」",
     "ingredient": "カルバゾクロムスルホン酸ナトリウム水和物",
     "oldPrice": 61,
-    "newPrice": 63,
-    "diff": 2,
-    "ratio": 3.28
+    "newPrice": 132,
+    "diff": 71,
+    "ratio": 116.39
   },
   {
     "yj": "3321401A4270",
@@ -33482,12 +33482,12 @@
   {
     "yj": "3327401A4266",
     "recept": "620809804",
-    "name": "トラネキサム酸注１ｇ「ＮＰ」",
+    "name": "トラネキサム酸注１ｇ「ＮＰ」【経過措置】",
     "ingredient": "トラネキサム酸",
     "oldPrice": 100,
-    "newPrice": 104,
-    "diff": 4,
-    "ratio": 4
+    "newPrice": 100,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3327401A4274",
@@ -35705,9 +35705,9 @@
     "name": "エルカトニン注４０単位「ＴＢＰ」",
     "ingredient": "エルカトニン",
     "oldPrice": 231,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 229,
+    "diff": -2,
+    "ratio": -0.87
   },
   {
     "yj": "3999401A2028",
@@ -35725,9 +35725,9 @@
     "name": "エルカトニン筋注１０単位「ＴＢＰ」",
     "ingredient": "エルカトニン",
     "oldPrice": 63,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 63,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3999401A3024",
@@ -35785,9 +35785,9 @@
     "name": "ガベキサートメシル酸塩注射用５００ｍｇ「タカタ」",
     "ingredient": "ガベキサートメシル酸塩",
     "oldPrice": 486,
-    "newPrice": 483,
-    "diff": -3,
-    "ratio": -0.62
+    "newPrice": 486,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3999403D2090",
@@ -35925,9 +35925,9 @@
     "name": "ヒアルロン酸Ｎａ関節注２５ｍｇシリンジ「ＮＩＧ」",
     "ingredient": "精製ヒアルロン酸ナトリウム",
     "oldPrice": 288,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 288,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3999409A2032",
@@ -37525,9 +37525,9 @@
     "name": "クレマスチンシロップ０．０１％「日医工」",
     "ingredient": "クレマスチンフマル酸塩",
     "oldPrice": 12.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.7,
+    "diff": -1.1,
+    "ratio": -8.59
   },
   {
     "yj": "4419008Q1157",
@@ -37682,12 +37682,12 @@
   {
     "yj": "4490002R1193",
     "recept": "620944616",
-    "name": "トラニラストＤＳ５％「ＣＨ」",
+    "name": "トラニラストＤＳ５％「ＣＨ」【経過措置】",
     "ingredient": "トラニラスト",
     "oldPrice": 7.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 8,
+    "diff": 0.1,
+    "ratio": 1.27
   },
   {
     "yj": "4490002R1142",
@@ -37765,9 +37765,9 @@
     "name": "ケトチフェンシロップ０．０２％「ＮＩＧ」",
     "ingredient": "ケトチフェンフマル酸塩",
     "oldPrice": 6.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.9,
+    "diff": 0.2,
+    "ratio": 2.99
   },
   {
     "yj": "4490003Q1176",
@@ -39005,9 +39005,9 @@
     "name": "オウゴン",
     "ingredient": "オウゴン",
     "oldPrice": 20,
-    "newPrice": 20,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.2,
+    "ratio": 26
   },
   {
     "yj": "5100019X1024",
@@ -39025,9 +39025,9 @@
     "name": "トチモトのオウゴン",
     "ingredient": "オウゴン",
     "oldPrice": 20,
-    "newPrice": 20,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.2,
+    "ratio": 26
   },
   {
     "yj": "5100019X1083",
@@ -39035,9 +39035,9 @@
     "name": "高砂オウゴンＭ",
     "ingredient": "オウゴン",
     "oldPrice": 20,
-    "newPrice": 20,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.2,
+    "ratio": 26
   },
   {
     "yj": "5100019X1040",
@@ -39145,9 +39145,9 @@
     "name": "オウバク",
     "ingredient": "オウバク",
     "oldPrice": 27.3,
-    "newPrice": 27.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 29.5,
+    "diff": 2.2,
+    "ratio": 8.06
   },
   {
     "yj": "5100020X1027",
@@ -39155,9 +39155,9 @@
     "name": "ウチダのオウバクＭ",
     "ingredient": "オウバク",
     "oldPrice": 27.3,
-    "newPrice": 27.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 29.5,
+    "diff": 2.2,
+    "ratio": 8.06
   },
   {
     "yj": "5100020X1108",
@@ -39165,9 +39165,9 @@
     "name": "トチモトのオウバク",
     "ingredient": "オウバク",
     "oldPrice": 27.3,
-    "newPrice": 27.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 29.5,
+    "diff": 2.2,
+    "ratio": 8.06
   },
   {
     "yj": "5100020X1086",
@@ -39175,9 +39175,9 @@
     "name": "高砂オウバクＭ",
     "ingredient": "オウバク",
     "oldPrice": 27.3,
-    "newPrice": 27.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 29.5,
+    "diff": 2.2,
+    "ratio": 8.06
   },
   {
     "yj": "5100020X1043",
@@ -39315,9 +39315,9 @@
     "name": "オウレン",
     "ingredient": "オウレン",
     "oldPrice": 90.3,
-    "newPrice": 90.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 117.4,
+    "diff": 27.1,
+    "ratio": 30.01
   },
   {
     "yj": "5100022X1026",
@@ -39335,9 +39335,9 @@
     "name": "トチモトのオウレン",
     "ingredient": "オウレン",
     "oldPrice": 90.3,
-    "newPrice": 90.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 117.4,
+    "diff": 27.1,
+    "ratio": 30.01
   },
   {
     "yj": "5100022X1085",
@@ -39345,9 +39345,9 @@
     "name": "高砂オウレンＭ",
     "ingredient": "オウレン",
     "oldPrice": 90.3,
-    "newPrice": 90.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 117.4,
+    "diff": 27.1,
+    "ratio": 30.01
   },
   {
     "yj": "5100022X1042",
@@ -39895,9 +39895,9 @@
     "name": "トチモトのカッセキ",
     "ingredient": "カッセキ",
     "oldPrice": 15.8,
-    "newPrice": 15.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.5,
+    "diff": 4.7,
+    "ratio": 29.75
   },
   {
     "yj": "5100033X1040",
@@ -39925,9 +39925,9 @@
     "name": "高砂カッセキＭ",
     "ingredient": "カッセキ",
     "oldPrice": 15.8,
-    "newPrice": 15.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.5,
+    "diff": 4.7,
+    "ratio": 29.75
   },
   {
     "yj": "5100034A1026",
@@ -40015,9 +40015,9 @@
     "name": "トチモトのカロコン",
     "ingredient": "カロコン",
     "oldPrice": 17.3,
-    "newPrice": 17.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.5,
+    "diff": 5.2,
+    "ratio": 30.06
   },
   {
     "yj": "5100036X1087",
@@ -40025,9 +40025,9 @@
     "name": "カロコン",
     "ingredient": "カロコン",
     "oldPrice": 17.3,
-    "newPrice": 17.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.5,
+    "diff": 5.2,
+    "ratio": 30.06
   },
   {
     "yj": "5100036X1079",
@@ -40035,9 +40035,9 @@
     "name": "高砂カロコンＭ",
     "ingredient": "カロコン",
     "oldPrice": 17.3,
-    "newPrice": 17.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.5,
+    "diff": 5.2,
+    "ratio": 30.06
   },
   {
     "yj": "5100036X1036",
@@ -40135,9 +40135,9 @@
     "name": "ツムラの生薬カンキョウ",
     "ingredient": "カンキョウ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 19.9,
+    "diff": 3.7,
+    "ratio": 22.84
   },
   {
     "yj": "5100038X1027",
@@ -40155,9 +40155,9 @@
     "name": "トチモトのカンキョウ",
     "ingredient": "カンキョウ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 19.9,
+    "diff": 3.7,
+    "ratio": 22.84
   },
   {
     "yj": "5100038X1060",
@@ -40175,9 +40175,9 @@
     "name": "高砂カンキョウＭ",
     "ingredient": "カンキョウ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 19.9,
+    "diff": 3.7,
+    "ratio": 22.84
   },
   {
     "yj": "5100039A1096",
@@ -40245,9 +40245,9 @@
     "name": "ツムラの生薬カンゾウ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100039X1021",
@@ -40255,9 +40255,9 @@
     "name": "ウチダのカンゾウＭ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100039X1110",
@@ -40265,9 +40265,9 @@
     "name": "トチモトのカンゾウ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100039X1080",
@@ -40275,9 +40275,9 @@
     "name": "高砂カンゾウＭ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100039X1048",
@@ -40285,9 +40285,9 @@
     "name": "花扇カンゾウＫ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100039X1145",
@@ -40305,9 +40305,9 @@
     "name": "カンゾウダイコーＭ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100042A1020",
@@ -40655,9 +40655,9 @@
     "name": "トチモトのキョウカツ",
     "ingredient": "キョウカツ",
     "oldPrice": 60.1,
-    "newPrice": 60.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 78.1,
+    "diff": 18,
+    "ratio": 29.95
   },
   {
     "yj": "5100048X1055",
@@ -40665,9 +40665,9 @@
     "name": "ツムラの生薬キョウカツ",
     "ingredient": "キョウカツ",
     "oldPrice": 60.1,
-    "newPrice": 60.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 78.1,
+    "diff": 18,
+    "ratio": 29.95
   },
   {
     "yj": "5100048X1047",
@@ -40685,9 +40685,9 @@
     "name": "高砂キョウカツＭ",
     "ingredient": "キョウカツ",
     "oldPrice": 60.1,
-    "newPrice": 60.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 78.1,
+    "diff": 18,
+    "ratio": 29.95
   },
   {
     "yj": "5100049X1076",
@@ -40695,9 +40695,9 @@
     "name": "キョウニン",
     "ingredient": "キョウニン",
     "oldPrice": 15.9,
-    "newPrice": 15.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.7,
+    "diff": 4.8,
+    "ratio": 30.19
   },
   {
     "yj": "5100049X1025",
@@ -40715,9 +40715,9 @@
     "name": "トチモトのキョウニン",
     "ingredient": "キョウニン",
     "oldPrice": 15.9,
-    "newPrice": 15.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.7,
+    "diff": 4.8,
+    "ratio": 30.19
   },
   {
     "yj": "5100049X1050",
@@ -40725,9 +40725,9 @@
     "name": "高砂キョウニンＭ",
     "ingredient": "キョウニン",
     "oldPrice": 15.9,
-    "newPrice": 15.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.7,
+    "diff": 4.8,
+    "ratio": 30.19
   },
   {
     "yj": "5100049X1068",
@@ -40885,9 +40885,9 @@
     "name": "クジン",
     "ingredient": "クジン",
     "oldPrice": 14.3,
-    "newPrice": 14.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.5,
+    "diff": 3.2,
+    "ratio": 22.38
   },
   {
     "yj": "5100054X1026",
@@ -40905,9 +40905,9 @@
     "name": "トチモトのクジン",
     "ingredient": "クジン",
     "oldPrice": 14.3,
-    "newPrice": 14.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.5,
+    "diff": 3.2,
+    "ratio": 22.38
   },
   {
     "yj": "5100054X1034",
@@ -40955,9 +40955,9 @@
     "name": "高砂クジンＭ",
     "ingredient": "クジン",
     "oldPrice": 14.3,
-    "newPrice": 14.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.5,
+    "diff": 3.2,
+    "ratio": 22.38
   },
   {
     "yj": "5100055X1020",
@@ -40975,9 +40975,9 @@
     "name": "トチモトのケイガイ",
     "ingredient": "ケイガイ",
     "oldPrice": 17.5,
-    "newPrice": 17.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.8,
+    "diff": 5.3,
+    "ratio": 30.29
   },
   {
     "yj": "5100055X1071",
@@ -40985,9 +40985,9 @@
     "name": "高砂ケイガイＭ",
     "ingredient": "ケイガイ",
     "oldPrice": 17.5,
-    "newPrice": 17.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.8,
+    "diff": 5.3,
+    "ratio": 30.29
   },
   {
     "yj": "5100055X1039",
@@ -41095,9 +41095,9 @@
     "name": "ケイヒ",
     "ingredient": "ケイヒ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 21.1,
+    "diff": 4.9,
+    "ratio": 30.25
   },
   {
     "yj": "5100056X1025",
@@ -41105,9 +41105,9 @@
     "name": "ウチダのケイヒＭ",
     "ingredient": "ケイヒ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 21.1,
+    "diff": 4.9,
+    "ratio": 30.25
   },
   {
     "yj": "5100056X1114",
@@ -41115,9 +41115,9 @@
     "name": "トチモトのケイヒ",
     "ingredient": "ケイヒ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 21.1,
+    "diff": 4.9,
+    "ratio": 30.25
   },
   {
     "yj": "5100056X1084",
@@ -41125,9 +41125,9 @@
     "name": "高砂ケイヒＭ",
     "ingredient": "ケイヒ",
     "oldPrice": 16.2,
-    "newPrice": 16.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 21.1,
+    "diff": 4.9,
+    "ratio": 30.25
   },
   {
     "yj": "5100056X1041",
@@ -41475,9 +41475,9 @@
     "name": "コウカ",
     "ingredient": "コウカ",
     "oldPrice": 49.3,
-    "newPrice": 49.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 64.1,
+    "diff": 14.8,
+    "ratio": 30.02
   },
   {
     "yj": "5100062X1020",
@@ -41495,9 +41495,9 @@
     "name": "トチモトのコウカ",
     "ingredient": "コウカ",
     "oldPrice": 49.3,
-    "newPrice": 49.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 64.1,
+    "diff": 14.8,
+    "ratio": 30.02
   },
   {
     "yj": "5100062X1080",
@@ -41505,9 +41505,9 @@
     "name": "高砂コウカＭ",
     "ingredient": "コウカ",
     "oldPrice": 49.3,
-    "newPrice": 49.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 64.1,
+    "diff": 14.8,
+    "ratio": 30.02
   },
   {
     "yj": "5100062X1047",
@@ -41675,9 +41675,9 @@
     "name": "高砂コウブシ末Ｍ",
     "ingredient": "コウブシ",
     "oldPrice": 13.2,
-    "newPrice": 13.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.2,
+    "diff": 4,
+    "ratio": 30.3
   },
   {
     "yj": "5100065A1021",
@@ -41695,9 +41695,9 @@
     "name": "トチモトのコウブシ末",
     "ingredient": "コウブシ",
     "oldPrice": 13.2,
-    "newPrice": 13.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.2,
+    "diff": 4,
+    "ratio": 30.3
   },
   {
     "yj": "5100065A1030",
@@ -41745,9 +41745,9 @@
     "name": "トチモトのコウブシ",
     "ingredient": "コウブシ",
     "oldPrice": 12.6,
-    "newPrice": 12.6,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.4,
+    "diff": 3.8,
+    "ratio": 30.16
   },
   {
     "yj": "5100065X1083",
@@ -41755,9 +41755,9 @@
     "name": "コウブシ",
     "ingredient": "コウブシ",
     "oldPrice": 12.6,
-    "newPrice": 12.6,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.4,
+    "diff": 3.8,
+    "ratio": 30.16
   },
   {
     "yj": "5100065X1075",
@@ -41765,9 +41765,9 @@
     "name": "高砂コウブシＭ",
     "ingredient": "コウブシ",
     "oldPrice": 12.6,
-    "newPrice": 12.6,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.4,
+    "diff": 3.8,
+    "ratio": 30.16
   },
   {
     "yj": "5100065X1032",
@@ -41895,9 +41895,9 @@
     "name": "コウボク",
     "ingredient": "コウボク",
     "oldPrice": 18.2,
-    "newPrice": 18.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 23.7,
+    "diff": 5.5,
+    "ratio": 30.22
   },
   {
     "yj": "5100067X1023",
@@ -41915,9 +41915,9 @@
     "name": "トチモトのコウボク",
     "ingredient": "コウボク",
     "oldPrice": 18.2,
-    "newPrice": 18.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 23.7,
+    "diff": 5.5,
+    "ratio": 30.22
   },
   {
     "yj": "5100067X1074",
@@ -41925,9 +41925,9 @@
     "name": "高砂コウボクＭ",
     "ingredient": "コウボク",
     "oldPrice": 18.2,
-    "newPrice": 18.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 23.7,
+    "diff": 5.5,
+    "ratio": 30.22
   },
   {
     "yj": "5100067X1031",
@@ -41985,9 +41985,9 @@
     "name": "トチモトのゴシツ",
     "ingredient": "ゴシツ",
     "oldPrice": 19.1,
-    "newPrice": 19.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.8,
+    "diff": 5.7,
+    "ratio": 29.84
   },
   {
     "yj": "5100069X1081",
@@ -41995,9 +41995,9 @@
     "name": "ゴシツ",
     "ingredient": "ゴシツ",
     "oldPrice": 19.1,
-    "newPrice": 19.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.8,
+    "diff": 5.7,
+    "ratio": 29.84
   },
   {
     "yj": "5100069X1073",
@@ -42005,9 +42005,9 @@
     "name": "高砂ゴシツＭ",
     "ingredient": "ゴシツ",
     "oldPrice": 19.1,
-    "newPrice": 19.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.8,
+    "diff": 5.7,
+    "ratio": 29.84
   },
   {
     "yj": "5100069X1030",
@@ -42305,9 +42305,9 @@
     "name": "サイコ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100075X1028",
@@ -42315,9 +42315,9 @@
     "name": "ウチダのサイコＭ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100075X1109",
@@ -42325,9 +42325,9 @@
     "name": "トチモトのサイコ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100075X1079",
@@ -42335,9 +42335,9 @@
     "name": "高砂サイコＭ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100075X1036",
@@ -42345,9 +42345,9 @@
     "name": "サイコ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100075X1141",
@@ -42365,9 +42365,9 @@
     "name": "サイコダイコーＭ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100075X1184",
@@ -42375,9 +42375,9 @@
     "name": "ナカジマ　サイコ",
     "ingredient": "サイコ",
     "oldPrice": 46.1,
-    "newPrice": 46.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.9,
+    "diff": 13.8,
+    "ratio": 29.93
   },
   {
     "yj": "5100076X1022",
@@ -42395,9 +42395,9 @@
     "name": "トチモトのサイシン",
     "ingredient": "サイシン",
     "oldPrice": 72,
-    "newPrice": 72,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 93.6,
+    "diff": 21.6,
+    "ratio": 30
   },
   {
     "yj": "5100076X1081",
@@ -42405,9 +42405,9 @@
     "name": "サイシン",
     "ingredient": "サイシン",
     "oldPrice": 72,
-    "newPrice": 72,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 93.6,
+    "diff": 21.6,
+    "ratio": 30
   },
   {
     "yj": "5100076X1073",
@@ -42415,9 +42415,9 @@
     "name": "高砂サイシンＭ",
     "ingredient": "サイシン",
     "oldPrice": 72,
-    "newPrice": 72,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 93.6,
+    "diff": 21.6,
+    "ratio": 30
   },
   {
     "yj": "5100076X1030",
@@ -42705,9 +42705,9 @@
     "name": "高砂サンシシ末Ｍ",
     "ingredient": "サンシシ",
     "oldPrice": 20.8,
-    "newPrice": 20.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27,
+    "diff": 6.2,
+    "ratio": 29.81
   },
   {
     "yj": "5100081A1047",
@@ -42735,9 +42735,9 @@
     "name": "トチモトのサンシシ末",
     "ingredient": "サンシシ",
     "oldPrice": 20.8,
-    "newPrice": 20.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27,
+    "diff": 6.2,
+    "ratio": 29.81
   },
   {
     "yj": "5100081X1023",
@@ -42755,9 +42755,9 @@
     "name": "トチモトのサンシシ",
     "ingredient": "サンシシ",
     "oldPrice": 15.9,
-    "newPrice": 15.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.7,
+    "diff": 1.8,
+    "ratio": 11.32
   },
   {
     "yj": "5100081X1090",
@@ -42765,9 +42765,9 @@
     "name": "サンシシ",
     "ingredient": "サンシシ",
     "oldPrice": 15.9,
-    "newPrice": 15.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.7,
+    "diff": 1.8,
+    "ratio": 11.32
   },
   {
     "yj": "5100081X1082",
@@ -42775,9 +42775,9 @@
     "name": "高砂サンシシＭ",
     "ingredient": "サンシシ",
     "oldPrice": 15.9,
-    "newPrice": 15.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17.7,
+    "diff": 1.8,
+    "ratio": 11.32
   },
   {
     "yj": "5100081X1040",
@@ -42955,9 +42955,9 @@
     "name": "トチモトのサンショウ",
     "ingredient": "サンショウ",
     "oldPrice": 267,
-    "newPrice": 267,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 347.1,
+    "diff": 80.1,
+    "ratio": 30
   },
   {
     "yj": "5100083X1081",
@@ -42965,9 +42965,9 @@
     "name": "サンショウ",
     "ingredient": "サンショウ",
     "oldPrice": 267,
-    "newPrice": 267,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 347.1,
+    "diff": 80.1,
+    "ratio": 30
   },
   {
     "yj": "5100083X1073",
@@ -42975,9 +42975,9 @@
     "name": "高砂サンショウＭ",
     "ingredient": "サンショウ",
     "oldPrice": 267,
-    "newPrice": 267,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 347.1,
+    "diff": 80.1,
+    "ratio": 30
   },
   {
     "yj": "5100083X1030",
@@ -43155,9 +43155,9 @@
     "name": "ツムラの生薬ジオウ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "5100087X1020",
@@ -43165,9 +43165,9 @@
     "name": "ウチダのジオウＭ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "5100087X1101",
@@ -43175,9 +43175,9 @@
     "name": "トチモトのジオウ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "5100087X1039",
@@ -43185,9 +43185,9 @@
     "name": "花扇ジオウＫ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "5100087X1071",
@@ -43195,9 +43195,9 @@
     "name": "高砂ジオウＭ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "5100087X1144",
@@ -43215,9 +43215,9 @@
     "name": "ジオウダイコーＭ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "5100088X1025",
@@ -43685,9 +43685,9 @@
     "name": "トチモトのシャゼンシ",
     "ingredient": "シャゼンシ",
     "oldPrice": 12.3,
-    "newPrice": 12.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16,
+    "diff": 3.7,
+    "ratio": 30.08
   },
   {
     "yj": "5100097X1083",
@@ -43695,9 +43695,9 @@
     "name": "シャゼンシ",
     "ingredient": "シャゼンシ",
     "oldPrice": 12.3,
-    "newPrice": 12.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16,
+    "diff": 3.7,
+    "ratio": 30.08
   },
   {
     "yj": "5100097X1075",
@@ -43705,9 +43705,9 @@
     "name": "高砂シャゼンシＭ",
     "ingredient": "シャゼンシ",
     "oldPrice": 12.3,
-    "newPrice": 12.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16,
+    "diff": 3.7,
+    "ratio": 30.08
   },
   {
     "yj": "5100097X1032",
@@ -44055,9 +44055,9 @@
     "name": "ショウキョウ",
     "ingredient": "ショウキョウ",
     "oldPrice": 15.5,
-    "newPrice": 15.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 19.6,
+    "diff": 4.1,
+    "ratio": 26.45
   },
   {
     "yj": "5100102X1027",
@@ -44075,9 +44075,9 @@
     "name": "トチモトのショウキョウ",
     "ingredient": "ショウキョウ",
     "oldPrice": 15.5,
-    "newPrice": 15.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 19.6,
+    "diff": 4.1,
+    "ratio": 26.45
   },
   {
     "yj": "5100102X1078",
@@ -44085,9 +44085,9 @@
     "name": "高砂ショウキョウＭ",
     "ingredient": "ショウキョウ",
     "oldPrice": 15.5,
-    "newPrice": 15.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 19.6,
+    "diff": 4.1,
+    "ratio": 26.45
   },
   {
     "yj": "5100102X1035",
@@ -44205,9 +44205,9 @@
     "name": "トチモトのショウマ",
     "ingredient": "ショウマ",
     "oldPrice": 12.7,
-    "newPrice": 12.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.5,
+    "diff": 3.8,
+    "ratio": 29.92
   },
   {
     "yj": "5100106X1076",
@@ -44215,9 +44215,9 @@
     "name": "高砂ショウマＭ",
     "ingredient": "ショウマ",
     "oldPrice": 12.7,
-    "newPrice": 12.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.5,
+    "diff": 3.8,
+    "ratio": 29.92
   },
   {
     "yj": "5100106X1033",
@@ -44705,9 +44705,9 @@
     "name": "トチモトのセンタイ",
     "ingredient": "センタイ",
     "oldPrice": 76.4,
-    "newPrice": 76.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 99.3,
+    "diff": 22.9,
+    "ratio": 29.97
   },
   {
     "yj": "5100114X1054",
@@ -44725,9 +44725,9 @@
     "name": "高砂センタイＭ",
     "ingredient": "センタイ",
     "oldPrice": 76.4,
-    "newPrice": 76.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 99.3,
+    "diff": 22.9,
+    "ratio": 29.97
   },
   {
     "yj": "5100115X1032",
@@ -44855,9 +44855,9 @@
     "name": "高砂ソウジュツ末Ｍ",
     "ingredient": "ソウジュツ",
     "oldPrice": 23.4,
-    "newPrice": 23.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 30.4,
+    "diff": 7,
+    "ratio": 29.91
   },
   {
     "yj": "5100117A1020",
@@ -44875,9 +44875,9 @@
     "name": "トチモトのソウジュツ末",
     "ingredient": "ソウジュツ",
     "oldPrice": 23.4,
-    "newPrice": 23.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 30.4,
+    "diff": 7,
+    "ratio": 29.91
   },
   {
     "yj": "5100117A1047",
@@ -44915,9 +44915,9 @@
     "name": "ウチダのソウジュツＭ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100117X1112",
@@ -44925,9 +44925,9 @@
     "name": "トチモトのソウジュツ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100117X1090",
@@ -44935,9 +44935,9 @@
     "name": "ソウジュツ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100117X1082",
@@ -44945,9 +44945,9 @@
     "name": "高砂ソウジュツＭ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100117X1040",
@@ -44955,9 +44955,9 @@
     "name": "ソウジュツ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100117X1139",
@@ -44975,9 +44975,9 @@
     "name": "ソウジュツダイコーＭ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100117X1171",
@@ -44985,9 +44985,9 @@
     "name": "ナカジマ　ソウジュツ",
     "ingredient": "ソウジュツ",
     "oldPrice": 25.7,
-    "newPrice": 25.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33.4,
+    "diff": 7.7,
+    "ratio": 29.96
   },
   {
     "yj": "5100118X1028",
@@ -45005,9 +45005,9 @@
     "name": "トチモトのソウハクヒ",
     "ingredient": "ソウハクヒ",
     "oldPrice": 15.5,
-    "newPrice": 15.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.2,
+    "diff": 4.7,
+    "ratio": 30.32
   },
   {
     "yj": "5100118X1087",
@@ -45015,9 +45015,9 @@
     "name": "ソウハクヒ",
     "ingredient": "ソウハクヒ",
     "oldPrice": 15.5,
-    "newPrice": 15.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.2,
+    "diff": 4.7,
+    "ratio": 30.32
   },
   {
     "yj": "5100118X1079",
@@ -45025,9 +45025,9 @@
     "name": "高砂ソウハクヒＭ",
     "ingredient": "ソウハクヒ",
     "oldPrice": 15.5,
-    "newPrice": 15.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 20.2,
+    "diff": 4.7,
+    "ratio": 30.32
   },
   {
     "yj": "5100118X1044",
@@ -45105,9 +45105,9 @@
     "name": "ソヨウ",
     "ingredient": "ソヨウ",
     "oldPrice": 25.4,
-    "newPrice": 25.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33,
+    "diff": 7.6,
+    "ratio": 29.92
   },
   {
     "yj": "5100120X1025",
@@ -45125,9 +45125,9 @@
     "name": "トチモトのソヨウ",
     "ingredient": "ソヨウ",
     "oldPrice": 25.4,
-    "newPrice": 25.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33,
+    "diff": 7.6,
+    "ratio": 29.92
   },
   {
     "yj": "5100120X1076",
@@ -45135,9 +45135,9 @@
     "name": "高砂ソヨウＭ",
     "ingredient": "ソヨウ",
     "oldPrice": 25.4,
-    "newPrice": 25.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 33,
+    "diff": 7.6,
+    "ratio": 29.92
   },
   {
     "yj": "5100120X1033",
@@ -45185,9 +45185,9 @@
     "name": "三和ダイオウ末",
     "ingredient": "ダイオウ",
     "oldPrice": 24.5,
-    "newPrice": 24.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.9,
+    "diff": 7.4,
+    "ratio": 30.2
   },
   {
     "yj": "5100121A1035",
@@ -45205,9 +45205,9 @@
     "name": "高砂ダイオウ末Ｍ",
     "ingredient": "ダイオウ",
     "oldPrice": 24.5,
-    "newPrice": 24.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.9,
+    "diff": 7.4,
+    "ratio": 30.2
   },
   {
     "yj": "5100121A1132",
@@ -45215,9 +45215,9 @@
     "name": "トチモトのダイオウ末",
     "ingredient": "ダイオウ",
     "oldPrice": 24.5,
-    "newPrice": 24.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.9,
+    "diff": 7.4,
+    "ratio": 30.2
   },
   {
     "yj": "5100121A1051",
@@ -45275,9 +45275,9 @@
     "name": "ダイオウ",
     "ingredient": "ダイオウ",
     "oldPrice": 20,
-    "newPrice": 20,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.4,
+    "diff": 4.4,
+    "ratio": 22
   },
   {
     "yj": "5100121X1020",
@@ -45295,9 +45295,9 @@
     "name": "トチモトのダイオウ",
     "ingredient": "ダイオウ",
     "oldPrice": 20,
-    "newPrice": 20,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.4,
+    "diff": 4.4,
+    "ratio": 22
   },
   {
     "yj": "5100121X1089",
@@ -45305,9 +45305,9 @@
     "name": "高砂ダイオウＭ",
     "ingredient": "ダイオウ",
     "oldPrice": 20,
-    "newPrice": 20,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.4,
+    "diff": 4.4,
+    "ratio": 22
   },
   {
     "yj": "5100121X1046",
@@ -45465,9 +45465,9 @@
     "name": "高砂タクシャ末Ｍ",
     "ingredient": "タクシャ",
     "oldPrice": 23.1,
-    "newPrice": 23.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 30,
+    "diff": 6.9,
+    "ratio": 29.87
   },
   {
     "yj": "5100124A1020",
@@ -45485,9 +45485,9 @@
     "name": "トチモトのタクシャ末",
     "ingredient": "タクシャ",
     "oldPrice": 23.1,
-    "newPrice": 23.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 30,
+    "diff": 6.9,
+    "ratio": 29.87
   },
   {
     "yj": "5100124A1039",
@@ -45525,9 +45525,9 @@
     "name": "タクシャ",
     "ingredient": "タクシャ",
     "oldPrice": 17.1,
-    "newPrice": 17.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.2,
+    "diff": 5.1,
+    "ratio": 29.82
   },
   {
     "yj": "5100124X1023",
@@ -45545,9 +45545,9 @@
     "name": "トチモトのタクシャ",
     "ingredient": "タクシャ",
     "oldPrice": 17.1,
-    "newPrice": 17.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.2,
+    "diff": 5.1,
+    "ratio": 29.82
   },
   {
     "yj": "5100124X1074",
@@ -45555,9 +45555,9 @@
     "name": "高砂タクシャＭ",
     "ingredient": "タクシャ",
     "oldPrice": 17.1,
-    "newPrice": 17.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.2,
+    "diff": 5.1,
+    "ratio": 29.82
   },
   {
     "yj": "5100124X1031",
@@ -45975,9 +45975,9 @@
     "name": "ツムラの生薬チョウトウコウ",
     "ingredient": "チョウトウコウ",
     "oldPrice": 25.5,
-    "newPrice": 25.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 26.1,
+    "diff": 0.6,
+    "ratio": 2.35
   },
   {
     "yj": "5100129X1026",
@@ -45995,9 +45995,9 @@
     "name": "トチモトのチョウトウコウ",
     "ingredient": "チョウトウコウ",
     "oldPrice": 25.5,
-    "newPrice": 25.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 26.1,
+    "diff": 0.6,
+    "ratio": 2.35
   },
   {
     "yj": "5100129X1050",
@@ -46015,9 +46015,9 @@
     "name": "高砂チョウトウコウＭ",
     "ingredient": "チョウトウコウ",
     "oldPrice": 25.5,
-    "newPrice": 25.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 26.1,
+    "diff": 0.6,
+    "ratio": 2.35
   },
   {
     "yj": "5100130X1029",
@@ -46105,9 +46105,9 @@
     "name": "チンピ",
     "ingredient": "チンピ",
     "oldPrice": 11.7,
-    "newPrice": 11.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 13.1,
+    "diff": 1.4,
+    "ratio": 11.97
   },
   {
     "yj": "5100131X1023",
@@ -46125,9 +46125,9 @@
     "name": "トチモトのチンピ",
     "ingredient": "チンピ",
     "oldPrice": 11.7,
-    "newPrice": 11.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 13.1,
+    "diff": 1.4,
+    "ratio": 11.97
   },
   {
     "yj": "5100131X1031",
@@ -46145,9 +46145,9 @@
     "name": "高砂チンピＭ",
     "ingredient": "チンピ",
     "oldPrice": 11.7,
-    "newPrice": 11.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 13.1,
+    "diff": 1.4,
+    "ratio": 11.97
   },
   {
     "yj": "5100131X1120",
@@ -46945,9 +46945,9 @@
     "name": "バクモンドウ",
     "ingredient": "バクモンドウ",
     "oldPrice": 45.4,
-    "newPrice": 45.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59,
+    "diff": 13.6,
+    "ratio": 29.96
   },
   {
     "yj": "5100151X1020",
@@ -46965,9 +46965,9 @@
     "name": "トチモトのバクモンドウ",
     "ingredient": "バクモンドウ",
     "oldPrice": 45.4,
-    "newPrice": 45.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59,
+    "diff": 13.6,
+    "ratio": 29.96
   },
   {
     "yj": "5100151X1080",
@@ -46975,9 +46975,9 @@
     "name": "高砂バクモンドウＭ",
     "ingredient": "バクモンドウ",
     "oldPrice": 45.4,
-    "newPrice": 45.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59,
+    "diff": 13.6,
+    "ratio": 29.96
   },
   {
     "yj": "5100151X1047",
@@ -47035,9 +47035,9 @@
     "name": "トチモトのハッカ",
     "ingredient": "ハッカ",
     "oldPrice": 18.7,
-    "newPrice": 18.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.3,
+    "diff": 5.6,
+    "ratio": 29.95
   },
   {
     "yj": "5100152X1092",
@@ -47045,9 +47045,9 @@
     "name": "ハッカ",
     "ingredient": "ハッカ",
     "oldPrice": 18.7,
-    "newPrice": 18.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.3,
+    "diff": 5.6,
+    "ratio": 29.95
   },
   {
     "yj": "5100152X1084",
@@ -47055,9 +47055,9 @@
     "name": "高砂ハッカＭ",
     "ingredient": "ハッカ",
     "oldPrice": 18.7,
-    "newPrice": 18.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 24.3,
+    "diff": 5.6,
+    "ratio": 29.95
   },
   {
     "yj": "5100152X1033",
@@ -47185,9 +47185,9 @@
     "name": "ハンゲ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100154X1024",
@@ -47195,9 +47195,9 @@
     "name": "ウチダのハンゲＭ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100154X1113",
@@ -47205,9 +47205,9 @@
     "name": "トチモトのハンゲ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100154X1083",
@@ -47215,9 +47215,9 @@
     "name": "高砂ハンゲＭ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100154X1040",
@@ -47225,9 +47225,9 @@
     "name": "ハンゲ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100154X1164",
@@ -47245,9 +47245,9 @@
     "name": "ハンゲダイコーＭ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100154X1202",
@@ -47255,9 +47255,9 @@
     "name": "ナカジマ　ハンゲ",
     "ingredient": "ハンゲ",
     "oldPrice": 45.7,
-    "newPrice": 45.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 59.4,
+    "diff": 13.7,
+    "ratio": 29.98
   },
   {
     "yj": "5100155X1029",
@@ -47315,9 +47315,9 @@
     "name": "トチモトのビャクシ",
     "ingredient": "ビャクシ",
     "oldPrice": 29.1,
-    "newPrice": 29.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 32.5,
+    "diff": 3.4,
+    "ratio": 11.68
   },
   {
     "yj": "5100157X1087",
@@ -47325,9 +47325,9 @@
     "name": "ビャクシ",
     "ingredient": "ビャクシ",
     "oldPrice": 29.1,
-    "newPrice": 29.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 32.5,
+    "diff": 3.4,
+    "ratio": 11.68
   },
   {
     "yj": "5100157X1079",
@@ -47335,9 +47335,9 @@
     "name": "高砂ビャクシＭ",
     "ingredient": "ビャクシ",
     "oldPrice": 29.1,
-    "newPrice": 29.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 32.5,
+    "diff": 3.4,
+    "ratio": 11.68
   },
   {
     "yj": "5100157X1036",
@@ -47575,9 +47575,9 @@
     "name": "トチモトのビンロウジ",
     "ingredient": "ビンロウジ",
     "oldPrice": 12.7,
-    "newPrice": 12.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.5,
+    "diff": 3.8,
+    "ratio": 29.92
   },
   {
     "yj": "5100160X1070",
@@ -47585,9 +47585,9 @@
     "name": "高砂ビンロウジＭ",
     "ingredient": "ビンロウジ",
     "oldPrice": 12.7,
-    "newPrice": 12.7,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.5,
+    "diff": 3.8,
+    "ratio": 29.92
   },
   {
     "yj": "5100160X1038",
@@ -47635,9 +47635,9 @@
     "name": "高砂ブクリョウ末Ｍ",
     "ingredient": "ブクリョウ",
     "oldPrice": 28.9,
-    "newPrice": 28.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 37,
+    "diff": 8.1,
+    "ratio": 28.03
   },
   {
     "yj": "5100161A1102",
@@ -47645,9 +47645,9 @@
     "name": "トチモトのブクリョウ末",
     "ingredient": "ブクリョウ",
     "oldPrice": 28.9,
-    "newPrice": 28.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 37,
+    "diff": 8.1,
+    "ratio": 28.03
   },
   {
     "yj": "5100161A1048",
@@ -47715,9 +47715,9 @@
     "name": "ツムラの生薬ブクリョウ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100161X1024",
@@ -47725,9 +47725,9 @@
     "name": "ウチダのブクリョウＭ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100161X1113",
@@ -47735,9 +47735,9 @@
     "name": "トチモトのブクリョウ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100161X1083",
@@ -47745,9 +47745,9 @@
     "name": "高砂ブクリョウＭ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100161X1040",
@@ -47755,9 +47755,9 @@
     "name": "花扇ブクリョウＫ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100161X1148",
@@ -47775,9 +47775,9 @@
     "name": "ブクリョウダイコーＭ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100161X1180",
@@ -47785,9 +47785,9 @@
     "name": "ナカジマ　ブクリョウ",
     "ingredient": "ブクリョウ",
     "oldPrice": 23.9,
-    "newPrice": 23.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 31.1,
+    "diff": 7.2,
+    "ratio": 30.13
   },
   {
     "yj": "5100162X1029",
@@ -47945,9 +47945,9 @@
     "name": "ボウフウ",
     "ingredient": "ボウフウ",
     "oldPrice": 40.2,
-    "newPrice": 40.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 42.6,
+    "diff": 2.4,
+    "ratio": 5.97
   },
   {
     "yj": "5100165X1022",
@@ -47965,9 +47965,9 @@
     "name": "トチモトのボウフウ",
     "ingredient": "ボウフウ",
     "oldPrice": 40.2,
-    "newPrice": 40.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 42.6,
+    "diff": 2.4,
+    "ratio": 5.97
   },
   {
     "yj": "5100165X1073",
@@ -48005,9 +48005,9 @@
     "name": "高砂ボウフウＭ",
     "ingredient": "ボウフウ",
     "oldPrice": 40.2,
-    "newPrice": 40.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 42.6,
+    "diff": 2.4,
+    "ratio": 5.97
   },
   {
     "yj": "5100166X1027",
@@ -48065,9 +48065,9 @@
     "name": "高砂ボタンピ末Ｍ",
     "ingredient": "ボタンピ",
     "oldPrice": 23.5,
-    "newPrice": 23.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 30.6,
+    "diff": 7.1,
+    "ratio": 30.21
   },
   {
     "yj": "5100168A1082",
@@ -48075,9 +48075,9 @@
     "name": "トチモトのボタンピ末",
     "ingredient": "ボタンピ",
     "oldPrice": 23.5,
-    "newPrice": 23.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 30.6,
+    "diff": 7.1,
+    "ratio": 30.21
   },
   {
     "yj": "5100168A1031",
@@ -48195,9 +48195,9 @@
     "name": "高砂ボレイ末Ｍ",
     "ingredient": "ボレイ",
     "oldPrice": 10.2,
-    "newPrice": 10.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 13.3,
+    "diff": 3.1,
+    "ratio": 30.39
   },
   {
     "yj": "5100169A1028",
@@ -48215,9 +48215,9 @@
     "name": "トチモトのボレイ末",
     "ingredient": "ボレイ",
     "oldPrice": 10.2,
-    "newPrice": 10.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 13.3,
+    "diff": 3.1,
+    "ratio": 30.39
   },
   {
     "yj": "5100169A1036",
@@ -48355,9 +48355,9 @@
     "name": "トチモトのマオウ",
     "ingredient": "マオウ",
     "oldPrice": 12.5,
-    "newPrice": 12.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.3,
+    "diff": 3.8,
+    "ratio": 30.4
   },
   {
     "yj": "5100170X1090",
@@ -48365,9 +48365,9 @@
     "name": "マオウ",
     "ingredient": "マオウ",
     "oldPrice": 12.5,
-    "newPrice": 12.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.3,
+    "diff": 3.8,
+    "ratio": 30.4
   },
   {
     "yj": "5100170X1082",
@@ -48375,9 +48375,9 @@
     "name": "高砂マオウＭ",
     "ingredient": "マオウ",
     "oldPrice": 12.5,
-    "newPrice": 12.5,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 16.3,
+    "diff": 3.8,
+    "ratio": 30.4
   },
   {
     "yj": "5100170X1040",
@@ -48495,9 +48495,9 @@
     "name": "トチモトのモクツウ",
     "ingredient": "モクツウ",
     "oldPrice": 14.2,
-    "newPrice": 14.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 18.5,
+    "diff": 4.3,
+    "ratio": 30.28
   },
   {
     "yj": "5100173X1094",
@@ -48505,9 +48505,9 @@
     "name": "モクツウ",
     "ingredient": "モクツウ",
     "oldPrice": 14.2,
-    "newPrice": 14.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 18.5,
+    "diff": 4.3,
+    "ratio": 30.28
   },
   {
     "yj": "5100173X1086",
@@ -48515,9 +48515,9 @@
     "name": "高砂モクツウＭ",
     "ingredient": "モクツウ",
     "oldPrice": 14.2,
-    "newPrice": 14.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 18.5,
+    "diff": 4.3,
+    "ratio": 30.28
   },
   {
     "yj": "5100173X1043",
@@ -48605,9 +48605,9 @@
     "name": "トチモトのモッコウ",
     "ingredient": "モッコウ",
     "oldPrice": 18.3,
-    "newPrice": 18.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.3,
+    "diff": 4,
+    "ratio": 21.86
   },
   {
     "yj": "5100175X1077",
@@ -48615,9 +48615,9 @@
     "name": "高砂モッコウＭ",
     "ingredient": "モッコウ",
     "oldPrice": 18.3,
-    "newPrice": 18.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 22.3,
+    "diff": 4,
+    "ratio": 21.86
   },
   {
     "yj": "5100175X1107",
@@ -48815,9 +48815,9 @@
     "name": "トチモトのヨクイニン",
     "ingredient": "ヨクイニン",
     "oldPrice": 9,
-    "newPrice": 9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 10.7,
+    "diff": 1.7,
+    "ratio": 18.89
   },
   {
     "yj": "5100180X1086",
@@ -48825,9 +48825,9 @@
     "name": "ヨクイニン",
     "ingredient": "ヨクイニン",
     "oldPrice": 9,
-    "newPrice": 9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 10.7,
+    "diff": 1.7,
+    "ratio": 18.89
   },
   {
     "yj": "5100180X1078",
@@ -48835,9 +48835,9 @@
     "name": "高砂ヨクイニンＭ",
     "ingredient": "ヨクイニン",
     "oldPrice": 9,
-    "newPrice": 9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 10.7,
+    "diff": 1.7,
+    "ratio": 18.89
   },
   {
     "yj": "5100180X1043",
@@ -48935,9 +48935,9 @@
     "name": "トチモトのリュウコツ",
     "ingredient": "リュウコツ",
     "oldPrice": 21.1,
-    "newPrice": 21.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.1,
+    "diff": 4,
+    "ratio": 18.96
   },
   {
     "yj": "5100182X1085",
@@ -48945,9 +48945,9 @@
     "name": "リュウコツ",
     "ingredient": "リュウコツ",
     "oldPrice": 21.1,
-    "newPrice": 21.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.1,
+    "diff": 4,
+    "ratio": 18.96
   },
   {
     "yj": "5100182X1077",
@@ -48955,9 +48955,9 @@
     "name": "高砂リュウコツＭ",
     "ingredient": "リュウコツ",
     "oldPrice": 21.1,
-    "newPrice": 21.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.1,
+    "diff": 4,
+    "ratio": 18.96
   },
   {
     "yj": "5100182X1034",
@@ -48965,9 +48965,9 @@
     "name": "リュウコツ",
     "ingredient": "リュウコツ",
     "oldPrice": 21.1,
-    "newPrice": 21.1,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.1,
+    "diff": 4,
+    "ratio": 18.96
   },
   {
     "yj": "5100182X1123",
@@ -49145,9 +49145,9 @@
     "name": "レンギョウ",
     "ingredient": "レンギョウ",
     "oldPrice": 33.8,
-    "newPrice": 33.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 43.9,
+    "diff": 10.1,
+    "ratio": 29.88
   },
   {
     "yj": "5100185X1020",
@@ -49165,9 +49165,9 @@
     "name": "トチモトのレンギョウ",
     "ingredient": "レンギョウ",
     "oldPrice": 33.8,
-    "newPrice": 33.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 43.9,
+    "diff": 10.1,
+    "ratio": 29.88
   },
   {
     "yj": "5100185X1070",
@@ -49175,9 +49175,9 @@
     "name": "高砂レンギョウＭ",
     "ingredient": "レンギョウ",
     "oldPrice": 33.8,
-    "newPrice": 33.8,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 43.9,
+    "diff": 10.1,
+    "ratio": 29.88
   },
   {
     "yj": "5100185X1038",
@@ -55225,9 +55225,9 @@
     "name": "アミカシン硫酸塩注射液２００ｍｇ「Ｆ」",
     "ingredient": "アミカシン硫酸塩",
     "oldPrice": 610,
-    "newPrice": 357,
-    "diff": -253,
-    "ratio": -41.48
+    "newPrice": 385,
+    "diff": -225,
+    "ratio": -36.89
   },
   {
     "yj": "6123404A1078",
@@ -55355,9 +55355,9 @@
     "name": "アモキシシリンカプセル２５０ｍｇ「トーワ」",
     "ingredient": "アモキシシリン水和物",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.2,
+    "diff": 0.8,
+    "ratio": 7.69
   },
   {
     "yj": "6131001M2327",
@@ -56965,9 +56965,9 @@
     "name": "ミノサイクリン塩酸塩錠１００ｍｇ「トーワ」",
     "ingredient": "ミノサイクリン塩酸塩",
     "oldPrice": 20.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 20,
+    "diff": -0.5,
+    "ratio": -2.44
   },
   {
     "yj": "6152005M1043",
@@ -57855,9 +57855,9 @@
     "name": "乾燥まむしウマ抗毒素注射用６０００単位「ＫＭＢ」",
     "ingredient": "乾燥まむしウマ抗毒素",
     "oldPrice": 108252,
-    "newPrice": 108252,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 131734,
+    "diff": 23482,
+    "ratio": 21.69
   },
   {
     "yj": "6343400X1041",
@@ -59685,9 +59685,9 @@
     "name": "注射用水",
     "ingredient": "注射用水",
     "oldPrice": 100,
-    "newPrice": 104,
-    "diff": 4,
-    "ratio": 4
+    "newPrice": 118,
+    "diff": 18,
+    "ratio": 18
   },
   {
     "yj": "7131400A1106",
@@ -59695,9 +59695,9 @@
     "name": "注射用水「フソー」",
     "ingredient": "注射用水",
     "oldPrice": 100,
-    "newPrice": 104,
-    "diff": 4,
-    "ratio": 4
+    "newPrice": 118,
+    "diff": 18,
+    "ratio": 18
   },
   {
     "yj": "7131400A2129",
@@ -59805,9 +59805,9 @@
     "name": "大塚蒸留水",
     "ingredient": "注射用水",
     "oldPrice": 220,
-    "newPrice": 316,
-    "diff": 96,
-    "ratio": 43.64
+    "newPrice": 220,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "7131400A6035",
@@ -61152,12 +61152,12 @@
   {
     "yj": "7223401A1112",
     "recept": "621194401",
-    "name": "プロチレリン酒石酸塩注射液０．５ｍｇ「サワイ」",
+    "name": "プロチレリン酒石酸塩注射液０．５ｍｇ「サワイ」【経過措置】",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 363,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 361,
+    "diff": -2,
+    "ratio": -0.55
   },
   {
     "yj": "7223401A1120",
@@ -61165,9 +61165,9 @@
     "name": "プロチレリン酒石酸塩注０．５ｍｇ「ＮＰ」",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 363,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 324,
+    "diff": -39,
+    "ratio": -10.74
   },
   {
     "yj": "7223401A2020",
@@ -61192,12 +61192,12 @@
   {
     "yj": "7223401A3093",
     "recept": "621195201",
-    "name": "プロチレリン酒石酸塩注射液２ｍｇ「サワイ」",
+    "name": "プロチレリン酒石酸塩注射液２ｍｇ「サワイ」【経過措置】",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 1714,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1714,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "7223401A3107",
@@ -61205,9 +61205,9 @@
     "name": "プロチレリン酒石酸塩注２ｍｇ「ＮＰ」",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 1714,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1714,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "7223402A1044",
@@ -62245,9 +62245,9 @@
     "name": "セリプロロール塩酸塩錠１００ｍｇ「ＮＩＧ」",
     "ingredient": "セリプロロール塩酸塩",
     "oldPrice": 8.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7.4,
+    "diff": -0.9,
+    "ratio": -10.84
   },
   {
     "yj": "2149029F2131",
@@ -62255,9 +62255,9 @@
     "name": "セリプロロール塩酸塩錠２００ｍｇ「ＮＩＧ」",
     "ingredient": "セリプロロール塩酸塩",
     "oldPrice": 16.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.8,
+    "diff": -1.6,
+    "ratio": -9.76
   },
   {
     "yj": "2171010F3088",
@@ -62365,9 +62365,9 @@
     "name": "ニセルゴリン細粒１％「サワイ」",
     "ingredient": "ニセルゴリン",
     "oldPrice": 10.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 9.7,
+    "diff": -1.2,
+    "ratio": -11.01
   },
   {
     "yj": "2190021F1437",
@@ -62415,9 +62415,9 @@
     "name": "テオフィリン徐放Ｕ錠２００ｍｇ「トーワ」",
     "ingredient": "テオフィリン",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2251001G2080",
@@ -62425,9 +62425,9 @@
     "name": "テオフィリン徐放Ｕ錠４００ｍｇ「トーワ」",
     "ingredient": "テオフィリン",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2251001R1123",
@@ -62445,9 +62445,9 @@
     "name": "クレンブテロール錠１０μｇ「ハラサワ」",
     "ingredient": "クレンブテロール塩酸塩",
     "oldPrice": 6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.3,
+    "ratio": 5
   },
   {
     "yj": "2260700C1149",
@@ -62765,9 +62765,9 @@
     "name": "オキシコナゾール硝酸塩腟錠１００ｍｇ「Ｆ」",
     "ingredient": "オキシコナゾール硝酸塩",
     "oldPrice": 39.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 35.1,
+    "diff": -4.2,
+    "ratio": -10.69
   },
   {
     "yj": "2529709H2069",
@@ -62775,9 +62775,9 @@
     "name": "オキシコナゾール硝酸塩腟錠６００ｍｇ「Ｆ」",
     "ingredient": "オキシコナゾール硝酸塩",
     "oldPrice": 238.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 232.6,
+    "diff": -5.8,
+    "ratio": -2.43
   },
   {
     "yj": "2612701Q1102",
@@ -63995,9 +63995,9 @@
     "name": "ビダラビンクリーム３％「マルホ」",
     "ingredient": "ビダラビン",
     "oldPrice": 74.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 69.8,
+    "diff": -4.3,
+    "ratio": -5.8
   },
   {
     "yj": "6290100D1070",
@@ -64005,9 +64005,9 @@
     "name": "ダイフェン配合顆粒",
     "ingredient": "スルファメトキサゾール・トリメトプリム",
     "oldPrice": 50.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 50.2,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6343410X1088",
@@ -64235,19 +64235,19 @@
     "name": "ドブタミン塩酸塩点滴静注液１００ｍｇ「サワイ」",
     "ingredient": "ドブタミン塩酸塩",
     "oldPrice": 201,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 196,
+    "diff": -5,
+    "ratio": -2.49
   },
   {
     "yj": "2119404A1212",
     "recept": "621365316",
-    "name": "ドブタミン点滴静注液１００ｍｇ「Ｆ」",
+    "name": "ドブタミン点滴静注液１００ｍｇ「Ｆ」【経過措置】",
     "ingredient": "ドブタミン塩酸塩",
     "oldPrice": 201,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 181,
+    "diff": -20,
+    "ratio": -9.95
   },
   {
     "yj": "2119404A1239",
@@ -64255,9 +64255,9 @@
     "name": "ドブタミン点滴静注液１００ｍｇ「ＶＴＲＳ」",
     "ingredient": "ドブタミン塩酸塩",
     "oldPrice": 201,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 198,
+    "diff": -3,
+    "ratio": -1.49
   },
   {
     "yj": "2129409G1036",
@@ -64355,9 +64355,9 @@
     "name": "ミドドリン塩酸塩錠２ｍｇ「ＮＩＧ」",
     "ingredient": "ミドドリン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2223001C1045",
@@ -64545,9 +64545,9 @@
     "name": "ドンペリドンＤＳ小児用１％「サワイ」",
     "ingredient": "ドンペリドン",
     "oldPrice": 6.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.9,
+    "diff": 0.2,
+    "ratio": 2.99
   },
   {
     "yj": "2451402G1040",
@@ -64565,9 +64565,9 @@
     "name": "オキシブチニン塩酸塩錠２ｍｇ「サワイ」",
     "ingredient": "オキシブチニン塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2646701Q1054",
@@ -64635,9 +64635,9 @@
     "name": "ベタメタゾンジプロピオン酸エステルクリーム０．０６４％「テイコク」",
     "ingredient": "ベタメタゾンジプロピオン酸エステル",
     "oldPrice": 8.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 8.3,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2646720M1071",
@@ -64765,9 +64765,9 @@
     "name": "ビホナゾール外用液１％「イワキ」",
     "ingredient": "ビホナゾール",
     "oldPrice": 10.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.9,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3321002C1150",
@@ -64935,9 +64935,9 @@
     "name": "アシクロビル点滴静注液２５０ｍｇ「日医工」",
     "ingredient": "アシクロビル",
     "oldPrice": 368,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 368,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6250401A1077",
@@ -64945,9 +64945,9 @@
     "name": "アシクロビル点滴静注液２５０ｍｇ「トーワ」",
     "ingredient": "アシクロビル",
     "oldPrice": 368,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 368,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6250401F1287",
@@ -65175,9 +65175,9 @@
     "name": "エスタゾラム錠２ｍｇ「アメル」",
     "ingredient": "エスタゾラム",
     "oldPrice": 6.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": -0.3,
+    "ratio": -4.55
   },
   {
     "yj": "1137001F1039",
@@ -65245,9 +65245,9 @@
     "name": "ゾニサミド散２０％「アメル」",
     "ingredient": "ゾニサミド",
     "oldPrice": 25.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 23.8,
+    "diff": -1.8,
+    "ratio": -7.03
   },
   {
     "yj": "1139005F1040",
@@ -65535,9 +65535,9 @@
     "name": "リドカインテープ１８ｍｇ「ＹＰ」",
     "ingredient": "リドカイン",
     "oldPrice": 31.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 31.6,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1319710Q2108",
@@ -65695,9 +65695,9 @@
     "name": "デノパミン錠５ｍｇ「日医工」",
     "ingredient": "デノパミン",
     "oldPrice": 11.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.5,
+    "diff": -0.8,
+    "ratio": -7.08
   },
   {
     "yj": "2119004F2051",
@@ -65705,9 +65705,9 @@
     "name": "デノパミン錠１０ｍｇ「日医工」",
     "ingredient": "デノパミン",
     "oldPrice": 18.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 17.3,
+    "diff": -1.3,
+    "ratio": -6.99
   },
   {
     "yj": "2119402A3178",
@@ -66045,9 +66045,9 @@
     "name": "酸化マグネシウム錠２００ｍｇ「ヨシダ」",
     "ingredient": "酸化マグネシウム",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.1,
+    "diff": 0.2,
+    "ratio": 3.39
   },
   {
     "yj": "2359005F1277",
@@ -67005,9 +67005,9 @@
     "name": "バクフォーゼ静注用１ｇ【経過措置】",
     "ingredient": "セフォペラゾンナトリウム・スルバクタムナトリウム",
     "oldPrice": 266,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 266,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6139500G1089",
@@ -67045,9 +67045,9 @@
     "name": "サラゾスルファピリジン腸溶錠５００ｍｇ「ＣＨ」",
     "ingredient": "サラゾスルファピリジン",
     "oldPrice": 14,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 13,
+    "diff": -1,
+    "ratio": -7.14
   },
   {
     "yj": "6219001H2117",
@@ -67915,9 +67915,9 @@
     "name": "エトドラク錠２００ｍｇ「ＳＷ」",
     "ingredient": "エトドラク",
     "oldPrice": 11.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.5,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1319702Q1190",
@@ -67975,9 +67975,9 @@
     "name": "ヒアルロン酸Ｎａ０．８５眼粘弾剤１％「ＮＩＧ」",
     "ingredient": "精製ヒアルロン酸ナトリウム",
     "oldPrice": 2386.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2386.9,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1319733Q1099",
@@ -68225,9 +68225,9 @@
     "name": "アンブロキソール塩酸塩徐放カプセル４５ｍｇ「トーワ」",
     "ingredient": "アンブロキソール塩酸塩",
     "oldPrice": 12.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.4,
+    "diff": -0.8,
+    "ratio": -6.56
   },
   {
     "yj": "2251001G3036",
@@ -68455,9 +68455,9 @@
     "name": "マグミット錠２５０ｍｇ",
     "ingredient": "酸化マグネシウム",
     "oldPrice": 5.9,
-    "newPrice": 6.1,
-    "diff": 0.2,
-    "ratio": 3.39
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "2344009F2031",
@@ -68465,9 +68465,9 @@
     "name": "マグミット錠３３０ｍｇ",
     "ingredient": "酸化マグネシウム",
     "oldPrice": 5.9,
-    "newPrice": 6.1,
-    "diff": 0.2,
-    "ratio": 3.39
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "2456700X1025",
@@ -68855,9 +68855,9 @@
     "name": "オザグレルＮａ注射用２０ｍｇ「ＳＷ」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 183,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 176,
+    "diff": -7,
+    "ratio": -3.83
   },
   {
     "yj": "3999411D2079",
@@ -68865,9 +68865,9 @@
     "name": "オザグレルＮａ注射用４０ｍｇ「ＳＷ」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 358,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 346,
+    "diff": -12,
+    "ratio": -3.35
   },
   {
     "yj": "4291005F1081",
@@ -68875,9 +68875,9 @@
     "name": "フルタミド錠１２５ｍｇ「ＶＴＲＳ」",
     "ingredient": "フルタミド",
     "oldPrice": 54,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 46.9,
+    "diff": -7.1,
+    "ratio": -13.15
   },
   {
     "yj": "4300431A1030",
@@ -68885,9 +68885,9 @@
     "name": "イオフェタミン（１２３Ｉ）注射液「第一」",
     "ingredient": "塩酸Ｎ－イソプロピル－４－ヨードアンフェタミン（１２３Ｉ）",
     "oldPrice": 2456,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2456,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "4490014F1335",
@@ -69075,9 +69075,9 @@
     "name": "セフトリアキソンＮａ静注用０．５ｇ「ＣＨＭ」",
     "ingredient": "セフトリアキソンナトリウム水和物",
     "oldPrice": 359,
-    "newPrice": 346,
-    "diff": -13,
-    "ratio": -3.62
+    "newPrice": 359,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6132419F2174",
@@ -69085,9 +69085,9 @@
     "name": "セフトリアキソンＮａ静注用１ｇ「ＣＨＭ」",
     "ingredient": "セフトリアキソンナトリウム水和物",
     "oldPrice": 401,
-    "newPrice": 422,
-    "diff": 21,
-    "ratio": 5.24
+    "newPrice": 401,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6132419F2131",
@@ -70325,9 +70325,9 @@
     "name": "ドブタミン持続静注５０ｍｇシリンジ「テルモ」",
     "ingredient": "ドブタミン塩酸塩",
     "oldPrice": 305,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 305,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2119404G6047",
@@ -70345,9 +70345,9 @@
     "name": "ドブタミン持続静注１５０ｍｇシリンジ「テルモ」",
     "ingredient": "ドブタミン塩酸塩",
     "oldPrice": 470,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 450,
+    "diff": -20,
+    "ratio": -4.26
   },
   {
     "yj": "3259523G1033",
@@ -70875,9 +70875,9 @@
     "name": "ペミロラストＫ錠５ｍｇ「ＮＩＧ」",
     "ingredient": "ペミロラストカリウム",
     "oldPrice": 11.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.9,
+    "diff": -0.6,
+    "ratio": -5.22
   },
   {
     "yj": "4490011F1129",
@@ -70885,9 +70885,9 @@
     "name": "ペミロラストＫ錠１０ｍｇ「ＮＩＧ」",
     "ingredient": "ペミロラストカリウム",
     "oldPrice": 24.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 22.6,
+    "diff": -1.8,
+    "ratio": -7.38
   },
   {
     "yj": "2189010F1497",
@@ -71172,22 +71172,22 @@
   {
     "yj": "2325005M2118",
     "recept": "621526902",
-    "name": "ニザチジンカプセル７５ｍｇ「ＹＤ」",
+    "name": "ニザチジンカプセル７５ｍｇ「ＹＤ」【経過措置】",
     "ingredient": "ニザチジン",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2325005F1040",
     "recept": "621527102",
-    "name": "ニザチジン錠１５０ｍｇ「ＹＤ」",
+    "name": "ニザチジン錠１５０ｍｇ「ＹＤ」【経過措置】",
     "ingredient": "ニザチジン",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2316020F1029",
@@ -71335,9 +71335,9 @@
     "name": "トランドラプリル錠１ｍｇ「サワイ」",
     "ingredient": "トランドラプリル",
     "oldPrice": 15.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.3,
+    "diff": -0.8,
+    "ratio": -5.3
   },
   {
     "yj": "3399005F2079",
@@ -71595,9 +71595,9 @@
     "name": "オザグレルＮａ点滴静注液２０ｍｇ「ケミファ」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 183,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 182,
+    "diff": -1,
+    "ratio": -0.55
   },
   {
     "yj": "3999411A6078",
@@ -71652,12 +71652,12 @@
   {
     "yj": "3999411A3087",
     "recept": "621536902",
-    "name": "オザグレルＮａ点滴静注２０ｍｇ「ＩＰ」",
+    "name": "オザグレルＮａ点滴静注２０ｍｇ「ＩＰ」【経過措置】",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 183,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 175,
+    "diff": -8,
+    "ratio": -4.37
   },
   {
     "yj": "3999411A4083",
@@ -71805,9 +71805,9 @@
     "name": "フルコナゾール静注液５０ｍｇ「Ｆ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 781,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 753,
+    "diff": -28,
+    "ratio": -3.59
   },
   {
     "yj": "6290401A4098",
@@ -71825,9 +71825,9 @@
     "name": "フルコナゾール静注液２００ｍｇ「Ｆ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 1687,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1640,
+    "diff": -47,
+    "ratio": -2.79
   },
   {
     "yj": "6290401A2192",
@@ -71835,9 +71835,9 @@
     "name": "フルコナゾール静注液１００ｍｇ「サワイ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 1128,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1120,
+    "diff": -8,
+    "ratio": -0.71
   },
   {
     "yj": "6290401A3180",
@@ -71845,9 +71845,9 @@
     "name": "フルコナゾール静注液２００ｍｇ「サワイ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 1687,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1687,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6290401A2184",
@@ -71855,9 +71855,9 @@
     "name": "フルコナゾール静注１００ｍｇ「トーワ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 1128,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1128,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6290401A3172",
@@ -71865,9 +71865,9 @@
     "name": "フルコナゾール静注２００ｍｇ「トーワ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 1687,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1687,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6290401A6058",
@@ -71885,9 +71885,9 @@
     "name": "フルコナゾール静注１００ｍｇ「ＮＰ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 1252,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1252,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6290401A5086",
@@ -71945,9 +71945,9 @@
     "name": "ミダゾラム注１０ｍｇ「サンド」",
     "ingredient": "ミダゾラム",
     "oldPrice": 92,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 92,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3319510A5144",
@@ -71975,9 +71975,9 @@
     "name": "ベラパミル塩酸塩静注５ｍｇ「ＮＩＧ」",
     "ingredient": "ベラパミル塩酸塩",
     "oldPrice": 167,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 167,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6132419F2182",
@@ -71985,9 +71985,9 @@
     "name": "セフトリアキソンＮａ静注用１ｇ「ＶＴＲＳ」",
     "ingredient": "セフトリアキソンナトリウム水和物",
     "oldPrice": 401,
-    "newPrice": 422,
-    "diff": 21,
-    "ratio": 5.24
+    "newPrice": 401,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1319736Q1149",
@@ -72075,9 +72075,9 @@
     "name": "ケトコナゾールクリーム２％「イワキ」",
     "ingredient": "ケトコナゾール",
     "oldPrice": 13.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": -0.8,
+    "ratio": -6.02
   },
   {
     "yj": "1141700J2211",
@@ -72645,9 +72645,9 @@
     "name": "デキサメタゾンプロピオン酸エステルローション０．１％「ＭＹＫ」",
     "ingredient": "デキサメタゾンプロピオン酸エステル",
     "oldPrice": 7.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.5,
+    "diff": -0.8,
+    "ratio": -10.96
   },
   {
     "yj": "2242001F1039",
@@ -72985,9 +72985,9 @@
     "name": "ウルソデオキシコール酸錠５０ｍｇ「トーワ」",
     "ingredient": "ウルソデオキシコール酸",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2171006N1164",
@@ -72995,9 +72995,9 @@
     "name": "ジルチアゼム塩酸塩徐放カプセル１００ｍｇ「トーワ」",
     "ingredient": "ジルチアゼム塩酸塩",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "5200011D1060",
@@ -73785,9 +73785,9 @@
     "name": "アルプロスタジル注１０μｇシリンジ「日医工」",
     "ingredient": "アルプロスタジル",
     "oldPrice": 986,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 988,
+    "diff": 2,
+    "ratio": 0.2
   },
   {
     "yj": "3319516A3041",
@@ -73815,9 +73815,9 @@
     "name": "ニフェジピンＣＲ錠２０ｍｇ「ＺＥ」",
     "ingredient": "ニフェジピン",
     "oldPrice": 6.9,
-    "newPrice": 6.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 9.1,
+    "diff": 2.2,
+    "ratio": 31.88
   },
   {
     "yj": "2171014G5114",
@@ -73825,9 +73825,9 @@
     "name": "ニフェジピンＣＲ錠４０ｍｇ「ＺＥ」",
     "ingredient": "ニフェジピン",
     "oldPrice": 13.3,
-    "newPrice": 13.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17,
+    "diff": 3.7,
+    "ratio": 27.82
   },
   {
     "yj": "1179042C1023",
@@ -74225,9 +74225,9 @@
     "name": "イトラコナゾールカプセル５０ｍｇ「ＳＷ」",
     "ingredient": "イトラコナゾール",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 55.1,
+    "diff": -5.9,
+    "ratio": -9.67
   },
   {
     "yj": "3949101F1120",
@@ -74235,9 +74235,9 @@
     "name": "クエンメット配合錠",
     "ingredient": "クエン酸カリウム・クエン酸ナトリウム水和物",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "3949101A1190",
@@ -74275,9 +74275,9 @@
     "name": "オメプラゾール錠１０ｍｇ「トーワ」",
     "ingredient": "オメプラゾール",
     "oldPrice": 13.5,
-    "newPrice": 11.9,
-    "diff": -1.6,
-    "ratio": -11.85
+    "newPrice": 13.4,
+    "diff": -0.1,
+    "ratio": -0.74
   },
   {
     "yj": "2329022H1230",
@@ -74645,9 +74645,9 @@
     "name": "ニフェジピンＣＲ錠２０ｍｇ「トーワ」",
     "ingredient": "ニフェジピン",
     "oldPrice": 6.9,
-    "newPrice": 6.9,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 9.1,
+    "diff": 2.2,
+    "ratio": 31.88
   },
   {
     "yj": "3999004M3145",
@@ -74865,9 +74865,9 @@
     "name": "球形吸着炭細粒「マイラン」",
     "ingredient": "球形吸着炭",
     "oldPrice": 37.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 33.7,
+    "diff": -3.5,
+    "ratio": -9.41
   },
   {
     "yj": "2325003F1326",
@@ -75045,9 +75045,9 @@
     "name": "オザグレルＮａ静注液４０ｍｇ「日医工」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 358,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 338,
+    "diff": -20,
+    "ratio": -5.59
   },
   {
     "yj": "3999411A2056",
@@ -75072,12 +75072,12 @@
   {
     "yj": "3999411A6086",
     "recept": "621645402",
-    "name": "オザグレルＮａ点滴静注４０ｍｇ「ＩＰ」",
+    "name": "オザグレルＮａ点滴静注４０ｍｇ「ＩＰ」【経過措置】",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 358,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 349,
+    "diff": -9,
+    "ratio": -2.51
   },
   {
     "yj": "3999411G4043",
@@ -75655,9 +75655,9 @@
     "name": "アシクロビルクリーム５％「ラクール」",
     "ingredient": "アシクロビル",
     "oldPrice": 68.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 60.4,
+    "diff": -8.1,
+    "ratio": -11.82
   },
   {
     "yj": "6391700X4026",
@@ -75675,9 +75675,9 @@
     "name": "ケトコナゾールクリーム２％「ＮＲ」",
     "ingredient": "ケトコナゾール",
     "oldPrice": 13.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": -2.5,
+    "ratio": -18.8
   },
   {
     "yj": "2619702Q3275",
@@ -75745,9 +75745,9 @@
     "name": "ペミロラストＫ点眼液０．１％「ＴＳ」",
     "ingredient": "ペミロラストカリウム",
     "oldPrice": 201.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 177.1,
+    "diff": -24.3,
+    "ratio": -12.07
   },
   {
     "yj": "2659708R1050",
@@ -76015,9 +76015,9 @@
     "name": "経口用トロンビン細粒０．５万単位「サワイ」",
     "ingredient": "トロンビン",
     "oldPrice": 680.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 884.4,
+    "diff": 204.1,
+    "ratio": 30
   },
   {
     "yj": "3323001C1053",
@@ -76025,9 +76025,9 @@
     "name": "経口用トロンビン細粒１万単位「サワイ」",
     "ingredient": "トロンビン",
     "oldPrice": 1268.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1515.3,
+    "diff": 246.7,
+    "ratio": 19.45
   },
   {
     "yj": "2113003F2061",
@@ -76345,9 +76345,9 @@
     "name": "フェロジピン錠２．５ｍｇ「ＮＩＧ」",
     "ingredient": "フェロジピン",
     "oldPrice": 7.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 3.1,
+    "ratio": 40.26
   },
   {
     "yj": "2149035F2064",
@@ -76355,9 +76355,9 @@
     "name": "フェロジピン錠５ｍｇ「ＮＩＧ」",
     "ingredient": "フェロジピン",
     "oldPrice": 11.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": -0.5,
+    "ratio": -4.42
   },
   {
     "yj": "3999411H3026",
@@ -76415,9 +76415,9 @@
     "name": "ダルテパリンＮａ静注５０００単位／５ｍＬ「ＡＦＰ」",
     "ingredient": "ダルテパリンナトリウム",
     "oldPrice": 471,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 463,
+    "diff": -8,
+    "ratio": -1.7
   },
   {
     "yj": "3969004F1250",
@@ -76745,9 +76745,9 @@
     "name": "プロピベリン塩酸塩錠２０ｍｇ「ＴＣＫ」",
     "ingredient": "プロピベリン塩酸塩",
     "oldPrice": 19.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 19.9,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2329022H2163",
@@ -76775,9 +76775,9 @@
     "name": "オメプラゾール錠１０ｍｇ「アメル」",
     "ingredient": "オメプラゾール",
     "oldPrice": 13.5,
-    "newPrice": 11.9,
-    "diff": -1.6,
-    "ratio": -11.85
+    "newPrice": 13.4,
+    "diff": -0.1,
+    "ratio": -0.74
   },
   {
     "yj": "2329022H1140",
@@ -76785,9 +76785,9 @@
     "name": "オメプラゾール錠２０ｍｇ「ＴＳＵ」",
     "ingredient": "オメプラゾール",
     "oldPrice": 20.7,
-    "newPrice": 18.3,
-    "diff": -2.4,
-    "ratio": -11.59
+    "newPrice": 20.2,
+    "diff": -0.5,
+    "ratio": -2.42
   },
   {
     "yj": "2325003F3213",
@@ -76852,12 +76852,12 @@
   {
     "yj": "3999013F1355",
     "recept": "621682402",
-    "name": "エパルレスタット錠５０ｍｇ「ＮＰ」",
+    "name": "エパルレスタット錠５０ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "エパルレスタット",
     "oldPrice": 14.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.9,
+    "diff": -1.4,
+    "ratio": -9.79
   },
   {
     "yj": "3999013F1380",
@@ -76965,9 +76965,9 @@
     "name": "ニフェジピンＣＲ錠１０ｍｇ「トーワ」",
     "ingredient": "ニフェジピン",
     "oldPrice": 6.1,
-    "newPrice": 6.4,
-    "diff": 0.3,
-    "ratio": 4.92
+    "newPrice": 8.9,
+    "diff": 2.8,
+    "ratio": 45.9
   },
   {
     "yj": "2171014G5092",
@@ -76975,9 +76975,9 @@
     "name": "ニフェジピンＣＲ錠４０ｍｇ「トーワ」",
     "ingredient": "ニフェジピン",
     "oldPrice": 13.3,
-    "newPrice": 13.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 17,
+    "diff": 3.7,
+    "ratio": 27.82
   },
   {
     "yj": "2171014G3111",
@@ -77235,9 +77235,9 @@
     "name": "プロピベリン塩酸塩錠２０ｍｇ「杏林」",
     "ingredient": "プロピベリン塩酸塩",
     "oldPrice": 19.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 16.6,
+    "diff": -3.3,
+    "ratio": -16.58
   },
   {
     "yj": "2144012F1095",
@@ -77395,9 +77395,9 @@
     "name": "ランソプラゾールカプセル１５ｍｇ「サワイ」",
     "ingredient": "ランソプラゾール",
     "oldPrice": 11.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": -0.5,
+    "ratio": -4.42
   },
   {
     "yj": "2329023M2140",
@@ -77405,9 +77405,9 @@
     "name": "ランソプラゾールカプセル３０ｍｇ「サワイ」",
     "ingredient": "ランソプラゾール",
     "oldPrice": 19,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 18.5,
+    "diff": -0.5,
+    "ratio": -2.63
   },
   {
     "yj": "6149002F1169",
@@ -77505,9 +77505,9 @@
     "name": "ロキサチジン酢酸エステル塩酸塩徐放カプセル７５ｍｇ「サワイ」",
     "ingredient": "ロキサチジン酢酸エステル塩酸塩",
     "oldPrice": 20.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 20.6,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3319550A5084",
@@ -77545,9 +77545,9 @@
     "name": "エルカトニン筋注２０単位「ＴＢＰ」",
     "ingredient": "エルカトニン",
     "oldPrice": 89,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 89,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3229501G1070",
@@ -77595,9 +77595,9 @@
     "name": "オザグレルＮａ点滴静注液４０ｍｇ「トーワ」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 358,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 355,
+    "diff": -3,
+    "ratio": -0.84
   },
   {
     "yj": "3999411A4091",
@@ -77645,9 +77645,9 @@
     "name": "カルボプラチン点滴静注液１５０ｍｇ「サンド」",
     "ingredient": "カルボプラチン",
     "oldPrice": 2183,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2183,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "4291403A3064",
@@ -77655,9 +77655,9 @@
     "name": "カルボプラチン点滴静注液４５０ｍｇ「サンド」",
     "ingredient": "カルボプラチン",
     "oldPrice": 4966,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 4966,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "4291403A1061",
@@ -77895,9 +77895,9 @@
     "name": "ダルテパリンＮａ静注５０００単位／５ｍＬ「日新」",
     "ingredient": "ダルテパリンナトリウム",
     "oldPrice": 571,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 571,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1119402A1138",
@@ -78225,9 +78225,9 @@
     "name": "ブテナフィン塩酸塩液１％「トーワ」【経過措置】",
     "ingredient": "ブテナフィン塩酸塩",
     "oldPrice": 15.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14,
+    "diff": -1.2,
+    "ratio": -7.89
   },
   {
     "yj": "2659708N1090",
@@ -78235,9 +78235,9 @@
     "name": "ブテナフィン塩酸塩クリーム１％「トーワ」【経過措置】",
     "ingredient": "ブテナフィン塩酸塩",
     "oldPrice": 15.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14,
+    "diff": -1.2,
+    "ratio": -7.89
   },
   {
     "yj": "2649729S4030",
@@ -78615,9 +78615,9 @@
     "name": "無水エタノール「コザカイ・Ｍ」",
     "ingredient": "無水エタノール",
     "oldPrice": 23.7,
-    "newPrice": 20.6,
-    "diff": -3.1,
-    "ratio": -13.08
+    "newPrice": 25.1,
+    "diff": 1.4,
+    "ratio": 5.91
   },
   {
     "yj": "2615704X1153",
@@ -79475,9 +79475,9 @@
     "name": "ドロキシドパカプセル１００ｍｇ「アメル」",
     "ingredient": "ドロキシドパ",
     "oldPrice": 49.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 49.7,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1169006M2030",
@@ -79485,9 +79485,9 @@
     "name": "ドロキシドパカプセル２００ｍｇ「アメル」",
     "ingredient": "ドロキシドパ",
     "oldPrice": 99.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 99.3,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1139004G2055",
@@ -79525,9 +79525,9 @@
     "name": "フルマゼニル注射液０．５ｍｇ「Ｆ」",
     "ingredient": "フルマゼニル",
     "oldPrice": 1005,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 991,
+    "diff": -14,
+    "ratio": -1.39
   },
   {
     "yj": "6290005F1334",
@@ -79555,9 +79555,9 @@
     "name": "マグミット錠５００ｍｇ",
     "ingredient": "酸化マグネシウム",
     "oldPrice": 5.9,
-    "newPrice": 6.1,
-    "diff": 0.2,
-    "ratio": 3.39
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "1149031F1065",
@@ -79795,9 +79795,9 @@
     "name": "クラリスロマイシン錠２００ｍｇ「ＣＨ」",
     "ingredient": "クラリスロマイシン",
     "oldPrice": 19.2,
-    "newPrice": 19.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.3,
+    "diff": 6.1,
+    "ratio": 31.77
   },
   {
     "yj": "6149003F2135",
@@ -79805,9 +79805,9 @@
     "name": "クラリスロマイシン錠２００ｍｇ「タカタ」",
     "ingredient": "クラリスロマイシン",
     "oldPrice": 19.2,
-    "newPrice": 19.2,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.3,
+    "diff": 6.1,
+    "ratio": 31.77
   },
   {
     "yj": "6149003F2224",
@@ -79935,9 +79935,9 @@
     "name": "セフポドキシムプロキセチル錠１００ｍｇ「ＪＧ」",
     "ingredient": "セフポドキシム　プロキセチル",
     "oldPrice": 28.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 28.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1139004G3027",
@@ -79985,9 +79985,9 @@
     "name": "ツロブテロール塩酸塩ＤＳ小児用０．１％「タカタ」【経過措置】",
     "ingredient": "ツロブテロール塩酸塩",
     "oldPrice": 6.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.9,
+    "diff": 0.2,
+    "ratio": 2.99
   },
   {
     "yj": "6290005F1326",
@@ -80055,9 +80055,9 @@
     "name": "トレミフェン錠４０ｍｇ「サワイ」",
     "ingredient": "トレミフェンクエン酸塩",
     "oldPrice": 83.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 78.5,
+    "diff": -5.4,
+    "ratio": -6.44
   },
   {
     "yj": "2171014G3065",
@@ -80105,9 +80105,9 @@
     "name": "セフポドキシムプロキセチルＤＳ小児用５％「サワイ」",
     "ingredient": "セフポドキシム　プロキセチル",
     "oldPrice": 22.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 22.3,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "7212033B1022",
@@ -80135,9 +80135,9 @@
     "name": "バルプロ酸ナトリウム徐放錠Ａ２００ｍｇ「トーワ」",
     "ingredient": "バルプロ酸ナトリウム",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "6290005F1300",
@@ -80325,9 +80325,9 @@
     "name": "ベニジピン塩酸塩錠８ｍｇ「ＴＣＫ」",
     "ingredient": "ベニジピン塩酸塩",
     "oldPrice": 18.9,
-    "newPrice": 15,
-    "diff": -3.9,
-    "ratio": -20.63
+    "newPrice": 17.7,
+    "diff": -1.2,
+    "ratio": -6.35
   },
   {
     "yj": "2171021F3043",
@@ -80335,9 +80335,9 @@
     "name": "ベニジピン塩酸塩錠８ｍｇ「サワイ」",
     "ingredient": "ベニジピン塩酸塩",
     "oldPrice": 18.9,
-    "newPrice": 15,
-    "diff": -3.9,
-    "ratio": -20.63
+    "newPrice": 17.7,
+    "diff": -1.2,
+    "ratio": -6.35
   },
   {
     "yj": "2171021F1253",
@@ -80365,9 +80365,9 @@
     "name": "ペルゴリド錠５０μｇ「サワイ」",
     "ingredient": "ペルゴリドメシル酸塩",
     "oldPrice": 15,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 13.9,
+    "diff": -1.1,
+    "ratio": -7.33
   },
   {
     "yj": "1169008F2065",
@@ -80375,9 +80375,9 @@
     "name": "ペルゴリド錠２５０μｇ「サワイ」",
     "ingredient": "ペルゴリドメシル酸塩",
     "oldPrice": 61.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 57.8,
+    "diff": -3.3,
+    "ratio": -5.4
   },
   {
     "yj": "3969004F1187",
@@ -80425,9 +80425,9 @@
     "name": "メトトレキサートカプセル２ｍｇ「サワイ」",
     "ingredient": "メトトレキサート",
     "oldPrice": 49.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 46.8,
+    "diff": -2.9,
+    "ratio": -5.84
   },
   {
     "yj": "3999016M1064",
@@ -80575,9 +80575,9 @@
     "name": "カルボプラチン注射液４５０ｍｇ「日医工」",
     "ingredient": "カルボプラチン",
     "oldPrice": 4966,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 4877,
+    "diff": -89,
+    "ratio": -1.79
   },
   {
     "yj": "6343410X2149",
@@ -80675,9 +80675,9 @@
     "name": "チエクール点滴用０．５ｇ",
     "ingredient": "イミペネム水和物・シラスタチンナトリウム",
     "oldPrice": 853,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 853,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2190402D3064",
@@ -80705,9 +80705,9 @@
     "name": "ドブタミン持続静注３００ｍｇシリンジ「テルモ」",
     "ingredient": "ドブタミン塩酸塩",
     "oldPrice": 897,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 878,
+    "diff": -19,
+    "ratio": -2.12
   },
   {
     "yj": "4240406A1040",
@@ -80825,9 +80825,9 @@
     "name": "ミルリノン注１０ｍｇ「タカタ」",
     "ingredient": "ミルリノン",
     "oldPrice": 1356,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1326,
+    "diff": -30,
+    "ratio": -2.21
   },
   {
     "yj": "2119408G1035",
@@ -80845,9 +80845,9 @@
     "name": "フェルビナクローション３％「ラクール」",
     "ingredient": "フェルビナク",
     "oldPrice": 2.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2.6,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2615705Q1145",
@@ -81055,9 +81055,9 @@
     "name": "フルチカゾン点鼻液５０μｇ「イセイ」５６噴霧用【経過措置】",
     "ingredient": "フルチカゾンプロピオン酸エステル",
     "oldPrice": 436.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 436.3,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1329707Q1076",
@@ -82092,22 +82092,22 @@
   {
     "yj": "2391400A3075",
     "recept": "620005654",
-    "name": "グラニセトロン静注液１ｍｇ「アイロム」",
+    "name": "グラニセトロン静注液１ｍｇ「アイロム」【経過措置】",
     "ingredient": "グラニセトロン塩酸塩",
     "oldPrice": 368,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 354,
+    "diff": -14,
+    "ratio": -3.8
   },
   {
     "yj": "2391400A4080",
     "recept": "620005663",
-    "name": "グラニセトロン静注液３ｍｇ「アイロム」",
+    "name": "グラニセトロン静注液３ｍｇ「アイロム」【経過措置】",
     "ingredient": "グラニセトロン塩酸塩",
     "oldPrice": 664,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 652,
+    "diff": -12,
+    "ratio": -1.81
   },
   {
     "yj": "7990101F1035",
@@ -82415,9 +82415,9 @@
     "name": "ケトコナゾールクリーム２％「ＭＹＫ」",
     "ingredient": "ケトコナゾール",
     "oldPrice": 13.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": -0.8,
+    "ratio": -6.02
   },
   {
     "yj": "2655709Q1092",
@@ -82675,9 +82675,9 @@
     "name": "ベニジピン塩酸塩錠８ｍｇ「ＮＳ」",
     "ingredient": "ベニジピン塩酸塩",
     "oldPrice": 18.9,
-    "newPrice": 15,
-    "diff": -3.9,
-    "ratio": -20.63
+    "newPrice": 17.7,
+    "diff": -1.2,
+    "ratio": -6.35
   },
   {
     "yj": "2649734S1058",
@@ -83075,9 +83075,9 @@
     "name": "セフジトレンピボキシル小児用細粒１０％「ＣＨ」",
     "ingredient": "セフジトレン　ピボキシル",
     "oldPrice": 157.3,
-    "newPrice": 128.5,
-    "diff": -28.8,
-    "ratio": -18.31
+    "newPrice": 142.9,
+    "diff": -14.4,
+    "ratio": -9.15
   },
   {
     "yj": "6132015F1045",
@@ -83525,9 +83525,9 @@
     "name": "オザグレルＮａ点滴静注２０ｍｇ「タカタ」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 320,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 320,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3999411H8036",
@@ -83535,9 +83535,9 @@
     "name": "オザグレルＮａ点滴静注４０ｍｇ「タカタ」",
     "ingredient": "オザグレルナトリウム",
     "oldPrice": 530,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 529,
+    "diff": -1,
+    "ratio": -0.19
   },
   {
     "yj": "2391401A1050",
@@ -83615,9 +83615,9 @@
     "name": "ニコランジル点滴静注用２ｍｇ「サワイ」",
     "ingredient": "ニコランジル",
     "oldPrice": 91,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 88,
+    "diff": -3,
+    "ratio": -3.3
   },
   {
     "yj": "2171406D2036",
@@ -83625,9 +83625,9 @@
     "name": "ニコランジル点滴静注用１２ｍｇ「サワイ」",
     "ingredient": "ニコランジル",
     "oldPrice": 360,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 350,
+    "diff": -10,
+    "ratio": -2.78
   },
   {
     "yj": "2171406D3032",
@@ -83635,9 +83635,9 @@
     "name": "ニコランジル点滴静注用４８ｍｇ「サワイ」",
     "ingredient": "ニコランジル",
     "oldPrice": 1096,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1055,
+    "diff": -41,
+    "ratio": -3.74
   },
   {
     "yj": "3319538A6071",
@@ -85185,9 +85185,9 @@
     "name": "ポラプレジンク顆粒１５％「ＮＳ」",
     "ingredient": "ポラプレジンク",
     "oldPrice": 29.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.1,
+    "diff": -2.6,
+    "ratio": -8.75
   },
   {
     "yj": "2190029F1026",
@@ -85265,9 +85265,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「ＮＩＧ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "2233002F2170",
@@ -85285,9 +85285,9 @@
     "name": "フルマゼニル静注液０．５ｍｇ「テバ」",
     "ingredient": "フルマゼニル",
     "oldPrice": 1005,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1005,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1124401A1095",
@@ -85305,9 +85305,9 @@
     "name": "ミルリノン静注液１０ｍｇ「ＮＩＧ」",
     "ingredient": "ミルリノン",
     "oldPrice": 1356,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1322,
+    "diff": -34,
+    "ratio": -2.51
   },
   {
     "yj": "1149035F1225",
@@ -85325,9 +85325,9 @@
     "name": "メロキシカム錠１０ｍｇ「クニヒロ」",
     "ingredient": "メロキシカム",
     "oldPrice": 10.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.1,
+    "diff": -0.7,
+    "ratio": -6.48
   },
   {
     "yj": "1179038F3174",
@@ -85655,9 +85655,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「ＪＧ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "2171022F1355",
@@ -85745,9 +85745,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「オーハラ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "2171022F1231",
@@ -85785,9 +85785,9 @@
     "name": "テイコプラニン点滴静注用２００ｍｇ「日医工」",
     "ingredient": "テイコプラニン",
     "oldPrice": 1404,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1351,
+    "diff": -53,
+    "ratio": -3.77
   },
   {
     "yj": "3969004F3112",
@@ -85825,9 +85825,9 @@
     "name": "メロキシカム錠１０ｍｇ「日医工」",
     "ingredient": "メロキシカム",
     "oldPrice": 10.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 9.2,
+    "diff": -1.6,
+    "ratio": -14.81
   },
   {
     "yj": "2144002F1415",
@@ -85855,9 +85855,9 @@
     "name": "ベニジピン塩酸塩錠８ｍｇ「ＯＭＥ」",
     "ingredient": "ベニジピン塩酸塩",
     "oldPrice": 18.9,
-    "newPrice": 15,
-    "diff": -3.9,
-    "ratio": -20.63
+    "newPrice": 17.7,
+    "diff": -1.2,
+    "ratio": -6.35
   },
   {
     "yj": "2171022F1207",
@@ -86065,9 +86065,9 @@
     "name": "イトラコナゾール錠５０ｍｇ「科研」",
     "ingredient": "イトラコナゾール",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 55.1,
+    "diff": -5.9,
+    "ratio": -9.67
   },
   {
     "yj": "2171022F1401",
@@ -86115,9 +86115,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「ＤＳＥＰ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "2171022F1444",
@@ -86465,9 +86465,9 @@
     "name": "イソソルビド内用液７０％「ＣＥＯ」",
     "ingredient": "イソソルビド",
     "oldPrice": 2.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2.6,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2139001S2040",
@@ -86485,9 +86485,9 @@
     "name": "イトプリド塩酸塩錠５０ｍｇ「サワイ」",
     "ingredient": "イトプリド塩酸塩",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "4490019F3055",
@@ -86875,9 +86875,9 @@
     "name": "トランドラプリル錠０．５ｍｇ「サワイ」",
     "ingredient": "トランドラプリル",
     "oldPrice": 14.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 13.7,
+    "diff": -0.8,
+    "ratio": -5.52
   },
   {
     "yj": "2171021F1199",
@@ -86915,9 +86915,9 @@
     "name": "ベニジピン塩酸塩錠８ｍｇ「トーワ」",
     "ingredient": "ベニジピン塩酸塩",
     "oldPrice": 18.9,
-    "newPrice": 15,
-    "diff": -3.9,
-    "ratio": -20.63
+    "newPrice": 17.7,
+    "diff": -1.2,
+    "ratio": -6.35
   },
   {
     "yj": "2399009F2030",
@@ -86995,9 +86995,9 @@
     "name": "ミルナシプラン塩酸塩錠２５ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "ミルナシプラン塩酸塩",
     "oldPrice": 7.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.4,
+    "diff": -1.1,
+    "ratio": -14.67
   },
   {
     "yj": "3160002M2125",
@@ -87072,12 +87072,12 @@
   {
     "yj": "1149035F2051",
     "recept": "620008135",
-    "name": "メロキシカム錠１０ｍｇ「ＮＰ」",
+    "name": "メロキシカム錠１０ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "メロキシカム",
     "oldPrice": 10.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.1,
+    "diff": -0.7,
+    "ratio": -6.48
   },
   {
     "yj": "1149035F2060",
@@ -87085,9 +87085,9 @@
     "name": "メロキシカム錠１０ｍｇ「ＮＰＩ」",
     "ingredient": "メロキシカム",
     "oldPrice": 10.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.1,
+    "diff": -0.7,
+    "ratio": -6.48
   },
   {
     "yj": "1149035F2132",
@@ -87215,9 +87215,9 @@
     "name": "リスペリドン内用液１ｍｇ／ｍＬ「タカタ」",
     "ingredient": "リスペリドン",
     "oldPrice": 21.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 20.4,
+    "diff": -1.5,
+    "ratio": -6.85
   },
   {
     "yj": "1179038S1072",
@@ -87235,9 +87235,9 @@
     "name": "エトポシド点滴静注液１００ｍｇ「サンド」",
     "ingredient": "エトポシド",
     "oldPrice": 1301,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1301,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "4235404D1071",
@@ -87315,9 +87315,9 @@
     "name": "グラニセトロン静注液３ｍｇ「サワイ」",
     "ingredient": "グラニセトロン塩酸塩",
     "oldPrice": 664,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 660,
+    "diff": -4,
+    "ratio": -0.6
   },
   {
     "yj": "2391400G2039",
@@ -87745,9 +87745,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「ＹＤ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "1179040F3023",
@@ -87905,9 +87905,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「ＰＨ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 17.8,
+    "diff": -12.4,
+    "ratio": -41.06
   },
   {
     "yj": "2144008F1145",
@@ -87955,9 +87955,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「サワイ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "2144008F3156",
@@ -87965,9 +87965,9 @@
     "name": "イミダプリル塩酸塩錠１０ｍｇ「トーワ」",
     "ingredient": "イミダプリル塩酸塩",
     "oldPrice": 30.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 27.5,
+    "diff": -2.7,
+    "ratio": -8.94
   },
   {
     "yj": "6132013C1147",
@@ -87975,9 +87975,9 @@
     "name": "セフジニル細粒小児用１０％「ＪＧ」",
     "ingredient": "セフジニル",
     "oldPrice": 38.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 34.4,
+    "diff": -4.1,
+    "ratio": -10.65
   },
   {
     "yj": "6132013F1038",
@@ -88025,9 +88025,9 @@
     "name": "ジラゼプ塩酸塩錠１００ｍｇ「サワイ」",
     "ingredient": "ジラゼプ塩酸塩水和物",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2183005G2109",
@@ -88075,9 +88075,9 @@
     "name": "ロキサチジン酢酸エステル塩酸塩徐放カプセル３７．５ｍｇ「サワイ」",
     "ingredient": "ロキサチジン酢酸エステル塩酸塩",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "6119401D1108",
@@ -88085,9 +88085,9 @@
     "name": "テイコプラニン点滴静注用２００ｍｇ「トーワ」",
     "ingredient": "テイコプラニン",
     "oldPrice": 1404,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1376,
+    "diff": -28,
+    "ratio": -1.99
   },
   {
     "yj": "3919502G1085",
@@ -88155,9 +88155,9 @@
     "name": "ジクロフェナクＮａローション１％「ラクール」",
     "ingredient": "ジクロフェナクナトリウム",
     "oldPrice": 3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 3.1,
+    "diff": 0.1,
+    "ratio": 3.33
   },
   {
     "yj": "1319756Q1022",
@@ -88455,9 +88455,9 @@
     "name": "フェンタニル注射液０．１ｍｇ「テルモ」",
     "ingredient": "フェンタニルクエン酸塩",
     "oldPrice": 242,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 242,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "8219400A2060",
@@ -88465,9 +88465,9 @@
     "name": "フェンタニル注射液０．２５ｍｇ「テルモ」",
     "ingredient": "フェンタニルクエン酸塩",
     "oldPrice": 515,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 515,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "8219400A3031",
@@ -88545,9 +88545,9 @@
     "name": "イリノテカン塩酸塩点滴静注液４０ｍｇ「ＳＵＮ」",
     "ingredient": "イリノテカン塩酸塩水和物",
     "oldPrice": 1030,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 922,
+    "diff": -108,
+    "ratio": -10.49
   },
   {
     "yj": "4240404A2179",
@@ -88615,9 +88615,9 @@
     "name": "テイコプラニン点滴静注用２００ｍｇ「ＶＴＲＳ」",
     "ingredient": "テイコプラニン",
     "oldPrice": 1404,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1333,
+    "diff": -71,
+    "ratio": -5.06
   },
   {
     "yj": "2391400G1091",
@@ -88665,9 +88665,9 @@
     "name": "シプロフロキサシン点滴静注液２００ｍｇ「ＮＰ」",
     "ingredient": "シプロフロキサシン",
     "oldPrice": 991,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 991,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2329021F1064",
@@ -88955,9 +88955,9 @@
     "name": "プランルカスト錠１１２．５ｍｇ「ＡＦＰ」",
     "ingredient": "プランルカスト水和物",
     "oldPrice": 13.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.4,
+    "diff": -2,
+    "ratio": -14.93
   },
   {
     "yj": "2149026F1271",
@@ -89025,9 +89025,9 @@
     "name": "ベニジピン塩酸塩錠８ｍｇ「ＹＤ」",
     "ingredient": "ベニジピン塩酸塩",
     "oldPrice": 18.9,
-    "newPrice": 15,
-    "diff": -3.9,
-    "ratio": -20.63
+    "newPrice": 17.7,
+    "diff": -1.2,
+    "ratio": -6.35
   },
   {
     "yj": "2492418A1024",
@@ -89315,9 +89315,9 @@
     "name": "プランルカスト錠１１２．５ｍｇ「ＮＩＧ」",
     "ingredient": "プランルカスト水和物",
     "oldPrice": 13.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.4,
+    "diff": -1,
+    "ratio": -7.46
   },
   {
     "yj": "2399011C1069",
@@ -89355,9 +89355,9 @@
     "name": "ランソプラゾールＯＤ錠３０ｍｇ「サワイ」",
     "ingredient": "ランソプラゾール",
     "oldPrice": 19,
-    "newPrice": 17.1,
-    "diff": -1.9,
-    "ratio": -10
+    "newPrice": 18.5,
+    "diff": -0.5,
+    "ratio": -2.63
   },
   {
     "yj": "1179038F5037",
@@ -89435,9 +89435,9 @@
     "name": "アルプロスタジル注５μｇ「サワイ」",
     "ingredient": "アルプロスタジル",
     "oldPrice": 588,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 588,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2190406G1040",
@@ -89455,9 +89455,9 @@
     "name": "アルプロスタジル注１０μｇ「サワイ」",
     "ingredient": "アルプロスタジル",
     "oldPrice": 837,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 825,
+    "diff": -12,
+    "ratio": -1.43
   },
   {
     "yj": "2190406G2062",
@@ -89465,9 +89465,9 @@
     "name": "アルプロスタジル注１０μｇシリンジ「サワイ」",
     "ingredient": "アルプロスタジル",
     "oldPrice": 986,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 988,
+    "diff": 2,
+    "ratio": 0.2
   },
   {
     "yj": "4240404A1067",
@@ -89555,9 +89555,9 @@
     "name": "テイコプラニン点滴静注用２００ｍｇ「サワイ」",
     "ingredient": "テイコプラニン",
     "oldPrice": 1404,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1397,
+    "diff": -7,
+    "ratio": -0.5
   },
   {
     "yj": "6119400A3070",
@@ -89595,9 +89595,9 @@
     "name": "イソプロピルウノプロストン点眼液０．１２％「ＴＳ」",
     "ingredient": "イソプロピルウノプロストン",
     "oldPrice": 114.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 104.8,
+    "diff": -10,
+    "ratio": -8.71
   },
   {
     "yj": "2649729S3114",
@@ -89765,9 +89765,9 @@
     "name": "サルポグレラート塩酸塩錠１００ｍｇ「オーハラ」",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "4291009F1209",
@@ -89805,9 +89805,9 @@
     "name": "イオプロミド３００注２０ｍＬ「ＢＹＬ」",
     "ingredient": "イオプロミド",
     "oldPrice": 899,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 896,
+    "diff": -3,
+    "ratio": -0.33
   },
   {
     "yj": "7219418A7059",
@@ -89815,9 +89815,9 @@
     "name": "イオプロミド３００注５０ｍＬ「ＢＹＬ」",
     "ingredient": "イオプロミド",
     "oldPrice": 2114,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2110,
+    "diff": -4,
+    "ratio": -0.19
   },
   {
     "yj": "7219418A8055",
@@ -89825,9 +89825,9 @@
     "name": "イオプロミド３００注１００ｍＬ「ＢＹＬ」",
     "ingredient": "イオプロミド",
     "oldPrice": 2809,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2809,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "7219418G2041",
@@ -89875,9 +89875,9 @@
     "name": "イオプロミド３７０注５０ｍＬ「ＢＹＬ」",
     "ingredient": "イオプロミド",
     "oldPrice": 2400,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2360,
+    "diff": -40,
+    "ratio": -1.67
   },
   {
     "yj": "7219418H2055",
@@ -90025,9 +90025,9 @@
     "name": "サルポグレラート塩酸塩錠１００ｍｇ「ＴＣＫ」",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "6241010F1055",
@@ -90295,9 +90295,9 @@
     "name": "フルバスタチン錠１０ｍｇ「ＮＩＧ」",
     "ingredient": "フルバスタチンナトリウム",
     "oldPrice": 10.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7.6,
+    "diff": -2.7,
+    "ratio": -26.21
   },
   {
     "yj": "2189012F2077",
@@ -90305,9 +90305,9 @@
     "name": "フルバスタチン錠２０ｍｇ「ＮＩＧ」",
     "ingredient": "フルバスタチンナトリウム",
     "oldPrice": 17.2,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.9,
+    "diff": -4.3,
+    "ratio": -25
   },
   {
     "yj": "2189012F3073",
@@ -90315,9 +90315,9 @@
     "name": "フルバスタチン錠３０ｍｇ「ＮＩＧ」",
     "ingredient": "フルバスタチンナトリウム",
     "oldPrice": 25.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 19.2,
+    "diff": -6.4,
+    "ratio": -25
   },
   {
     "yj": "3399006F1301",
@@ -90335,9 +90335,9 @@
     "name": "サルポグレラート塩酸塩錠１００ｍｇ「ＮＩＧ」",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "2149027F1195",
@@ -90495,9 +90495,9 @@
     "name": "サルポグレラート塩酸塩錠１００ｍｇ「ＪＧ」",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "1147700J1146",
@@ -90765,9 +90765,9 @@
     "name": "レバミピド顆粒２０％「タカタ」",
     "ingredient": "レバミピド",
     "oldPrice": 15.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.5,
+    "diff": -1.4,
+    "ratio": -8.81
   },
   {
     "yj": "4490020R1035",
@@ -90775,9 +90775,9 @@
     "name": "セチリジン塩酸塩ＤＳ１．２５％「タカタ」",
     "ingredient": "セチリジン塩酸塩",
     "oldPrice": 70.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 65.7,
+    "diff": -5,
+    "ratio": -7.07
   },
   {
     "yj": "3339950R1126",
@@ -90855,9 +90855,9 @@
     "name": "テオフィリン徐放Ｕ錠１００ｍｇ「トーワ」",
     "ingredient": "テオフィリン",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "2329021F1218",
@@ -90885,9 +90885,9 @@
     "name": "サルポグレラート塩酸塩錠１００ｍｇ「トーワ」",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "6132016C1132",
@@ -91122,12 +91122,12 @@
   {
     "yj": "3399006F2090",
     "recept": "621951501",
-    "name": "サルポグレラート塩酸塩錠１００ｍｇ「ＮＰ」",
+    "name": "サルポグレラート塩酸塩錠１００ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "6132408G4026",
@@ -91255,9 +91255,9 @@
     "name": "ロゼウス静注液１０ｍｇ",
     "ingredient": "ビノレルビン酒石酸塩",
     "oldPrice": 2172,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 2044,
+    "diff": -128,
+    "ratio": -5.89
   },
   {
     "yj": "4240407A2032",
@@ -91265,9 +91265,9 @@
     "name": "ロゼウス静注液４０ｍｇ",
     "ingredient": "ビノレルビン酒石酸塩",
     "oldPrice": 8014,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7846,
+    "diff": -168,
+    "ratio": -2.1
   },
   {
     "yj": "2171022F3331",
@@ -91605,9 +91605,9 @@
     "name": "アルファカルシドールカプセル３μｇ「ＢＭＤ」",
     "ingredient": "アルファカルシドール",
     "oldPrice": 14.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.3,
+    "diff": -0.1,
+    "ratio": -0.69
   },
   {
     "yj": "2149027F1160",
@@ -91672,12 +91672,12 @@
   {
     "yj": "3399006F2197",
     "recept": "621961701",
-    "name": "サルポグレラート塩酸塩錠１００ｍｇ「サンド」",
+    "name": "サルポグレラート塩酸塩錠１００ｍｇ「サンド」【経過措置】",
     "ingredient": "サルポグレラート塩酸塩",
     "oldPrice": 28.6,
-    "newPrice": 14.3,
-    "diff": -14.3,
-    "ratio": -50
+    "newPrice": 26.1,
+    "diff": -2.5,
+    "ratio": -8.74
   },
   {
     "yj": "3399006F2200",
@@ -91735,9 +91735,9 @@
     "name": "フルバスタチン錠１０ｍｇ「サワイ」",
     "ingredient": "フルバスタチンナトリウム",
     "oldPrice": 10.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 9.8,
+    "diff": -0.5,
+    "ratio": -4.85
   },
   {
     "yj": "2189012F2034",
@@ -91755,9 +91755,9 @@
     "name": "フルバスタチン錠３０ｍｇ「サワイ」",
     "ingredient": "フルバスタチンナトリウム",
     "oldPrice": 25.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 24.6,
+    "diff": -1,
+    "ratio": -3.91
   },
   {
     "yj": "2329122F3027",
@@ -91815,9 +91815,9 @@
     "name": "リシノプリル錠２０ｍｇ「サワイ」",
     "ingredient": "リシノプリル水和物",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "4235404A1067",
@@ -91875,9 +91875,9 @@
     "name": "プロチレリン酒石酸塩注射液１ｍｇ「サワイ」",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 864,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 828,
+    "diff": -36,
+    "ratio": -4.17
   },
   {
     "yj": "6139400D1084",
@@ -92355,9 +92355,9 @@
     "name": "カルボシステインＤＳ５０％「タカタ」",
     "ingredient": "Ｌ－カルボシステイン",
     "oldPrice": 12.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2329021F1285",
@@ -92645,9 +92645,9 @@
     "name": "ミルナシプラン塩酸塩錠１２．５ｍｇ「アメル」",
     "ingredient": "ミルナシプラン塩酸塩",
     "oldPrice": 6.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": -0.5,
+    "ratio": -7.35
   },
   {
     "yj": "1179040F4062",
@@ -92655,9 +92655,9 @@
     "name": "ミルナシプラン塩酸塩錠５０ｍｇ「アメル」",
     "ingredient": "ミルナシプラン塩酸塩",
     "oldPrice": 17.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 15.5,
+    "diff": -2.1,
+    "ratio": -11.93
   },
   {
     "yj": "1319739Q1312",
@@ -93525,9 +93525,9 @@
     "name": "クリンダマイシンリン酸エステルゲル１％「イワキ」",
     "ingredient": "クリンダマイシンリン酸エステル",
     "oldPrice": 11.7,
-    "newPrice": 10.2,
-    "diff": -1.5,
-    "ratio": -12.82
+    "newPrice": 11.4,
+    "diff": -0.3,
+    "ratio": -2.56
   },
   {
     "yj": "2634713M1062",
@@ -93775,9 +93775,9 @@
     "name": "ラベプラゾールＮａ錠２０ｍｇ「ＹＤ」",
     "ingredient": "ラベプラゾールナトリウム",
     "oldPrice": 32.1,
-    "newPrice": 22.9,
-    "diff": -9.2,
-    "ratio": -28.66
+    "newPrice": 31.3,
+    "diff": -0.8,
+    "ratio": -2.49
   },
   {
     "yj": "2649735Q1020",
@@ -94055,9 +94055,9 @@
     "name": "フルボキサミンマレイン酸塩錠５０ｍｇ「タカタ」",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 13.1,
-    "newPrice": 10.9,
-    "diff": -2.2,
-    "ratio": -16.79
+    "newPrice": 12.3,
+    "diff": -0.8,
+    "ratio": -6.11
   },
   {
     "yj": "1179039F3152",
@@ -94215,9 +94215,9 @@
     "name": "ジクロフェナクＮａパップ７０ｍｇ「ラクール」",
     "ingredient": "ジクロフェナクナトリウム",
     "oldPrice": 11.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 13.1,
+    "diff": 1.6,
+    "ratio": 13.91
   },
   {
     "yj": "2649734S4073",
@@ -94235,9 +94235,9 @@
     "name": "ジクロフェナクＮａゲル１％「ラクール」",
     "ingredient": "ジクロフェナクナトリウム",
     "oldPrice": 3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 3.1,
+    "diff": 0.1,
+    "ratio": 3.33
   },
   {
     "yj": "2149117F1025",
@@ -94435,9 +94435,9 @@
     "name": "フルボキサミンマレイン酸塩錠５０ｍｇ「サワイ」",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 13.1,
-    "newPrice": 10.9,
-    "diff": -2.2,
-    "ratio": -16.79
+    "newPrice": 12.3,
+    "diff": -0.8,
+    "ratio": -6.11
   },
   {
     "yj": "1179039F3144",
@@ -94445,9 +94445,9 @@
     "name": "フルボキサミンマレイン酸塩錠７５ｍｇ「サワイ」",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 18.8,
-    "newPrice": 15.5,
-    "diff": -3.3,
-    "ratio": -17.55
+    "newPrice": 17.5,
+    "diff": -1.3,
+    "ratio": -6.91
   },
   {
     "yj": "2329027F1037",
@@ -94475,9 +94475,9 @@
     "name": "エトドラク錠１００ｍｇ「ＳＷ」",
     "ingredient": "エトドラク",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "2329028F1104",
@@ -95085,9 +95085,9 @@
     "name": "ラベプラゾールＮａ錠２０ｍｇ「ＪＧ」",
     "ingredient": "ラベプラゾールナトリウム",
     "oldPrice": 32.1,
-    "newPrice": 22.9,
-    "diff": -9.2,
-    "ratio": -28.66
+    "newPrice": 31.3,
+    "diff": -0.8,
+    "ratio": -2.49
   },
   {
     "yj": "3961008F1071",
@@ -95165,9 +95165,9 @@
     "name": "ケトコナゾールクリーム２％「ＪＧ」",
     "ingredient": "ケトコナゾール",
     "oldPrice": 13.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": -0.8,
+    "ratio": -6.02
   },
   {
     "yj": "2655709Q1068",
@@ -95622,12 +95622,12 @@
   {
     "yj": "1179039F2083",
     "recept": "622032601",
-    "name": "フルボキサミンマレイン酸塩錠５０ｍｇ「ＮＰ」",
+    "name": "フルボキサミンマレイン酸塩錠５０ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 13.1,
-    "newPrice": 10.9,
-    "diff": -2.2,
-    "ratio": -16.79
+    "newPrice": 12.3,
+    "diff": -0.8,
+    "ratio": -6.11
   },
   {
     "yj": "1179039F3080",
@@ -95745,9 +95745,9 @@
     "name": "フルボキサミンマレイン酸塩錠７５ｍｇ「日医工」",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 18.8,
-    "newPrice": 15.5,
-    "diff": -3.3,
-    "ratio": -17.55
+    "newPrice": 17.5,
+    "diff": -1.3,
+    "ratio": -6.91
   },
   {
     "yj": "2590008F1077",
@@ -96005,9 +96005,9 @@
     "name": "ラベプラゾールナトリウム錠２０ｍｇ「サンド」",
     "ingredient": "ラベプラゾールナトリウム",
     "oldPrice": 32.1,
-    "newPrice": 22.9,
-    "diff": -9.2,
-    "ratio": -28.66
+    "newPrice": 31.3,
+    "diff": -0.8,
+    "ratio": -2.49
   },
   {
     "yj": "7212032B1036",
@@ -96405,9 +96405,9 @@
     "name": "レボフロキサシン点眼液０．５％「ニットー」",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "1190018F1023",
@@ -96745,9 +96745,9 @@
     "name": "フルコナゾール静注液５０ｍｇ「サワイ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 781,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 781,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3999019F1174",
@@ -96785,9 +96785,9 @@
     "name": "プロピベリン塩酸塩錠２０ｍｇ「ＪＧ」",
     "ingredient": "プロピベリン塩酸塩",
     "oldPrice": 19.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 19.9,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2149026F1204",
@@ -96875,9 +96875,9 @@
     "name": "フルボキサミンマレイン酸塩錠５０ｍｇ「トーワ」",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 13.1,
-    "newPrice": 10.9,
-    "diff": -2.2,
-    "ratio": -16.79
+    "newPrice": 12.3,
+    "diff": -0.8,
+    "ratio": -6.11
   },
   {
     "yj": "1179039F3187",
@@ -96885,9 +96885,9 @@
     "name": "フルボキサミンマレイン酸塩錠７５ｍｇ「トーワ」",
     "ingredient": "フルボキサミンマレイン酸塩",
     "oldPrice": 18.8,
-    "newPrice": 15.5,
-    "diff": -3.3,
-    "ratio": -17.55
+    "newPrice": 17.5,
+    "diff": -1.3,
+    "ratio": -6.91
   },
   {
     "yj": "2123014F1132",
@@ -96985,9 +96985,9 @@
     "name": "エダラボン点滴静注３０ｍｇ「トーワ」",
     "ingredient": "エダラボン",
     "oldPrice": 832,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 806,
+    "diff": -26,
+    "ratio": -3.13
   },
   {
     "yj": "6290401A1110",
@@ -96995,9 +96995,9 @@
     "name": "フルコナゾール静注５０ｍｇ「トーワ」",
     "ingredient": "フルコナゾール",
     "oldPrice": 781,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 763,
+    "diff": -18,
+    "ratio": -2.3
   },
   {
     "yj": "3949003F1023",
@@ -97315,9 +97315,9 @@
     "name": "リセドロン酸Ｎａ錠２．５ｍｇ「日新」",
     "ingredient": "リセドロン酸ナトリウム水和物",
     "oldPrice": 20.2,
-    "newPrice": 17.8,
-    "diff": -2.4,
-    "ratio": -11.88
+    "newPrice": 20.1,
+    "diff": -0.1,
+    "ratio": -0.5
   },
   {
     "yj": "2325401A4020",
@@ -97345,9 +97345,9 @@
     "name": "エダラボン点滴静注液３０ｍｇ「ＮＳ」",
     "ingredient": "エダラボン",
     "oldPrice": 599,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 580,
+    "diff": -19,
+    "ratio": -3.17
   },
   {
     "yj": "1190401G1131",
@@ -98065,9 +98065,9 @@
     "name": "セフトリアキソンＮａ静注用０．５ｇ「ＶＴＲＳ」",
     "ingredient": "セフトリアキソンナトリウム水和物",
     "oldPrice": 359,
-    "newPrice": 346,
-    "diff": -13,
-    "ratio": -3.62
+    "newPrice": 359,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2139005F3039",
@@ -98095,9 +98095,9 @@
     "name": "オメプラゾール錠１０ｍｇ「ＴＳＵ」",
     "ingredient": "オメプラゾール",
     "oldPrice": 13.5,
-    "newPrice": 11.9,
-    "diff": -1.6,
-    "ratio": -11.85
+    "newPrice": 13.4,
+    "diff": -0.1,
+    "ratio": -0.74
   },
   {
     "yj": "2233002F2162",
@@ -98595,9 +98595,9 @@
     "name": "アルプロスタジルアルファデクス注射用２０μｇ「タカタ」",
     "ingredient": "アルプロスタジル　アルファデクス",
     "oldPrice": 298,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 295,
+    "diff": -3,
+    "ratio": -1.01
   },
   {
     "yj": "3969103F1024",
@@ -98755,9 +98755,9 @@
     "name": "エパルレスタット錠５０ｍｇ「ＶＴＲＳ」",
     "ingredient": "エパルレスタット",
     "oldPrice": 14.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.9,
+    "diff": -3.4,
+    "ratio": -23.78
   },
   {
     "yj": "4490014F1343",
@@ -98975,9 +98975,9 @@
     "name": "ペロスピロン塩酸塩錠４ｍｇ「アメル」",
     "ingredient": "ペロスピロン塩酸塩水和物",
     "oldPrice": 6.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.2,
+    "ratio": 3.28
   },
   {
     "yj": "1179043F2047",
@@ -98985,9 +98985,9 @@
     "name": "ペロスピロン塩酸塩錠８ｍｇ「アメル」",
     "ingredient": "ペロスピロン塩酸塩水和物",
     "oldPrice": 10.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 9.2,
+    "diff": -1.3,
+    "ratio": -12.38
   },
   {
     "yj": "1179043F3035",
@@ -98995,9 +98995,9 @@
     "name": "ペロスピロン塩酸塩錠１６ｍｇ「アメル」",
     "ingredient": "ペロスピロン塩酸塩水和物",
     "oldPrice": 16.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.4,
+    "diff": -2.4,
+    "ratio": -14.29
   },
   {
     "yj": "1319742Q1233",
@@ -99145,9 +99145,9 @@
     "name": "レボフロキサシン点眼液０．５％「タカタ」",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "3999026F2030",
@@ -99285,9 +99285,9 @@
     "name": "レボフロキサシン点眼液０．５％「ＴＳ」",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "2183006F3031",
@@ -99335,9 +99335,9 @@
     "name": "カンレノ酸カリウム静注用１００ｍｇ「サワイ」",
     "ingredient": "カンレノ酸カリウム",
     "oldPrice": 118,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 117,
+    "diff": -1,
+    "ratio": -0.85
   },
   {
     "yj": "6139500F1091",
@@ -99395,9 +99395,9 @@
     "name": "ドネペジル塩酸塩細粒０．５％「サワイ」",
     "ingredient": "ドネペジル塩酸塩",
     "oldPrice": 42,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 35.9,
+    "diff": -6.1,
+    "ratio": -14.52
   },
   {
     "yj": "1190012F1182",
@@ -99535,9 +99535,9 @@
     "name": "一硝酸イソソルビド錠１０ｍｇ「ＮＩＧ」",
     "ingredient": "一硝酸イソソルビド",
     "oldPrice": 5.9,
-    "newPrice": 10.8,
-    "diff": 4.9,
-    "ratio": 83.05
+    "newPrice": 10.4,
+    "diff": 4.5,
+    "ratio": 76.27
   },
   {
     "yj": "2190024F2062",
@@ -99675,9 +99675,9 @@
     "name": "ロラタジン錠１０ｍｇ「ＴＣＫ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "1124007F1160",
@@ -99695,9 +99695,9 @@
     "name": "レボフロキサシン点眼液０．５％「日新」",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "4490027F1170",
@@ -99705,9 +99705,9 @@
     "name": "ロラタジン錠１０ｍｇ「日新」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "4490027F2185",
@@ -99715,9 +99715,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「日新」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "1190012F1255",
@@ -99805,9 +99805,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「ＪＧ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "1190012F1239",
@@ -99925,9 +99925,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「トーワ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "4490027R1053",
@@ -99945,9 +99945,9 @@
     "name": "アモキシシリンカプセル１２５ｍｇ「トーワ」",
     "ingredient": "アモキシシリン水和物",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 13.5,
+    "diff": 3.1,
+    "ratio": 29.81
   },
   {
     "yj": "1190401G1174",
@@ -99975,9 +99975,9 @@
     "name": "バクフォーゼ静注用０．５ｇ【経過措置】",
     "ingredient": "セフォペラゾンナトリウム・スルバクタムナトリウム",
     "oldPrice": 258,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 258,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1319720Q3183",
@@ -100235,9 +100235,9 @@
     "name": "ロラタジン錠１０ｍｇ「ＦＦＰ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "4490027F2061",
@@ -100245,9 +100245,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「ＦＦＰ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "1319746Q1096",
@@ -100275,9 +100275,9 @@
     "name": "レボフロキサシン点眼液０．５％「ＦＦＰ」",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "4291012F1030",
@@ -100335,9 +100335,9 @@
     "name": "ロラタジン錠１０ｍｇ「ＹＤ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "4490027F2096",
@@ -100345,9 +100345,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「ＹＤ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "2189011F2218",
@@ -100365,9 +100365,9 @@
     "name": "シンバスタチン錠２０ｍｇ「ＹＤ」",
     "ingredient": "シンバスタチン",
     "oldPrice": 36.7,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 34.8,
+    "diff": -1.9,
+    "ratio": -5.18
   },
   {
     "yj": "2399005F1221",
@@ -100465,9 +100465,9 @@
     "name": "ロラタジン錠１０ｍｇ「ケミファ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "4490027F2126",
@@ -100475,9 +100475,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「ケミファ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "3999018F2044",
@@ -100535,9 +100535,9 @@
     "name": "ロラタジンＯＤフィルム１０ｍｇ「モチダ」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "1190012F1158",
@@ -100762,12 +100762,12 @@
   {
     "yj": "1190012F3070",
     "recept": "622124201",
-    "name": "ドネペジル塩酸塩ＯＤ錠３ｍｇ「ＮＰ」",
+    "name": "ドネペジル塩酸塩ＯＤ錠３ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "ドネペジル塩酸塩",
     "oldPrice": 13,
-    "newPrice": 10.8,
-    "diff": -2.2,
-    "ratio": -16.92
+    "newPrice": 11.8,
+    "diff": -1.2,
+    "ratio": -9.23
   },
   {
     "yj": "1190012F4076",
@@ -100782,12 +100782,12 @@
   {
     "yj": "3999019F1069",
     "recept": "622124401",
-    "name": "リセドロン酸Ｎａ錠２．５ｍｇ「ＮＰ」",
+    "name": "リセドロン酸Ｎａ錠２．５ｍｇ「ＮＰ」【経過措置】",
     "ingredient": "リセドロン酸ナトリウム水和物",
     "oldPrice": 20.2,
-    "newPrice": 17.8,
-    "diff": -2.4,
-    "ratio": -11.88
+    "newPrice": 20.1,
+    "diff": -0.1,
+    "ratio": -0.5
   },
   {
     "yj": "4490027F1081",
@@ -100852,12 +100852,12 @@
   {
     "yj": "1319742Q1276",
     "recept": "622125202",
-    "name": "レボフロキサシン点眼液０．５％「ニプロ」",
+    "name": "レボフロキサシン点眼液０．５％「ニプロ」【経過措置】",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "4490004F1110",
@@ -101215,9 +101215,9 @@
     "name": "レボフロキサシン点眼液０．５％「日医工」",
     "ingredient": "レボフロキサシン水和物",
     "oldPrice": 24.2,
-    "newPrice": 20.8,
-    "diff": -3.4,
-    "ratio": -14.05
+    "newPrice": 21.8,
+    "diff": -2.4,
+    "ratio": -9.92
   },
   {
     "yj": "3420421A6058",
@@ -101665,9 +101665,9 @@
     "name": "ロサルタンＫ錠２５ｍｇ「オーハラ」",
     "ingredient": "ロサルタンカリウム",
     "oldPrice": 10.4,
-    "newPrice": 10.8,
-    "diff": 0.4,
-    "ratio": 3.85
+    "newPrice": 10.4,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2149039F2070",
@@ -101815,9 +101815,9 @@
     "name": "ドネペジル塩酸塩内用液３ｍｇ「トーワ」",
     "ingredient": "ドネペジル塩酸塩",
     "oldPrice": 44,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 41,
+    "diff": -3,
+    "ratio": -6.82
   },
   {
     "yj": "1190012S2020",
@@ -101825,9 +101825,9 @@
     "name": "ドネペジル塩酸塩内用液５ｍｇ「トーワ」",
     "ingredient": "ドネペジル塩酸塩",
     "oldPrice": 114.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 108.2,
+    "diff": -6.6,
+    "ratio": -5.75
   },
   {
     "yj": "2132003F3055",
@@ -102235,9 +102235,9 @@
     "name": "ツロブテロールテープ１ｍｇ「ＶＴＲＳ」",
     "ingredient": "ツロブテロール",
     "oldPrice": 15,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.2,
+    "diff": -0.8,
+    "ratio": -5.33
   },
   {
     "yj": "2259707S3228",
@@ -102245,9 +102245,9 @@
     "name": "ツロブテロールテープ２ｍｇ「ＶＴＲＳ」",
     "ingredient": "ツロブテロール",
     "oldPrice": 22.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 21.8,
+    "diff": -0.7,
+    "ratio": -3.11
   },
   {
     "yj": "1129010F1028",
@@ -102445,9 +102445,9 @@
     "name": "クロベタゾン酪酸エステル軟膏０．０５％「ＹＤ」",
     "ingredient": "クロベタゾン酪酸エステル",
     "oldPrice": 7.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7.9,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2646720N1107",
@@ -102842,12 +102842,12 @@
   {
     "yj": "3999019F1166",
     "recept": "622159101",
-    "name": "リセドロン酸Ｎａ錠２．５ｍｇ「Ｆ」",
+    "name": "リセドロン酸Ｎａ錠２．５ｍｇ「Ｆ」【経過措置】",
     "ingredient": "リセドロン酸ナトリウム水和物",
     "oldPrice": 20.2,
-    "newPrice": 17.8,
-    "diff": -2.4,
-    "ratio": -11.88
+    "newPrice": 20.1,
+    "diff": -0.1,
+    "ratio": -0.5
   },
   {
     "yj": "2473700M2026",
@@ -102985,9 +102985,9 @@
     "name": "サラゾスルファピリジン腸溶錠２５０ｍｇ「ＣＨ」",
     "ingredient": "サラゾスルファピリジン",
     "oldPrice": 12.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": -0.1,
+    "ratio": -0.79
   },
   {
     "yj": "2139008F2044",
@@ -105915,9 +105915,9 @@
     "name": "ゲムシタビン点滴静注液２００ｍｇ／５ｍＬ「サンド」",
     "ingredient": "ゲムシタビン塩酸塩",
     "oldPrice": 898,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 870,
+    "diff": -28,
+    "ratio": -3.12
   },
   {
     "yj": "4224403A2022",
@@ -106195,9 +106195,9 @@
     "name": "タムスロシン塩酸塩ＯＤ錠０．１ｍｇ「ＶＴＲＳ」",
     "ingredient": "タムスロシン塩酸塩",
     "oldPrice": 6.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2590008F2197",
@@ -106755,9 +106755,9 @@
     "name": "ドネペジル塩酸塩ＯＤ錠３ｍｇ「サンド」",
     "ingredient": "ドネペジル塩酸塩",
     "oldPrice": 13,
-    "newPrice": 10.8,
-    "diff": -2.2,
-    "ratio": -16.92
+    "newPrice": 11.8,
+    "diff": -1.2,
+    "ratio": -9.23
   },
   {
     "yj": "1190012F4319",
@@ -107245,9 +107245,9 @@
     "name": "マグミット錠２００ｍｇ",
     "ingredient": "酸化マグネシウム",
     "oldPrice": 5.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 6.3,
+    "diff": 0.4,
+    "ratio": 6.78
   },
   {
     "yj": "5100099X1031",
@@ -107595,9 +107595,9 @@
     "name": "テイコプラニン点滴静注用２００ｍｇ「明治」",
     "ingredient": "テイコプラニン",
     "oldPrice": 1404,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1337,
+    "diff": -67,
+    "ratio": -4.77
   },
   {
     "yj": "6119401D2058",
@@ -107785,9 +107785,9 @@
     "name": "ナテグリニド錠３０ｍｇ「日医工」",
     "ingredient": "ナテグリニド",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "3969006F2069",
@@ -107795,9 +107795,9 @@
     "name": "ナテグリニド錠９０ｍｇ「日医工」",
     "ingredient": "ナテグリニド",
     "oldPrice": 16.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.9,
+    "diff": -1.6,
+    "ratio": -9.7
   },
   {
     "yj": "2149043F1135",
@@ -108205,9 +108205,9 @@
     "name": "イリノテカン塩酸塩点滴静注液４０ｍｇ「トーワ」",
     "ingredient": "イリノテカン塩酸塩水和物",
     "oldPrice": 1030,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1028,
+    "diff": -2,
+    "ratio": -0.19
   },
   {
     "yj": "4240404A2144",
@@ -108215,9 +108215,9 @@
     "name": "イリノテカン塩酸塩点滴静注液１００ｍｇ「トーワ」",
     "ingredient": "イリノテカン塩酸塩水和物",
     "oldPrice": 2319,
-    "newPrice": 1866,
-    "diff": -453,
-    "ratio": -19.53
+    "newPrice": 2319,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2649735S1109",
@@ -108495,9 +108495,9 @@
     "name": "カルボシステインドライシロップ５０％「ＮＩＧ」",
     "ingredient": "Ｌ－カルボシステイン",
     "oldPrice": 12.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "7290007X1031",
@@ -108572,7 +108572,7 @@
   {
     "yj": "2649735S2237",
     "recept": "622242801",
-    "name": "ロキソプロフェンナトリウムテープ５０ｍｇ「タイホウ」",
+    "name": "ロキソプロフェンナトリウムテープ５０ｍｇ「タイホウ」【経過措置】",
     "ingredient": "ロキソプロフェンナトリウム水和物",
     "oldPrice": 12.7,
     "newPrice": 13.1,
@@ -109845,9 +109845,9 @@
     "name": "カルボシステインＤＳ５０％「ツルハラ」",
     "ingredient": "Ｌ－カルボシステイン",
     "oldPrice": 12.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2344009C1055",
@@ -110335,9 +110335,9 @@
     "name": "ピタバスタチンカルシウム錠４ｍｇ「ＺＥ」",
     "ingredient": "ピタバスタチンカルシウム",
     "oldPrice": 23.7,
-    "newPrice": 21,
-    "diff": -2.7,
-    "ratio": -11.39
+    "newPrice": 22.7,
+    "diff": -1,
+    "ratio": -4.22
   },
   {
     "yj": "1190012F6133",
@@ -110895,9 +110895,9 @@
     "name": "ピタバスタチンＣａ錠４ｍｇ「アメル」",
     "ingredient": "ピタバスタチンカルシウム",
     "oldPrice": 23.7,
-    "newPrice": 21,
-    "diff": -2.7,
-    "ratio": -11.39
+    "newPrice": 22.7,
+    "diff": -1,
+    "ratio": -4.22
   },
   {
     "yj": "1124009F2084",
@@ -111165,9 +111165,9 @@
     "name": "ドネペジル塩酸塩内用液１０ｍｇ「トーワ」",
     "ingredient": "ドネペジル塩酸塩",
     "oldPrice": 116.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 116.4,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1190012F5234",
@@ -111255,9 +111255,9 @@
     "name": "アトルバスタチンＯＤ錠５ｍｇ「トーワ」",
     "ingredient": "アトルバスタチンカルシウム水和物",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2189015F4022",
@@ -112325,9 +112325,9 @@
     "name": "アルプロスタジル注１０μｇシリンジ「ＴＷ」",
     "ingredient": "アルプロスタジル",
     "oldPrice": 986,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 988,
+    "diff": 2,
+    "ratio": 0.2
   },
   {
     "yj": "1190012F5188",
@@ -113825,9 +113825,9 @@
     "name": "アンブロキソール塩酸塩徐放ＯＤ錠４５ｍｇ「ＺＥ」",
     "ingredient": "アンブロキソール塩酸塩",
     "oldPrice": 16.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 16.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2149048F3025",
@@ -114885,9 +114885,9 @@
     "name": "アンブロキソール塩酸塩徐放ＯＤ錠４５ｍｇ「サワイ」",
     "ingredient": "アンブロキソール塩酸塩",
     "oldPrice": 16.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 16.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "4240405A3080",
@@ -115035,9 +115035,9 @@
     "name": "アンブロキソール塩酸塩徐放ＯＤ錠４５ｍｇ「ニプロ」",
     "ingredient": "アンブロキソール塩酸塩",
     "oldPrice": 16.1,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 16.1,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3999423A1109",
@@ -116112,7 +116112,7 @@
   {
     "yj": "4291410A1061",
     "recept": "622374801",
-    "name": "オキサリプラチン点滴静注液５０ｍｇ／１０ｍＬ「ホスピーラ」",
+    "name": "オキサリプラチン点滴静注液５０ｍｇ／１０ｍＬ「ホスピーラ」【経過措置】",
     "ingredient": "オキサリプラチン",
     "oldPrice": 2502,
     "newPrice": 2291,
@@ -116795,9 +116795,9 @@
     "name": "ピタバスタチンＣａ錠４ｍｇ「ＴＣＫ」",
     "ingredient": "ピタバスタチンカルシウム",
     "oldPrice": 23.7,
-    "newPrice": 21,
-    "diff": -2.7,
-    "ratio": -11.39
+    "newPrice": 22.7,
+    "diff": -1,
+    "ratio": -4.22
   },
   {
     "yj": "1129009F4075",
@@ -117695,9 +117695,9 @@
     "name": "ナカジマ　カンゾウ　ＡＭ",
     "ingredient": "カンゾウ",
     "oldPrice": 21.3,
-    "newPrice": 21.3,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 27.7,
+    "diff": 6.4,
+    "ratio": 30.05
   },
   {
     "yj": "5100087X1195",
@@ -117705,9 +117705,9 @@
     "name": "ナカジマ　ジオウ",
     "ingredient": "ジオウ",
     "oldPrice": 19.4,
-    "newPrice": 19.4,
-    "diff": 0,
-    "ratio": 0
+    "newPrice": 25.2,
+    "diff": 5.8,
+    "ratio": 29.9
   },
   {
     "yj": "4490404A1027",
@@ -118225,9 +118225,9 @@
     "name": "カルボシステインＤＳ５０％「トーワ」",
     "ingredient": "Ｌ－カルボシステイン",
     "oldPrice": 12.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.5,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2149040F5056",
@@ -119445,9 +119445,9 @@
     "name": "ピタバスタチンＣａ錠４ｍｇ「ツルハラ」",
     "ingredient": "ピタバスタチンカルシウム",
     "oldPrice": 23.7,
-    "newPrice": 21,
-    "diff": -2.7,
-    "ratio": -11.39
+    "newPrice": 22.7,
+    "diff": -1,
+    "ratio": -4.22
   },
   {
     "yj": "2189016F3241",
@@ -119805,9 +119805,9 @@
     "name": "ナフトピジル錠２５ｍｇ「日医工」",
     "ingredient": "ナフトピジル",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2590009F2140",
@@ -119825,9 +119825,9 @@
     "name": "ナフトピジル錠７５ｍｇ「日医工」",
     "ingredient": "ナフトピジル",
     "oldPrice": 15.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 14.2,
+    "diff": -1.3,
+    "ratio": -8.39
   },
   {
     "yj": "2590009F6170",
@@ -120025,9 +120025,9 @@
     "name": "オキサリプラチン点滴静注液２００ｍｇ「ニプロ」",
     "ingredient": "オキサリプラチン",
     "oldPrice": 9168,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 7669,
+    "diff": -1499,
+    "ratio": -16.35
   },
   {
     "yj": "3999039M1022",
@@ -121535,9 +121535,9 @@
     "name": "マキサカルシトール静注透析用２．５μｇ「ＮＩＧ」",
     "ingredient": "マキサカルシトール",
     "oldPrice": 150,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 142,
+    "diff": -8,
+    "ratio": -5.33
   },
   {
     "yj": "3112401A2090",
@@ -121545,9 +121545,9 @@
     "name": "マキサカルシトール静注透析用５μｇ「ＮＩＧ」",
     "ingredient": "マキサカルシトール",
     "oldPrice": 192,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 183,
+    "diff": -9,
+    "ratio": -4.69
   },
   {
     "yj": "3112401A3096",
@@ -121555,9 +121555,9 @@
     "name": "マキサカルシトール静注透析用１０μｇ「ＮＩＧ」",
     "ingredient": "マキサカルシトール",
     "oldPrice": 332,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 313,
+    "diff": -19,
+    "ratio": -5.72
   },
   {
     "yj": "2149110F2348",
@@ -122215,9 +122215,9 @@
     "name": "マキサカルシトール静注透析用１０μｇ「ニプロ」",
     "ingredient": "マキサカルシトール",
     "oldPrice": 332,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 324,
+    "diff": -8,
+    "ratio": -2.41
   },
   {
     "yj": "6139400G2028",
@@ -122335,9 +122335,9 @@
     "name": "オランザピン錠５ｍｇ「ＹＤ」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "1179044F3072",
@@ -122415,9 +122415,9 @@
     "name": "オランザピンＯＤ錠５ｍｇ「トーワ」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "1179044C1073",
@@ -122455,9 +122455,9 @@
     "name": "オランザピン錠５ｍｇ「トーワ」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "2149032F3091",
@@ -122595,9 +122595,9 @@
     "name": "オランザピン細粒１％「ＤＳＥＰ」",
     "ingredient": "オランザピン",
     "oldPrice": 38.6,
-    "newPrice": 35.3,
-    "diff": -3.3,
-    "ratio": -8.55
+    "newPrice": 36.5,
+    "diff": -2.1,
+    "ratio": -5.44
   },
   {
     "yj": "1179046F3080",
@@ -122745,9 +122745,9 @@
     "name": "オランザピンＯＤ錠５ｍｇ「タカタ」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "1179044F5083",
@@ -123095,9 +123095,9 @@
     "name": "ゲムシタビン点滴静注液２００ｍｇ／５ｍＬ「ＮＫ」",
     "ingredient": "ゲムシタビン塩酸塩",
     "oldPrice": 898,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 867,
+    "diff": -31,
+    "ratio": -3.45
   },
   {
     "yj": "4224403A2030",
@@ -123105,9 +123105,9 @@
     "name": "ゲムシタビン点滴静注液１ｇ／２５ｍＬ「ＮＫ」",
     "ingredient": "ゲムシタビン塩酸塩",
     "oldPrice": 3362,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 3220,
+    "diff": -142,
+    "ratio": -4.22
   },
   {
     "yj": "4291043M1027",
@@ -123265,9 +123265,9 @@
     "name": "オランザピンＯＤ錠５ｍｇ「ＪＧ」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "1179044F5040",
@@ -123435,9 +123435,9 @@
     "name": "オランザピン錠５ｍｇ「日新」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "1179044F3161",
@@ -123815,9 +123815,9 @@
     "name": "オランザピン錠５ｍｇ「サワイ」",
     "ingredient": "オランザピン",
     "oldPrice": 17,
-    "newPrice": 14.3,
-    "diff": -2.7,
-    "ratio": -15.88
+    "newPrice": 16,
+    "diff": -1,
+    "ratio": -5.88
   },
   {
     "yj": "1179044F3110",
@@ -123835,9 +123835,9 @@
     "name": "オランザピン細粒１％「サワイ」",
     "ingredient": "オランザピン",
     "oldPrice": 38.6,
-    "newPrice": 35.3,
-    "diff": -3.3,
-    "ratio": -8.55
+    "newPrice": 36.5,
+    "diff": -2.1,
+    "ratio": -5.44
   },
   {
     "yj": "1179046F3144",
@@ -124122,12 +124122,12 @@
   {
     "yj": "1179044C1081",
     "recept": "622501201",
-    "name": "オランザピン細粒１％「日医工」",
+    "name": "オランザピン細粒１％「日医工」【経過措置】",
     "ingredient": "オランザピン",
     "oldPrice": 38.6,
-    "newPrice": 35.3,
-    "diff": -3.3,
-    "ratio": -8.55
+    "newPrice": 36.5,
+    "diff": -2.1,
+    "ratio": -5.44
   },
   {
     "yj": "4291009F2086",
@@ -124465,9 +124465,9 @@
     "name": "オランザピン細粒１％「ニプロ」",
     "ingredient": "オランザピン",
     "oldPrice": 38.6,
-    "newPrice": 35.3,
-    "diff": -3.3,
-    "ratio": -8.55
+    "newPrice": 36.5,
+    "diff": -2.1,
+    "ratio": -5.44
   },
   {
     "yj": "1179044F1177",
@@ -124805,9 +124805,9 @@
     "name": "モンテルカスト錠１０ｍｇ「ＹＤ」",
     "ingredient": "モンテルカストナトリウム",
     "oldPrice": 13.8,
-    "newPrice": 11.4,
-    "diff": -2.4,
-    "ratio": -17.39
+    "newPrice": 13.3,
+    "diff": -0.5,
+    "ratio": -3.62
   },
   {
     "yj": "2190026F1030",
@@ -125095,9 +125095,9 @@
     "name": "マキサカルシトール静注透析用１０μｇ「トーワ」",
     "ingredient": "マキサカルシトール",
     "oldPrice": 332,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 305,
+    "diff": -27,
+    "ratio": -8.13
   },
   {
     "yj": "3112401A1077",
@@ -125105,9 +125105,9 @@
     "name": "マキサカルシトール静注透析用２．５μｇ「トーワ」",
     "ingredient": "マキサカルシトール",
     "oldPrice": 150,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 144,
+    "diff": -6,
+    "ratio": -4
   },
   {
     "yj": "3112401A2073",
@@ -125505,9 +125505,9 @@
     "name": "モンテルカスト錠１０ｍｇ「日新」",
     "ingredient": "モンテルカストナトリウム",
     "oldPrice": 13.8,
-    "newPrice": 11.4,
-    "diff": -2.4,
-    "ratio": -17.39
+    "newPrice": 13.3,
+    "diff": -0.5,
+    "ratio": -3.62
   },
   {
     "yj": "2149116F1071",
@@ -125535,9 +125535,9 @@
     "name": "オランザピン細粒１％「日新」",
     "ingredient": "オランザピン",
     "oldPrice": 38.6,
-    "newPrice": 35.3,
-    "diff": -3.3,
-    "ratio": -8.55
+    "newPrice": 36.5,
+    "diff": -2.1,
+    "ratio": -5.44
   },
   {
     "yj": "2149037F3078",
@@ -125715,9 +125715,9 @@
     "name": "ピタバスタチンＣａ・ＯＤ錠２ｍｇ「杏林」",
     "ingredient": "ピタバスタチンカルシウム",
     "oldPrice": 12.9,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 11.6,
+    "diff": -1.3,
+    "ratio": -10.08
   },
   {
     "yj": "2189016F6070",
@@ -125735,9 +125735,9 @@
     "name": "オランザピン細粒１％「杏林」",
     "ingredient": "オランザピン",
     "oldPrice": 38.6,
-    "newPrice": 35.3,
-    "diff": -3.3,
-    "ratio": -8.55
+    "newPrice": 36.5,
+    "diff": -2.1,
+    "ratio": -5.44
   },
   {
     "yj": "6250111F2029",
@@ -126455,9 +126455,9 @@
     "name": "エンテカビル錠０．５ｍｇ「ＣＭＸ」",
     "ingredient": "エンテカビル水和物",
     "oldPrice": 71.5,
-    "newPrice": 60.8,
-    "diff": -10.7,
-    "ratio": -14.97
+    "newPrice": 66.9,
+    "diff": -4.6,
+    "ratio": -6.43
   },
   {
     "yj": "2329021F1331",
@@ -127275,9 +127275,9 @@
     "name": "エンテカビル錠０．５ｍｇ「トーワ」",
     "ingredient": "エンテカビル水和物",
     "oldPrice": 71.5,
-    "newPrice": 60.8,
-    "diff": -10.7,
-    "ratio": -14.97
+    "newPrice": 66.9,
+    "diff": -4.6,
+    "ratio": -6.43
   },
   {
     "yj": "2149116F2086",
@@ -127725,9 +127725,9 @@
     "name": "エンテカビル錠０．５ｍｇ「ＮＩＧ」",
     "ingredient": "エンテカビル水和物",
     "oldPrice": 71.5,
-    "newPrice": 60.8,
-    "diff": -10.7,
-    "ratio": -14.97
+    "newPrice": 66.9,
+    "diff": -4.6,
+    "ratio": -6.43
   },
   {
     "yj": "3929004F2137",
@@ -127812,12 +127812,12 @@
   {
     "yj": "4490026F1206",
     "recept": "622549601",
-    "name": "モンテルカストチュアブル錠５ｍｇ「三和」",
+    "name": "モンテルカストチュアブル錠５ｍｇ「三和」【経過措置】",
     "ingredient": "モンテルカストナトリウム",
     "oldPrice": 18.1,
-    "newPrice": 16.3,
-    "diff": -1.8,
-    "ratio": -9.94
+    "newPrice": 12.4,
+    "diff": -5.7,
+    "ratio": -31.49
   },
   {
     "yj": "8119003G1029",
@@ -128065,9 +128065,9 @@
     "name": "エンテカビル錠０．５ｍｇ「ＪＧ」",
     "ingredient": "エンテカビル水和物",
     "oldPrice": 71.5,
-    "newPrice": 60.8,
-    "diff": -10.7,
-    "ratio": -14.97
+    "newPrice": 66.9,
+    "diff": -4.6,
+    "ratio": -6.43
   },
   {
     "yj": "2499010F1040",
@@ -128415,9 +128415,9 @@
     "name": "テルミサルタンＯＤ錠４０ｍｇ「サワイ」",
     "ingredient": "テルミサルタン",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2149042F1149",
@@ -128605,9 +128605,9 @@
     "name": "エンテカビルＯＤ錠０．５ｍｇ「サワイ」",
     "ingredient": "エンテカビル水和物",
     "oldPrice": 71.5,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 66.9,
+    "diff": -4.6,
+    "ratio": -6.43
   },
   {
     "yj": "3969009F6033",
@@ -128835,9 +128835,9 @@
     "name": "リザトリプタンＯＤ錠１０ｍｇ「ＶＴＲＳ」",
     "ingredient": "リザトリプタン安息香酸塩",
     "oldPrice": 71,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 54.5,
+    "diff": -16.5,
+    "ratio": -23.24
   },
   {
     "yj": "2149042F1157",
@@ -128895,9 +128895,9 @@
     "name": "エンテカビル錠０．５ｍｇ「サンド」",
     "ingredient": "エンテカビル水和物",
     "oldPrice": 71.5,
-    "newPrice": 60.8,
-    "diff": -10.7,
-    "ratio": -14.97
+    "newPrice": 66.9,
+    "diff": -4.6,
+    "ratio": -6.43
   },
   {
     "yj": "2359008F1025",
@@ -129245,9 +129245,9 @@
     "name": "テルチア配合錠ＡＰ「日医工」",
     "ingredient": "テルミサルタン・ヒドロクロロチアジド",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2149113F2074",
@@ -129345,9 +129345,9 @@
     "name": "テラムロ配合錠ＡＰ「ニプロ」",
     "ingredient": "テルミサルタン・アムロジピンベシル酸塩",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2149117F2099",
@@ -129355,9 +129355,9 @@
     "name": "テラムロ配合錠ＢＰ「ニプロ」",
     "ingredient": "テルミサルタン・アムロジピンベシル酸塩",
     "oldPrice": 14,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 12.6,
+    "diff": -1.4,
+    "ratio": -10
   },
   {
     "yj": "2149042F1220",
@@ -131035,9 +131035,9 @@
     "name": "フェノフィブラート錠５３．３ｍｇ「武田テバ」",
     "ingredient": "フェノフィブラート",
     "oldPrice": 8.8,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 9.1,
+    "diff": 0.3,
+    "ratio": 3.41
   },
   {
     "yj": "2183006F4046",
@@ -131045,9 +131045,9 @@
     "name": "フェノフィブラート錠８０ｍｇ「武田テバ」",
     "ingredient": "フェノフィブラート",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2399404F1025",
@@ -131385,9 +131385,9 @@
     "name": "イルベサルタン錠２００ｍｇ「オーハラ」",
     "ingredient": "イルベサルタン",
     "oldPrice": 15.3,
-    "newPrice": 11.9,
-    "diff": -3.4,
-    "ratio": -22.22
+    "newPrice": 13.5,
+    "diff": -1.8,
+    "ratio": -11.76
   },
   {
     "yj": "6250031F1048",
@@ -131815,9 +131815,9 @@
     "name": "イルベサルタン錠５０ｍｇ「日医工」",
     "ingredient": "イルベサルタン",
     "oldPrice": 10.4,
-    "newPrice": 10.8,
-    "diff": 0.4,
-    "ratio": 3.85
+    "newPrice": 10.4,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2149046F2127",
@@ -131942,12 +131942,12 @@
   {
     "yj": "2149046F3131",
     "recept": "622602101",
-    "name": "イルベサルタン錠２００ｍｇ「ニプロ」",
+    "name": "イルベサルタン錠２００ｍｇ「ニプロ」【経過措置】",
     "ingredient": "イルベサルタン",
     "oldPrice": 15.3,
-    "newPrice": 11.9,
-    "diff": -3.4,
-    "ratio": -22.22
+    "newPrice": 13.5,
+    "diff": -1.8,
+    "ratio": -11.76
   },
   {
     "yj": "2149044F8088",
@@ -132115,9 +132115,9 @@
     "name": "シプロフロキサシン点滴静注液４００ｍｇ「ニプロ」",
     "ingredient": "シプロフロキサシン",
     "oldPrice": 1199,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1199,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "3112401G1029",
@@ -132215,9 +132215,9 @@
     "name": "プラバスタチンＮａ錠１０ｍｇ「Ｍｅ」",
     "ingredient": "プラバスタチンナトリウム",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.4,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "2325003F4295",
@@ -132475,9 +132475,9 @@
     "name": "イルアミクス配合錠ＨＤ「ＹＤ」",
     "ingredient": "イルベサルタン・アムロジピンベシル酸塩",
     "oldPrice": 14.1,
-    "newPrice": 10.8,
-    "diff": -3.3,
-    "ratio": -23.4
+    "newPrice": 13.4,
+    "diff": -0.7,
+    "ratio": -4.96
   },
   {
     "yj": "2149044F5127",
@@ -133395,9 +133395,9 @@
     "name": "イルアミクス配合錠ＨＤ「杏林」",
     "ingredient": "イルベサルタン・アムロジピンベシル酸塩",
     "oldPrice": 14.1,
-    "newPrice": 10.8,
-    "diff": -3.3,
-    "ratio": -23.4
+    "newPrice": 13.4,
+    "diff": -0.7,
+    "ratio": -4.96
   },
   {
     "yj": "2149118F1089",
@@ -133655,9 +133655,9 @@
     "name": "イルアミクス配合錠ＨＤ「サンド」",
     "ingredient": "イルベサルタン・アムロジピンベシル酸塩",
     "oldPrice": 14.1,
-    "newPrice": 10.8,
-    "diff": -3.3,
-    "ratio": -23.4
+    "newPrice": 13.4,
+    "diff": -0.7,
+    "ratio": -4.96
   },
   {
     "yj": "2149118F1127",
@@ -134215,9 +134215,9 @@
     "name": "モンテルカスト錠１０ｍｇ「フェルゼン」",
     "ingredient": "モンテルカストナトリウム",
     "oldPrice": 13.8,
-    "newPrice": 11.4,
-    "diff": -2.4,
-    "ratio": -17.39
+    "newPrice": 13.3,
+    "diff": -0.5,
+    "ratio": -3.62
   },
   {
     "yj": "4490025F3174",
@@ -134705,9 +134705,9 @@
     "name": "ミルタザピン錠１５ｍｇ「ケミファ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2114",
@@ -134715,9 +134715,9 @@
     "name": "ミルタザピン錠３０ｍｇ「ケミファ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 24.4,
-    "newPrice": 13.4,
-    "diff": -11,
-    "ratio": -45.08
+    "newPrice": 23.2,
+    "diff": -1.2,
+    "ratio": -4.92
   },
   {
     "yj": "6250025R1022",
@@ -134755,9 +134755,9 @@
     "name": "ミルタザピン錠１５ｍｇ「ＹＤ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2076",
@@ -134765,9 +134765,9 @@
     "name": "ミルタザピン錠３０ｍｇ「ＹＤ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 24.4,
-    "newPrice": 13.4,
-    "diff": -11,
-    "ratio": -45.08
+    "newPrice": 23.2,
+    "diff": -1.2,
+    "ratio": -4.92
   },
   {
     "yj": "1179050M1074",
@@ -134825,9 +134825,9 @@
     "name": "ミルタザピン錠１５ｍｇ「ＶＴＲＳ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2211",
@@ -134835,9 +134835,9 @@
     "name": "ミルタザピン錠３０ｍｇ「ＶＴＲＳ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 24.4,
-    "newPrice": 13.4,
-    "diff": -11,
-    "ratio": -45.08
+    "newPrice": 23.2,
+    "diff": -1.2,
+    "ratio": -4.92
   },
   {
     "yj": "1141007F3031",
@@ -135015,9 +135015,9 @@
     "name": "ミルタザピン錠１５ｍｇ「ＴＣＫ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2068",
@@ -135035,9 +135035,9 @@
     "name": "ケトプロフェンパップＸＲ１２０ｍｇ「テイコク」",
     "ingredient": "ケトプロフェン",
     "oldPrice": 17.6,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 18.2,
+    "diff": 0.6,
+    "ratio": 3.41
   },
   {
     "yj": "2190036D1025",
@@ -135145,9 +135145,9 @@
     "name": "ミルタザピン錠１５ｍｇ「ＥＥ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2041",
@@ -135155,9 +135155,9 @@
     "name": "ミルタザピン錠３０ｍｇ「ＥＥ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 24.4,
-    "newPrice": 13.4,
-    "diff": -11,
-    "ratio": -45.08
+    "newPrice": 23.2,
+    "diff": -1.2,
+    "ratio": -4.92
   },
   {
     "yj": "6249401A1068",
@@ -135755,9 +135755,9 @@
     "name": "ミルタザピン錠１５ｍｇ「日新」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2165",
@@ -135765,9 +135765,9 @@
     "name": "ミルタザピン錠３０ｍｇ「日新」",
     "ingredient": "ミルタザピン",
     "oldPrice": 24.4,
-    "newPrice": 13.4,
-    "diff": -11,
-    "ratio": -45.08
+    "newPrice": 23.2,
+    "diff": -1.2,
+    "ratio": -4.92
   },
   {
     "yj": "3399009F5025",
@@ -136465,9 +136465,9 @@
     "name": "ミルタザピン錠１５ｍｇ「ニプロ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 13.3,
-    "newPrice": 7.8,
-    "diff": -5.5,
-    "ratio": -41.35
+    "newPrice": 13.2,
+    "diff": -0.1,
+    "ratio": -0.75
   },
   {
     "yj": "1179051F2173",
@@ -136475,9 +136475,9 @@
     "name": "ミルタザピン錠３０ｍｇ「ニプロ」",
     "ingredient": "ミルタザピン",
     "oldPrice": 24.4,
-    "newPrice": 13.4,
-    "diff": -11,
-    "ratio": -45.08
+    "newPrice": 23.2,
+    "diff": -1.2,
+    "ratio": -4.92
   },
   {
     "yj": "1149117F1128",
@@ -137185,9 +137185,9 @@
     "name": "ブロナンセリン錠８ｍｇ「ＹＤ」",
     "ingredient": "ブロナンセリン",
     "oldPrice": 27.1,
-    "newPrice": 18.8,
-    "diff": -8.3,
-    "ratio": -30.63
+    "newPrice": 26.1,
+    "diff": -1,
+    "ratio": -3.69
   },
   {
     "yj": "3959421A1023",
@@ -137755,9 +137755,9 @@
     "name": "ブロナンセリン錠８ｍｇ「サワイ」",
     "ingredient": "ブロナンセリン",
     "oldPrice": 27.1,
-    "newPrice": 18.8,
-    "diff": -8.3,
-    "ratio": -30.63
+    "newPrice": 26.1,
+    "diff": -1,
+    "ratio": -3.69
   },
   {
     "yj": "1179048B1041",
@@ -137825,9 +137825,9 @@
     "name": "ブロナンセリン錠８ｍｇ「アメル」",
     "ingredient": "ブロナンセリン",
     "oldPrice": 27.1,
-    "newPrice": 18.8,
-    "diff": -8.3,
-    "ratio": -30.63
+    "newPrice": 26.1,
+    "diff": -1,
+    "ratio": -3.69
   },
   {
     "yj": "1179050M1066",
@@ -139845,9 +139845,9 @@
     "name": "エゼチミブ錠１０ｍｇ「ケミファ」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "1149037F1100",
@@ -139885,9 +139885,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「ケミファ」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5142",
@@ -139945,9 +139945,9 @@
     "name": "エゼチミブ錠１０ｍｇ「ＹＤ」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "1190019F4051",
@@ -140015,9 +140015,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「ＹＤ」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5088",
@@ -140395,9 +140395,9 @@
     "name": "エゼチミブ錠１０ｍｇ「日医工」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "2329028F3190",
@@ -140415,9 +140415,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「日医工」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5207",
@@ -140985,9 +140985,9 @@
     "name": "エゼチミブ錠１０ｍｇ「日新」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "1149037F1160",
@@ -141085,9 +141085,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「ＮＩＧ」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5258",
@@ -141115,9 +141115,9 @@
     "name": "エゼチミブ錠１０ｍｇ「杏林」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "1149037F1097",
@@ -141615,9 +141615,9 @@
     "name": "エゼチミブ錠１０ｍｇ「ＪＧ」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "1190019F4043",
@@ -141805,9 +141805,9 @@
     "name": "メマンチン塩酸塩錠５ｍｇ「ニプロ」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5223",
@@ -141835,9 +141835,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「ニプロ」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F1066",
@@ -141845,9 +141845,9 @@
     "name": "メマンチン塩酸塩錠５ｍｇ「アメル」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F2062",
@@ -141875,9 +141875,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「アメル」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5100",
@@ -141935,9 +141935,9 @@
     "name": "エゼチミブ錠１０ｍｇ「アメル」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "4490028F1094",
@@ -142065,9 +142065,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「サンド」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5169",
@@ -142105,9 +142105,9 @@
     "name": "エゼチミブ錠１０ｍｇ「サンド」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "2590016F1071",
@@ -142415,9 +142415,9 @@
     "name": "エゼチミブ錠１０ｍｇ「サワイ」",
     "ingredient": "エゼチミブ",
     "oldPrice": 19.3,
-    "newPrice": 14.6,
-    "diff": -4.7,
-    "ratio": -24.35
+    "newPrice": 17,
+    "diff": -2.3,
+    "ratio": -11.92
   },
   {
     "yj": "2499011M1094",
@@ -142735,9 +142735,9 @@
     "name": "メマンチン塩酸塩ＯＤ錠５ｍｇ「ＺＥ」",
     "ingredient": "メマンチン塩酸塩",
     "oldPrice": 14,
-    "newPrice": 9.7,
-    "diff": -4.3,
-    "ratio": -30.71
+    "newPrice": 12.7,
+    "diff": -1.3,
+    "ratio": -9.29
   },
   {
     "yj": "1190018F5134",
@@ -147025,9 +147025,9 @@
     "name": "フルマゼニル注射液０．５ｍｇ「ニプロ」",
     "ingredient": "フルマゼニル",
     "oldPrice": 1005,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 982,
+    "diff": -23,
+    "ratio": -2.29
   },
   {
     "yj": "4229401D2069",
@@ -147695,9 +147695,9 @@
     "name": "ファモチジン注射液２０ｍｇ「トーワ」",
     "ingredient": "ファモチジン",
     "oldPrice": 100,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 104,
+    "diff": 4,
+    "ratio": 4
   },
   {
     "yj": "3999411G4051",
@@ -148165,9 +148165,9 @@
     "name": "ソタロール塩酸塩錠８０ｍｇ「ＴＥ」",
     "ingredient": "ソタロール塩酸塩",
     "oldPrice": 60.3,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 57.2,
+    "diff": -3.1,
+    "ratio": -5.14
   },
   {
     "yj": "2590016F1110",
@@ -150905,9 +150905,9 @@
     "name": "フルマゼニル静注液０．５ｍｇ「ＳＷ」",
     "ingredient": "フルマゼニル",
     "oldPrice": 1005,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1005,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "1190026F5023",
@@ -152425,9 +152425,9 @@
     "name": "ロラタジン錠１０ｍｇ「フェルゼン」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "4490027F2282",
@@ -152435,9 +152435,9 @@
     "name": "ロラタジンＯＤ錠１０ｍｇ「フェルゼン」",
     "ingredient": "ロラタジン",
     "oldPrice": 14.8,
-    "newPrice": 12.8,
-    "diff": -2,
-    "ratio": -13.51
+    "newPrice": 13.9,
+    "diff": -0.9,
+    "ratio": -6.08
   },
   {
     "yj": "1319756Q1065",
@@ -152535,9 +152535,9 @@
     "name": "アムロジピンＯＤ錠１０ｍｇ「ＶＴＲＳ」",
     "ingredient": "アムロジピンベシル酸塩",
     "oldPrice": 10.4,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 10.8,
+    "diff": 0.4,
+    "ratio": 3.85
   },
   {
     "yj": "2160005F1110",
@@ -153215,9 +153215,9 @@
     "name": "イルアミクス配合錠ＨＤ「ダイト」",
     "ingredient": "イルベサルタン・アムロジピンベシル酸塩",
     "oldPrice": 14.1,
-    "newPrice": 10.8,
-    "diff": -3.3,
-    "ratio": -23.4
+    "newPrice": 13.4,
+    "diff": -0.7,
+    "ratio": -4.96
   },
   {
     "yj": "4291081M1022",
@@ -155045,9 +155045,9 @@
     "name": "シメチジン注射液２００ｍｇ「ＳＷ」",
     "ingredient": "シメチジン",
     "oldPrice": 61,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 63,
+    "diff": 2,
+    "ratio": 3.28
   },
   {
     "yj": "1190411A1027",
@@ -155505,9 +155505,9 @@
     "name": "プロチレリン酒石酸塩注射液０．５ｍｇ「ＳＷ」",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 363,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 361,
+    "diff": -2,
+    "ratio": -0.55
   },
   {
     "yj": "7223401A3123",
@@ -155515,9 +155515,9 @@
     "name": "プロチレリン酒石酸塩注射液２ｍｇ「ＳＷ」",
     "ingredient": "プロチレリン酒石酸塩水和物",
     "oldPrice": 1714,
-    "newPrice": null,
-    "diff": null,
-    "ratio": null
+    "newPrice": 1714,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "6250048D1026",
@@ -157465,9 +157465,9 @@
     "name": "モルヒネ塩酸塩注射液５０ｍｇ「第一三共」",
     "ingredient": "モルヒネ塩酸塩水和物",
     "oldPrice": 1371,
-    "newPrice": 1313,
-    "diff": -58,
-    "ratio": -4.23
+    "newPrice": 1371,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "8114401A2119",
@@ -157505,9 +157505,9 @@
     "name": "モルヒネ塩酸塩注射液２００ｍｇ「第一三共」",
     "ingredient": "モルヒネ塩酸塩水和物",
     "oldPrice": 4744,
-    "newPrice": 4717,
-    "diff": -27,
-    "ratio": -0.57
+    "newPrice": 4744,
+    "diff": 0,
+    "ratio": 0
   },
   {
     "yj": "8114401A3093",
