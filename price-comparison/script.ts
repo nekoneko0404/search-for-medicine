@@ -175,10 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             const diffClass = item.diff > 0 ? 'price-up' : item.diff < 0 ? 'price-down' : 'price-neutral';
             const diffPrefix = item.diff > 0 ? '+' : '';
 
-            // Handle fallback display
-            const newPriceDisplay = item.isFallback
-                ? `<span class="text-slate-400 font-normal text-xs whitespace-nowrap">（${item.newPrice.toFixed(2)} ？）</span>`
-                : (item.newPrice !== null ? `<span class="font-bold">${item.newPrice.toFixed(2)}</span>` : '-');
+            const newPriceDisplay = item.newPrice !== null ? `<span class="font-bold">${item.newPrice.toFixed(2)}</span>` : '-';
 
             row.innerHTML = `
                 <td class="px-4 py-4 text-xs font-mono text-slate-400">${displayedCount + index + 1}</td>

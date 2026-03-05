@@ -22,6 +22,31 @@ const EXCEL_KEIKA_COL = 14; // N
 const CSV_YJ_IDX = 7;
 const CSV_RECEPT_IDX = 8;
 
+const OLD_PRICE_CSV = "C:\\Users\\kiyoshi\\Downloads\\y_20260219.csv";
+const CSV_OLD_PRICE_RECEPT_IDX = 2; // C
+const CSV_OLD_PRICE_VAL_IDX = 11; // L
+
+async function getOldPricesFromCSV() {
+    const prices = new Map();
+    return new Promise((resolve, reject) => {
+        fs.createReadStream(OLD_PRICE_CSV)
+            .pipe(iconv.decodeStream('Shift_JIS'))
+            .pipe(csv({ headers: false }))
+            .on('data', (row) => {
+                const recept = row[CSV_OLD_PRICE_RECEPT_IDX];
+                const priceStr = row[CSV_OLD_PRICE_VAL_IDX];
+                if (recept && priceStr) {
+                    const price = parseFloat(priceStr.replace(/,/g, ''));
+                    if (!isNaN(price)) {
+                        prices.set(recept.trim(), price);
+                    }
+                }
+            })
+            .on('end', () => resolve(prices))
+            .on('error', reject);
+    });
+}
+
 async function getReceptToYJMap() {
     const map = new Map();
     const yjToRecept = new Map();
@@ -105,6 +130,9 @@ async function main() {
     const prices2025 = await getPricesFromDir(DIR_2025);
     console.log(`Loaded ${prices2025.size} drug prices from 2025 data.`);
 
+    const oldPricesFallback = await getOldPricesFromCSV();
+    console.log(`Loaded ${oldPricesFallback.size} old prices from CSV.`);
+
     const prices2026 = await getPricesFromDir(DIR_2026);
     console.log(`Loaded ${prices2026.size} drug prices from 2026 data.`);
 
@@ -114,21 +142,7 @@ async function main() {
     const allYJs = new Set([...prices2025.keys(), ...prices2026.keys()]);
     console.log(`Total unique YJ codes across both years: ${allYJs.size}`);
 
-    // First pass: collect all valid 2026 prices grouped by 10-digit YJ code
-    const yj10CheapestPrices = new Map();
-    for (const yj of prices2026.keys()) {
-        if (yj.length >= 10) {
-            const yj10 = yj.substring(0, 10);
-            const price = prices2026.get(yj).price;
-            if (!isNaN(price) && price > 0) {
-                if (!yj10CheapestPrices.has(yj10) || price < yj10CheapestPrices.get(yj10)) {
-                    yj10CheapestPrices.set(yj10, price);
-                }
-            }
-        }
-    }
-
-    // Second pass: build combined array with fallback logic
+    // Build combined array with old price fallback logic
     for (const yj of allYJs) {
         const data2025 = prices2025.get(yj);
         const data2026 = prices2026.get(yj);
@@ -136,18 +150,16 @@ async function main() {
 
         const nameRaw = data2026?.name || data2025?.name || "Unknown";
         const hasKeika = data2026?.hasKeika || data2025?.hasKeika || false;
-        const oldPrice = data2025 ? data2025.price : null;
-        let newPrice = data2026 ? data2026.price : null;
-        let isFallback = false;
 
-        // Fallback to cheapest 10-digit YJ code if new price is missing
-        if ((newPrice === null || isNaN(newPrice)) && yj.length >= 10) {
-            const yj10 = yj.substring(0, 10);
-            if (yj10CheapestPrices.has(yj10)) {
-                newPrice = yj10CheapestPrices.get(yj10);
-                isFallback = true;
+        let oldPrice = data2025 ? data2025.price : null;
+        // Fallback to CSV for old price if missing
+        if ((oldPrice === null || isNaN(oldPrice)) && recept) {
+            if (oldPricesFallback.has(recept)) {
+                oldPrice = oldPricesFallback.get(recept);
             }
         }
+
+        const newPrice = data2026 ? data2026.price : null;
 
         let diff = null;
         let ratio = null;
@@ -169,8 +181,7 @@ async function main() {
             oldPrice,
             newPrice,
             diff,
-            ratio,
-            isFallback
+            ratio
         });
     }
 
