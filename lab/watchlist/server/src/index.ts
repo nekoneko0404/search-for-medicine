@@ -121,8 +121,8 @@ async function hashPasscode(passcode: string): Promise<string> {
         keyMaterial,
         256
     );
-    const saltHex = Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
     const hashHex = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+    const saltHex = Array.from(salt).map(b => b.toString(16).padStart(2, '0')).join('');
     return `${saltHex}:${hashHex}`;
 }
 
@@ -159,40 +159,41 @@ async function verifyPasscode(input: string, stored: string): Promise<boolean> {
     return diff === 0;
 }
 
+/**
+ * CORS設定
+ */
+const ALLOWED_ORIGINS = [
+    'https://search-for-medicine.pages.dev',
+    'https://debug-deploy.search-for-medicine.pages.dev',
+    'http://localhost:5173',  // Vite 開発サーバー
+    'http://127.0.0.1:5173'
+];
+
+/**
+ * 全レスポンスにCORSヘッダーを一括で付加するヘルパー
+ */
+function withCors(response: Response, request?: Request): Response {
+    const origin = request?.headers.get('Origin') || '';
+    const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
+
+    const newHeaders = new Headers(response.headers);
+    newHeaders.set('Access-Control-Allow-Origin', allowedOrigin);
+    newHeaders.set('Access-Control-Allow-Methods', 'GET, POST, DELETE, OPTIONS');
+    newHeaders.set('Access-Control-Allow-Headers', 'Content-Type, X-Admin-Passcode');
+    newHeaders.set('Vary', 'Origin');
+
+    return new Response(response.body, { status: response.status, headers: newHeaders });
+}
+
 export default {
     async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
         try {
             const url = new URL(request.url);
 
-            // --- CORS設定 ---
-            // 許可オリジンを本番ドメインのみに制限（ワイルドカード「*」を禁止）
-            const ALLOWED_ORIGINS = [
-                'https://search-for-medicine.pages.dev',
-                'https://debug-deploy.search-for-medicine.pages.dev',
-                'http://localhost:5173',  // Vite 開発サーバー
-                'http://127.0.0.1:5173'
-            ];
-            const origin = request.headers.get('Origin') || '';
-            const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
-
-            const corsHeaders = {
-                'Access-Control-Allow-Origin': allowedOrigin,
-                'Access-Control-Allow-Methods': 'GET, POST, DELETE, OPTIONS',
-                'Access-Control-Allow-Headers': 'Content-Type, X-Admin-Passcode',
-                'Vary': 'Origin'
-            };
-
             // OPTIONSプリフライトリクエストに対応
             if (request.method === 'OPTIONS') {
-                return new Response(null, { status: 204, headers: corsHeaders });
+                return withCors(new Response(null, { status: 204 }), request);
             }
-
-            // 全レスポンスにCORSヘッダーを一括で付加するヘルパー
-            const withCors = (response: Response): Response => {
-                const newHeaders = new Headers(response.headers);
-                for (const [k, v] of Object.entries(corsHeaders)) newHeaders.set(k, v);
-                return new Response(response.body, { status: response.status, headers: newHeaders });
-            };
 
             // --- 疏通確認用 API ---
             if (url.pathname === "/api/ping") {
@@ -201,6 +202,11 @@ export default {
 
             // --- 店舗登録 API (管理者/初期セットアップ用) ---
             if (url.pathname === "/api/stores/register" && request.method === "POST") {
+                const adminPasscode = request.headers.get("X-Admin-Passcode");
+                if (!adminPasscode || adminPasscode !== env.ADMIN_PASSCODE) {
+                    return withCors(new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 }));
+                }
+
                 try {
                     const { id, name, passcode, planType, usageLimit } = await request.json() as {
                         id: string, name: string, passcode: string, planType?: string, usageLimit?: number
@@ -249,7 +255,7 @@ export default {
                 const passcode = url.searchParams.get("passcode");
 
                 if (!storeId || !passcode) {
-                    return new Response("Missing parameters", { status: 400 });
+                    return withCors(new Response("Missing parameters", { status: 400 }), request);
                 }
 
                 // 1. 店舗認証
@@ -269,7 +275,7 @@ export default {
                     "SELECT yj_code FROM watch_items WHERE store_id = ?"
                 ).bind(storeId).all<{ yj_code: string }>();
 
-                return new Response(JSON.stringify({
+                return withCors(new Response(JSON.stringify({
                     success: true,
                     store: {
                         name: store.name,
@@ -285,7 +291,7 @@ export default {
                     yjCodes: items.results.map(i => i.yj_code)
                 }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }), request);
             }
 
             // --- 監視リストの一括登録 & 設定更新 API ---
@@ -397,84 +403,90 @@ export default {
                     await env.DB.batch(chunk);
                 }
 
-                return new Response(JSON.stringify({
+                return withCors(new Response(JSON.stringify({
                     success: true,
                     count: uniqueCodes.length,
                     codes: uniqueCodes
                 }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }), request);
             }
 
-            // --- [管理者専用] 全店舗一覧取得 API ---
+            // --- [管理者専用] 店舗一覧取得 API ---
             if (url.pathname === "/api/admin/stores" && request.method === "GET") {
                 const adminPass = request.headers.get("X-Admin-Passcode");
-
-                console.log("[Admin Auth Debug]", {
-                    path: url.pathname,
-                    hasHeader: !!adminPass,
-                    headerLength: adminPass?.length || 0,
-                    hasSecret: !!env.ADMIN_PASSCODE,
-                    secretLength: env.ADMIN_PASSCODE?.length || 0,
-                    isMatch: adminPass === env.ADMIN_PASSCODE
-                });
-
                 if (adminPass !== env.ADMIN_PASSCODE) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response("Unauthorized", { status: 401 }));
                 }
 
                 const stores = await env.DB.prepare(`
-                    SELECT 
-                        id, name, plan_type, usage_limit, subscription_status, created_at, updated_at
+                    SELECT id, name, plan_type, usage_limit, subscription_status, created_at, updated_at
                     FROM stores 
                     ORDER BY created_at DESC
                 `).all();
 
-                return new Response(JSON.stringify({ success: true, stores: stores.results }), {
+                return withCors(new Response(JSON.stringify({ success: true, stores: stores.results }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }));
             }
 
             // --- [管理者専用] 店舗設定更新 API ---
             if (url.pathname === "/api/admin/stores/update" && request.method === "POST") {
                 const adminPass = request.headers.get("X-Admin-Passcode");
                 if (adminPass !== env.ADMIN_PASSCODE) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response("Unauthorized", { status: 401 }));
                 }
 
-                const { storeId, planType, usageLimit, subscriptionStatus } = await request.json() as any;
-                if (!storeId) return new Response("Missing storeId", { status: 400 });
+                const { storeId, name, planType, usageLimit, subscriptionStatus } = await request.json() as any;
+                if (!storeId) return withCors(new Response("Missing storeId", { status: 400 }));
 
                 await env.DB.prepare(`
                     UPDATE stores 
-                    SET plan_type = COALESCE(?, plan_type), 
+                    SET name = COALESCE(?, name),
+                        plan_type = COALESCE(?, plan_type), 
                         usage_limit = COALESCE(?, usage_limit),
                         subscription_status = COALESCE(?, subscription_status),
                         updated_at = CURRENT_TIMESTAMP
                     WHERE id = ?
-                `).bind(planType || null, usageLimit || null, subscriptionStatus || null, storeId).run();
+                `).bind(name || null, planType || null, usageLimit || null, subscriptionStatus || null, storeId).run();
 
-                return new Response(JSON.stringify({ success: true }), {
+                return withCors(new Response(JSON.stringify({ success: true }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }));
             }
 
             // --- [管理者専用] 店舗削除 API ---
             if (url.pathname === "/api/admin/stores/delete" && request.method === "POST") {
                 const adminPass = request.headers.get("X-Admin-Passcode");
                 if (adminPass !== env.ADMIN_PASSCODE) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response("Unauthorized", { status: 401 }));
                 }
 
                 const { storeId } = await request.json() as { storeId: string };
-                if (!storeId) return new Response("Missing storeId", { status: 400 });
+                if (!storeId) return withCors(new Response("Missing storeId", { status: 400 }));
 
-                // watch_items は CASCADE削除される
+                // watch_items は CASCADE削除される想定だが、D1の設定に依存
                 await env.DB.prepare("DELETE FROM stores WHERE id = ?").bind(storeId).run();
 
-                return new Response(JSON.stringify({ success: true, message: "Store deleted by admin" }), {
+                return withCors(new Response(JSON.stringify({ success: true, message: "Store deleted by admin" }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }));
+            }
+
+            // --- 即時同期トリガー API (管理者用) ---
+            if (url.pathname === "/api/admin/trigger-sync" && request.method === "POST") {
+                const adminPasscode = request.headers.get("X-Admin-Passcode");
+                // 環境変数から取得（Cloudflare Secret: wrangler secret put ADMIN_PASSCODE）
+                if (!adminPasscode || adminPasscode !== env.ADMIN_PASSCODE) {
+                    return withCors(new Response("Unauthorized", { status: 401 }));
+                }
+
+                // waitUntil を使用して、レスポンス返却後にバックグラウンドで実行
+                ctx.waitUntil(performSyncAndNotify(env));
+
+                return withCors(new Response(JSON.stringify({ success: true, message: "Sync triggered" }), {
+                    headers: { "Content-Type": "application/json" }
+                }));
             }
 
             // --- テスト通知送信 API ---
@@ -488,7 +500,7 @@ export default {
                 ).bind(storeId || "").first<{ passcode: string, name: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response("Unauthorized", { status: 401 }));
                 }
 
                 const encKey = env.ENCRYPTION_KEY || "";
@@ -504,9 +516,9 @@ export default {
                     ]
                 });
 
-                return new Response(JSON.stringify({ success: true }), {
+                return withCors(new Response(JSON.stringify({ success: true }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }));
             }
 
             // --- LINE Webhook API (ID取得サポート用) ---
@@ -525,23 +537,7 @@ export default {
                         }]);
                     }
                 }
-                return new Response("OK");
-            }
-
-            // --- 即時同期トリガー API (管理者用) ---
-            if (url.pathname === "/api/admin/trigger-sync" && request.method === "POST") {
-                const adminPasscode = request.headers.get("X-Admin-Passcode");
-                // 環境変数から取得（Cloudflare Secret: wrangler secret put ADMIN_PASSCODE）
-                if (!adminPasscode || adminPasscode !== env.ADMIN_PASSCODE) {
-                    return new Response("Unauthorized", { status: 401 });
-                }
-
-                // waitUntil を使用して、レスポンス返却後にバックグラウンドで実行
-                ctx.waitUntil(performSyncAndNotify(env));
-
-                return new Response(JSON.stringify({ success: true, message: "Sync triggered" }), {
-                    headers: { "Content-Type": "application/json" }
-                });
+                return withCors(new Response("OK"));
             }
 
             // --- 通知履歴取得 API (C要件) ---
@@ -550,7 +546,7 @@ export default {
                 const passcode = url.searchParams.get("passcode");
 
                 if (!storeId || !passcode) {
-                    return new Response("Missing parameters", { status: 400 });
+                    return withCors(new Response("Missing parameters", { status: 400 }));
                 }
 
                 // 1. 店舗認証
@@ -559,7 +555,7 @@ export default {
                 ).bind(storeId).first<{ passcode: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response("Unauthorized", { status: 401 }));
                 }
 
                 // 2. 履歴の取得（直近100件）
@@ -572,26 +568,25 @@ export default {
                     LIMIT 100
                 `).bind(storeId).all();
 
-                return new Response(JSON.stringify({
+                return withCors(new Response(JSON.stringify({
                     success: true,
                     logs: logs.results
                 }), {
                     headers: { "Content-Type": "application/json" }
-                });
+                }));
             }
 
-            return new Response("Not Found", { status: 404 });
+            return withCors(new Response("Not Found", { status: 404 }), request);
 
         } catch (err: any) {
-            // スタックトレースはサーバーログにのみ記録し、クライアントには返さない
             console.error("Global Error:", err.message, err.stack);
-            return new Response(JSON.stringify({
+            return withCors(new Response(JSON.stringify({
                 success: false,
                 error: "Internal Server Error"
             }), {
                 status: 500,
                 headers: { "Content-Type": "application/json" }
-            });
+            }), request);
         }
     },
 

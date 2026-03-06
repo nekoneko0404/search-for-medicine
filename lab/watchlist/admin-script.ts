@@ -14,6 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const editPlan = document.getElementById('edit-plan') as HTMLSelectElement;
     const editLimit = document.getElementById('edit-limit') as HTMLInputElement;
     const editStatus = document.getElementById('edit-status') as HTMLSelectElement;
+    const editMode = document.getElementById('edit-mode') as HTMLInputElement;
+    const editStoreName = document.getElementById('edit-store-name') as HTMLInputElement;
+    const editPasscode = document.getElementById('edit-passcode') as HTMLInputElement;
+    const storeIdContainer = document.getElementById('store-id-container');
+    const passcodeContainer = document.getElementById('passcode-container');
+    const addStoreBtn = document.getElementById('add-store-btn');
+    const modalTitle = document.getElementById('modal-title');
 
     // プラン変更時に上限を自動設定
     editPlan?.addEventListener('change', () => {
@@ -46,6 +53,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    addStoreBtn?.addEventListener('click', () => {
+        openAddModal();
+    });
+
     refreshBtn?.addEventListener('click', () => {
         fetchStores();
     });
@@ -55,30 +66,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     modalSaveBtn?.addEventListener('click', async () => {
+        const mode = editMode.value;
         const storeId = editStoreId?.value;
-        const payload = {
-            storeId,
-            planType: editPlan?.value,
-            usageLimit: parseInt(editLimit?.value || '0'),
-            subscriptionStatus: editStatus?.value
-        };
+        const name = editStoreName?.value;
+        const planType = editPlan?.value;
+        const usageLimit = parseInt(editLimit?.value || '0');
+        const subscriptionStatus = editStatus?.value;
+        const passcode = editPasscode?.value;
+
+        if (!storeId) return alert('店舗IDを入力してください');
+
+        let url = '/api/admin/stores/update';
+        let body: any = { storeId, planType, usageLimit, subscriptionStatus };
+
+        if (mode === 'add') {
+            if (!passcode) return alert('パスコードを入力してください');
+            url = '/api/stores/register';
+            body = { id: storeId, name, passcode, planType, usageLimit };
+        }
 
         try {
-            const response = await fetch('/api/admin/stores/update', {
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Admin-Passcode': adminPass
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(body)
             });
 
             if (response.ok) {
-                alert('更新しました');
+                alert(mode === 'add' ? '追加しました' : '更新しました');
                 updateModal?.classList.add('hidden');
                 fetchStores();
             } else {
-                alert('更新に失敗しました');
+                const errData = await response.json();
+                alert(`失敗しました: ${errData.error || '不明なエラー'}`);
             }
         } catch (err) {
             console.error(err);
@@ -169,10 +192,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function openEditModal(store: any) {
-        if (editStoreId) editStoreId.value = store.id;
+        if (modalTitle) modalTitle.textContent = '店舗情報の編集';
+        if (editMode) editMode.value = 'edit';
+        if (editStoreId) {
+            editStoreId.value = store.id;
+            editStoreId.readOnly = true;
+        }
+        if (editStoreName) editStoreName.value = store.name || '';
         if (editPlan) editPlan.value = store.plan_type;
         if (editLimit) editLimit.value = String(store.usage_limit);
         if (editStatus) editStatus.value = store.subscription_status || 'active';
+
+        if (passcodeContainer) passcodeContainer.classList.add('hidden');
+        updateModal?.classList.remove('hidden');
+    }
+
+    function openAddModal() {
+        if (modalTitle) modalTitle.textContent = '店舗の新規追加';
+        if (editMode) editMode.value = 'add';
+        if (editStoreId) {
+            editStoreId.value = '';
+            editStoreId.readOnly = false;
+        }
+        if (editStoreName) editStoreName.value = '';
+        if (editPlan) editPlan.value = 'free';
+        if (editLimit) editLimit.value = '20';
+        if (editStatus) editStatus.value = 'active';
+        if (editPasscode) editPasscode.value = '';
+
+        if (passcodeContainer) passcodeContainer.classList.remove('hidden');
         updateModal?.classList.remove('hidden');
     }
 

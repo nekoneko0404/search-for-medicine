@@ -403,39 +403,57 @@
             </div>
             <div class="p-6 overflow-y-auto flex-grow">
                 <!-- Account Info Section (Top) -->
-                <div class="mb-8 p-6 bg-indigo-50/30 rounded-2xl border border-indigo-100/50">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div
-                            class="w-10 h-10 rounded-full bg-white shadow-sm flex items-center justify-center text-indigo-600">
-                            <i class="fas fa-user-circle text-xl"></i>
+                <div class="p-6 bg-gray-50/50 rounded-2xl border border-gray-100 mb-6">
+                    <h4 class="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-link text-indigo-600"></i> アカウント連携 (B2Pharmacy)
+                        <span id="sync-status-badge"
+                            class="hidden px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-black rounded-md">LINKED</span>
+                    </h4>
+                    <p class="text-[10px] text-gray-500 font-bold mb-4 leading-relaxed">
+                        契約情報を入力すると、薬品リストと通知設定が自動同期されます
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label
+                                class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">ご利用店ID</label>
+                            <input type="text" id="store-id-input" placeholder="例: test-store-001"
+                                class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
                         </div>
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h4 class="text-base font-black text-gray-900 leading-none">アカウント連携 (B2Pharmacy)</h4>
-                                <span id="login-status-badge"
-                                    class="bg-gray-100 text-gray-500 text-[9px] font-black px-1.5 py-0.5 rounded uppercase">Guest
-                                    Mode</span>
-                            </div>
-                            <p class="text-[10px] text-gray-400 font-bold">契約情報を入力すると、薬品リストと通知設定が自動同期されます</p>
+                            <label
+                                class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">パスコード</label>
+                            <input type="password" id="passcode-input" placeholder="••••••••"
+                                class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
                         </div>
                     </div>
+                </div>
 
-                    <form onsubmit="return false;" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label
-                                class="flex items-center gap-2 text-[10px] font-black text-gray-500 mb-1.5 uppercase tracking-wider">ご利用店ID</label>
-                            <input type="text" id="store-id-input"
-                                class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2"
-                                placeholder="pharmacy-01">
+                <!-- New Registration / Payment Section -->
+                <div id="registration-section" class="p-6 bg-indigo-50/30 rounded-2xl border border-indigo-100/50 mb-6">
+                    <h4 class="text-sm font-black text-indigo-900 mb-2 flex items-center gap-2">
+                        <i class="fas fa-plus-circle text-indigo-500"></i> 新規利用登録・プラン変更
+                    </h4>
+                    <p class="text-[10px] text-indigo-700/70 font-bold mb-4 leading-relaxed">
+                        まだIDをお持ちでない場合や、監視上限を増やしたい方はこちら
+                    </p>
+                    <div class="grid grid-cols-2 gap-3 mb-4">
+                        <div class="p-3 bg-white rounded-xl border border-indigo-100">
+                            <div class="text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-1">FREE</div>
+                            <div class="text-xs font-black text-gray-900">20品目</div>
+                            <div class="text-[9px] text-gray-400 font-bold mt-1">月額無料</div>
                         </div>
-                        <div>
-                            <label
-                                class="flex items-center gap-2 text-[10px] font-black text-gray-500 mb-1.5 uppercase tracking-wider">パスコード</label>
-                            <input type="password" id="passcode-input"
-                                class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 focus:border-indigo-500 py-2"
-                                placeholder="契約パスコード">
+                        <div class="p-3 bg-indigo-600 rounded-xl border border-indigo-500 shadow-md shadow-indigo-100">
+                            <div class="text-[9px] font-black text-indigo-200 uppercase tracking-widest mb-1">STANDARD
+                            </div>
+                            <div class="text-xs font-black text-white">3,000品目</div>
+                            <div class="text-[9px] text-indigo-100 font-bold mt-1">月額 ¥5,000</div>
                         </div>
-                    </form>
+                    </div>
+                    <button id="start-registration-btn"
+                        class="w-full py-3 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 flex items-center justify-center gap-2">
+                        <span>新規登録・お支払いに進む</span>
+                        <i class="fas fa-chevron-right text-[10px]"></i>
+                    </button>
                 </div>
 
                 <!-- Medicine Registration Section -->

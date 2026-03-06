@@ -973,6 +973,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Support manual restore button just in case
     document.getElementById('restore-settings-btn')?.addEventListener('click', () => restoreSettings(false));
 
+    // 新規登録・お支払いボタン
+    document.getElementById('start-registration-btn')?.addEventListener('click', () => {
+        // 将来的には Stripe Checkout へのリダイレクトや、専用の登録モーダルを開く
+        if (confirm('スタンダードプラン（3,000品目 / 月額¥5,000）の登録・お支払い画面に進みますか？\n（現在はデモ用のため、管理者によるID発行をご利用ください）')) {
+            window.open('https://buy.stripe.com/test_6oEbM08Y95U4gW43cc', '_blank');
+        }
+    });
+
     function updateWatchlistCount() {
         if (watchlistCountDisplay && watchlistInput) {
             const count = watchlistInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
