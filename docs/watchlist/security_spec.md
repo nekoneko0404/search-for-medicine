@@ -52,7 +52,25 @@ if (!stored.includes(':')) {
 
 ---
 
-## 3. 管理者APIシークレット管理
+## 3. 個人情報（PII）の保護仕様
+
+通知先情報（メールアドレス、LINE ID等）は、DB上での漏洩リスクを低減するため、以下の通り保護する。
+
+### 3-1. 暗号化アルゴリズム
+- **方式:** AES-256-GCM
+- **鍵管理:** Cloudflare Secrets (`ENCRYPTION_KEY`) に保存された 32文字のマスターキーを使用
+- **対象カラム:** `stores` テーブルの `notify_line_endpoints`, `notify_email_endpoints`, `notify_webhook_endpoints`
+- **データ形式:** `iv_hex:encrypted_hex`
+
+### 3-2. 実装方針
+- **書き込み時:** `POST /api/watch-items/batch` 等で、通知先エンドポイントを暗号化。
+- **読み込み時:** `GET /api/watch-items/get` や通知送信バッチ（`performSyncAndNotify`）内で復号。
+- **後方互換:** 復号に失敗した場合は平文として扱う（暗号化導入前のデータに対応）。
+- **ハッシュ化:** 通知履歴（`notification_logs`）には、通知先を直接保存せず SHA-256 でハッシュ化した `recipient_hash` を保存。
+
+---
+
+## 4. 管理者APIシークレット管理
 
 ### 3-1. Cloudflare Workers側
 
@@ -81,6 +99,7 @@ wrangler secret put ADMIN_PASSCODE
 
 | シークレット名 | 用途 |
 |---|---|
+| `ENCRYPTION_KEY` | **(追加)** PII 暗号化用マスターキー (32文字) |
 | `ADMIN_PASSCODE` | GAS→Worker管理者API認証 |
 | `LINE_ACCESS_TOKEN` | LINE Messaging API |
 | `RESEND_API_KEY` | Resend メール送信API |

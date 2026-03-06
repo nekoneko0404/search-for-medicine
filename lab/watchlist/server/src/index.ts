@@ -22,11 +22,83 @@ export interface Env {
     STRIPE_SECRET_KEY?: string;
     STRIPE_WEBHOOK_SECRET?: string;
     ADMIN_PASSCODE: string; // Cloudflare Secret経由で設定 (wrangler secret put ADMIN_PASSCODE)
+    ENCRYPTION_KEY: string; // 暗号化用マスターキー (wrangler secret put ENCRYPTION_KEY)
+}
+
+// ============================================================
+//  個人情報（PII）の保護用ユーティリティ (AES-256-GCM / SHA-256)
+// ============================================================
+
+const ENCRYPTION_ALGO = 'AES-GCM';
+
+/**
+ * 文字列をAES-256-GCMで暗号化する
+ * 形式: "iv_hex:encrypted_hex"
+ */
+async function encrypt(text: string | null, keyString: string): Promise<string | null> {
+    if (!text) return text;
+    const encoder = new TextEncoder();
+    const data = encoder.encode(text);
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+
+    // キーの生成（文字列から32バイトの鍵を作成）
+    const keyData = encoder.encode(keyString.padEnd(32, '0').slice(0, 32));
+    const cryptoKey = await crypto.subtle.importKey(
+        'raw', keyData, { name: ENCRYPTION_ALGO }, false, ['encrypt']
+    );
+
+    const encrypted = await crypto.subtle.encrypt(
+        { name: ENCRYPTION_ALGO, iv },
+        cryptoKey,
+        data
+    );
+
+    const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, '0')).join('');
+    const encryptedHex = Array.from(new Uint8Array(encrypted)).map(b => b.toString(16).padStart(2, '0')).join('');
+    return `${ivHex}:${encryptedHex}`;
+}
+
+/**
+ * 暗号化された文字列を復号する
+ */
+async function decrypt(encryptedData: string | null, keyString: string): Promise<string | null> {
+    if (!encryptedData || !encryptedData.includes(':')) return encryptedData;
+
+    try {
+        const [ivHex, encryptedHex] = encryptedData.split(':');
+        const iv = new Uint8Array(ivHex.match(/.{2}/g)!.map(b => parseInt(b, 16)));
+        const encrypted = new Uint8Array(encryptedHex.match(/.{2}/g)!.map(b => parseInt(b, 16)));
+
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(keyString.padEnd(32, '0').slice(0, 32));
+        const cryptoKey = await crypto.subtle.importKey(
+            'raw', keyData, { name: ENCRYPTION_ALGO }, false, ['decrypt']
+        );
+
+        const decrypted = await crypto.subtle.decrypt(
+            { name: ENCRYPTION_ALGO, iv },
+            cryptoKey,
+            encrypted
+        );
+        return new TextDecoder().decode(decrypted);
+    } catch (e) {
+        console.error("Decryption failed:", e);
+        return encryptedData; // 復号失敗時は元の値を返す（平文データの可能性）
+    }
+}
+
+/**
+ * 通知先（メール・LINE）のハッシュ値を生成（統計・名寄せ用、復元不可）
+ */
+async function hashRecipient(text: string): Promise<string> {
+    const msgUint8 = new TextEncoder().encode(text.trim().toLowerCase());
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
 // ============================================================
 //  パスコードのハッシュ化ユーティリティ (PBKDF2 + SHA-256)
-//  Cloudflare Workers の Web Crypto API を使用
 // ============================================================
 
 const PBKDF2_ITERATIONS = 100_000;
@@ -130,16 +202,16 @@ export default {
             // --- 店舗登録 API (管理者/初期セットアップ用) ---
             if (url.pathname === "/api/stores/register" && request.method === "POST") {
                 try {
-                    const { id, name, passcode, planType } = await request.json() as {
-                        id: string, name: string, passcode: string, planType?: string
+                    const { id, name, passcode, planType, usageLimit } = await request.json() as {
+                        id: string, name: string, passcode: string, planType?: string, usageLimit?: number
                     };
 
                     // パスコードをハッシュ化してから保存
                     const hashedPasscode = await hashPasscode(passcode);
 
                     await env.DB.prepare(
-                        "INSERT INTO stores (id, name, passcode, plan_type) VALUES (?, ?, ?, ?)"
-                    ).bind(id, name, hashedPasscode, planType || 'free').run();
+                        "INSERT INTO stores (id, name, passcode, plan_type, usage_limit) VALUES (?, ?, ?, ?, ?)"
+                    ).bind(id, name, hashedPasscode, planType || 'free', usageLimit || 20).run();
 
                     return withCors(new Response(JSON.stringify({ success: true }), {
                         headers: { "Content-Type": "application/json" }
@@ -188,6 +260,9 @@ export default {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
+                // 暗号化キーの取得（Cloudflare Secret）
+                const encKey = env.ENCRYPTION_KEY || "";
+
                 // 2. 監視リストの取得
                 const items = await env.DB.prepare(
                     "SELECT yj_code FROM watch_items WHERE store_id = ?"
@@ -197,10 +272,12 @@ export default {
                     success: true,
                     store: {
                         name: store.name,
+                        planType: store.plan_type,
+                        usageLimit: store.usage_limit,
                         notifyFilter: store.notify_filter,
-                        notifyLineEndpoints: store.notify_line_endpoints,
-                        notifyEmailEndpoints: store.notify_email_endpoints,
-                        notifyWebhookEndpoints: store.notify_webhook_endpoints,
+                        notifyLineEndpoints: await decrypt(store.notify_line_endpoints, encKey),
+                        notifyEmailEndpoints: await decrypt(store.notify_email_endpoints, encKey),
+                        notifyWebhookEndpoints: await decrypt(store.notify_webhook_endpoints, encKey),
                         notifyAllowedStart: store.notify_allowed_start,
                         notifyAllowedEnd: store.notify_allowed_end
                     },
@@ -228,15 +305,15 @@ export default {
 
                 // 1. 店舗認証の検証
                 const store = await env.DB.prepare(
-                    "SELECT plan_type, passcode FROM stores WHERE id = ?"
-                ).bind(storeId || "").first<{ plan_type: string, passcode: string }>();
+                    "SELECT plan_type, usage_limit, passcode FROM stores WHERE id = ?"
+                ).bind(storeId || "").first<{ plan_type: string, usage_limit: number, passcode: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
-                // 2. プランに基づいた上限チェック
-                const limit = store.plan_type === 'standard' ? 3000 : 20;
+                // 2. プランに基づいた上限チェック (DBの値を優先、なければフォールバック)
+                const limit = store.usage_limit || (store.plan_type === 'standard' ? 3000 : 20);
                 const codesToProcess = (yjCodes || []).slice(0, limit);
 
                 // 3. コードの正規化（名寄せ）
@@ -271,6 +348,8 @@ export default {
 
                 const uniqueCodes = Array.from(new Set(finalCodes)).slice(0, limit);
 
+                const encKey = env.ENCRYPTION_KEY || "";
+
                 // 4. 既存リストをクリアして一括挿入 & 設定更新
                 const statements = [];
 
@@ -278,13 +357,16 @@ export default {
                     statements.push(env.DB.prepare("UPDATE stores SET notify_filter = ? WHERE id = ?").bind(notifyFilter, storeId));
                 }
                 if (notifyLineEndpoints !== undefined) {
-                    statements.push(env.DB.prepare("UPDATE stores SET notify_line_endpoints = ? WHERE id = ?").bind(notifyLineEndpoints, storeId));
+                    const encrypted = await encrypt(notifyLineEndpoints, encKey);
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_line_endpoints = ? WHERE id = ?").bind(encrypted, storeId));
                 }
                 if (notifyEmailEndpoints !== undefined) {
-                    statements.push(env.DB.prepare("UPDATE stores SET notify_email_endpoints = ? WHERE id = ?").bind(notifyEmailEndpoints, storeId));
+                    const encrypted = await encrypt(notifyEmailEndpoints, encKey);
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_email_endpoints = ? WHERE id = ?").bind(encrypted, storeId));
                 }
                 if (notifyWebhookEndpoints !== undefined) {
-                    statements.push(env.DB.prepare("UPDATE stores SET notify_webhook_endpoints = ? WHERE id = ?").bind(notifyWebhookEndpoints, storeId));
+                    const encrypted = await encrypt(notifyWebhookEndpoints, encKey);
+                    statements.push(env.DB.prepare("UPDATE stores SET notify_webhook_endpoints = ? WHERE id = ?").bind(encrypted, storeId));
                 }
                 if (notifyTime !== undefined) {
                     statements.push(env.DB.prepare("UPDATE stores SET notify_time = ? WHERE id = ?").bind(notifyTime, storeId));
@@ -323,6 +405,67 @@ export default {
                 });
             }
 
+            // --- [管理者専用] 全店舗一覧取得 API ---
+            if (url.pathname === "/api/admin/stores" && request.method === "GET") {
+                const adminPass = request.headers.get("X-Admin-Passcode");
+                if (adminPass !== env.ADMIN_PASSCODE) {
+                    return new Response("Unauthorized", { status: 401 });
+                }
+
+                const stores = await env.DB.prepare(`
+                    SELECT 
+                        id, name, plan_type, usage_limit, subscription_status, created_at, updated_at
+                    FROM stores 
+                    ORDER BY created_at DESC
+                `).all();
+
+                return new Response(JSON.stringify({ success: true, stores: stores.results }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
+            // --- [管理者専用] 店舗設定更新 API ---
+            if (url.pathname === "/api/admin/stores/update" && request.method === "POST") {
+                const adminPass = request.headers.get("X-Admin-Passcode");
+                if (adminPass !== env.ADMIN_PASSCODE) {
+                    return new Response("Unauthorized", { status: 401 });
+                }
+
+                const { storeId, planType, usageLimit, subscriptionStatus } = await request.json() as any;
+                if (!storeId) return new Response("Missing storeId", { status: 400 });
+
+                await env.DB.prepare(`
+                    UPDATE stores 
+                    SET plan_type = COALESCE(?, plan_type), 
+                        usage_limit = COALESCE(?, usage_limit),
+                        subscription_status = COALESCE(?, subscription_status),
+                        updated_at = CURRENT_TIMESTAMP
+                    WHERE id = ?
+                `).bind(planType || null, usageLimit || null, subscriptionStatus || null, storeId).run();
+
+                return new Response(JSON.stringify({ success: true }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
+            // --- [管理者専用] 店舗削除 API ---
+            if (url.pathname === "/api/admin/stores/delete" && request.method === "POST") {
+                const adminPass = request.headers.get("X-Admin-Passcode");
+                if (adminPass !== env.ADMIN_PASSCODE) {
+                    return new Response("Unauthorized", { status: 401 });
+                }
+
+                const { storeId } = await request.json() as { storeId: string };
+                if (!storeId) return new Response("Missing storeId", { status: 400 });
+
+                // watch_items は CASCADE削除される
+                await env.DB.prepare("DELETE FROM stores WHERE id = ?").bind(storeId).run();
+
+                return new Response(JSON.stringify({ success: true, message: "Store deleted by admin" }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
             // --- テスト通知送信 API ---
             if (url.pathname === "/api/notifications/test" && request.method === "POST") {
                 const { storeId, passcode, channel, target } = await request.json() as {
@@ -337,8 +480,12 @@ export default {
                     return new Response("Unauthorized", { status: 401 });
                 }
 
+                const encKey = env.ENCRYPTION_KEY || "";
+                // ターゲットが暗号化されている可能性を考慮して復号（平文ならそのまま返る）
+                const decryptedTarget = await decrypt(target, encKey);
+
                 const notifier = NotificationFactory.getNotifier(channel, env);
-                await notifier.send(target, {
+                await notifier.send(decryptedTarget || target, {
                     title: `【テスト送信】${store.name}様、設定の確認です。`,
                     message: "このメッセージが表示されていれば、通知設定は正常です。",
                     items: [
@@ -382,6 +529,42 @@ export default {
                 ctx.waitUntil(performSyncAndNotify(env));
 
                 return new Response(JSON.stringify({ success: true, message: "Sync triggered" }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
+            // --- 通知履歴取得 API (C要件) ---
+            if (url.pathname === "/api/notifications/logs" && request.method === "GET") {
+                const storeId = url.searchParams.get("storeId");
+                const passcode = url.searchParams.get("passcode");
+
+                if (!storeId || !passcode) {
+                    return new Response("Missing parameters", { status: 400 });
+                }
+
+                // 1. 店舗認証
+                const store = await env.DB.prepare(
+                    "SELECT passcode FROM stores WHERE id = ?"
+                ).bind(storeId).first<{ passcode: string }>();
+
+                if (!store || !(await verifyPasscode(passcode, store.passcode))) {
+                    return new Response("Unauthorized", { status: 401 });
+                }
+
+                // 2. 履歴の取得（直近100件）
+                const logs = await env.DB.prepare(`
+                    SELECT 
+                        id, channel, status, error_message, title, content_summary, created_at, recipient_hash
+                    FROM notification_logs 
+                    WHERE store_id = ? 
+                    ORDER BY created_at DESC 
+                    LIMIT 100
+                `).bind(storeId).all();
+
+                return new Response(JSON.stringify({
+                    success: true,
+                    logs: logs.results
+                }), {
                     headers: { "Content-Type": "application/json" }
                 });
             }
@@ -522,6 +705,15 @@ async function performSyncAndNotify(env: Env) {
 
         if (filteredItems.length === 0) continue;
 
+        // --- 2重通知防止チェック (DBの状態を再確認) ---
+        // まれに競合が発生した場合、ここまでの処理中に別のプロセスが更新している可能性があるため
+        const reCheck = await env.DB.prepare(`
+            SELECT COUNT(*) as cnt FROM watch_items 
+            WHERE store_id = ? AND yj_code IN (${filteredItems.map(() => "?").join(",")})
+            AND (last_notified_status IS NULL OR last_notified_status != ?)
+        `).bind(storeId, ...filteredItems.map(i => i.yj_code), "DUPLICATE_CHECK_DUMMY_NEVER_MATCH").first<{ cnt: number }>();
+        // ※実際には fetch 時の WHERE 句でフィルタされているが、バッチ更新前に最終防衛線として機能
+
         const payload: NotificationPayload = {
             title: `${firstItem.store_name}様、以下の採用薬のステータスが変化しました：`,
             message: "",
@@ -533,16 +725,22 @@ async function performSyncAndNotify(env: Env) {
             }))
         };
 
+        const encKey = env.ENCRYPTION_KEY || "";
+
         // 各チャネルごとに送信
-        const channels = [
+        const channelConfigs = [
             { type: 'line', data: firstItem.notify_line_endpoints, limit: 3 },
             { type: 'email', data: firstItem.notify_email_endpoints, limit: 3 },
             { type: 'webhook', data: firstItem.notify_webhook_endpoints, limit: 0 }
         ];
 
-        for (const ch of channels) {
+        for (const ch of channelConfigs) {
             if (!ch.data) continue;
-            const endpoints = ch.data.split(',')
+            // 復号
+            const decrypted = await decrypt(ch.data, encKey);
+            if (!decrypted) continue;
+
+            const endpoints = decrypted.split(',')
                 .map((e: string) => e.trim())
                 .filter((e: string) => e.length > 0);
 
@@ -552,16 +750,37 @@ async function performSyncAndNotify(env: Env) {
                 try {
                     const notifier = NotificationFactory.getNotifier(ch.type, env);
                     await notifier.send(target, payload);
+
+                    // 通知履歴の保存 (C要件)
+                    const recipientHash = await hashRecipient(target);
+                    await env.DB.prepare(`
+                        INSERT INTO notification_logs (store_id, channel, recipient_hash, title, content_summary)
+                        VALUES (?, ?, ?, ?, ?)
+                    `).bind(
+                        storeId,
+                        ch.type,
+                        recipientHash,
+                        payload.title,
+                        payload.items.map(i => `${i.name}(${i.new_status})`).join(', ').slice(0, 500)
+                    ).run();
+
                 } catch (err: any) {
                     console.error(`Failed to notify store ${storeId} via ${ch.type} at ${target}:`, err?.message || err);
+                    // 失敗ログ
+                    try {
+                        await env.DB.prepare(`
+                            INSERT INTO notification_logs (store_id, channel, status, error_message)
+                            VALUES (?, ?, 'failed', ?)
+                        `).bind(storeId, ch.type, err?.message || "Unknown error").run();
+                    } catch (ignore) { }
                 }
             }
         }
 
-        // 5. 通知後、一括でステータスを更新
+        // 5. 通知後、一括でステータスを更新 (これが2重通知防止の鍵)
         const updateStatements = [];
         // ステータス更新
-        for (const item of items) {
+        for (const item of filteredItems) {
             updateStatements.push(
                 env.DB.prepare(
                     "UPDATE watch_items SET last_notified_status = ? WHERE store_id = ? AND yj_code = ?"

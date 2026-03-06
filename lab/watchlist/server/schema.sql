@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS stores (
     stripe_customer_id TEXT,               -- Stripe 顧客ID
     stripe_subscription_id TEXT,           -- Stripe サブスクリプションID
     subscription_status TEXT DEFAULT 'none', -- サブスクステータス
+    usage_limit INTEGER DEFAULT 30,        -- 監視品目の上限数
     notify_line_endpoints TEXT,            -- LINE 通知先（カンマ区切り、最大3件）
     notify_email_endpoints TEXT,           -- メール通知先（カンマ区切り、最大3件）
     notify_webhook_endpoints TEXT,          -- Webhook 通知先（カンマ区切り）
@@ -38,6 +39,23 @@ CREATE TABLE IF NOT EXISTS market_status_snapshots (
     status TEXT NOT NULL,
     last_updated DATETIME DEFAULT CURRENT_TIMESTAMP
 );
+
+-- notification_logs: 通知送信履歴（ダッシュボード用）
+CREATE TABLE IF NOT EXISTS notification_logs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    store_id TEXT NOT NULL,
+    channel TEXT NOT NULL,       -- 'line', 'email', 'webhook'
+    recipient_hash TEXT,         -- 通知先のハッシュ（個人特定防止しつつ統計可能に）
+    title TEXT,
+    content_summary TEXT,        -- 送信内容の要約（薬剤名など）
+    status TEXT DEFAULT 'sent',  -- 'sent', 'failed'
+    error_message TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE
+);
+
+CREATE INDEX IF NOT EXISTS idx_notification_logs_store ON notification_logs(store_id);
+CREATE INDEX IF NOT EXISTS idx_notification_logs_created ON notification_logs(created_at);
 
 -- インデックス作成
 CREATE INDEX IF NOT EXISTS idx_watch_items_yj ON watch_items(yj_code);

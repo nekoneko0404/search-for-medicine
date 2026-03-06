@@ -83,6 +83,40 @@
             </p>
         </div>
 
+        <!-- Dashboard Metrics (Milestone 3) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="stat-card-new border-l-4 border-indigo-500">
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">総採用薬数</div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-black text-gray-900" id="metric-total-count">--</span>
+                    <span class="text-xs font-bold text-gray-400">品目</span>
+                </div>
+            </div>
+            <div class="stat-card-new border-l-4 border-green-500">
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">改善（制限解除）</div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-black text-green-600" id="metric-improved-count">--</span>
+                    <span class="text-xs font-bold text-gray-400">品目</span>
+                </div>
+                <div class="text-[9px] text-green-500 font-bold mt-1">前回確認時比</div>
+            </div>
+            <div class="stat-card-new border-l-4 border-orange-500">
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">要注意（悪化）</div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-3xl font-black text-orange-600" id="metric-worsened-count">--</span>
+                    <span class="text-xs font-bold text-gray-400">品目</span>
+                </div>
+                <div class="text-[9px] text-orange-500 font-bold mt-1">通常からの制限</div>
+            </div>
+            <div class="stat-card-new border-l-4 border-red-500">
+                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">最短解消見込み</div>
+                <div class="flex items-baseline gap-2">
+                    <span class="text-lg font-black text-red-600 truncate" id="metric-soonest-resolution">--</span>
+                </div>
+                <div class="text-[9px] text-gray-400 font-bold mt-1">供給停止・制限品目</div>
+            </div>
+        </div>
+
         <!-- Dashboard Bar Graphs (Replacing Gauges) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
             <div class="stat-card-new">
@@ -419,7 +453,13 @@
                     <textarea id="watchlist-input" rows="6"
                         class="w-full rounded-xl border-gray-200 shadow-inner focus:border-indigo-500 focus:ring-indigo-500 font-mono text-sm p-4 h-40 bg-gray-50 mb-3"
                         placeholder="YJコードまたはレセ電算コードを改行区切りで入力"></textarea>
-                    <div id="watchlist-count" class="text-right text-gray-500 text-[11px] font-bold mb-6">現在の登録件数: 0件
+                    <div class="flex justify-between items-center mb-6">
+                        <span
+                            class="bg-amber-100 text-amber-700 text-[9px] font-black px-1.5 py-0.5 rounded border border-amber-200">
+                            <i class="fas fa-flask mr-1"></i>TESTING IN PROGRESS
+                        </span>
+                        <div id="watchlist-count" class="text-right text-gray-500 text-[11px] font-bold">現在の登録件数: 0件
+                        </div>
                     </div>
                 </div>
 
@@ -434,12 +474,17 @@
                             <h4 class="text-base font-black text-gray-900 leading-none mb-1">通知設定</h4>
                             <p class="text-[10px] text-gray-400 font-bold">チャネルと通知スケジュールをカスタマイズします</p>
                         </div>
+                        <button id="show-logs-btn"
+                            class="ml-auto text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors">
+                            <i class="fas fa-history mr-1"></i>履歴を表示
+                        </button>
                     </div>
 
                     <!-- Test Mode Warning -->
                     <div
-                        class="bg-gray-100 rounded-xl p-3 mb-6 border border-gray-200 text-[11px] text-gray-500 leading-relaxed font-bold">
-                        <span class="text-amber-600 font-black">【テスト期間中】</span>実際の通知送信は準備中です
+                        class="bg-indigo-50/50 rounded-xl p-3 mb-6 border border-indigo-100 text-[11px] text-gray-600 leading-relaxed font-bold">
+                        <span class="text-indigo-600 font-black">【Testing in progress】</span>
+                        現在はテスト期間中のため、無料ですべての機能（制限通知を含む）をお試しいただけます。
                     </div>
 
                     <div class="space-y-4">
@@ -523,6 +568,53 @@
                         class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">現在の状態を記録（既読）</button>
                     <button id="save-watchlist"
                         class="px-8 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">設定を保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Logs Modal -->
+    <div id="logs-modal"
+        class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-xl font-black text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-history text-indigo-600"></i> 通知送信履歴
+                </h3>
+                <button id="close-logs-modal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-grow" id="logs-content">
+                <div class="text-center py-10" id="logs-loading">
+                    <div
+                        class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent">
+                    </div>
+                    <p class="mt-2 text-gray-500 font-bold">履歴を読み込み中...</p>
+                </div>
+                <div id="logs-table-container" class="hidden">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    日時 (JST)</th>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    チャネル</th>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    ステータス</th>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    内容</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body" class="divide-y divide-gray-100 italic"></tbody>
+                    </table>
+                </div>
+                <div id="logs-empty" class="hidden text-center py-10">
+                    <p class="text-gray-400 font-bold">送信履歴はありません</p>
                 </div>
             </div>
         </div>

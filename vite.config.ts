@@ -70,6 +70,7 @@ export default defineConfig({
                 'lab/advanced-di': resolve(__dirname, 'lab/advanced-di/index.html'),
                 'lab/billing-nav': resolve(__dirname, 'lab/billing-nav/index.html'),
                 watchlist: resolve(__dirname, 'lab/watchlist/index.html'),
+                watchlist_admin: resolve(__dirname, 'lab/watchlist/admin.html'),
                 price_comparison: resolve(__dirname, 'price-comparison/index.html'),
             },
         },

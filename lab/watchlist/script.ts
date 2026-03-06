@@ -60,6 +60,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const notifyEndpointInput = document.getElementById('notify-endpoint-input') as HTMLInputElement;
     const notifyEndpointLabel = document.getElementById('notify-endpoint-label') as HTMLLabelElement;
 
+    // Logs related elements
+    const logsModal = document.getElementById('logs-modal') as HTMLDivElement;
+    const closeLogsModalBtn = document.getElementById('close-logs-modal') as HTMLButtonElement;
+    const showLogsBtn = document.getElementById('show-logs-btn') as HTMLButtonElement;
+    const logsTableBody = document.getElementById('logs-table-body') as HTMLTableSectionElement;
+    const logsLoading = document.getElementById('logs-loading') as HTMLDivElement;
+    const logsTableContainer = document.getElementById('logs-table-container') as HTMLDivElement;
+    const logsEmpty = document.getElementById('logs-empty') as HTMLDivElement;
+
     let allData: any[] = [];
     let categoryMap = new Map();
     let categoryData = [];
@@ -74,6 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let displayedCount = 30;
     const itemsPerLoad = 20;
     let observer: IntersectionObserver | null = null;
+    let currentUsageLimit = 20; // デフォルトの上限数
 
     // getRouteFromYJCode is now imported from logic.ts
 
@@ -798,6 +808,71 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTestButton('test-email-btn', 'email', 'notify-email-input', 'notify-email-enable');
     setupTestButton('test-webhook-btn', 'webhook', 'notify-webhook-input', 'notify-webhook-enable');
 
+    // --- 通知履歴表示ロジック ---
+    if (showLogsBtn) {
+        showLogsBtn.addEventListener('click', async () => {
+            const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
+            const passcode = (document.getElementById('passcode-input') as HTMLInputElement)?.value.trim();
+
+            if (!storeId || !passcode) {
+                showMessage('履歴の閲覧には店舗IDとパスコードが必要です', 'error');
+                return;
+            }
+
+            logsModal.classList.remove('hidden');
+            logsLoading.classList.remove('hidden');
+            logsTableContainer.classList.add('hidden');
+            logsEmpty.classList.add('hidden');
+
+            try {
+                const response = await fetch(`/api/notifications/logs?storeId=${encodeURIComponent(storeId)}&passcode=${encodeURIComponent(passcode)}`);
+                if (!response.ok) throw new Error('履歴の取得に失敗しました');
+
+                const result = await response.json() as { success: boolean, logs: any[] };
+                if (result.success && result.logs && result.logs.length > 0) {
+                    renderLogs(result.logs);
+                    logsLoading.classList.add('hidden');
+                    logsTableContainer.classList.remove('hidden');
+                } else {
+                    logsLoading.classList.add('hidden');
+                    logsEmpty.classList.remove('hidden');
+                }
+            } catch (err: any) {
+                console.error(err);
+                showMessage(err.message, 'error');
+                logsModal.classList.add('hidden');
+            }
+        });
+    }
+
+    if (closeLogsModalBtn) {
+        closeLogsModalBtn.addEventListener('click', () => {
+            logsModal.classList.add('hidden');
+        });
+    }
+
+    function renderLogs(logs: any[]) {
+        if (!logsTableBody) return;
+        logsTableBody.innerHTML = '';
+        logs.forEach(log => {
+            const row = document.createElement('tr');
+            const date = new Date(log.created_at);
+            const dateStr = date.toLocaleString('ja-JP');
+            const statusClass = log.status === 'failed' ? 'text-red-600 font-bold' : 'text-green-600';
+
+            row.innerHTML = `
+                <td class="px-3 py-3 text-[11px] whitespace-nowrap">${dateStr}</td>
+                <td class="px-3 py-3 text-[11px] uppercase">${log.channel}</td>
+                <td class="px-3 py-3 text-[11px] ${statusClass}">${log.status === 'failed' ? '失敗' : '成功'}</td>
+                <td class="px-3 py-3 text-[11px]">
+                    <div class="font-bold text-gray-700">${log.title || '-'}</div>
+                    <div class="text-gray-500 mt-1 truncate max-w-[300px]">${log.content_summary || log.error_message || ''}</div>
+                </td>
+            `;
+            logsTableBody.appendChild(row);
+        });
+    }
+
     function updateLoginUI(isLoggedIn: boolean) {
         const badge = document.getElementById('login-status-badge');
         const notice = document.getElementById('sync-notice-area');
@@ -875,6 +950,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(data.yjCodes));
 
                     watchlistYJCodes = new Set(data.yjCodes);
+                    currentUsageLimit = data.store.usageLimit || 20;
                     updateWatchlistCount();
                     renderResults();
                     updateLoginUI(true);
@@ -900,7 +976,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateWatchlistCount() {
         if (watchlistCountDisplay && watchlistInput) {
             const count = watchlistInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
-            watchlistCountDisplay.textContent = `現在の登録数: ${count} 件 (テスト期間中: 無制限)`;
+            const limitText = currentUsageLimit >= 3000 ? '無制限' : `${currentUsageLimit}件`;
+            watchlistCountDisplay.textContent = `登録数: ${count} / ${limitText}`;
+
+            // 上限超えの視覚的警告
+            if (count > currentUsageLimit) {
+                watchlistCountDisplay.classList.add('text-red-500');
+            } else {
+                watchlistCountDisplay.classList.remove('text-red-500');
+            }
         }
     }
 
@@ -1044,15 +1128,50 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateDashboardMetrics(data: any[]) {
         if (!data || data.length === 0) return;
 
+        let total = 0, improved = 0, worsened = 0;
         let normal = 0, limited = 0, stopped = 0;
+        let soonestDate: Date | null = null;
+        let soonestText = "-";
+
         data.forEach(item => {
+            total++;
             const s = (item.shipmentStatus || '').trim();
             if (s.includes('通常') || s.includes('通')) normal++;
             else if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) limited++;
             else if (s.includes('停止') || s.includes('停')) stopped++;
+
+            if (item.isRestored) improved++;
+            if (item.isWorsened) worsened++;
+
+            // 解消見込み時期のパースと最小値取得
+            if (item.expectedDate && item.expectedDate !== '-' && (limited > 0 || stopped > 0)) {
+                // 簡単なパース（YYYYMMDD形式などを想定）
+                const match = item.expectedDate.match(/(\d{4})年(\d{1,2})月/);
+                if (match) {
+                    const d = new Date(parseInt(match[1]), parseInt(match[2]) - 1);
+                    if (!soonestDate || d < soonestDate) {
+                        soonestDate = d;
+                        soonestText = `${match[1]}年${match[2]}月`;
+                    }
+                } else if (item.expectedDate.includes('未定')) {
+                    if (!soonestDate) soonestText = "未定";
+                } else {
+                    if (!soonestDate) soonestText = item.expectedDate;
+                }
+            }
         });
 
-        const total = normal + limited + stopped;
+        // HTML要素への反映
+        const setText = (id: string, text: string | number) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = String(text);
+        };
+
+        setText('metric-total-count', total);
+        setText('metric-improved-count', improved);
+        setText('metric-worsened-count', worsened);
+        setText('metric-soonest-resolution', soonestText);
+
         if (total === 0) return;
 
         const pNormal = Math.round((normal / total) * 100);
