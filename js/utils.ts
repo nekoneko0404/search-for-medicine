@@ -16,7 +16,8 @@ export function normalizeString(str: string): string {
         return String.fromCharCode(charCode);
     });
     // Normalize width (Full-width to Half-width for alphanumeric, etc.)
-    const normalizedStr = hiraToKata.normalize('NFKC');
+    // Also remove ALL whitespace (full-width and half-width)
+    const normalizedStr = hiraToKata.normalize('NFKC').replace(/\s+/g, '');
     return normalizedStr.toLowerCase();
 }
 

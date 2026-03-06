@@ -151,13 +151,36 @@ function parseCSVLine(text: string): string[] {
 }
 
 /**
+ * Load old generic medicine list
+ * @returns {Promise<Set<string>>} Set of normalized names
+ */
+export async function loadOldGenericList(): Promise<Set<string>> {
+    const oldGenericSet = new Set<string>();
+    try {
+        const listResponse = await fetch('/data/old_generic_list.json');
+        if (listResponse.ok) {
+            const listData = await listResponse.json();
+            if (Array.isArray(listData)) {
+                listData.forEach((s: string) => {
+                    const normalized = normalizeString(s);
+                    if (normalized) oldGenericSet.add(normalized);
+                });
+            }
+        }
+    } catch (e) {
+        console.warn("旧後発リストの読み込みに失敗しました", e);
+    }
+    return oldGenericSet;
+}
+
+/**
  * Process CSV text into objects
  * @param {string} csvText - Raw CSV text
- * @param {string[]} oldGenericList - List of old generic drug names
+ * @param {Set<string>} oldGenericSet - Set of normalized old generic drug names
  * @param {Function} onProgress - Callback for progress updates
  * @returns {Array<Object>} Array of data objects
  */
-function processCsvData(csvText: string, oldGenericList: string[] = [], onProgress?: (msg: string, percent: number) => void): MedicineData[] {
+function processCsvData(csvText: string, oldGenericSet: Set<string> = new Set(), onProgress?: (msg: string, percent: number) => void): MedicineData[] {
     if (onProgress) onProgress('データを処理中...', 75);
     const rows = csvText.trim().split('\n');
     if (rows.length < 2) return [];
@@ -236,7 +259,7 @@ function processCsvData(csvText: string, oldGenericList: string[] = [], onProgre
             'updatedCells': updatedCells,
             'shippingStatusTrend': shippingStatusTrend,
             'changedPart': changedPart,
-            'isOldGeneric': oldGenericList.includes(normalizeString(row[idx.product]))
+            'isOldGeneric': oldGenericSet.has(normalizeString(row[idx.product]))
         });
     }
 
@@ -316,18 +339,10 @@ async function fetchExcelData(onProgress?: (msg: string, percent: number) => voi
         const csvText = await response.text();
 
         // Load old generic list for tagging
-        let oldGenericList: string[] = [];
-        try {
-            const listResponse = await fetch('/data/old_generic_list.json');
-            if (listResponse.ok) {
-                const listData = await listResponse.json();
-                oldGenericList = Array.isArray(listData) ? listData.map((s: string) => normalizeString(s)) : [];
-            }
-        } catch (e) {
-            console.warn("Failed to load old generic list", e);
-        }
+        const oldGenericSet = await loadOldGenericList();
+        console.log(`旧後発リストを使用してデータを処理中: ${oldGenericSet.size} 件`);
 
-        const processedData = processCsvData(csvText, oldGenericList, onProgress);
+        const processedData = processCsvData(csvText, oldGenericSet, onProgress);
 
         if (processedData.length > 0 && window.localforage) {
             const cachePayload = {
@@ -382,7 +397,16 @@ export async function loadAndCacheData(onProgress?: (msg: string, percent: numbe
                     if (!item.normalizedManufacturer && item.manufacturer) {
                         item.normalizedManufacturer = normalizeString(item.manufacturer);
                     }
+                    // Re-apply old generic check based on latest list and normalization
                 });
+
+                // Load updated old generic list to ensure tags are current
+                const oldGenericSet = await loadOldGenericList();
+                if (oldGenericSet.size > 0) {
+                    cachedData.data.forEach((item: MedicineData) => {
+                        item.isOldGeneric = oldGenericSet.has(item.normalizedProductName || normalizeString(item.productName));
+                    });
+                }
             }
             if (onProgress) onProgress('キャッシュから読み込み完了', 100);
             return { data: cachedData.data || [], date: 'キャッシュ' };
