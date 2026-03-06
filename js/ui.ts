@@ -155,7 +155,7 @@ export function renderMedicineBadges(item: MedicineData, container: HTMLElement,
         span.textContent = isMobileCard ? '基礎' : '基';
         container.appendChild(span);
     }
-    if (isOldGeneric) {
+    if (isOldGeneric && isBasic) {
         const span = document.createElement('span');
         span.className = isMobileCard ? "bg-orange-100 text-orange-900 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-orange-200" : "medicine-badge badge-old-generic";
         span.textContent = isMobileCard ? '旧後発' : '旧後';
