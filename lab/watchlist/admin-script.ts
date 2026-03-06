@@ -15,11 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const editLimit = document.getElementById('edit-limit') as HTMLInputElement;
     const editStatus = document.getElementById('edit-status') as HTMLSelectElement;
 
-    let adminPass = sessionStorage.getItem('admin_pass') || '';
+    let adminPass = '';
 
-    if (adminPass) {
-        fetchStores(); // 成功すれば UI が切り替わる
-    }
+    // 自動ログインを無効化（都度入力を要求）
 
     loginBtn?.addEventListener('click', async () => {
         const pass = (adminPassInput as HTMLInputElement)?.value.trim();
@@ -29,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const success = await fetchStores(pass);
         if (success) {
             adminPass = pass;
-            sessionStorage.setItem('admin_pass', pass);
+            // sessionStorage.setItem('admin_pass', pass); // 保存しない
         }
     });
 
@@ -90,8 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 if (response.status === 401) {
                     alert('認証に失敗しました。パスコードを確認してください。');
-                    sessionStorage.removeItem('admin_pass');
-                    if (!overridePass) location.reload(); // 自動ログイン失敗時のみリロード
                     return false;
                 }
                 throw new Error('Failed to fetch stores');

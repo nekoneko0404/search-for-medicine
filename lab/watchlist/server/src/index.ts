@@ -408,6 +408,16 @@ export default {
             // --- [管理者専用] 全店舗一覧取得 API ---
             if (url.pathname === "/api/admin/stores" && request.method === "GET") {
                 const adminPass = request.headers.get("X-Admin-Passcode");
+
+                console.log("[Admin Auth Debug]", {
+                    path: url.pathname,
+                    hasHeader: !!adminPass,
+                    headerLength: adminPass?.length || 0,
+                    hasSecret: !!env.ADMIN_PASSCODE,
+                    secretLength: env.ADMIN_PASSCODE?.length || 0,
+                    isMatch: adminPass === env.ADMIN_PASSCODE
+                });
+
                 if (adminPass !== env.ADMIN_PASSCODE) {
                     return new Response("Unauthorized", { status: 401 });
                 }

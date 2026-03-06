@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS stores (
     stripe_customer_id TEXT,               -- Stripe 顧客ID
     stripe_subscription_id TEXT,           -- Stripe サブスクリプションID
     subscription_status TEXT DEFAULT 'none', -- サブスクステータス
-    usage_limit INTEGER DEFAULT 30,        -- 監視品目の上限数
+    usage_limit INTEGER DEFAULT 20,         -- 監視品目の上限数
     notify_line_endpoints TEXT,            -- LINE 通知先（カンマ区切り、最大3件）
     notify_email_endpoints TEXT,           -- メール通知先（カンマ区切り、最大3件）
     notify_webhook_endpoints TEXT,          -- Webhook 通知先（カンマ区切り）
