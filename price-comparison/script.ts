@@ -38,10 +38,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     let displayedCount = 0;
     let observer: IntersectionObserver | null = null;
 
+    // Persistence Keys
+    const STORAGE_KEY_CODES = 'kusuri_compass_price_codes';
+    const STORAGE_KEY_NAME = 'kusuri_compass_price_drug_name';
+
     // Initialize
     async function init() {
         showOverlay(true);
         try {
+            // Load saved data if exists
+            const savedCodes = localStorage.getItem(STORAGE_KEY_CODES);
+            const savedName = localStorage.getItem(STORAGE_KEY_NAME);
+            if (savedCodes) codeInput.value = savedCodes;
+            if (savedName) drugNameInput.value = savedName;
+            updateCodeCount();
+
             // Load Price Data
             const priceRes = await fetch('/price-comparison/data/drug_prices.json');
             priceMaster = await priceRes.json();
@@ -53,6 +64,12 @@ document.addEventListener('DOMContentLoaded', async () => {
             supplySummary = summarizeBy9DigitYJ(supplyData);
 
             dataTimeDisplay.textContent = `データ更新: ${supplyRes.date}`;
+
+            // If we have saved data, trigger initial search
+            if (savedCodes || savedName) {
+                console.log('Persistence: Triggering initial search from saved data.');
+                handleSearch();
+            }
         } catch (error) {
             console.error('Failed to load data:', error);
             alert('データの読み込みに失敗しました。');
@@ -68,6 +85,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     clearBtn.addEventListener('click', () => {
         codeInput.value = '';
         drugNameInput.value = '';
+        localStorage.removeItem(STORAGE_KEY_CODES);
+        localStorage.removeItem(STORAGE_KEY_NAME);
         updateCodeCount();
     });
     codeInput.addEventListener('input', updateCodeCount);
@@ -83,11 +102,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             codeInput.value = lines.join('\n');
         }
         codeCountDisplay.textContent = `${lines.length} 件の入力`;
+        localStorage.setItem(STORAGE_KEY_CODES, codeInput.value);
     }
 
     async function handleSearch() {
         const codeText = codeInput.value.trim();
         const nameText = drugNameInput.value.trim();
+
+        // Save to storage
+        localStorage.setItem(STORAGE_KEY_CODES, codeInput.value);
+        localStorage.setItem(STORAGE_KEY_NAME, drugNameInput.value);
 
         // Prepare AND search terms
         const searchTerms = nameText.split(/[\s　]+/).map(t => normalizeString(t)).filter(t => t.length > 0);
