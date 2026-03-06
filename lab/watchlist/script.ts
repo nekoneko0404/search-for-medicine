@@ -976,7 +976,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateWatchlistCount() {
         if (watchlistCountDisplay && watchlistInput) {
             const count = watchlistInput.value.split('\n').map(l => l.trim()).filter(l => l.length > 0).length;
-            const limitText = currentUsageLimit >= 3000 ? '無制限' : `${currentUsageLimit}件`;
+            const limitText = `${currentUsageLimit}件`;
             watchlistCountDisplay.textContent = `登録数: ${count} / ${limitText}`;
 
             // 上限超えの視覚的警告
@@ -1126,15 +1126,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateDashboardMetrics(data: any[]) {
-        if (!data || data.length === 0) return;
+        if (!data) return;
 
-        let total = 0, improved = 0, worsened = 0;
+        let total = data.length;
+        let improved = 0;
+        let worsened = 0;
         let normal = 0, limited = 0, stopped = 0;
-        let soonestDate: Date | null = null;
-        let soonestText = "-";
 
         data.forEach(item => {
-            total++;
             const s = (item.shipmentStatus || '').trim();
             if (s.includes('通常') || s.includes('通')) normal++;
             else if (s.includes('限定') || s.includes('制限') || s.includes('限') || s.includes('制')) limited++;
@@ -1142,23 +1141,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (item.isRestored) improved++;
             if (item.isWorsened) worsened++;
-
-            // 解消見込み時期のパースと最小値取得
-            if (item.expectedDate && item.expectedDate !== '-' && (limited > 0 || stopped > 0)) {
-                // 簡単なパース（YYYYMMDD形式などを想定）
-                const match = item.expectedDate.match(/(\d{4})年(\d{1,2})月/);
-                if (match) {
-                    const d = new Date(parseInt(match[1]), parseInt(match[2]) - 1);
-                    if (!soonestDate || d < soonestDate) {
-                        soonestDate = d;
-                        soonestText = `${match[1]}年${match[2]}月`;
-                    }
-                } else if (item.expectedDate.includes('未定')) {
-                    if (!soonestDate) soonestText = "未定";
-                } else {
-                    if (!soonestDate) soonestText = item.expectedDate;
-                }
-            }
         });
 
         // HTML要素への反映
@@ -1170,17 +1152,28 @@ document.addEventListener('DOMContentLoaded', () => {
         setText('metric-total-count', total);
         setText('metric-improved-count', improved);
         setText('metric-worsened-count', worsened);
-        setText('metric-soonest-resolution', soonestText);
 
-        if (total === 0) return;
+        if (total === 0) {
+            updateBar('normal', 0);
+            updateBar('limited', 0);
+            updateBar('stopped', 0);
+            return;
+        }
 
         const pNormal = Math.round((normal / total) * 100);
         const pLimited = Math.round((limited / total) * 100);
         const pStopped = 100 - pNormal - pLimited;
 
-        updateGauge('normal', pNormal, '#3b82f6');
-        updateGauge('limited', pLimited, '#eab308');
-        updateGauge('stopped', pStopped, '#ef4444');
+        updateBar('normal', pNormal);
+        updateBar('limited', pLimited);
+        updateBar('stopped', pStopped);
+    }
+
+    function updateBar(type: string, percent: number) {
+        const bar = document.getElementById(`stat-${type}-bar`);
+        const val = document.getElementById(`stat-${type}-value`);
+        if (bar) bar.style.width = `${percent}%`;
+        if (val) val.textContent = `${percent}%`;
     }
 
     function updateGauge(type: 'normal' | 'limited' | 'stopped', percent: number, color: string) {

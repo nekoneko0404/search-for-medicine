@@ -84,66 +84,63 @@
         </div>
 
         <!-- Dashboard Metrics (Milestone 3) -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            <div class="stat-card-new border-l-4 border-indigo-500">
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">総採用薬数</div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-gray-900" id="metric-total-count">--</span>
-                    <span class="text-xs font-bold text-gray-400">品目</span>
+        <!-- Dashboard (3 Metrics + Integrated Bar Chart) -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+            <!-- Left: 3 Metric Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:col-span-3">
+                <div class="stat-card-new border-l-4 border-blue-500">
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">総採用薬数</div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-blue-600" id="metric-total-count">--</span>
+                        <span class="text-xs font-bold text-gray-400">品目</span>
+                    </div>
+                </div>
+                <div class="stat-card-new border-l-4 border-green-500">
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">改善（制限解除）</div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-green-600" id="metric-improved-count">--</span>
+                        <span class="text-xs font-bold text-gray-400">品目</span>
+                    </div>
+                    <div class="text-[9px] text-green-500 font-bold mt-1">前回確認時比</div>
+                </div>
+                <div class="stat-card-new border-l-4 border-orange-500">
+                    <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">要注意（悪化）</div>
+                    <div class="flex items-baseline gap-2">
+                        <span class="text-3xl font-black text-orange-600" id="metric-worsened-count">--</span>
+                        <span class="text-xs font-bold text-gray-400">品目</span>
+                    </div>
+                    <div class="text-[9px] text-orange-500 font-bold mt-1">通常からの制限</div>
                 </div>
             </div>
-            <div class="stat-card-new border-l-4 border-green-500">
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">改善（制限解除）</div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-green-600" id="metric-improved-count">--</span>
-                    <span class="text-xs font-bold text-gray-400">品目</span>
-                </div>
-                <div class="text-[9px] text-green-500 font-bold mt-1">前回確認時比</div>
-            </div>
-            <div class="stat-card-new border-l-4 border-orange-500">
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">要注意（悪化）</div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-3xl font-black text-orange-600" id="metric-worsened-count">--</span>
-                    <span class="text-xs font-bold text-gray-400">品目</span>
-                </div>
-                <div class="text-[9px] text-orange-500 font-bold mt-1">通常からの制限</div>
-            </div>
-            <div class="stat-card-new border-l-4 border-red-500">
-                <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">最短解消見込み</div>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-lg font-black text-red-600 truncate" id="metric-soonest-resolution">--</span>
-                </div>
-                <div class="text-[9px] text-gray-400 font-bold mt-1">供給停止・制限品目</div>
-            </div>
-        </div>
 
-        <!-- Dashboard Bar Graphs (Replacing Gauges) -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-            <div class="stat-card-new">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-bold text-gray-600">通常出荷</span>
-                    <span class="text-lg font-black text-blue-600" id="stat-normal-value">--%</span>
+            <!-- Right: Integrated Supply Status Bars -->
+            <div class="stat-card-new flex flex-col justify-between h-full bg-white/50 space-y-4">
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold text-gray-500">通常出荷</span>
+                        <span class="text-xs font-black text-blue-600" id="stat-normal-value">--%</span>
+                    </div>
+                    <div class="bar-container h-1.5">
+                        <div id="stat-normal-bar" class="bar-segment bg-status-normal" style="width: 0%"></div>
+                    </div>
                 </div>
-                <div class="bar-container">
-                    <div id="stat-normal-bar" class="bar-segment bg-status-normal" style="width: 0%"></div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold text-gray-500">限定出荷</span>
+                        <span class="text-xs font-black text-yellow-600" id="stat-limited-value">--%</span>
+                    </div>
+                    <div class="bar-container h-1.5">
+                        <div id="stat-limited-bar" class="bar-segment bg-status-limited" style="width: 0%"></div>
+                    </div>
                 </div>
-            </div>
-            <div class="stat-card-new">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-bold text-gray-600">限定出荷</span>
-                    <span class="text-lg font-black text-yellow-600" id="stat-limited-value">--%</span>
-                </div>
-                <div class="bar-container">
-                    <div id="stat-limited-bar" class="bar-segment bg-status-limited" style="width: 0%"></div>
-                </div>
-            </div>
-            <div class="stat-card-new">
-                <div class="flex justify-between items-center mb-2">
-                    <span class="text-sm font-bold text-gray-600">供給停止</span>
-                    <span class="text-lg font-black text-red-600" id="stat-stopped-value">--%</span>
-                </div>
-                <div class="bar-container">
-                    <div id="stat-stopped-bar" class="bar-segment bg-status-stopped" style="width: 0%"></div>
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[10px] font-bold text-gray-500">供給停止</span>
+                        <span class="text-xs font-black text-red-600" id="stat-stopped-value">--%</span>
+                    </div>
+                    <div class="bar-container h-1.5">
+                        <div id="stat-stopped-bar" class="bar-segment bg-status-stopped" style="width: 0%"></div>
+                    </div>
                 </div>
             </div>
         </div>

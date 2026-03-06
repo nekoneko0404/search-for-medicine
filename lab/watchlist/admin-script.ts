@@ -15,6 +15,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const editLimit = document.getElementById('edit-limit') as HTMLInputElement;
     const editStatus = document.getElementById('edit-status') as HTMLSelectElement;
 
+    // プラン変更時に上限を自動設定
+    editPlan?.addEventListener('change', () => {
+        if (editPlan.value === 'standard') {
+            editLimit.value = '3000';
+        } else if (editPlan.value === 'free') {
+            editLimit.value = '20';
+        }
+    });
+
     let adminPass = '';
 
     // 自動ログインを無効化（都度入力を要求）
