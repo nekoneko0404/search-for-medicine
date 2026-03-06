@@ -3,8 +3,12 @@ export async function onRequest(context: any) {
     const path = context.params.path ? context.params.path.join('/') : '';
     const search = url.search;
 
-    // 確実に新しいバックエンド Worker を指すように固定 (環境変数による不整合を回避)
-    const backendBaseUrl = "https://watchlist-backend.neko-neko-0404.workers.dev";
+    // 環境（ホスト名）に応じてバックエンド Worker を切り替える
+    const isDebug = url.hostname.includes("debug-deploy");
+    const backendBaseUrl = isDebug
+        ? "https://watchlist-backend-debug-deploy.neko-neko-0404.workers.dev"
+        : "https://watchlist-backend.neko-neko-0404.workers.dev";
+
     const targetUrl = `${backendBaseUrl}/api/${path}${search}`;
 
     console.log(`Proxying request: ${context.request.method} ${url.pathname} -> ${targetUrl}`);
