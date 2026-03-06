@@ -40,6 +40,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    adminPassInput?.addEventListener('keydown', (e) => {
+        if ((e as KeyboardEvent).key === 'Enter') {
+            loginBtn?.click();
+        }
+    });
+
     refreshBtn?.addEventListener('click', () => {
         fetchStores();
     });
