@@ -209,9 +209,10 @@ export default {
                     // パスコードをハッシュ化してから保存
                     const hashedPasscode = await hashPasscode(passcode);
 
+                    const defaultLimit = (planType === 'standard') ? 3000 : 20;
                     await env.DB.prepare(
                         "INSERT INTO stores (id, name, passcode, plan_type, usage_limit) VALUES (?, ?, ?, ?, ?)"
-                    ).bind(id, name, hashedPasscode, planType || 'free', usageLimit || 20).run();
+                    ).bind(id, name, hashedPasscode, planType || 'free', usageLimit || defaultLimit).run();
 
                     return withCors(new Response(JSON.stringify({ success: true }), {
                         headers: { "Content-Type": "application/json" }
