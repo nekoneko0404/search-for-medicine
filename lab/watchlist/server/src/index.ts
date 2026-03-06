@@ -489,6 +489,54 @@ export default {
                 }));
             }
 
+            // --- Stripe Webhook API ---
+            if (url.pathname === "/api/stripe/webhook" && request.method === "POST") {
+                const signature = request.headers.get("stripe-signature");
+                if (!signature || !env.STRIPE_SECRET_KEY || !env.STRIPE_WEBHOOK_SECRET) {
+                    return new Response("Webhook configuration missing or invalid request", { status: 400 });
+                }
+
+                const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
+                    httpClient: Stripe.createFetchHttpClient(),
+                });
+
+                const body = await request.text();
+                let event;
+
+                try {
+                    event = await stripe.webhooks.constructEventAsync(
+                        body,
+                        signature,
+                        env.STRIPE_WEBHOOK_SECRET
+                    );
+                } catch (err: any) {
+                    console.error(`Webhook signature verification failed: ${err.message}`);
+                    return new Response(`Webhook Error: ${err.message}`, { status: 400 });
+                }
+
+                if (event.type === "checkout.session.completed") {
+                    const session = event.data.object as any;
+                    const storeId = session.client_reference_id;
+
+                    if (storeId) {
+                        console.log(`Payment completed for store: ${storeId}`);
+                        // プランをスタンダードに更新
+                        await env.DB.prepare(`
+                            UPDATE stores 
+                            SET plan_type = 'standard', 
+                                usage_limit = 3000, 
+                                subscription_status = 'active',
+                                updated_at = CURRENT_TIMESTAMP 
+                            WHERE id = ?
+                        `).bind(storeId).run();
+                    }
+                }
+
+                return new Response(JSON.stringify({ received: true }), {
+                    headers: { "Content-Type": "application/json" }
+                });
+            }
+
             // --- テスト通知送信 API ---
             if (url.pathname === "/api/notifications/test" && request.method === "POST") {
                 const { storeId, passcode, channel, target } = await request.json() as {

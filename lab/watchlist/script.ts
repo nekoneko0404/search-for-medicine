@@ -975,9 +975,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 新規登録・お支払いボタン
     document.getElementById('start-registration-btn')?.addEventListener('click', () => {
-        // 将来的には Stripe Checkout へのリダイレクトや、専用の登録モーダルを開く
-        if (confirm('スタンダードプラン（3,000品目 / 月額¥5,000）の登録・お支払い画面に進みますか？\n（現在はデモ用のため、管理者によるID発行をご利用ください）')) {
-            window.open('https://buy.stripe.com/test_6oEbM08Y95U4gW43cc', '_blank');
+        const storeId = (document.getElementById('store-id-input') as HTMLInputElement)?.value.trim();
+        const baseUrl = 'https://buy.stripe.com/test_6oEbM08Y95U4gW43cc';
+        const url = storeId ? `${baseUrl}?client_reference_id=${encodeURIComponent(storeId)}` : baseUrl;
+
+        if (confirm('スタンダードプラン（3,000品目 / 月額¥5,000）の登録・お支払い画面に進みますか？')) {
+            window.open(url, '_blank');
         }
     });
 
