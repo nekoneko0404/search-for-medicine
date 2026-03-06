@@ -1,6 +1,6 @@
 import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../js/data';
 import { normalizeString, formatDate } from '../js/utils';
-import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../js/ui';
+import { renderStatusButton, showMessage, updateProgress, createDropdown, renderMedicineBadges } from '../js/ui';
 import '../js/components/MainHeader';
 import '../js/components/MainFooter';
 
@@ -723,21 +723,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'vertical-labels-container';
 
-            const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
-            const isBasic = item.isBasicDrug && normalizeString(item.isBasicDrug).includes('基礎的医薬品');
-
-            if (isGeneric) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-generic";
-                span.textContent = '後';
-                labelsContainer.appendChild(span);
-            }
-            if (isBasic) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-basic";
-                span.textContent = '基';
-                labelsContainer.appendChild(span);
-            }
+            renderMedicineBadges(item, labelsContainer);
 
             const flexContainer = document.createElement('div');
             flexContainer.className = 'flex items-start';
@@ -816,21 +802,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'vertical-labels-container';
 
-            const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
-            const isBasic = item.isBasicDrug && normalizeString(item.isBasicDrug).includes('基礎的医薬品');
-
-            if (isGeneric) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-generic";
-                span.textContent = '後';
-                labelsContainer.appendChild(span);
-            }
-            if (isBasic) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-basic";
-                span.textContent = '基';
-                labelsContainer.appendChild(span);
-            }
+            renderMedicineBadges(item, labelsContainer);
 
             const flexContainer = document.createElement('div');
             flexContainer.className = 'flex items-start';

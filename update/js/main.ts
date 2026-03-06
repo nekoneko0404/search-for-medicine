@@ -4,7 +4,7 @@
 
 import { loadAndCacheData, clearCacheAndReload } from '../../js/data.ts';
 import { normalizeString, debounce, formatDate } from '../../js/utils.ts';
-import { showMessage, renderStatusButton, updateProgress, createDropdown } from '../../js/ui.ts';
+import { showMessage, renderStatusButton, updateProgress, createDropdown, renderMedicineBadges } from '../../js/ui.ts';
 import '../../js/components/MainHeader.ts';
 import '../../js/components/MainFooter.ts';
 // @ts-ignore
@@ -683,21 +683,7 @@ function renderResults(data: any[]) {
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'vertical-labels-container';
 
-            const isGeneric = item.productCategory && (item.productCategory.includes('後発品') || normalizeString(item.productCategory).includes('後発品'));
-            const isBasic = item.isBasicDrug && (item.isBasicDrug.includes('基礎的医薬品') || normalizeString(item.isBasicDrug).includes('基礎的医薬品'));
-
-            if (isGeneric) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-generic";
-                span.textContent = '後';
-                labelsContainer.appendChild(span);
-            }
-            if (isBasic) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-basic";
-                span.textContent = '基';
-                labelsContainer.appendChild(span);
-            }
+            renderMedicineBadges(item, labelsContainer);
             const flexContainer = document.createElement('div');
             flexContainer.className = 'flex items-start';
 
@@ -825,21 +811,8 @@ function renderResults(data: any[]) {
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'flex gap-1 mb-1'; // Add margin-bottom for spacing
 
-            const isGeneric = item.productCategory && (item.productCategory.includes('後発品') || normalizeString(item.productCategory).includes('後発品'));
-            const isBasic = item.isBasicDrug && (item.isBasicDrug.includes('基礎的医薬品') || normalizeString(item.isBasicDrug).includes('基礎的医薬品'));
+            renderMedicineBadges(item, labelsContainer, true);
 
-            if (isGeneric) {
-                const span = document.createElement('span');
-                span.className = "bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-green-200";
-                span.textContent = '後発';
-                labelsContainer.appendChild(span);
-            }
-            if (isBasic) {
-                const span = document.createElement('span');
-                span.className = "bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-purple-200";
-                span.textContent = '基礎';
-                labelsContainer.appendChild(span);
-            }
             if (labelsContainer.hasChildNodes()) {
                 productNameDiv.appendChild(labelsContainer);
             }

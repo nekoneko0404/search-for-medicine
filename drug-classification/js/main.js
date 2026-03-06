@@ -5,7 +5,7 @@
 import '../../css/input.css';
 import { loadAndCacheData, fetchManufacturerData, clearCacheAndReload } from '../../js/data';
 import { normalizeString, debounce } from '../../js/utils';
-import { showMessage, renderStatusButton, updateProgress, createDropdown } from '../../js/ui';
+import { showMessage, renderStatusButton, updateProgress, createDropdown, renderMedicineBadges } from '../../js/ui';
 
 let excelData = [];
 let manufacturerLinks = {};
@@ -610,21 +610,7 @@ function renderResults(data) {
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'vertical-labels-container'; // Standardized class
 
-            const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
-            const isBasic = item.isBasicDrug && normalizeString(item.isBasicDrug).includes('基礎的医薬品');
-
-            if (isGeneric) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-generic";
-                span.textContent = '後';
-                labelsContainer.appendChild(span);
-            }
-            if (isBasic) {
-                const span = document.createElement('span');
-                span.className = "medicine-badge badge-basic";
-                span.textContent = '基';
-                labelsContainer.appendChild(span);
-            }
+            renderMedicineBadges(item, labelsContainer);
             const flexContainer = document.createElement('div');
             flexContainer.className = 'flex items-start';
 
@@ -739,21 +725,8 @@ function renderResults(data) {
             const labelsContainer = document.createElement('div');
             labelsContainer.className = 'flex gap-1 mb-1'; // Add margin-bottom for spacing
 
-            const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
-            const isBasic = item.isBasicDrug && normalizeString(item.isBasicDrug).includes('基礎的医薬品');
+            renderMedicineBadges(item, labelsContainer, true);
 
-            if (isGeneric) {
-                const span = document.createElement('span');
-                span.className = "bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-green-200";
-                span.textContent = '後発';
-                labelsContainer.appendChild(span);
-            }
-            if (isBasic) {
-                const span = document.createElement('span');
-                span.className = "bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-purple-200";
-                span.textContent = '基礎';
-                labelsContainer.appendChild(span);
-            }
             if (labelsContainer.hasChildNodes()) {
                 productNameDiv.appendChild(labelsContainer);
             }

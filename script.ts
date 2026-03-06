@@ -2,7 +2,7 @@
 import './css/input.css';
 import { normalizeString, debounce, formatDate, extractSearchTerm } from './js/utils';
 import { loadAndCacheData, MedicineData } from './js/data';
-import { updateProgress, showMessage, hideMessage, renderStatusButton, createDropdown } from './js/ui';
+import { updateProgress, showMessage, hideMessage, renderStatusButton, createDropdown, renderMedicineBadges } from './js/ui';
 import './js/components/MainFooter';
 import './js/components/MainHeader';
 
@@ -333,21 +333,7 @@ function renderTable(data: MedicineData[]) {
         const labelsContainer = document.createElement('div');
         labelsContainer.className = 'vertical-labels-container';
 
-        const isGeneric = item.productCategory && normalizeString(item.productCategory).includes('後発品');
-        const isBasic = item.isBasicDrug && normalizeString(item.isBasicDrug).includes('基礎的医薬品');
-
-        if (isGeneric) {
-            const span = document.createElement('span');
-            span.className = "medicine-badge badge-generic";
-            span.textContent = '後';
-            labelsContainer.appendChild(span);
-        }
-        if (isBasic) {
-            const span = document.createElement('span');
-            span.className = "medicine-badge badge-basic";
-            span.textContent = '基';
-            labelsContainer.appendChild(span);
-        }
+        renderMedicineBadges(item, labelsContainer);
 
         const drugName = item.productName || "";
         const flexContainer = document.createElement('div');
@@ -451,18 +437,9 @@ function renderTable(data: MedicineData[]) {
         // Recycle logic for labels (generic/basic)
         const cardLabelsContainer = document.createElement('div');
         cardLabelsContainer.className = "flex flex-col gap-1 mt-1";
-        if (isGeneric) {
-            const span = document.createElement('span');
-            span.className = "bg-green-200 text-green-800 px-1 rounded-sm text-[10px] font-bold whitespace-nowrap text-center";
-            span.textContent = '後';
-            cardLabelsContainer.appendChild(span);
-        }
-        if (isBasic) {
-            const span = document.createElement('span');
-            span.className = "bg-purple-200 text-purple-800 px-1 rounded-sm text-[10px] font-bold whitespace-nowrap text-center";
-            span.textContent = '基';
-            cardLabelsContainer.appendChild(span);
-        }
+
+        renderMedicineBadges(item, cardLabelsContainer, true);
+
         if (cardLabelsContainer.hasChildNodes()) {
             cardHeader.appendChild(cardLabelsContainer);
         }

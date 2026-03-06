@@ -41,6 +41,7 @@ export interface MedicineData {
     updatedCells: number[];
     shippingStatusTrend: string;
     changedPart: string;
+    isOldGeneric?: boolean;
 }
 
 export interface LoadDataResult {
@@ -152,10 +153,11 @@ function parseCSVLine(text: string): string[] {
 /**
  * Process CSV text into objects
  * @param {string} csvText - Raw CSV text
+ * @param {string[]} oldGenericList - List of old generic drug names
  * @param {Function} onProgress - Callback for progress updates
  * @returns {Array<Object>} Array of data objects
  */
-function processCsvData(csvText: string, onProgress?: (msg: string, percent: number) => void): MedicineData[] {
+function processCsvData(csvText: string, oldGenericList: string[] = [], onProgress?: (msg: string, percent: number) => void): MedicineData[] {
     if (onProgress) onProgress('データを処理中...', 75);
     const rows = csvText.trim().split('\n');
     if (rows.length < 2) return [];
@@ -233,7 +235,8 @@ function processCsvData(csvText: string, onProgress?: (msg: string, percent: num
             'updateDateObj': parseGvizDate(row[idx.update]),
             'updatedCells': updatedCells,
             'shippingStatusTrend': shippingStatusTrend,
-            'changedPart': changedPart
+            'changedPart': changedPart,
+            'isOldGeneric': oldGenericList.includes(normalizeString(row[idx.product]))
         });
     }
 
@@ -311,7 +314,20 @@ async function fetchExcelData(onProgress?: (msg: string, percent: number) => voi
         }
 
         const csvText = await response.text();
-        const processedData = processCsvData(csvText, onProgress);
+
+        // Load old generic list for tagging
+        let oldGenericList: string[] = [];
+        try {
+            const listResponse = await fetch('/data/old_generic_list.json');
+            if (listResponse.ok) {
+                const listData = await listResponse.json();
+                oldGenericList = Array.isArray(listData) ? listData.map((s: string) => normalizeString(s)) : [];
+            }
+        } catch (e) {
+            console.warn("Failed to load old generic list", e);
+        }
+
+        const processedData = processCsvData(csvText, oldGenericList, onProgress);
 
         if (processedData.length > 0 && window.localforage) {
             const cachePayload = {

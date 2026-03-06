@@ -127,6 +127,43 @@ export function renderStatusButton(status: string, isUpdated: boolean = false): 
 }
 
 /**
+ * Render medicine badges (Generic, Basic, Old Generic)
+ * @param {MedicineData} item - Data item
+ * @param {HTMLElement} container - Container to append badges (usually .vertical-labels-container)
+ * @param {boolean} isMobileCard - Whether rendering for a mobile card (uses different styles in some pages)
+ */
+export function renderMedicineBadges(item: MedicineData, container: HTMLElement, isMobileCard: boolean = false): void {
+    const isGeneric = item.productCategory && (
+        item.productCategory.includes('後発品') ||
+        normalizeString(item.productCategory).includes('後発品')
+    );
+    const isBasic = item.isBasicDrug && (
+        item.isBasicDrug.includes('基礎的医薬品') ||
+        normalizeString(item.isBasicDrug).includes('基礎的医薬品')
+    );
+    const isOldGeneric = item.isOldGeneric === true;
+
+    if (isGeneric) {
+        const span = document.createElement('span');
+        span.className = isMobileCard ? "bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-green-200" : "medicine-badge badge-generic";
+        span.textContent = isMobileCard ? '後発' : '後';
+        container.appendChild(span);
+    }
+    if (isBasic) {
+        const span = document.createElement('span');
+        span.className = isMobileCard ? "bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-purple-200" : "medicine-badge badge-basic";
+        span.textContent = isMobileCard ? '基礎' : '基';
+        container.appendChild(span);
+    }
+    if (isOldGeneric) {
+        const span = document.createElement('span');
+        span.className = isMobileCard ? "bg-orange-100 text-orange-900 px-1.5 py-0.5 rounded text-[10px] font-bold whitespace-nowrap border border-orange-200" : "medicine-badge badge-old-generic";
+        span.textContent = isMobileCard ? '旧後発' : '旧後';
+        container.appendChild(span);
+    }
+}
+
+/**
  * Open Hiyari Hat page
  * @param {string} type - 'ingredientName' or 'drugName'
  * @param {string} name - Name to search

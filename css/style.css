@@ -250,6 +250,13 @@ main {
     /* text-green-800 */
 }
 
+.badge-old-generic {
+    background-color: #ffedd5;
+    /* bg-orange-100 */
+    color: #9a3412;
+    /* text-orange-900 */
+}
+
 /* Card-style search results - primarily for mobile */
 @media (max-width: 767px) {
     .search-results-grid {
