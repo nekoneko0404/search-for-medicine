@@ -387,24 +387,17 @@ export async function loadAndCacheData(onProgress?: (msg: string, percent: numbe
                     if (item.expectedDateObj && typeof item.expectedDateObj === 'string') {
                         item.expectedDateObj = new Date(item.expectedDateObj);
                     }
-                    // Fallback for older cache without pre-normalized fields
-                    if (!item.normalizedProductName && item.productName) {
-                        item.normalizedProductName = normalizeString(item.productName);
-                    }
-                    if (!item.normalizedIngredientName && item.ingredientName) {
-                        item.normalizedIngredientName = normalizeString(item.ingredientName);
-                    }
-                    if (!item.normalizedManufacturer && item.manufacturer) {
-                        item.normalizedManufacturer = normalizeString(item.manufacturer);
-                    }
-                    // Re-apply old generic check based on latest list and normalization
+                    // Force re-normalization for all items to match latest logic (e.g. whitespace removal)
+                    if (item.productName) item.normalizedProductName = normalizeString(item.productName);
+                    if (item.ingredientName) item.normalizedIngredientName = normalizeString(item.ingredientName);
+                    if (item.manufacturer) item.normalizedManufacturer = normalizeString(item.manufacturer);
                 });
 
                 // Load updated old generic list to ensure tags are current
                 const oldGenericSet = await loadOldGenericList();
                 if (oldGenericSet.size > 0) {
                     cachedData.data.forEach((item: MedicineData) => {
-                        item.isOldGeneric = oldGenericSet.has(item.normalizedProductName || normalizeString(item.productName));
+                        item.isOldGeneric = oldGenericSet.has(item.normalizedProductName);
                     });
                 }
             }
