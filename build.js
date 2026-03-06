@@ -37,11 +37,12 @@ try {
 
     // 1. Build Root (Vite)
     console.log('\n\x1b[36m[1/3] Building Root (Vite)...\x1b[0m');
-    exec('npm run build:vite');
+    exec('npx vite build');
 
     // 2. Build Sub-apps (Next.js) using workspaces
     console.log('\n\x1b[36m[2/3] Building Sub-apps (Next.js) via Workspaces...\x1b[0m');
     exec('npm run build --workspaces --if-present');
+    // Note: If workspaces fail, we might need to run them individually with npx next build
 
     // 3. Copy Artifacts
     console.log('\n\x1b[36m[3/3] Copying Artifacts...\x1b[0m');

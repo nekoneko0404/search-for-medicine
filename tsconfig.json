@@ -23,7 +23,11 @@
     "noImplicitAny": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "ignoreDeprecations": "6.0",
+    "types": [
+      "node"
+    ]
   },
   "include": [
     "src/**/*.ts",
