@@ -10,36 +10,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateModal = document.getElementById('update-modal');
     const modalSaveBtn = document.getElementById('modal-save-btn');
     const modalCancelBtn = document.getElementById('modal-cancel-btn');
-    const editStoreId = document.getElementById('edit-store-id');
-    const editPlan = document.getElementById('edit-plan');
-    const editLimit = document.getElementById('edit-limit');
-    const editStatus = document.getElementById('edit-status');
+    const editStoreId = document.getElementById('edit-store-id') as HTMLInputElement;
+    const editPlan = document.getElementById('edit-plan') as HTMLSelectElement;
+    const editLimit = document.getElementById('edit-limit') as HTMLInputElement;
+    const editStatus = document.getElementById('edit-status') as HTMLSelectElement;
 
     let adminPass = sessionStorage.getItem('admin_pass') || '';
 
     if (adminPass) {
-        showAdminSection();
+        fetchStores(); // 成功すれば UI が切り替わる
     }
 
-    loginBtn.addEventListener('click', () => {
-        const pass = adminPassInput.value.trim();
+    loginBtn?.addEventListener('click', async () => {
+        const pass = (adminPassInput as HTMLInputElement)?.value.trim();
         if (!pass) return alert('パスコードを入力してください');
-        adminPass = pass;
-        sessionStorage.setItem('admin_pass', pass);
-        showAdminSection();
+
+        // 先に検証・取得を試みる
+        const success = await fetchStores(pass);
+        if (success) {
+            adminPass = pass;
+            sessionStorage.setItem('admin_pass', pass);
+        }
     });
 
-    refreshBtn.addEventListener('click', fetchStores);
+    refreshBtn?.addEventListener('click', () => {
+        fetchStores();
+    });
 
-    modalCancelBtn.addEventListener('click', () => updateModal.classList.add('hidden'));
+    modalCancelBtn?.addEventListener('click', () => {
+        updateModal?.classList.add('hidden');
+    });
 
-    modalSaveBtn.addEventListener('click', async () => {
-        const storeId = editStoreId.value;
+    modalSaveBtn?.addEventListener('click', async () => {
+        const storeId = editStoreId?.value;
         const payload = {
             storeId,
-            planType: editPlan.value,
-            usageLimit: parseInt(editLimit.value),
-            subscriptionStatus: editStatus.value
+            planType: editPlan?.value,
+            usageLimit: parseInt(editLimit?.value || '0'),
+            subscriptionStatus: editStatus?.value
         };
 
         try {
@@ -54,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 alert('更新しました');
-                updateModal.classList.add('hidden');
+                updateModal?.classList.add('hidden');
                 fetchStores();
             } else {
                 alert('更新に失敗しました');
@@ -66,37 +74,44 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function showAdminSection() {
-        loginSection.classList.add('hidden');
-        adminSection.classList.remove('hidden');
-        fetchStores();
+        loginSection?.classList.add('hidden');
+        adminSection?.classList.remove('hidden');
     }
 
-    async function fetchStores() {
+    async function fetchStores(overridePass?: string): Promise<boolean> {
+        const targetPass = overridePass || adminPass;
+        if (!targetPass) return false;
+
         try {
             const response = await fetch('/api/admin/stores', {
-                headers: { 'X-Admin-Passcode': adminPass }
+                headers: { 'X-Admin-Passcode': targetPass }
             });
 
             if (!response.ok) {
                 if (response.status === 401) {
                     alert('認証に失敗しました。パスコードを確認してください。');
                     sessionStorage.removeItem('admin_pass');
-                    location.reload();
+                    if (!overridePass) location.reload(); // 自動ログイン失敗時のみリロード
+                    return false;
                 }
                 throw new Error('Failed to fetch stores');
             }
 
             const data = await response.json();
             renderStores(data.stores);
+            showAdminSection(); // 成功時にのみ UI 切り替え
+            return true;
         } catch (err) {
             console.error(err);
             alert('データ取得に失敗しました');
+            return false;
         }
     }
 
-    function renderStores(stores) {
+    function renderStores(stores: any[]) {
+        if (!storeListBody) return;
         storeListBody.innerHTML = '';
-        stores.forEach(store => {
+        stores.forEach((store: any) => {
             const row = document.createElement('tr');
             row.className = 'hover:bg-gray-50/50 transition-colors';
 
@@ -125,30 +140,32 @@ document.addEventListener('DOMContentLoaded', () => {
         // Attach listeners
         document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const store = JSON.parse(e.target.dataset.store);
+                const target = e.target as HTMLElement;
+                const store = JSON.parse(target.dataset.store || '{}');
                 openEditModal(store);
             });
         });
 
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const storeId = e.target.dataset.id;
-                if (confirm(`店舗ID: ${storeId} を完全に削除しますか？\nこの操作は取り消せません。`)) {
+                const target = e.target as HTMLElement;
+                const storeId = target.dataset.id;
+                if (storeId && confirm(`店舗ID: ${storeId} を完全に削除しますか？\nこの操作は取り消せません。`)) {
                     deleteStore(storeId);
                 }
             });
         });
     }
 
-    function openEditModal(store) {
-        editStoreId.value = store.id;
-        editPlan.value = store.plan_type;
-        editLimit.value = store.usage_limit;
-        editStatus.value = store.subscription_status || 'active';
-        updateModal.classList.remove('hidden');
+    function openEditModal(store: any) {
+        if (editStoreId) editStoreId.value = store.id;
+        if (editPlan) editPlan.value = store.plan_type;
+        if (editLimit) editLimit.value = String(store.usage_limit);
+        if (editStatus) editStatus.value = store.subscription_status || 'active';
+        updateModal?.classList.remove('hidden');
     }
 
-    async function deleteStore(storeId) {
+    async function deleteStore(storeId: string) {
         try {
             const response = await fetch('/api/admin/stores/delete', {
                 method: 'POST',
