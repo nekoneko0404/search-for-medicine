@@ -22,7 +22,7 @@ export function showMessage(text: string, type: 'info' | 'success' | 'error' = '
     if (messageHideTimeout) clearTimeout(messageHideTimeout);
 
     // Reset classes
-    messageBox.className = 'fixed top-4 right-4 z-50 px-4 py-3 rounded shadow-lg transition-all duration-300 opacity-0 transform translate-y-[-20px]';
+    messageBox.className = 'fixed top-4 right-4 z-[99999] px-4 py-3 rounded shadow-lg transition-all duration-300 opacity-0 transform translate-y-[-20px]';
 
     // Add type-specific classes
     if (type === 'error') {
