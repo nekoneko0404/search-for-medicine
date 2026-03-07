@@ -1,4 +1,4 @@
-import { normalizeString } from '../../js/utils';
+import { normalizeString } from '../js/utils';
 
 /**
  * YJコードからルート（内/注/外）を判定する

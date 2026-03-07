@@ -4,7 +4,7 @@ import { normalizeString } from '../js/utils';
 import { renderStatusButton } from '../js/ui';
 import '../js/components/MainHeader';
 import '../js/components/MainFooter';
-import { summarizeBy9DigitYJ } from '../lab/watchlist/logic';
+import { summarizeBy9DigitYJ } from '../watchlist/logic';
 
 interface PriceData {
     yj: string;

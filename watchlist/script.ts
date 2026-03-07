@@ -1,9 +1,8 @@
-// DEPLOY_ID: 2026-02-28-v1
-import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../../js/data';
-import { normalizeString, formatDate } from '../../js/utils';
-import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../../js/ui';
-import '../../js/components/MainHeader';
-import '../../js/components/MainFooter';
+import { loadAndCacheData, clearCacheAndReload, MedicineData } from '../js/data';
+import { normalizeString, formatDate } from '../js/utils';
+import { renderStatusButton, showMessage, updateProgress, createDropdown } from '../js/ui';
+import '../js/components/MainHeader';
+import '../js/components/MainFooter';
 import { getRouteFromYJCode, processQuery, matchStatusFilter, groupDataByIngredient, summarizeBy9DigitYJ, getStatusPriority } from './logic';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -144,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loadStatusSnapshot();
         loadCloudSettings();
         try {
-            const catResponse = await fetch(new URL('../../supply-status/data/category_data.json', import.meta.url).href);
+            const catResponse = await fetch(new URL('../supply-status/data/category_data.json', import.meta.url).href);
             categoryData = await catResponse.json();
 
             categoryMap = new Map();
@@ -157,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateProgress('カテゴリデータ読み込み完了', 30);
 
             try {
-                const classResponse = await fetch(new URL('../../supply-status/data/drug_classification.json', import.meta.url).href);
+                const classResponse = await fetch(new URL('../supply-status/data/drug_classification.json', import.meta.url).href);
                 drugClassificationData = await classResponse.json();
                 populateClass2();
             } catch (e) {
