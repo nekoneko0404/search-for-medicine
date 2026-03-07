@@ -66,6 +66,23 @@
 
     <main
         class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 w-full max-w-7xl transition-all duration-500">
+
+        <!-- Testing Banner -->
+        <div id="test-banner"
+            class="bg-indigo-600 rounded-xl p-4 mb-6 shadow-md shadow-indigo-200/50 flex items-start sm:items-center justify-between gap-4 animate-fade-in text-white relative">
+            <div class="flex items-center gap-3">
+                <i class="fas fa-flask text-2xl text-indigo-200 bg-indigo-500/50 p-2 rounded-lg"></i>
+                <div>
+                    <h3 class="font-black text-sm md:text-base leading-tight">テスト公開実施中</h3>
+                    <p class="text-[10px] md:text-xs font-bold text-indigo-100 mt-1">
+                        現在はテスト運用期間中のため課金機能は動作しません。FREEプランでも特別なID登録なしに最大3,000品目を監視できます（ブラウザのローカル保存のみ）。クラウド同期機能・自動通知機能は動作はアカウント連携済みのSTANDARDプランでのみお試しいただけます。
+                    </p>
+                </div>
+            </div>
+            <button id="close-test-banner" class="text-indigo-200 hover:text-white transition-colors shrink-0">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
         <!-- Title Section (Update Style) -->
         <div class="text-center mb-8">
             <div
@@ -403,57 +420,72 @@
             </div>
             <div class="p-6 overflow-y-auto flex-grow">
                 <!-- Account Info Section (Top) -->
-                <div class="p-6 bg-gray-50/50 rounded-2xl border border-gray-100 mb-6">
-                    <h4 class="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
-                        <i class="fas fa-link text-indigo-600"></i> アカウント連携 (B2Pharmacy)
+                <button id="toggle-account-btn"
+                    class="w-full flex items-center justify-between p-5 bg-white border border-gray-200 rounded-2xl mb-6 hover:bg-gray-50 transition-colors shadow-sm">
+                    <span class="font-black text-indigo-900 flex items-center gap-2">
+                        <i class="fas fa-link text-indigo-600"></i> アカウント連携・プラン情報
                         <span id="sync-status-badge"
                             class="hidden px-2 py-0.5 bg-indigo-100 text-indigo-700 text-[10px] font-black rounded-md">LINKED</span>
-                    </h4>
-                    <p class="text-[10px] text-gray-500 font-bold mb-4 leading-relaxed">
-                        契約情報を入力すると、薬品リストと通知設定が自動同期されます
-                    </p>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label
-                                class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">ご利用店ID</label>
-                            <input type="text" id="store-id-input" placeholder="例: test-store-001"
-                                class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
-                        </div>
-                        <div>
-                            <label
-                                class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">パスコード</label>
-                            <input type="password" id="passcode-input" placeholder="••••••••"
-                                class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- New Registration / Payment Section -->
-                <div id="registration-section" class="p-6 bg-indigo-50/30 rounded-2xl border border-indigo-100/50 mb-6">
-                    <h4 class="text-sm font-black text-indigo-900 mb-2 flex items-center gap-2">
-                        <i class="fas fa-plus-circle text-indigo-500"></i> 新規利用登録・プラン変更
-                    </h4>
-                    <p class="text-[10px] text-indigo-700/70 font-bold mb-4 leading-relaxed">
-                        まだIDをお持ちでない場合や、監視上限を増やしたい方はこちら
-                    </p>
-                    <div class="grid grid-cols-2 gap-3 mb-4">
-                        <div class="p-3 bg-white rounded-xl border border-indigo-100">
-                            <div class="text-[9px] font-black text-indigo-400 uppercase tracking-widest mb-1">FREE</div>
-                            <div class="text-xs font-black text-gray-900">20品目</div>
-                            <div class="text-[9px] text-gray-400 font-bold mt-1">月額無料</div>
-                        </div>
-                        <div class="p-3 bg-indigo-600 rounded-xl border border-indigo-500 shadow-md shadow-indigo-100">
-                            <div class="text-[9px] font-black text-indigo-200 uppercase tracking-widest mb-1">STANDARD
+                    </span>
+                    <i class="fas fa-chevron-down text-gray-400 transition-transform" id="account-chevron"></i>
+                </button>
+                <div id="account-details-section" class="hidden mb-6">
+                    <div class="p-6 bg-gray-50/50 rounded-2xl border border-gray-100 mb-6">
+                        <h4 class="text-sm font-black text-gray-900 mb-4 flex items-center gap-2">
+                            <i class="fas fa-link text-indigo-600"></i> ログイン情報連携
+                        </h4>
+                        <p class="text-[10px] text-gray-500 font-bold mb-4 leading-relaxed">
+                            契約情報を入力すると、薬品リストと通知設定が自動同期されます
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label
+                                    class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">ご利用店ID</label>
+                                <input type="text" id="store-id-input" placeholder="例: test-store-001"
+                                    class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
                             </div>
-                            <div class="text-xs font-black text-white">3,000品目</div>
-                            <div class="text-[9px] text-indigo-100 font-bold mt-1">月額 ¥5,000</div>
+                            <div>
+                                <label
+                                    class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">パスコード</label>
+                                <input type="password" id="passcode-input" placeholder="••••••••"
+                                    class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
+                            </div>
                         </div>
                     </div>
-                    <button id="start-registration-btn"
-                        class="w-full py-3 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100 flex items-center justify-center gap-2">
-                        <span>新規登録・お支払いに進む</span>
-                        <i class="fas fa-chevron-right text-[10px]"></i>
-                    </button>
+
+                    <!-- New Registration / Payment Section -->
+                    <div id="registration-section" class="p-6 bg-indigo-50/30 rounded-2xl border border-indigo-100/50">
+                        <h4 class="text-sm font-black text-indigo-900 mb-2 flex items-center gap-2">
+                            <i class="fas fa-plus-circle text-indigo-500"></i> 新規利用登録・プラン変更
+                        </h4>
+                        <p class="text-[10px] text-indigo-700/70 font-bold mb-4 leading-relaxed">
+                            まだIDをお持ちでない場合や、監視機能をご利用希望の方はこちら
+                        </p>
+                        <div class="grid grid-cols-2 gap-3 mb-4">
+                            <div class="p-3 bg-white rounded-xl border border-indigo-100 flex flex-col justify-center">
+                                <div class="text-[9px] font-black text-indigo-500 uppercase tracking-widest mb-1">FREE
+                                </div>
+                                <div class="text-[11px] font-black text-gray-900 leading-tight">
+                                    登録不要・ローカル保存<br>3,000品目<span
+                                        class="text-[9px] font-normal text-gray-500 ml-1">(※テスト中)</span></div>
+                            </div>
+                            <div
+                                class="p-3 bg-indigo-600 rounded-xl border border-indigo-500 shadow-md shadow-indigo-100 flex flex-col justify-center text-center">
+                                <div class="text-[9px] font-black text-indigo-200 uppercase tracking-widest mb-1">
+                                    STANDARD</div>
+                                <div class="text-[11px] font-black text-white leading-tight">クラウド同期・通知機能<br>3,000品目
+                                </div>
+                                <div class="text-[9px] text-indigo-100 font-bold mt-1">月額 ¥5,000</div>
+                            </div>
+                        </div>
+                        <button id="start-registration-btn" disabled
+                            class="w-full py-3 bg-indigo-400 cursor-not-allowed text-white text-xs font-black rounded-xl flex items-center justify-center gap-2 relative group mt-4">
+                            <span>新規登録・お支払いに進む</span>
+                            <div
+                                class="absolute bottom-full mb-2 hidden group-hover:block w-max bg-gray-800 text-white text-[10px] py-1 px-2 rounded">
+                                テスト期間中のため課金登録はできません</div>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Medicine Registration Section -->
@@ -479,30 +511,36 @@
                 </div>
 
                 <!-- Notification Settings Section -->
-                <div class="border-t border-gray-100 pt-8 mt-6">
-                    <div class="flex items-center gap-3 mb-6">
+                <div class="border-t border-gray-100 pt-8 mt-6 relative" id="notification-block-container">
+                    <!-- overlay for FREE users (No Auth) -->
+                    <div id="notification-disabled-overlay"
+                        class="absolute inset-0 z-10 bg-white/60 backdrop-blur-[1px] flex items-center justify-center cursor-not-allowed hidden">
                         <div
-                            class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600">
+                            class="bg-white/90 px-4 py-3 rounded-xl shadow-lg border border-gray-200 text-xs font-black text-gray-600">
+                            <i class="fas fa-lock text-gray-400 mr-2"></i>通知機能はSTANDARDプラン（アカウント連携済）で有効になります
+                        </div>
+                    </div>
+
+                    <button id="toggle-notification-btn"
+                        class="w-full flex items-center gap-3 mb-6 hover:opacity-80 transition-opacity text-left cursor-pointer">
+                        <div
+                            class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 shrink-0">
                             <i class="fas fa-paper-plane text-xl"></i>
                         </div>
-                        <div>
+                        <div class="flex-grow">
                             <h4 class="text-base font-black text-gray-900 leading-none mb-1">通知設定</h4>
                             <p class="text-[10px] text-gray-400 font-bold">チャネルと通知スケジュールをカスタマイズします</p>
                         </div>
-                        <button id="show-logs-btn"
-                            class="ml-auto text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors">
+                        <div id="show-logs-btn"
+                            class="shrink-0 text-xs font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-lg hover:bg-indigo-100 transition-colors pointer-events-auto cursor-pointer"
+                            onclick="event.stopPropagation();">
                             <i class="fas fa-history mr-1"></i>履歴を表示
-                        </button>
-                    </div>
+                        </div>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform shrink-0 ml-2"
+                            id="notification-chevron"></i>
+                    </button>
 
-                    <!-- Test Mode Warning -->
-                    <div
-                        class="bg-indigo-50/50 rounded-xl p-3 mb-6 border border-indigo-100 text-[11px] text-gray-600 leading-relaxed font-bold">
-                        <span class="text-indigo-600 font-black">【Testing in progress】</span>
-                        現在はテスト期間中のため、無料ですべての機能（制限通知を含む）をお試しいただけます。
-                    </div>
-
-                    <div class="space-y-4">
+                    <div id="notification-details-section" class="hidden space-y-4">
                         <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-5 space-y-5">
                             <!-- LINE -->
                             <div class="flex flex-col gap-2">

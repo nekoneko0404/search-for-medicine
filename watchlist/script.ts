@@ -59,6 +59,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const notifyEndpointInput = document.getElementById('notify-endpoint-input') as HTMLInputElement;
     const notifyEndpointLabel = document.getElementById('notify-endpoint-label') as HTMLLabelElement;
 
+    // Toggle and Layout Elements
+    const toggleAccountBtn = document.getElementById('toggle-account-btn');
+    const accountDetailsSection = document.getElementById('account-details-section');
+    const accountChevron = document.getElementById('account-chevron');
+
+    const toggleNotificationBtn = document.getElementById('toggle-notification-btn');
+    const notificationDetailsSection = document.getElementById('notification-details-section');
+    const notificationChevron = document.getElementById('notification-chevron');
+
+    const testBanner = document.getElementById('test-banner');
+    const closeTestBannerBtn = document.getElementById('close-test-banner');
+
     // Logs related elements
     const logsModal = document.getElementById('logs-modal') as HTMLDivElement;
     const closeLogsModalBtn = document.getElementById('close-logs-modal') as HTMLButtonElement;
@@ -82,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let displayedCount = 30;
     const itemsPerLoad = 20;
     let observer: IntersectionObserver | null = null;
-    let currentUsageLimit = 20; // デフォルトの上限数
+    let currentUsageLimit = 3000; // FREEプラン上限（テスト期間中）
 
     // getRouteFromYJCode is now imported from logic.ts
 
@@ -142,6 +154,34 @@ document.addEventListener('DOMContentLoaded', () => {
         loadWatchlist();
         loadStatusSnapshot();
         loadCloudSettings();
+
+        // Setup UI Listeners
+        toggleAccountBtn?.addEventListener('click', () => {
+            const isHidden = accountDetailsSection?.classList.contains('hidden');
+            if (isHidden) {
+                accountDetailsSection?.classList.remove('hidden');
+                accountChevron?.classList.add('rotate-180');
+            } else {
+                accountDetailsSection?.classList.add('hidden');
+                accountChevron?.classList.remove('rotate-180');
+            }
+        });
+
+        toggleNotificationBtn?.addEventListener('click', () => {
+            const isHidden = notificationDetailsSection?.classList.contains('hidden');
+            if (isHidden) {
+                notificationDetailsSection?.classList.remove('hidden');
+                notificationChevron?.classList.add('rotate-180');
+            } else {
+                notificationDetailsSection?.classList.add('hidden');
+                notificationChevron?.classList.remove('rotate-180');
+            }
+        });
+
+        closeTestBannerBtn?.addEventListener('click', () => {
+            testBanner?.classList.add('hidden');
+        });
+
         try {
             const catResponse = await fetch(new URL('../supply-status/data/category_data.json', import.meta.url).href);
             categoryData = await catResponse.json();
@@ -753,6 +793,8 @@ document.addEventListener('DOMContentLoaded', () => {
             updateLoginUI(true);
             // Trigger cloud sync on load
             setTimeout(() => restoreSettings(true), 100);
+        } else {
+            updateLoginUI(false);
         }
     }
 
@@ -890,17 +932,30 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateLoginUI(isLoggedIn: boolean) {
         const badge = document.getElementById('login-status-badge');
         const notice = document.getElementById('sync-notice-area');
+        const overlay = document.getElementById('notification-disabled-overlay');
+
         if (badge) {
             badge.innerText = isLoggedIn ? 'Linked' : 'Guest Mode';
             badge.className = isLoggedIn
                 ? 'bg-indigo-600 text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase transition-all'
-                : 'bg-gray-100 text-gray-500 text-[9px] font-black px-1.5 py-0.5 rounded uppercase transition-all';
+                : 'bg-gray-100 text-gray-500 text-[9px] font-black px-1.5 py-0.5 rounded uppercase transition-all hidden';
+
+            if (isLoggedIn) badge.classList.remove('hidden');
         }
+
         if (notice) {
             if (isLoggedIn) {
                 notice.classList.remove('hidden');
             } else {
                 notice.classList.add('hidden');
+            }
+        }
+
+        if (overlay) {
+            if (isLoggedIn) {
+                overlay.classList.add('hidden');
+            } else {
+                overlay.classList.remove('hidden');
             }
         }
     }
@@ -964,7 +1019,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     localStorage.setItem('supply_watchlist_yjcodes', JSON.stringify(data.yjCodes));
 
                     watchlistYJCodes = new Set(data.yjCodes);
-                    currentUsageLimit = data.store.usageLimit || 20;
+                    currentUsageLimit = data.store.usageLimit || 3000;
                     updateWatchlistCount();
                     renderResults();
                     updateLoginUI(true);
