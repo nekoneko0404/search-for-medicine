@@ -63,28 +63,20 @@
 <body class="bg-[#f0f9ff] min-h-screen flex flex-col text-gray-900 antialiased">
     <!-- Coach Mark / Toast Notification -->
     <div id="test-banner"
-        class="fixed top-24 right-4 md:right-8 z-[90] w-80 md:w-96 bg-[#FFF9E6] border border-yellow-200 border-l-4 border-l-orange-400 rounded-lg shadow-xl p-5 hidden animate-fade-in transition-opacity duration-300">
+        class="fixed top-24 right-4 md:right-8 z-[9999] w-80 md:w-[26rem] bg-[#FFF9E6] border border-yellow-200 border-l-4 border-l-orange-400 rounded-lg shadow-2xl p-6 hidden animate-fade-in transition-opacity duration-300">
         <button id="close-test-banner"
-            class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors">
-            <i class="fas fa-times"></i>
+            class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+            <i class="fas fa-times text-lg"></i>
         </button>
-        <div class="flex items-center gap-2 mb-3">
+        <div class="flex items-center gap-2 mb-4">
             <span class="text-xl">💡</span>
-            <h3 class="font-black text-gray-800 text-sm">テスト公開実施中</h3>
+            <h3 class="font-black text-gray-800 text-base">テスト公開実施中</h3>
         </div>
 
-        <div class="text-[11px] text-gray-600 font-bold leading-relaxed space-y-2 mb-4">
+        <div class="text-[13px] text-gray-600 font-bold leading-relaxed space-y-3">
             <p>現在はテスト運用期間中のため<span class="text-orange-600">課金機能は動作しません。</span></p>
             <p>FREEプランでも特別なID登録なしに最大3,000品目を監視できます（ブラウザのローカル保存のみ）。</p>
             <p>クラウド同期機能・自動通知機能はアカウント連携済みのSTANDARDプランでのみお試しいただけます。</p>
-        </div>
-
-        <div class="border-t border-yellow-200/60 pt-3 mt-4">
-            <label class="flex items-center gap-2 cursor-pointer w-fit">
-                <input type="checkbox" id="dont-show-test-banner"
-                    class="rounded border-yellow-300 text-orange-500 focus:ring-orange-500 bg-white">
-                <span class="text-[10px] font-bold text-gray-500">再表示しない</span>
-            </label>
         </div>
     </div>
 

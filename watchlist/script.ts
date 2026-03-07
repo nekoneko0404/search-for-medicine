@@ -178,19 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const hideBannerSet = localStorage.getItem('supply_hide_test_banner') === 'true';
-        if (!hideBannerSet && testBanner) {
-            // Remove hidden to show if not previously dismissed
+        if (testBanner) {
+            // Remove hidden to show every time
             testBanner.classList.remove('hidden');
         }
 
-        const dontShowCheckbox = document.getElementById('dont-show-test-banner') as HTMLInputElement;
-
         closeTestBannerBtn?.addEventListener('click', () => {
             testBanner?.classList.add('hidden');
-            if (dontShowCheckbox && dontShowCheckbox.checked) {
-                localStorage.setItem('supply_hide_test_banner', 'true');
-            }
         });
 
         try {
