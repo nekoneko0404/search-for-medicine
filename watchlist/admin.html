@@ -20,26 +20,27 @@
 
         <!-- Auth Section -->
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
-            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">管理者パスコード</label>
-            <div class="flex gap-2">
-                <input type="password" id="admin-passcode" placeholder="管理者用パスコードを入力"
-                    class="flex-grow p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold">
-                <button onclick="loadStores()"
-                    class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
-                    読み込み
-                </button>
-            </div>
+            <form onsubmit="event.preventDefault(); loadStores();">
+                <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">管理者パスコード</label>
+                <div class="flex gap-2">
+                    <input type="password" id="admin-passcode" placeholder="管理者用パスコードを入力"
+                        class="flex-grow p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold">
+                    <button type="submit"
+                        class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
+                        ログイン
+                    </button>
+                </div>
+            </form>
             <p id="auth-status" class="mt-2 text-[10px] font-bold text-gray-400"></p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-6">
+        <div id="admin-panels" class="hidden grid md:grid-cols-2 gap-6">
             <!-- Store List Section -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
                 <h2 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
                     <i class="fas fa-list text-indigo-600"></i> 登録店舗一覧
                 </h2>
                 <div id="store-list" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
-                    <p class="text-xs text-gray-400 font-bold italic">管理者パスコードを入力して「読み込み」を押してください</p>
                 </div>
             </div>
 
@@ -76,13 +77,14 @@
     </div>
 
     <script>
-        // APIのベースURL（デプロイ先URLに合わせて調整）
-        const API_BASE = 'https://watchlist-server.search-for-medicine.workers.dev';
+        // APIのベースURL（相対パス。PagesとWorkersが同じドメインであることを想定）
+        const API_BASE = '';
 
         async function loadStores() {
             const adminPass = document.getElementById('admin-passcode').value;
             const status = document.getElementById('auth-status');
             const list = document.getElementById('store-list');
+            const panels = document.getElementById('admin-panels');
 
             if (!adminPass) return alert('管理者パスコードを入力してください');
 
@@ -93,17 +95,18 @@
 
                 if (res.ok) {
                     const data = await res.json();
-                    status.textContent = '認証成功：データを読み込みました';
+                    status.textContent = '認証成功を確認しました。';
                     status.className = 'mt-2 text-[10px] font-bold text-green-500';
-
+                    panels.classList.remove('hidden');
                     renderStoreList(data.stores);
                 } else {
                     status.textContent = 'エラー：認証に失敗しました。パスコードが正しくないか、サーバーに接続できません。';
                     status.className = 'mt-2 text-[10px] font-bold text-red-500';
-                    list.innerHTML = '<p class="text-xs text-red-400 font-bold">認証エラー</p>';
+                    panels.classList.add('hidden');
                 }
             } catch (e) {
-                alert('サーバーへの接続に失敗しました');
+                console.error(e);
+                alert('サーバーへの接続に失敗しました。ネットワーク環境やドメインの設定を確認してください。');
             }
         }
 
