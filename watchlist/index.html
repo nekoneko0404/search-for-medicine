@@ -439,7 +439,8 @@
                             <h4 class="text-sm font-black text-gray-900 flex items-center gap-2">
                                 <i class="fas fa-link text-indigo-600"></i> ログイン情報連携
                             </h4>
-                            <a href="https://x.com/oshigoto_twitte" target="_blank" title="X (Twitter) のDMで問い合わせる"
+                            <a href="javascript:void(0)"
+                                onclick="const msg='ご登録時のメールをご確認いただくか、管理者X（@oshigoto_twitte）のDMまでお問い合わせください。'; if(confirm(msg + '\n\nX（Twitter）を開きますか？')) window.open('https://x.com/oshigoto_twitte', '_blank');"
                                 class="text-[9px] font-bold text-indigo-400 hover:text-indigo-600 transition-colors">ID・パスコードを忘れた場合</a>
                         </div>
                         <p class="text-[10px] text-gray-500 font-bold mb-4 leading-relaxed">
@@ -575,6 +576,7 @@
                                         <input type="checkbox" id="notify-line-enable"
                                             class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                         <span class="text-sm font-bold text-gray-700">LINE 通知</span>
+                                        <span class="text-[10px] text-gray-400 font-bold ml-1">(最大3つ、カンマ区切り)</span>
                                     </label>
                                     <button type="button" id="test-line-btn"
                                         class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
@@ -605,6 +607,7 @@
                                         <input type="checkbox" id="notify-email-enable"
                                             class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                         <span class="text-sm font-bold text-gray-700">メール通知</span>
+                                        <span class="text-[10px] text-gray-400 font-bold ml-1">(最大3つ、カンマ区切り)</span>
                                     </label>
                                     <button type="button" id="test-email-btn"
                                         class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
@@ -621,6 +624,7 @@
                                         <input type="checkbox" id="notify-webhook-enable"
                                             class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
                                         <span class="text-sm font-bold text-gray-700">Webhook 通知</span>
+                                        <span class="text-[10px] text-gray-400 font-bold ml-1">(最大3つ、カンマ区切り)</span>
                                     </label>
                                     <button type="button" id="test-webhook-btn"
                                         class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
