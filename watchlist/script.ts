@@ -1037,7 +1037,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     updateWatchlistCount();
                     renderResults();
                     updateLoginUI(true);
-                    if (!isAuto) showMessage('クラウド設定を同期しました', 'success');
+                    if (!isAuto) showMessage('認証に成功しました。クラウド設定を同期しました。', 'success');
                 }
             } else {
                 if (!isAuto) {

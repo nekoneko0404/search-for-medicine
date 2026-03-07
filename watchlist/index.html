@@ -449,15 +449,22 @@
                                     class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
                             </div>
                             <div>
-                                <label
-                                    class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">パスコード</label>
+                                <div class="flex items-center justify-between mb-1 ml-1">
+                                    <label
+                                        class="block text-[9px] font-black text-gray-400 uppercase tracking-widest">パスコード</label>
+                                    <label class="flex items-center gap-1.5 cursor-pointer group">
+                                        <input type="checkbox" id="toggle-password"
+                                            class="w-3 h-3 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span
+                                            class="text-[9px] font-bold text-gray-400 group-hover:text-indigo-500 transition-colors">表示</span>
+                                    </label>
+                                </div>
                                 <input type="password" id="passcode-input" placeholder="••••••••"
                                     class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
-                                <label class="flex items-center gap-2 mt-2 cursor-pointer w-fit">
-                                    <input type="checkbox" id="toggle-password"
-                                        class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                    <span class="text-[10px] font-bold text-gray-500">パスワードを表示する</span>
-                                </label>
+                                <div class="mt-1.5 ml-1">
+                                    <button type="button" onclick="alert('管理者（または公式LINE）へお問い合わせください。登録時のメール等をご確認ください。')"
+                                        class="text-[9px] font-bold text-indigo-400 hover:text-indigo-600 transition-colors">ID・パスコードを忘れた場合</button>
+                                </div>
                             </div>
                         </div>
                         <div id="login-error-message"
