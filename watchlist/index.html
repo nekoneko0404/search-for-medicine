@@ -687,50 +687,50 @@
                 </div>
             </div>
         </div>
+    </div> <!-- Close Watchlist Modal (Restoring correctly) -->
 
-        <!-- Notification Logs Modal -->
-        <div id="logs-modal"
-            class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
-            <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden">
-                <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-                    <h3 class="text-xl font-black text-gray-900 flex items-center gap-2">
-                        <i class="fas fa-history text-indigo-600"></i> 通知送信履歴
-                    </h3>
-                    <button id="close-logs-modal" class="text-gray-400 hover:text-gray-600 transition-colors">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
+    <!-- Notification Logs Modal -->
+    <div id="logs-modal"
+        class="fixed inset-0 z-[120] hidden flex items-center justify-center p-4 bg-black bg-opacity-60 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                <h3 class="text-xl font-black text-gray-900 flex items-center gap-2">
+                    <i class="fas fa-history text-indigo-600"></i> 通知送信履歴
+                </h3>
+                <button id="close-logs-modal" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto flex-grow" id="logs-content">
+                <div class="text-center py-10" id="logs-loading">
+                    <div
+                        class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent">
+                    </div>
+                    <p class="mt-2 text-gray-500 font-bold">履歴を読み込み中...</p>
                 </div>
-                <div class="p-6 overflow-y-auto flex-grow" id="logs-content">
-                    <div class="text-center py-10" id="logs-loading">
-                        <div
-                            class="inline-block animate-spin rounded-full h-8 w-8 border-4 border-indigo-500 border-t-transparent">
-                        </div>
-                        <p class="mt-2 text-gray-500 font-bold">履歴を読み込み中...</p>
-                    </div>
-                    <div id="logs-table-container" class="hidden">
-                        <table class="min-w-full divide-y divide-gray-200 text-sm">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th
-                                        class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
-                                        日時 (JST)</th>
-                                    <th
-                                        class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
-                                        チャネル</th>
-                                    <th
-                                        class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
-                                        ステータス</th>
-                                    <th
-                                        class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
-                                        内容</th>
-                                </tr>
-                            </thead>
-                            <tbody id="logs-table-body" class="divide-y divide-gray-100 italic"></tbody>
-                        </table>
-                    </div>
-                    <div id="logs-empty" class="hidden text-center py-10">
-                        <p class="text-gray-400 font-bold">送信履歴はありません</p>
-                    </div>
+                <div id="logs-table-container" class="hidden">
+                    <table class="min-w-full divide-y divide-gray-200 text-sm">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    日時 (JST)</th>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    チャネル</th>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    ステータス</th>
+                                <th
+                                    class="px-3 py-3 text-left font-black text-gray-500 uppercase tracking-widest text-[10px]">
+                                    内容</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logs-table-body" class="divide-y divide-gray-100 italic"></tbody>
+                    </table>
+                </div>
+                <div id="logs-empty" class="hidden text-center py-10">
+                    <p class="text-gray-400 font-bold">送信履歴はありません</p>
                 </div>
             </div>
         </div>
@@ -746,12 +746,13 @@
                 class="h-full bg-indigo-600 transition-all duration-300 w-0 shadow-[0_0_10px_rgba(79,70,229,0.5)]">
             </div>
         </div>
+    </div> <!-- Close Body/Content container if any, but actually Body doesn't need a div close here -->
 
-        <main-footer base-dir="../"></main-footer>
+    <main-footer base-dir="../"></main-footer>
 
-        <script type="module" src="../js/components/MainHeader.ts"></script>
-        <script type="module" src="../js/components/MainFooter.ts"></script>
-        <script type="module" src="script.ts"></script>
+    <script type="module" src="../js/components/MainHeader.ts"></script>
+    <script type="module" src="../js/components/MainFooter.ts"></script>
+    <script type="module" src="script.ts"></script>
 </body>
 
 </html>
