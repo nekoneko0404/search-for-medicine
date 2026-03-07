@@ -4,152 +4,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理者ダッシュボード - Kusuri Compass</title>
+    <title>Kusuri Compass - 簡易管理ツール</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+JP:wght@400;700;900&display=swap"
-        rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
-            background-color: #f8fafc;
-        }
-
-        .glass-header {
-            background: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-        }
-
-        .card {
-            background: white;
-            border-radius: 1rem;
-            border: 1px solid #f1f5f9;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<body class="min-h-screen">
-    <header class="glass-header sticky top-0 z-50 py-4 px-6 mb-8">
-        <div class="max-w-7xl mx-auto flex justify-between items-center">
-            <h1 class="text-xl font-black text-indigo-900"><i class="fas fa-user-shield mr-2"></i>管理者ダッシュボード</h1>
-            <div id="auth-status" class="text-xs font-bold text-gray-500">認証済み</div>
-        </div>
-    </header>
+<body class="bg-gray-50 min-h-screen p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <header class="mb-8">
+            <h1 class="text-2xl font-black text-gray-900 flex items-center gap-3">
+                <i class="fas fa-tools text-indigo-600"></i> Kusuri Compass 簡易管理ツール
+            </h1>
+            <p class="text-sm text-gray-500 font-bold mt-2">店舗IDの確認やパスコードの再発行をGUIで行えます</p>
+        </header>
 
-    <main class="max-w-7xl mx-auto px-6 pb-12">
-        <div id="login-section" class="card p-8 max-w-md mx-auto mt-20">
-            <h2 class="text-lg font-black text-gray-900 mb-4 text-center">管理者認証</h2>
-            <input type="password" id="admin-pass-input" placeholder="管理者パスコード"
-                class="w-full p-3 rounded-xl border border-gray-200 mb-4 focus:ring-2 focus:ring-indigo-500 outline-none">
-            <button id="login-btn"
-                class="w-full bg-indigo-600 text-white font-black py-3 rounded-xl hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-200">ログイン</button>
+        <!-- Auth Section -->
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6">
+            <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2">管理者パスコード</label>
+            <div class="flex gap-2">
+                <input type="password" id="admin-passcode" placeholder="管理者用パスコードを入力"
+                    class="flex-grow p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold">
+                <button onclick="loadStores()"
+                    class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-black text-sm hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
+                    読み込み
+                </button>
+            </div>
+            <p id="auth-status" class="mt-2 text-[10px] font-bold text-gray-400"></p>
         </div>
 
-        <div id="admin-section" class="hidden">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-2xl font-black text-gray-900">登録店舗一覧</h2>
-                <div class="flex gap-2">
-                    <button id="add-store-btn"
-                        class="bg-indigo-600 text-white hover:bg-indigo-700 px-4 py-2 rounded-lg font-bold transition-all shadow-lg shadow-indigo-100 flex items-center">
-                        <i class="fas fa-plus mr-2"></i>新規追加
+        <div class="grid md:grid-cols-2 gap-6">
+            <!-- Store List Section -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
+                    <i class="fas fa-list text-indigo-600"></i> 登録店舗一覧
+                </h2>
+                <div id="store-list" class="space-y-3 max-h-[400px] overflow-y-auto pr-2">
+                    <p class="text-xs text-gray-400 font-bold italic">管理者パスコードを入力して「読み込み」を押してください</p>
+                </div>
+            </div>
+
+            <!-- Passcode Reset Section -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                <h2 class="text-lg font-black text-gray-900 mb-4 flex items-center gap-2">
+                    <i class="fas fa-key text-indigo-600"></i> パスコード再発行
+                </h2>
+                <div class="space-y-4">
+                    <div>
+                        <label
+                            class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">対象店舗ID</label>
+                        <input type="text" id="reset-store-id" placeholder="例: sample-store"
+                            class="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold bg-gray-50">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-1">新しいパスコード</label>
+                        <input type="text" id="new-passcode" placeholder="再発行する仮パスコードを入力"
+                            class="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-sm font-bold">
+                    </div>
+                    <button onclick="resetPasscode()"
+                        class="w-full bg-red-500 text-white p-3 rounded-xl font-black text-sm hover:bg-red-600 transition-colors shadow-lg shadow-red-100">
+                        パスコードを再発行する
                     </button>
-                    <button id="refresh-btn"
-                        class="text-indigo-600 hover:bg-indigo-50 px-4 py-2 rounded-lg font-bold transition-all flex items-center">
-                        <i class="fas fa-sync-alt mr-2"></i>更新
-                    </button>
                 </div>
-            </div>
-
-            <div class="card overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th class="p-4 font-black text-gray-500 uppercase tracking-widest text-[10px]">店舗ID / 名前
-                            </th>
-                            <th class="p-4 font-black text-gray-500 uppercase tracking-widest text-[10px]">プラン</th>
-                            <th class="p-4 font-black text-gray-500 uppercase tracking-widest text-[10px]">監視上限</th>
-                            <th class="p-4 font-black text-gray-500 uppercase tracking-widest text-[10px]">状態</th>
-                            <th class="p-4 font-black text-gray-500 uppercase tracking-widest text-[10px]">登録日</th>
-                            <th class="p-4 font-black text-gray-500 uppercase tracking-widest text-[10px]">アクション</th>
-                        </tr>
-                    </thead>
-                    <tbody id="store-list-body" class="divide-y divide-gray-50">
-                        <!-- 店舗データがここに挿入される -->
-                    </tbody>
-                </table>
+                <div id="reset-status" class="mt-4 p-3 rounded-xl hidden text-xs font-bold font-mono"></div>
             </div>
         </div>
-    </main>
 
-    <!-- Update Modal -->
-    <div id="update-modal"
-        class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8">
-            <h3 class="text-xl font-black text-gray-900 mb-6" id="modal-title">店舗情報の編集</h3>
-            <input type="hidden" id="edit-mode" value="edit"> <!-- 'edit' or 'add' -->
-
-            <div class="space-y-4">
-                <div id="store-id-container">
-                    <label
-                        class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">店舗ID</label>
-                    <input type="text" id="edit-store-id" placeholder="例: pharmacy-001"
-                        class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none font-bold">
-                </div>
-                <div>
-                    <label
-                        class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">店舗名</label>
-                    <input type="text" id="edit-store-name" placeholder="例: テスト薬局"
-                        class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none font-bold">
-                </div>
-                <div id="passcode-container">
-                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">パスコード
-                        (新規追加時のみ)</label>
-                    <input type="password" id="edit-passcode" placeholder="初期パスコードを設定"
-                        class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none font-bold">
-                </div>
-                <div>
-                    <label
-                        class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">プラン</label>
-                    <select id="edit-plan"
-                        class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none font-bold">
-                        <option value="free">Free Plan</option>
-                        <option value="standard">Standard Plan</option>
-                    </select>
-                </div>
-                <div>
-                    <label
-                        class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">監視上限数</label>
-                    <input type="number" id="edit-limit"
-                        class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none font-bold">
-                </div>
-                <div>
-                    <label
-                        class="block text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">契約状態</label>
-                    <select id="edit-status"
-                        class="w-full p-3 rounded-xl border border-gray-100 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none font-bold">
-                        <option value="active">Active (有効)</option>
-                        <option value="trialing">Trialing (試用中)</option>
-                        <option value="past_due">Past Due (未払い)</option>
-                        <option value="canceled">Canceled (解約済み)</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="flex gap-3 mt-8">
-                <button id="modal-cancel-btn"
-                    class="flex-1 px-4 py-3 rounded-xl font-black text-gray-500 hover:bg-gray-100 transition-all">キャンセル</button>
-                <button id="modal-save-btn"
-                    class="flex-1 px-4 py-3 rounded-xl font-black bg-indigo-600 text-white hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-100">保存</button>
-            </div>
-        </div>
+        <footer class="mt-12 text-center">
+            <p class="text-[10px] text-gray-400 font-bold">Kusuri Compass Admin Utility | Confidential</p>
+        </footer>
     </div>
 
-    <script type="module" src="admin-script.ts"></script>
+    <script>
+        // APIのベースURL（デプロイ先URLに合わせて調整）
+        const API_BASE = 'https://watchlist-server.search-for-medicine.workers.dev';
+
+        async function loadStores() {
+            const adminPass = document.getElementById('admin-passcode').value;
+            const status = document.getElementById('auth-status');
+            const list = document.getElementById('store-list');
+
+            if (!adminPass) return alert('管理者パスコードを入力してください');
+
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/stores`, {
+                    headers: { 'X-Admin-Passcode': adminPass }
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    status.textContent = '認証成功：データを読み込みました';
+                    status.className = 'mt-2 text-[10px] font-bold text-green-500';
+
+                    renderStoreList(data.stores);
+                } else {
+                    status.textContent = 'エラー：認証に失敗しました。パスコードが正しくないか、サーバーに接続できません。';
+                    status.className = 'mt-2 text-[10px] font-bold text-red-500';
+                    list.innerHTML = '<p class="text-xs text-red-400 font-bold">認証エラー</p>';
+                }
+            } catch (e) {
+                alert('サーバーへの接続に失敗しました');
+            }
+        }
+
+        function renderStoreList(stores) {
+            const list = document.getElementById('store-list');
+            if (stores.length === 0) {
+                list.innerHTML = '<p class="text-xs text-gray-400 font-bold italic">店舗は登録されていません</p>';
+                return;
+            }
+
+            list.innerHTML = stores.map(store => `
+                <div class="p-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center justify-between hover:border-indigo-200 transition-colors group">
+                    <div>
+                        <div class="text-[10px] font-black text-gray-400 uppercase tracking-widest leading-none mb-1">${store.id}</div>
+                        <div class="text-sm font-black text-gray-900">${store.name}</div>
+                        <div class="text-[9px] font-bold text-gray-400 mt-0.5">プラン: ${store.plan_type} | 上限: ${store.usage_limit}品目</div>
+                    </div>
+                    <button onclick="selectStore('${store.id}')" class="text-[10px] font-black text-indigo-600 bg-indigo-50 px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                        選択
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function selectStore(id) {
+            document.getElementById('reset-store-id').value = id;
+            document.getElementById('new-passcode').focus();
+        }
+
+        async function resetPasscode() {
+            const adminPass = document.getElementById('admin-passcode').value;
+            const storeId = document.getElementById('reset-store-id').value;
+            const newPasscode = document.getElementById('new-passcode').value;
+            const statusArea = document.getElementById('reset-status');
+
+            if (!adminPass || !storeId || !newPasscode) {
+                return alert('管理者パスコード、店舗ID、新しいパスコードをすべて入力してください');
+            }
+
+            if (!confirm(`店舗ID: ${storeId} のパスコードを本当に書き換えますか？`)) return;
+
+            try {
+                const res = await fetch(`${API_BASE}/api/admin/stores/reset-passcode`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Admin-Passcode': adminPass
+                    },
+                    body: JSON.stringify({ storeId, newPasscode })
+                });
+
+                statusArea.classList.remove('hidden');
+                if (res.ok) {
+                    statusArea.className = 'mt-4 p-3 rounded-xl text-xs font-bold font-mono bg-green-50 text-green-700 border border-green-100';
+                    statusArea.innerHTML = `<strong>【成功】</strong><br>店舗ID: ${storeId}<br>新パスコード: ${newPasscode}<br><br>ユーザーに上記を伝えてください。`;
+                    document.getElementById('new-passcode').value = '';
+                } else {
+                    statusArea.className = 'mt-4 p-3 rounded-xl text-xs font-bold font-mono bg-red-50 text-red-700 border border-red-100';
+                    statusArea.textContent = 'エラー：パスコードの再発行に失敗しました。';
+                }
+            } catch (e) {
+                alert('通信に失敗しました');
+            }
+        }
+    </script>
 </body>
 
 </html>
