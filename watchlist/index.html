@@ -61,28 +61,39 @@
 </head>
 
 <body class="bg-[#f0f9ff] min-h-screen flex flex-col text-gray-900 antialiased">
+    <!-- Coach Mark / Toast Notification -->
+    <div id="test-banner"
+        class="fixed top-24 right-4 md:right-8 z-[90] w-80 md:w-96 bg-[#FFF9E6] border border-yellow-200 border-l-4 border-l-orange-400 rounded-lg shadow-xl p-5 hidden animate-fade-in transition-opacity duration-300">
+        <button id="close-test-banner"
+            class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 transition-colors">
+            <i class="fas fa-times"></i>
+        </button>
+        <div class="flex items-center gap-2 mb-3">
+            <span class="text-xl">💡</span>
+            <h3 class="font-black text-gray-800 text-sm">テスト公開実施中</h3>
+        </div>
+
+        <div class="text-[11px] text-gray-600 font-bold leading-relaxed space-y-2 mb-4">
+            <p>現在はテスト運用期間中のため<span class="text-orange-600">課金機能は動作しません。</span></p>
+            <p>FREEプランでも特別なID登録なしに最大3,000品目を監視できます（ブラウザのローカル保存のみ）。</p>
+            <p>クラウド同期機能・自動通知機能はアカウント連携済みのSTANDARDプランでのみお試しいただけます。</p>
+        </div>
+
+        <div class="border-t border-yellow-200/60 pt-3 mt-4">
+            <label class="flex items-center gap-2 cursor-pointer w-fit">
+                <input type="checkbox" id="dont-show-test-banner"
+                    class="rounded border-yellow-300 text-orange-500 focus:ring-orange-500 bg-white">
+                <span class="text-[10px] font-bold text-gray-500">再表示しない</span>
+            </label>
+        </div>
+    </div>
+
     <!-- Header Component -->
     <main-header base-dir="../" active-page="lab"></main-header>
 
     <main
         class="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 pt-24 w-full max-w-7xl transition-all duration-500">
 
-        <!-- Testing Banner -->
-        <div id="test-banner"
-            class="bg-indigo-600 rounded-xl p-4 mb-6 shadow-md shadow-indigo-200/50 flex items-start sm:items-center justify-between gap-4 animate-fade-in text-white relative">
-            <div class="flex items-center gap-3">
-                <i class="fas fa-flask text-2xl text-indigo-200 bg-indigo-500/50 p-2 rounded-lg"></i>
-                <div>
-                    <h3 class="font-black text-sm md:text-base leading-tight">テスト公開実施中</h3>
-                    <p class="text-[10px] md:text-xs font-bold text-indigo-100 mt-1">
-                        現在はテスト運用期間中のため課金機能は動作しません。FREEプランでも特別なID登録なしに最大3,000品目を監視できます（ブラウザのローカル保存のみ）。クラウド同期機能・自動通知機能は動作はアカウント連携済みのSTANDARDプランでのみお試しいただけます。
-                    </p>
-                </div>
-            </div>
-            <button id="close-test-banner" class="text-indigo-200 hover:text-white transition-colors shrink-0">
-                <i class="fas fa-times text-xl"></i>
-            </button>
-        </div>
         <!-- Title Section (Update Style) -->
         <div class="text-center mb-8">
             <div
@@ -449,8 +460,22 @@
                                     class="block text-[9px] font-black text-gray-400 uppercase tracking-widest mb-1 ml-1">パスコード</label>
                                 <input type="password" id="passcode-input" placeholder="••••••••"
                                     class="w-full p-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none text-xs font-bold">
+                                <label class="flex items-center gap-2 mt-2 cursor-pointer w-fit">
+                                    <input type="checkbox" id="toggle-password"
+                                        class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-[10px] font-bold text-gray-500">パスワードを表示する</span>
+                                </label>
                             </div>
                         </div>
+                        <div id="login-error-message"
+                            class="hidden mt-3 text-xs font-bold text-red-600 bg-red-50 p-2.5 rounded-lg border border-red-100 flex items-start gap-2">
+                            <i class="fas fa-exclamation-circle mt-0.5"></i>
+                            <span>店舗IDまたはパスコードが正しくありません。</span>
+                        </div>
+                        <button id="login-btn"
+                            class="mt-4 w-full py-2.5 bg-indigo-600 text-white text-xs font-black rounded-xl hover:bg-indigo-700 transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+                            <i class="fas fa-sign-in-alt"></i> ログインして同期する
+                        </button>
                     </div>
 
                     <!-- New Registration / Payment Section -->

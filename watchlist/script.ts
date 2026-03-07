@@ -178,8 +178,19 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
+        const hideBannerSet = localStorage.getItem('supply_hide_test_banner') === 'true';
+        if (!hideBannerSet && testBanner) {
+            // Remove hidden to show if not previously dismissed
+            testBanner.classList.remove('hidden');
+        }
+
+        const dontShowCheckbox = document.getElementById('dont-show-test-banner') as HTMLInputElement;
+
         closeTestBannerBtn?.addEventListener('click', () => {
             testBanner?.classList.add('hidden');
+            if (dontShowCheckbox && dontShowCheckbox.checked) {
+                localStorage.setItem('supply_hide_test_banner', 'true');
+            }
         });
 
         try {
@@ -967,9 +978,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const passcode = passcodeInput?.value.trim();
 
         if (!storeId || !passcode) {
-            if (!isAuto) showMessage('店舗IDとパスコードを入力してください', 'error');
+            if (!isAuto) {
+                const errorMsg = document.getElementById('login-error-message');
+                if (errorMsg) errorMsg.classList.remove('hidden');
+                showMessage('店舗IDとパスコードを入力してください', 'error');
+            }
             updateLoginUI(false);
             return;
+        }
+
+        if (!isAuto) {
+            const errorMsg = document.getElementById('login-error-message');
+            if (errorMsg) errorMsg.classList.add('hidden');
         }
 
         // Fetch latest from cloud regardless of previous local state to ensure multi-device sync
@@ -1026,21 +1046,41 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (!isAuto) showMessage('クラウド設定を同期しました', 'success');
                 }
             } else {
-                if (!isAuto) showMessage('認証に失敗しました。IDまたはパスコードを確認してください', 'error');
+                if (!isAuto) {
+                    const errorMsg = document.getElementById('login-error-message');
+                    if (errorMsg) errorMsg.classList.remove('hidden');
+                }
                 updateLoginUI(false);
             }
         } catch (err) {
-            if (!isAuto) showMessage('クラウドとの接続に失敗しました', 'error');
+            if (!isAuto) {
+                const errorMsg = document.getElementById('login-error-message');
+                if (errorMsg) errorMsg.classList.remove('hidden');
+            }
             updateLoginUI(false);
         }
     }
 
-    // Auto-sync trigger on blur
-    ['store-id-input', 'passcode-input'].forEach(id => {
-        document.getElementById(id)?.addEventListener('blur', () => restoreSettings(true));
+    // Login button action
+    document.getElementById('login-btn')?.addEventListener('click', () => {
+        restoreSettings(false);
     });
-    // Support manual restore button just in case
-    document.getElementById('restore-settings-btn')?.addEventListener('click', () => restoreSettings(false));
+
+    // Toggle password visibility
+    document.getElementById('toggle-password')?.addEventListener('change', (e) => {
+        const passInput = document.getElementById('passcode-input') as HTMLInputElement;
+        if (passInput) {
+            passInput.type = (e.target as HTMLInputElement).checked ? 'text' : 'password';
+        }
+    });
+
+    // Hide error message on input change
+    ['store-id-input', 'passcode-input'].forEach(id => {
+        document.getElementById(id)?.addEventListener('input', () => {
+            const errorMsg = document.getElementById('login-error-message');
+            if (errorMsg) errorMsg.classList.add('hidden');
+        });
+    });
 
     // 新規登録・お支払いボタン
     document.getElementById('start-registration-btn')?.addEventListener('click', () => {
