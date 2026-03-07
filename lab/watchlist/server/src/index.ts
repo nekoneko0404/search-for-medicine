@@ -237,7 +237,10 @@ export default {
                 ).bind(storeId || "").first<{ passcode: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return withCors(new Response("Unauthorized", { status: 401 }));
+                    return withCors(new Response(JSON.stringify({ success: false, error: "店舗IDまたはパスコードが正しくありません。" }), {
+                        status: 401,
+                        headers: { "Content-Type": "application/json" }
+                    }));
                 }
 
                 // watch_items は CASCADE削除されるので、stores削除だけでOK
@@ -264,7 +267,10 @@ export default {
                 ).bind(storeId).first<any>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response(JSON.stringify({ success: false, error: "店舗IDまたはパスコードが正しくありません。" }), {
+                        status: 401,
+                        headers: { "Content-Type": "application/json" }
+                    }));
                 }
 
                 // 暗号化キーの取得（Cloudflare Secret）
@@ -316,7 +322,10 @@ export default {
                 ).bind(storeId || "").first<{ plan_type: string, usage_limit: number, passcode: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return new Response("Unauthorized", { status: 401 });
+                    return withCors(new Response(JSON.stringify({ success: false, error: "店舗IDまたはパスコードが正しくありません。" }), {
+                        status: 401,
+                        headers: { "Content-Type": "application/json" }
+                    }));
                 }
 
                 // 2. プランに基づいた上限チェック (DBの値を優先、なければフォールバック)
@@ -548,31 +557,62 @@ export default {
                 ).bind(storeId || "").first<{ passcode: string, name: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return withCors(new Response("Unauthorized", { status: 401 }));
+                    return withCors(new Response(JSON.stringify({ success: false, error: "店舗IDまたはパスコードが正しくありません。" }), {
+                        status: 401,
+                        headers: { "Content-Type": "application/json" }
+                    }));
                 }
 
                 const encKey = env.ENCRYPTION_KEY || "";
-                // ターゲットが暗号化されている可能性を考慮して復号（平文ならそのまま返る）
-                const decryptedTarget = await decrypt(target, encKey);
+                // 複数の宛先（カンマ区切り）に対応
+                const targets = target.split(',').map(t => t.trim()).filter(Boolean);
+
+                if (targets.length === 0) {
+                    return withCors(new Response(JSON.stringify({ success: false, error: "宛先を入力してください。" }), { status: 400 }));
+                }
+
+                const errors: string[] = [];
+                let successCount = 0;
 
                 try {
                     const notifier = NotificationFactory.getNotifier(channel, env);
-                    await notifier.send(decryptedTarget || target, {
-                        title: `【テスト送信】${store.name}様、設定の確認です。`,
-                        message: "このメッセージが表示されていれば、通知設定は正常です。",
-                        items: [
-                            { yj_code: "TEST-CODE", name: "テスト用医薬品", old_status: "不明", new_status: "正常動作中" }
-                        ]
-                    });
 
-                    return withCors(new Response(JSON.stringify({ success: true }), {
-                        headers: { "Content-Type": "application/json" }
-                    }));
+                    for (const t of targets) {
+                        try {
+                            // 既に暗号化されている可能性を考慮して復号を試みる
+                            const decrypted = await decrypt(t, encKey);
+                            await notifier.send(decrypted || t, {
+                                title: `【テスト送信】${store.name}様、設定の確認です。`,
+                                message: "このメッセージが表示されていれば、通知設定は正常です。",
+                                items: [
+                                    { yj_code: "TEST-CODE", name: "テスト用医薬品", old_status: "不明", new_status: "正常動作中" }
+                                ]
+                            });
+                            successCount++;
+                        } catch (err: any) {
+                            console.error(`Test notification failed for ${t}:`, err);
+                            errors.push(`${t}: ${err.message}`);
+                        }
+                    }
+
+                    if (successCount > 0) {
+                        return withCors(new Response(JSON.stringify({
+                            success: true,
+                            message: `${successCount}件の送信に成功しました。`,
+                            errors: errors.length > 0 ? errors : undefined
+                        }), { headers: { "Content-Type": "application/json" } }));
+                    } else {
+                        return withCors(new Response(JSON.stringify({
+                            success: false,
+                            error: `送信に失敗しました。\n${errors.join('\n')}`
+                        }), { status: 500, headers: { "Content-Type": "application/json" } }));
+                    }
+
                 } catch (notifyErr: any) {
-                    console.error("Test notification failed:", notifyErr);
+                    console.error("Test notification fatal error:", notifyErr);
                     return withCors(new Response(JSON.stringify({
                         success: false,
-                        error: notifyErr.message || "Notification sending failed"
+                        error: notifyErr.message || "予期せぬエラーが発生しました。"
                     }), {
                         status: 500,
                         headers: { "Content-Type": "application/json" }
@@ -614,7 +654,10 @@ export default {
                 ).bind(storeId).first<{ passcode: string }>();
 
                 if (!store || !(await verifyPasscode(passcode, store.passcode))) {
-                    return withCors(new Response("Unauthorized", { status: 401 }));
+                    return withCors(new Response(JSON.stringify({ success: false, error: "店舗IDまたはパスコードが正しくありません。" }), {
+                        status: 401,
+                        headers: { "Content-Type": "application/json" }
+                    }));
                 }
 
                 // 2. 履歴の取得（直近100件）

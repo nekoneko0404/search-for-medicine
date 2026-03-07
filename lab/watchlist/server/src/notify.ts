@@ -24,6 +24,9 @@ export class LineNotifier implements Notifier {
 
     async send(endpoint: string, payload: NotificationPayload): Promise<void> {
         const client = new LineClient(this.accessToken);
+        if (!this.accessToken) {
+            throw new Error("LINE_ACCESS_TOKEN is not set in environment.");
+        }
         const text = `【供給状況アラート】\n${payload.title}\n\n` +
             payload.items.map(i => `・${i.name}\n  (${i.yj_code})\n  ${i.old_status || '不明'} → ${i.new_status}`).join("\n\n");
 
@@ -61,6 +64,9 @@ export class EmailNotifier implements Notifier {
     constructor(private apiKey: string) { }
 
     async send(endpoint: string, payload: NotificationPayload): Promise<void> {
+        if (!this.apiKey) {
+            throw new Error("RESEND_API_KEY is not set in environment.");
+        }
         const html = `
             <h3>【供給状況アラート】</h3>
             <p>${payload.title}</p>
@@ -94,6 +100,7 @@ export class EmailNotifier implements Notifier {
         if (!response.ok) {
             const errorText = await response.text();
             console.error(`Resend API Error: ${response.status}`, errorText);
+            // エラー内容をそのまま例外に含める
             throw new Error(`Email failed: ${response.status} ${errorText}`);
         }
 

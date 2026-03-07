@@ -787,17 +787,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     body: JSON.stringify({ storeId, passcode, channel, target })
                 });
 
-                const result = await response.json() as { success: boolean, error?: string };
+                let result: { success: boolean, error?: string, message?: string };
+                try {
+                    result = await response.json();
+                } catch (jsonErr) {
+                    // JSONパースに失敗した場合（401 Unauthorized などがテキストで返った場合等）
+                    if (response.status === 401) {
+                        showMessage('認証に失敗しました。店舗IDまたはパスコードが正しくありません。', 'error');
+                    } else {
+                        showMessage(`通信エラーが発生しました (${response.status})`, 'error');
+                    }
+                    btn.textContent = originalText;
+                    (btn as HTMLButtonElement).disabled = false;
+                    return;
+                }
+
                 if (result.success) {
-                    showMessage(`${channel.toUpperCase()} テスト送信に成功しました`, 'success');
+                    showMessage(result.message || `${channel.toUpperCase()} テスト送信に成功しました`, 'success');
                 } else {
-                    showMessage(`テスト送信失敗: ${result.error}`, 'error');
+                    showMessage(`テスト送信失敗: ${result.error || '原因不明のエラー'}`, 'error');
                 }
 
                 btn.textContent = originalText;
                 (btn as HTMLButtonElement).disabled = false;
             } catch (err) {
-                showMessage('通信エラーが発生しました', 'error');
+                console.error("Test notification client error:", err);
+                showMessage('ネットワークエラーが発生しました', 'error');
                 btn.textContent = 'テスト送信';
                 (btn as HTMLButtonElement).disabled = false;
             }
