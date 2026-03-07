@@ -429,12 +429,22 @@ export default {
                 }
 
                 const stores = await env.DB.prepare(`
-                    SELECT id, name, plan_type, usage_limit, subscription_status, created_at, updated_at
+                    SELECT id, name, plan_type, usage_limit, subscription_status, 
+                           notify_line_endpoints, notify_email_endpoints, notify_webhook_endpoints,
+                           created_at, updated_at
                     FROM stores 
                     ORDER BY created_at DESC
                 `).all();
 
-                return withCors(new Response(JSON.stringify({ success: true, stores: stores.results }), {
+                const encKey = env.ENCRYPTION_KEY || "";
+                const results = await Promise.all(stores.results.map(async (s: any) => ({
+                    ...s,
+                    notify_line_endpoints: await decrypt(s.notify_line_endpoints, encKey),
+                    notify_email_endpoints: await decrypt(s.notify_email_endpoints, encKey),
+                    notify_webhook_endpoints: await decrypt(s.notify_webhook_endpoints, encKey)
+                })));
+
+                return withCors(new Response(JSON.stringify({ success: true, stores: results }), {
                     headers: { "Content-Type": "application/json" }
                 }));
             }
