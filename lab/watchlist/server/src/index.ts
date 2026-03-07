@@ -482,7 +482,7 @@ export default {
                 }
 
                 // waitUntil を使用して、レスポンス返却後にバックグラウンドで実行
-                ctx.waitUntil(performSyncAndNotify(env));
+                ctx.waitUntil(performSyncAndNotify(env, { isImmediate: true }));
 
                 return withCors(new Response(JSON.stringify({ success: true, message: "Sync triggered" }), {
                     headers: { "Content-Type": "application/json" }
@@ -555,18 +555,29 @@ export default {
                 // ターゲットが暗号化されている可能性を考慮して復号（平文ならそのまま返る）
                 const decryptedTarget = await decrypt(target, encKey);
 
-                const notifier = NotificationFactory.getNotifier(channel, env);
-                await notifier.send(decryptedTarget || target, {
-                    title: `【テスト送信】${store.name}様、設定の確認です。`,
-                    message: "このメッセージが表示されていれば、通知設定は正常です。",
-                    items: [
-                        { yj_code: "TEST-CODE", name: "テスト用医薬品", old_status: "不明", new_status: "正常動作中" }
-                    ]
-                });
+                try {
+                    const notifier = NotificationFactory.getNotifier(channel, env);
+                    await notifier.send(decryptedTarget || target, {
+                        title: `【テスト送信】${store.name}様、設定の確認です。`,
+                        message: "このメッセージが表示されていれば、通知設定は正常です。",
+                        items: [
+                            { yj_code: "TEST-CODE", name: "テスト用医薬品", old_status: "不明", new_status: "正常動作中" }
+                        ]
+                    });
 
-                return withCors(new Response(JSON.stringify({ success: true }), {
-                    headers: { "Content-Type": "application/json" }
-                }));
+                    return withCors(new Response(JSON.stringify({ success: true }), {
+                        headers: { "Content-Type": "application/json" }
+                    }));
+                } catch (notifyErr: any) {
+                    console.error("Test notification failed:", notifyErr);
+                    return withCors(new Response(JSON.stringify({
+                        success: false,
+                        error: notifyErr.message || "Notification sending failed"
+                    }), {
+                        status: 500,
+                        headers: { "Content-Type": "application/json" }
+                    }));
+                }
             }
 
             // --- LINE Webhook API (ID取得サポート用) ---
@@ -639,20 +650,21 @@ export default {
     },
 
     async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext) {
-        ctx.waitUntil(performSyncAndNotify(env));
+        ctx.waitUntil(performSyncAndNotify(env, { isImmediate: false }));
     }
 };
 
 /**
  * 市場ステータスの更新と通知送信のコアロジック
  */
-async function performSyncAndNotify(env: Env) {
-    console.log("Sync Task Starting: Updating market status and sending notifications...");
+async function performSyncAndNotify(env: Env, options: { isImmediate?: boolean } = {}) {
+    const isImmediate = options.isImmediate || false;
+    console.log(`Sync Task Starting (isImmediate: ${isImmediate}): Updating market status and sending notifications...`);
 
     // 1. 市場全体のステータスを外部ソースから更新
     try {
-        await updateMarketStatusSnapshot(env);
-        console.log("Market status snapshot updated successfully.");
+        await updateMarketStatusSnapshot(env, { forceUpdate: isImmediate });
+        console.log("Market status snapshot update process completed.");
     } catch (err) {
         console.error("Failed to update market status snapshot:", err);
         // スナップショット更新に失敗しても、既存データでの通知は試みる
@@ -748,8 +760,15 @@ async function performSyncAndNotify(env: Env) {
             }
 
             if (!isAllowed) {
-                console.log(`Skipping store ${storeId}: Out of allowed range ${notifyStart}-${notifyEnd}, JST is ${currentHour}:${currentMin}`);
-                continue;
+                // 即時同期（トリガー）の場合は、時間外（特に夜間）でも送信を許可する
+                // ただし、早朝など「開始時間」前は配慮が必要かもしれないが、
+                // 現状の課題は「23:00を数分過ぎてスキップされた」ことなので、isImmediateなら許可する
+                if (isImmediate) {
+                    console.log(`Store ${storeId}: Out of allowed range ${notifyStart}-${notifyEnd}, but proceeding due to isImmediate trigger.`);
+                } else {
+                    console.log(`Skipping store ${storeId}: Out of allowed range ${notifyStart}-${notifyEnd}, JST is ${currentHour}:${currentMin}`);
+                    continue;
+                }
             }
         }
 
@@ -858,11 +877,13 @@ async function performSyncAndNotify(env: Env) {
 /**
  * 外部データソース（Google Spreadsheet）から供給状況をフェッチし、D1を更新する
  */
-async function updateMarketStatusSnapshot(env: Env) {
+async function updateMarketStatusSnapshot(env: Env, options: { forceUpdate?: boolean } = {}) {
     const FILE_ID_MAIN = '1ZyjtfiRjGoV9xHSA5Go4rJZr281gqfMFW883Y7s9mQU';
+    const sheetName = '医薬品供給状況_比較結果';
     const columns = 'E,F,L'; // YJコード (E), 品名 (F), 出荷状況 (L)
-    const csvUrl = `https://docs.google.com/spreadsheets/d/${FILE_ID_MAIN}/gviz/tq?tqx=out:csv&t=${Date.now()}&tq=${encodeURIComponent('SELECT ' + columns)}`;
+    const csvUrl = `https://docs.google.com/spreadsheets/d/${FILE_ID_MAIN}/gviz/tq?tqx=out:csv&t=${Date.now()}&sheet=${encodeURIComponent(sheetName)}&tq=${encodeURIComponent('SELECT ' + columns)}`;
 
+    console.log(`Fetching market status from ${sheetName}...`);
     const response = await fetch(csvUrl);
     if (!response.ok) throw new Error(`Fetch failed: ${response.status}`);
 
@@ -873,8 +894,8 @@ async function updateMarketStatusSnapshot(env: Env) {
     const currentHash = Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
 
     const lastHash = await env.DB.prepare("SELECT value FROM system_config WHERE key = 'last_csv_hash'").first<{ value: string }>();
-    if (lastHash && lastHash.value === currentHash) {
-        console.log("CSV has not changed. Skipping DB update.");
+    if (!options.forceUpdate && lastHash && lastHash.value === currentHash) {
+        console.log("CSV has not changed and forceUpdate is false. Skipping DB update.");
         return;
     }
 
@@ -885,7 +906,7 @@ async function updateMarketStatusSnapshot(env: Env) {
         const row = parseCSVLine(rowText);
         if (row.length < 3) continue;
 
-        const yjCode = row[0].replace(/"/g, '').trim();
+        const yjCode = row[0].replace(/"/g, '').trim().padStart(12, '0');
         const name = row[1].replace(/"/g, '').trim();
         const status = row[2].replace(/"/g, '').trim();
 
