@@ -75,7 +75,8 @@
 
         <div class="text-[13px] text-gray-600 font-bold leading-relaxed space-y-3">
             <p>現在はテスト運用期間中のため<span class="text-orange-600">課金機能は動作しません。</span></p>
-            <p>FREEプランでも特別なID登録なしに最大3,000品目を監視できます（ブラウザのローカル保存のみ）。</p>
+            <p>FREEプランでも特別なID登録なしに最大3,000品目を監視できます（ブラウザのローカル保存のみ）。<br><span
+                    class="text-[10px] text-gray-500">※正式公開時は30件に制限予定</span></p>
             <p>クラウド同期機能・自動通知機能はアカウント連携済みのSTANDARDプランでのみお試しいただけます。</p>
         </div>
     </div>
@@ -484,7 +485,8 @@
                                 </div>
                                 <div class="text-[11px] font-black text-gray-900 leading-tight">
                                     登録不要・ローカル保存<br>3,000品目<span
-                                        class="text-[9px] font-normal text-gray-500 ml-1">(※テスト中)</span></div>
+                                        class="text-[9px] font-normal text-gray-500 ml-1">(※テスト中。正式時は30件に制限予定)</span>
+                                </div>
                             </div>
                             <div
                                 class="p-3 bg-indigo-600 rounded-xl border border-indigo-500 shadow-md shadow-indigo-100 flex flex-col justify-center text-center">
@@ -561,7 +563,7 @@
                         <div class="bg-indigo-50/30 rounded-2xl border border-indigo-100/50 p-5 space-y-5">
                             <!-- LINE -->
                             <div class="flex flex-col gap-2">
-                                <div class="flex items-center justify-between">
+                                <div class="flex items-center justify-between mb-2">
                                     <label class="flex items-center gap-2 cursor-pointer">
                                         <input type="checkbox" id="notify-line-enable"
                                             class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
@@ -570,9 +572,23 @@
                                     <button type="button" id="test-line-btn"
                                         class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
                                 </div>
-                                <input type="text" id="notify-line-input"
-                                    class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 py-2 px-3"
-                                    placeholder="LINE ID">
+                                <div
+                                    class="flex flex-col md:flex-row gap-4 mb-2 bg-white p-4 rounded-xl border border-gray-200">
+                                    <div class="shrink-0 text-center">
+                                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://lin.ee/dummy"
+                                            alt="LINE QR Code"
+                                            class="w-20 h-20 mx-auto rounded-lg border border-gray-100 shadow-sm mb-1">
+                                        <div class="text-[9px] font-bold text-gray-500">公式アカウント</div>
+                                    </div>
+                                    <div class="flex-grow flex flex-col justify-center">
+                                        <p class="text-[10px] font-bold text-gray-600 mb-2 leading-relaxed">
+                                            LINEで通知を受け取るには、左のQRコードをスキャンして公式アカウントを友だち追加し、何かメッセージを送信してください。<br>返信された<strong>「あなたのLINE
+                                                ID」</strong>を下部に入力します。</p>
+                                        <input type="text" id="notify-line-input"
+                                            class="w-full rounded-lg border-gray-200 text-sm focus:ring-indigo-500 py-2 px-3 bg-gray-50 focus:bg-white transition-colors"
+                                            placeholder="取得したLINE IDを入力">
+                                    </div>
+                                </div>
                             </div>
 
                             <!-- Email -->
@@ -590,57 +606,88 @@
                                     class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 py-2 px-3"
                                     placeholder="メールアドレス">
                             </div>
-                            <!-- (Other channels and filters kept as before, just more compact tags) -->
-                            <div
-                                class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">通知条件</span>
-                                <select id="notify-filter-input"
-                                    class="text-xs font-bold border-gray-200 rounded-lg py-2 px-3 bg-white">
-                                    <option value="all">すべての変化</option>
-                                    <option value="restored_only">解除時のみ</option>
-                                </select>
-                            </div>
-                            <div
-                                class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                                <span
-                                    class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">許可時間帯</span>
-                                <div class="flex items-center gap-2">
-                                    <select id="notify-start-input"
-                                        class="text-xs font-bold border-gray-200 rounded-lg py-1.5 px-2 bg-white">
-                                        <option value="00:00">00:00</option>
-                                        <option value="08:00">08:00</option>
-                                        <option value="09:00">09:00</option>
-                                    </select>
-                                    <span class="text-gray-400 text-xs font-bold">〜</span>
-                                    <select id="notify-end-input"
-                                        class="text-xs font-bold border-gray-200 rounded-lg py-1.5 px-2 bg-white">
-                                        <option value="20:00">20:00</option>
-                                        <option value="21:00">21:00</option>
-                                        <option value="24:00">24:00</option>
-                                    </select>
+
+                            <!-- Webhook -->
+                            <div class="flex flex-col gap-2 pt-3 border-t border-indigo-100/30">
+                                <div class="flex items-center justify-between">
+                                    <label class="flex items-center gap-2 cursor-pointer">
+                                        <input type="checkbox" id="notify-webhook-enable"
+                                            class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                        <span class="text-sm font-bold text-gray-700">Webhook 通知</span>
+                                    </label>
+                                    <button type="button" id="test-webhook-btn"
+                                        class="text-[10px] font-black px-2 py-1 bg-white border border-gray-200 rounded text-gray-500 hover:bg-gray-50">テスト</button>
                                 </div>
+                                <div class="flex flex-col gap-2">
+                                    <label
+                                        class="text-[10px] font-black text-indigo-900/60 uppercase tracking-wider">エンドポイント
+                                        URL</label>
+                                    <input type="text" id="notify-webhook-input"
+                                        class="w-full rounded-xl border-gray-200 text-sm focus:ring-indigo-500 py-2 px-3"
+                                        placeholder="https://hooks.slack.com/services/...">
+                                </div>
+                            </div> <!-- Close Webhook -->
+
+                            <!-- Security Disclaimer -->
+                            <div class="pt-3 flex items-start gap-2">
+                                <i class="fas fa-shield-alt text-indigo-500 mt-0.5 text-xs"></i>
+                                <p class="text-[9px] text-gray-500 leading-relaxed font-medium">
+                                    <strong>【個人情報の取り扱いとセキュリティについて】</strong><br>
+                                    ご登録いただいたLINE
+                                    IDおよびメールアドレス等のエンドポイント情報は、監視機能の通知送信という目的のみに使用されます。これらの情報はクラウド上において強度に暗号化された状態で安全に保管され、事前の同意なく第三者へ開示・提供されることは一切ありません。
+                                </p>
+                            </div>
+                        </div>
+                        <!-- (Other channels and filters kept as before, just more compact tags) -->
+                        <div
+                            class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">通知条件</span>
+                            <select id="notify-filter-input"
+                                class="text-xs font-bold border-gray-200 rounded-lg py-2 px-3 bg-white">
+                                <option value="all">すべての変化</option>
+                                <option value="restored_only">解除時のみ</option>
+                            </select>
+                        </div>
+                        <div
+                            class="pt-4 border-t border-indigo-100/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                            <span class="text-xs font-black text-indigo-900/60 uppercase tracking-wider">許可時間帯</span>
+                            <div class="flex items-center gap-2">
+                                <select id="notify-start-input"
+                                    class="text-xs font-bold border-gray-200 rounded-lg py-1.5 px-2 bg-white">
+                                    <option value="00:00">00:00</option>
+                                    <option value="08:00">08:00</option>
+                                    <option value="09:00">09:00</option>
+                                </select>
+                                <span class="text-gray-400 text-xs font-bold">〜</span>
+                                <select id="notify-end-input"
+                                    class="text-xs font-bold border-gray-200 rounded-lg py-1.5 px-2 bg-white">
+                                    <option value="20:00">20:00</option>
+                                    <option value="21:00">21:00</option>
+                                    <option value="24:00">24:00</option>
+                                </select>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div id="sync-notice-area" class="px-6 py-2 bg-indigo-50 border-t border-indigo-100 hidden">
-                <p class="text-indigo-700 text-[10px] font-black leading-tight flex items-center gap-2">
-                    <i class="fas fa-sync-alt animate-spin-slow"></i>
-                    <span>クラウド同期中: ここでの変更は全デバイスに反映されます</span>
-                </p>
-            </div>
-            <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white">
-                <button id="clear-watchlist"
-                    class="px-4 py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition-colors">全消去</button>
-                <div class="flex gap-3">
-                    <button id="update-snapshot"
-                        class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">現在の状態を記録（既読）</button>
-                    <button id="save-watchlist"
-                        class="px-8 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">設定を保存</button>
-                </div>
+        </div>
+        <div id="sync-notice-area" class="px-6 py-2 bg-indigo-50 border-t border-indigo-100 hidden">
+            <p class="text-indigo-700 text-[10px] font-black leading-tight flex items-center gap-2">
+                <i class="fas fa-sync-alt animate-spin-slow"></i>
+                <span>クラウド同期中: ここでの変更は全デバイスに反映されます</span>
+            </p>
+        </div>
+        <div class="p-6 border-t border-gray-100 flex justify-between items-center bg-white">
+            <button id="clear-watchlist"
+                class="px-4 py-2 text-red-500 font-bold hover:bg-red-50 rounded-lg transition-colors">全消去</button>
+            <div class="flex gap-3">
+                <button id="update-snapshot"
+                    class="px-4 py-2 bg-white border border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-50 transition-all text-sm">現在の状態を記録（既読）</button>
+                <button id="save-watchlist"
+                    class="px-8 py-2.5 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all shadow-lg hover:shadow-indigo-200">設定を保存</button>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Notification Logs Modal -->
