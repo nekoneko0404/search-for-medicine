@@ -464,6 +464,25 @@ export default {
                 }));
             }
 
+            // --- [管理者専用] 店舗パスコードリセット API ---
+            if (url.pathname === "/api/admin/stores/reset-passcode" && request.method === "POST") {
+                const adminPass = request.headers.get("X-Admin-Passcode");
+                if (adminPass !== env.ADMIN_PASSCODE) {
+                    return withCors(new Response("Unauthorized", { status: 401 }));
+                }
+
+                const { storeId, newPasscode } = await request.json() as { storeId: string, newPasscode: string };
+                if (!storeId || !newPasscode) return withCors(new Response("Missing storeId or newPasscode", { status: 400 }));
+
+                const hashedPasscode = await hashPasscode(newPasscode);
+                await env.DB.prepare("UPDATE stores SET passcode = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?")
+                    .bind(hashedPasscode, storeId).run();
+
+                return withCors(new Response(JSON.stringify({ success: true }), {
+                    headers: { "Content-Type": "application/json" }
+                }));
+            }
+
             // --- [管理者専用] 店舗削除 API ---
             if (url.pathname === "/api/admin/stores/delete" && request.method === "POST") {
                 const adminPass = request.headers.get("X-Admin-Passcode");
